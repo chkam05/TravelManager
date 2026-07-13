@@ -1,0 +1,126 @@
+<aside class="car-details-panel" id="car-details-panel" aria-live="polite" aria-hidden="true">
+    <div class="car-details-panel__grabber" data-car-details-panel-grabber aria-hidden="true"></div>
+    <div class="car-details-panel__body">
+        <div class="car-details-panel__header">
+            <h2 class="car-details-panel__title" id="car-details-panel-title">Samochód</h2>
+            <div class="car-details-panel__header-actions">
+                <button class="car-details-panel__close" data-car-details-panel-close type="button" aria-label="Zamknij panel"></button>
+            </div>
+        </div>
+        <div class="car-details-panel__content" id="car-details-panel-content">
+            <div class="car-details-panel__photo" id="car-details-panel-photo" hidden>
+                <img id="car-details-panel-photo-img" alt="">
+            </div>
+
+            <section class="car-details-panel__group">
+                <h3 class="car-details-panel__group-title">Podstawowe</h3>
+                <div class="car-details-panel__row">
+                    <span>Nazwa</span>
+                    <strong data-car-detail-value="name">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Marka</span>
+                    <strong data-car-detail-value="brand">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Model</span>
+                    <strong data-car-detail-value="model">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Wersja</span>
+                    <strong data-car-detail-value="version">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Generacja</span>
+                    <strong data-car-detail-value="generation">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Rok produkcji</span>
+                    <strong data-car-detail-value="production_year">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Rejestracja</span>
+                    <strong data-car-detail-value="registration_number">-</strong>
+                </div>
+            </section>
+
+            <section class="car-details-panel__group">
+                <h3 class="car-details-panel__group-title">Techniczne</h3>
+                <div class="car-details-panel__row">
+                    <span>Nadwozie</span>
+                    <strong data-car-detail-value="body_type">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Pojemność</span>
+                    <strong data-car-detail-value="engine_capacity">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Moc (KM)</span>
+                    <strong data-car-detail-value="power_hp">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Moc (kW)</span>
+                    <strong data-car-detail-value="power_kw">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Prędkość maks.</span>
+                    <strong data-car-detail-value="max_speed">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Napęd</span>
+                    <strong data-car-detail-value="drive_type">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Skrzynia biegów</span>
+                    <strong data-car-detail-value="transmission_type">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Bak</span>
+                    <strong data-car-detail-value="fuel_tank_capacity">-</strong>
+                </div>
+            </section>
+
+            <section class="car-details-panel__group">
+                <h3 class="car-details-panel__group-title">Paliwo</h3>
+                <div class="car-details-panel__row">
+                    <span>Typ</span>
+                    <strong data-car-detail-value="fuel_type">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Dodatkowy typ</span>
+                    <strong data-car-detail-value="secondary_fuel_type">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Spalanie min.</span>
+                    <strong data-car-detail-value="min_consumption">-</strong>
+                </div>
+                <div class="car-details-panel__row">
+                    <span>Spalanie max.</span>
+                    <strong data-car-detail-value="max_consumption">-</strong>
+                </div>
+            </section>
+
+            <section class="car-details-panel__group">
+                <h3 class="car-details-panel__group-title">Przebieg</h3>
+                <div class="car-details-panel__row">
+                    <span>Wpisy</span>
+                    <strong data-car-detail-value="odometer_entries">-</strong>
+                </div>
+            </section>
+        </div>
+        <div class="car-details-panel__footer">
+            <button class="car-details-panel__button car-details-panel__button--primary" id="car-details-panel-use" type="button">
+                <i data-lucide="car" aria-hidden="true"></i>
+                <span>Użyj tego samochodu</span>
+            </button>
+            <button class="car-details-panel__button" id="car-details-panel-edit" type="button">
+                <i data-lucide="pencil" aria-hidden="true"></i>
+                <span>Edytuj</span>
+            </button>
+            <button class="car-details-panel__button car-details-panel__button--danger" id="car-details-panel-delete" type="button">
+                <i data-lucide="trash-2" aria-hidden="true"></i>
+                <span>Usuń</span>
+            </button>
+        </div>
+    </div>
+</aside>

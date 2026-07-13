@@ -1,0 +1,36 @@
+<form class="advanced-search" id="advanced-search" role="dialog" aria-modal="true" aria-labelledby="advanced-search-title" aria-hidden="true">
+    <header class="advanced-search__header">
+        <h2 id="advanced-search-title">Wyszukiwanie zaawansowane</h2>
+        <button class="advanced-search__close" data-advanced-search-cancel type="button" aria-label="Zamknij"></button>
+    </header>
+
+    <div class="advanced-search__content">
+        <div class="advanced-search__query">
+            <input class="advanced-search__input" id="advanced-search-query" name="query" type="search" placeholder="Opcjonalne słowo kluczowe" autocomplete="off">
+        </div>
+
+        <section class="advanced-search__groupbox">
+            <h3 class="advanced-search__group-title">Kategorie</h3>
+            <div class="advanced-search__buttons advanced-search__buttons--categories" id="advanced-search-categories" role="radiogroup" aria-label="Kategorie wyszukiwania"></div>
+        </section>
+
+        <section class="advanced-search__groupbox" id="advanced-search-subcategory-section" hidden>
+            <h3 class="advanced-search__group-title">Podkategoria</h3>
+            <div class="advanced-search__buttons" id="advanced-search-subcategories" role="radiogroup" aria-label="Podkategorie wyszukiwania"></div>
+        </section>
+
+        <section class="advanced-search__groupbox">
+            <h3 class="advanced-search__group-title">Obszar</h3>
+            <label class="advanced-search__range">
+                <span>Odległość od centrum mapy</span>
+                <strong id="advanced-search-radius-label">Widoczny obszar</strong>
+                <input id="advanced-search-radius" name="radius" type="range" min="0" max="50" step="1" value="0">
+            </label>
+        </section>
+    </div>
+
+    <footer class="advanced-search__footer">
+        <button class="advanced-search__button" data-advanced-search-cancel type="button">Anuluj</button>
+        <button class="advanced-search__button advanced-search__button--primary" type="submit">Szukaj</button>
+    </footer>
+</form>

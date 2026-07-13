@@ -1,0 +1,43 @@
+<form class="favourites-editor" id="favourites-editor" role="dialog" aria-modal="true" aria-labelledby="favourites-editor-title" aria-hidden="true">
+    <header class="favourites-editor__header">
+        <h2 id="favourites-editor-title">Dodaj do ulubionych</h2>
+        <button class="favourites-editor__close" data-favourites-editor-cancel type="button" aria-label="Zamknij"></button>
+    </header>
+
+    <div class="favourites-editor__content">
+        <label class="favourites-editor__field">
+            <span>Nazwa</span>
+            <input id="favourites-editor-name" name="name" type="text" maxlength="120" required autocomplete="off">
+        </label>
+
+        <label class="favourites-editor__field">
+            <span>Tag</span>
+            <select id="favourites-editor-tag" name="tag_id" required></select>
+        </label>
+
+        <input id="favourites-editor-icon" name="icon" type="hidden">
+        <section class="favourites-editor__icon-picker" aria-label="Wybór ikony miejsca">
+            <div class="favourites-editor__selected">
+                <span class="favourites-editor__selected-icon" id="favourites-editor-selected-icon" aria-hidden="true">-</span>
+                <div class="favourites-editor__selected-text">
+                    <span>Ikona miejsca</span>
+                    <strong id="favourites-editor-selected-name">Brak własnej ikony</strong>
+                </div>
+            </div>
+            <div class="favourites-editor__icon-actions">
+                <button class="favourites-editor__small-button" id="favourites-editor-toggle-icons" type="button">Wybierz ikonę</button>
+                <button class="favourites-editor__small-button" id="favourites-editor-remove-icon" type="button" hidden>Usuń ikonę</button>
+            </div>
+            <div class="favourites-editor__emoji-picker" id="favourites-editor-emoji-picker" hidden>
+                <div class="favourites-editor__tabs" id="favourites-editor-tabs" role="tablist" aria-label="Kategorie emoji"></div>
+                <div class="favourites-editor__separator" aria-hidden="true"></div>
+                <div class="favourites-editor__presets" id="favourites-editor-presets" role="tabpanel" aria-live="polite"></div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="favourites-editor__footer">
+        <button class="favourites-editor__button" data-favourites-editor-cancel type="button">Anuluj</button>
+        <button class="favourites-editor__button favourites-editor__button--primary" type="submit">Zapisz</button>
+    </footer>
+</form>

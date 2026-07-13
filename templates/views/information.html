@@ -1,0 +1,34 @@
+<div class="information-view">
+    <header class="information-view__header">
+        <div class="information-view__app-icon" aria-hidden="true"></div>
+        <div>
+            <h2>{{ app_name }}</h2>
+            <p>{{ app_description or 'Aplikacja do przeglądania map i planowania tras.' }}</p>
+        </div>
+    </header>
+
+    <dl class="information-view__details">
+        <div class="information-view__row">
+            <dt>Nazwa</dt>
+            <dd>{{ app_name }}</dd>
+        </div>
+        <div class="information-view__row">
+            <dt>Autor</dt>
+            <dd>{{ app_author }}</dd>
+        </div>
+        <div class="information-view__row">
+            <dt>Opis</dt>
+            <dd>{{ app_description or 'Brak opisu.' }}</dd>
+        </div>
+        <div class="information-view__row">
+            <dt>Wersja</dt>
+            <dd>{{ app_version }}</dd>
+        </div>
+        <div class="information-view__row">
+            <dt>Adres aplikacji</dt>
+            <dd>
+                <a class="information-view__link" data-external-url href="{{ app_url }}" rel="noopener noreferrer">{{ app_url }}</a>
+            </dd>
+        </div>
+    </dl>
+</div>

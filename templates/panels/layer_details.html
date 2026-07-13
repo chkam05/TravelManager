@@ -1,0 +1,74 @@
+<aside class="layer-details-panel" id="layer-details-panel" aria-live="polite" aria-hidden="true">
+    <div class="layer-details-panel__grabber" data-layer-details-panel-grabber aria-hidden="true"></div>
+    <div class="layer-details-panel__body">
+        <div class="layer-details-panel__header">
+            <h2 class="layer-details-panel__title">Warstwy mapy</h2>
+            <div class="layer-details-panel__header-actions">
+                <button class="layer-details-panel__close" data-layer-details-panel-close type="button" aria-label="Zamknij panel"></button>
+            </div>
+        </div>
+        <div class="layer-details-panel__content">
+            <section class="layer-details-panel__section">
+                <h3 class="layer-details-panel__section-title">Warstwa bazowa</h3>
+                <label class="layer-details-panel__option">
+                    <input data-base-layer="standard" name="map_base_layer" type="radio">
+                    <span><strong>Standard</strong><small>OpenStreetMap Carto</small></span>
+                </label>
+                <label class="layer-details-panel__option">
+                    <input data-base-layer="cyclosm" name="map_base_layer" type="radio">
+                    <span><strong>CyclOSM</strong><small>Mapa rowerowa</small></span>
+                </label>
+                <label class="layer-details-panel__option layer-details-panel__option--disabled">
+                    <input data-base-layer="cycle_map" name="map_base_layer" type="radio" disabled>
+                    <span><strong>Cycle Map</strong><small>Wymaga klucza dostawcy kafelków</small></span>
+                </label>
+                <label class="layer-details-panel__option layer-details-panel__option--disabled">
+                    <input data-base-layer="transport_map" name="map_base_layer" type="radio" disabled>
+                    <span><strong>Transport Map</strong><small>Wymaga klucza dostawcy kafelków</small></span>
+                </label>
+                <label class="layer-details-panel__option layer-details-panel__option--disabled">
+                    <input data-base-layer="tracestrack_topo" name="map_base_layer" type="radio" disabled>
+                    <span><strong>Tracestrack Topo</strong><small>Wymaga konfiguracji dostawcy kafelków</small></span>
+                </label>
+                <label class="layer-details-panel__option">
+                    <input data-base-layer="humanitarian" name="map_base_layer" type="radio">
+                    <span><strong>Humanitarian</strong><small>Humanitarian OpenStreetMap Team</small></span>
+                </label>
+                <label class="layer-details-panel__option layer-details-panel__option--disabled">
+                    <input data-base-layer="shortbread" name="map_base_layer" type="radio" disabled>
+                    <span><strong>Shortbread</strong><small>Warstwa wektorowa, wymaga renderera wektorowego</small></span>
+                </label>
+                <label class="layer-details-panel__option layer-details-panel__option--disabled">
+                    <input data-base-layer="maptiler_omt" name="map_base_layer" type="radio" disabled>
+                    <span><strong>MapTiler OMT</strong><small>Warstwa wektorowa, wymaga klucza MapTiler</small></span>
+                </label>
+            </section>
+
+            <section class="layer-details-panel__section">
+                <h3 class="layer-details-panel__section-title">Ulubione miejsca</h3>
+                <label class="layer-details-panel__option">
+                    <input data-layer-toggle="layer_favourites_enabled" type="checkbox">
+                    <span><strong>Ulubione miejsca</strong><small>Zapisane miejsca z własnymi ikonami</small></span>
+                </label>
+                <div class="layer-details-panel__separator" aria-hidden="true"></div>
+                <div class="layer-details-panel__tag-list" id="layer-details-favourite-tags" aria-live="polite"></div>
+            </section>
+
+            <section class="layer-details-panel__section">
+                <h3 class="layer-details-panel__section-title">Nakładki</h3>
+                <label class="layer-details-panel__option">
+                    <input data-layer-toggle="layer_map_notes_enabled" type="checkbox">
+                    <span><strong>Map Notes</strong><small>Publiczne notatki OpenStreetMap</small></span>
+                </label>
+                <label class="layer-details-panel__option">
+                    <input data-layer-toggle="layer_map_data_enabled" type="checkbox">
+                    <span><strong>Map Data</strong><small>Obiekty OpenStreetMap w aktualnym widoku</small></span>
+                </label>
+                <label class="layer-details-panel__option">
+                    <input data-layer-toggle="layer_public_gps_traces_enabled" type="checkbox">
+                    <span><strong>Public GPS Trace</strong><small>Publiczne ślady GPS</small></span>
+                </label>
+            </section>
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,60 @@
+<form class="route-editor" id="route-editor" role="dialog" aria-modal="true" aria-labelledby="route-editor-title" aria-hidden="true">
+    <header class="route-editor__header">
+        <h2 id="route-editor-title">Zapisz trasę</h2>
+        <button class="route-editor__close" data-route-editor-cancel type="button" aria-label="Zamknij"></button>
+    </header>
+
+    <div class="route-editor__content">
+        <label class="route-editor__field">
+            <span>Nazwa trasy</span>
+            <input id="route-editor-name" name="name" type="text" maxlength="120" required autocomplete="off">
+        </label>
+
+        <input id="route-editor-icon" name="icon" type="hidden" value="🚗">
+
+        <section class="route-editor__emoji-picker" aria-label="Wybór emoji">
+            <div class="route-editor__selected">
+                <span class="route-editor__selected-icon" id="route-editor-selected-icon" aria-hidden="true">🚗</span>
+                <div class="route-editor__selected-text">
+                    <span>Wybrana ikona</span>
+                    <strong id="route-editor-selected-name">Samochód</strong>
+                </div>
+            </div>
+
+            <fieldset class="route-editor__modifiers" id="route-editor-modifiers" hidden>
+                <legend>Modyfikacje</legend>
+                <label class="route-editor__modifier" id="route-editor-gender-field" hidden>
+                    <span>Płeć</span>
+                    <select id="route-editor-gender">
+                        <option value="">Bez zmian</option>
+                        <option value="female">Kobieta</option>
+                        <option value="neutral">Osoba</option>
+                        <option value="male">Mężczyzna</option>
+                    </select>
+                </label>
+                <label class="route-editor__modifier" id="route-editor-skin-tone-field" hidden>
+                    <span>Kolor skóry</span>
+                    <select id="route-editor-skin-tone">
+                        <option value="">Domyślny</option>
+                        <option value="🏻">Jasny</option>
+                        <option value="🏼">Średnio jasny</option>
+                        <option value="🏽">Średni</option>
+                        <option value="🏾">Średnio ciemny</option>
+                        <option value="🏿">Ciemny</option>
+                    </select>
+                </label>
+            </fieldset>
+
+            <div class="route-editor__tabs" id="route-editor-tabs" role="tablist" aria-label="Kategorie emoji"></div>
+            <div class="route-editor__separator" aria-hidden="true"></div>
+            <div class="route-editor__presets" id="route-editor-presets" role="tabpanel" aria-live="polite"></div>
+        </section>
+    </div>
+
+    <footer class="route-editor__footer">
+        <button class="route-editor__button route-editor__button--danger" id="route-editor-delete" type="button" hidden>Usuń trasę</button>
+        <div class="route-editor__footer-spacer"></div>
+        <button class="route-editor__button" data-route-editor-cancel type="button">Anuluj</button>
+        <button class="route-editor__button route-editor__button--primary" type="submit">Zapisz</button>
+    </footer>
+</form>

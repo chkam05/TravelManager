@@ -1,0 +1,32 @@
+<section class="favourites-view">
+    <header class="favourites-view__header">
+        <form class="favourites-view__search" id="favourites-search" role="search" aria-label="Szukaj ulubionego miejsca">
+            <input class="favourites-view__search-input" id="favourites-search-input" type="search" placeholder="Szukaj ulubionego miejsca" aria-label="Szukaj ulubionego miejsca">
+            <button class="favourites-view__search-button" type="submit">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <span>Szukaj</span>
+            </button>
+        </form>
+        <div class="favourites-view__tag-filter">
+            <button class="favourites-view__tag-filter-button" id="favourites-tag-filter-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <i data-lucide="tags" aria-hidden="true"></i>
+                <span id="favourites-tag-filter-label">Tagi: wszystkie</span>
+            </button>
+            <div class="favourites-view__tag-filter-menu" id="favourites-tag-filter-menu" aria-hidden="true">
+                <div class="favourites-view__tag-filter-options" id="favourites-tag-filter-options"></div>
+            </div>
+        </div>
+        <div class="favourites-view__spacer"></div>
+        <div class="favourites-view__sort">
+            <button class="favourites-view__sort-button" id="favourites-sort-button" type="button" aria-haspopup="menu" aria-expanded="false">
+                <i data-lucide="arrow-up-down" aria-hidden="true"></i>
+                <span>Sortuj</span>
+            </button>
+            <div class="favourites-view__sort-menu" id="favourites-sort-menu" role="menu" aria-hidden="true">
+                <button type="button" role="menuitem" data-sort-direction="asc">Rosnąco</button>
+                <button type="button" role="menuitem" data-sort-direction="desc">Malejąco</button>
+            </div>
+        </div>
+    </header>
+    <div class="favourites-view__list" id="favourites-list" aria-live="polite"></div>
+</section>

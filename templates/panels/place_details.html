@@ -1,0 +1,38 @@
+<aside class="place-details-panel" id="place-details-panel" aria-live="polite" aria-hidden="true">
+    <div class="place-details-panel__grabber" data-place-details-panel-grabber aria-hidden="true"></div>
+    <div class="place-details-panel__body">
+        <div class="place-details-panel__header">
+            <div class="place-details-panel__heading">
+                <span class="place-details-panel__title-icon" id="place-details-panel-title-icon" aria-hidden="true" hidden></span>
+                <div class="place-details-panel__title-stack">
+                    <h2 class="place-details-panel__title" id="place-details-panel-title">Wybrane miejsce</h2>
+                    <p class="place-details-panel__tag" id="place-details-panel-tag" hidden></p>
+                </div>
+            </div>
+            <div class="place-details-panel__header-actions">
+                <button class="place-details-panel__close" data-place-details-panel-close type="button" aria-label="Zamknij panel"></button>
+            </div>
+        </div>
+        <div class="place-details-panel__tabs" id="place-details-panel-tabs" role="tablist"></div>
+        <div class="place-details-panel__content" id="place-details-panel-content"></div>
+        <div class="place-details-panel__footer">
+            <label class="place-details-panel__toggle">
+                <input id="place-details-panel-show-empty" type="checkbox">
+                <span>Pokaż wszystkie pola</span>
+            </label>
+            <button class="place-details-panel__favourite" id="place-details-panel-favourite-add" type="button">
+                <span class="place-details-panel__favourite-icon" aria-hidden="true">☆</span>
+                <span>Dodaj do ulubionych</span>
+            </button>
+            <div class="place-details-panel__favourite-actions" id="place-details-panel-favourite-actions" hidden>
+                <button class="place-details-panel__favourite-edit" id="place-details-panel-favourite-edit" type="button">Edytuj</button>
+                <button class="place-details-panel__favourite-remove" id="place-details-panel-favourite-remove" type="button">Usuń</button>
+            </div>
+            <button class="place-details-panel__route" id="place-details-panel-route" type="button">
+                <span class="place-details-panel__route-icon" aria-hidden="true"></span>
+                <span data-place-route-label>Trasa</span>
+            </button>
+            <button class="place-details-panel__export" id="place-details-panel-export" type="button">Eksportuj dane</button>
+        </div>
+    </div>
+</aside>

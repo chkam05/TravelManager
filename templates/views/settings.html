@@ -1,0 +1,165 @@
+<div class="settings-view">
+    <header class="settings-view__header">
+        <h2>Ustawienia</h2>
+        <p>Parametry używane podczas planowania podróży.</p>
+    </header>
+
+    <div class="settings-view__group">
+        <header class="settings-view__group-header">
+            <h3>Koszt podróży</h3>
+            <p>Ceny paliw i opcje tankowania używane podczas planowania oraz podsumowania tras.</p>
+        </header>
+
+        <section class="settings-view__section" aria-labelledby="settings-view-travel-costs-title" data-settings-section>
+            <div class="settings-view__titlebar">
+                <i class="settings-view__section-icon" data-lucide="receipt-text" aria-hidden="true"></i>
+                <div class="settings-view__title-text">
+                    <h4 id="settings-view-travel-costs-title">Koszty podróży</h4>
+                </div>
+                <button class="settings-view__collapse-button" type="button" aria-label="Zwiń grupę" aria-expanded="true" data-settings-collapse>
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                </button>
+                <div class="settings-view__description">
+                    <p>
+                        Ceny paliw używane do podsumowania trasy z aktywnym profilem samochodu.
+                        Dane cenowe są pobierane w widoku „Ceny paliw” z Komisji Europejskiej oraz AutoCentrum dla Polski.
+                    </p>
+                </div>
+            </div>
+            <div class="settings-view__section-content" data-settings-section-content>
+                <dl class="settings-view__values" data-settings-group="travel-costs"></dl>
+            </div>
+        </section>
+
+        <section class="settings-view__section" aria-labelledby="settings-view-route-fuel-title" data-settings-section>
+            <div class="settings-view__titlebar">
+                <i class="settings-view__section-icon" data-lucide="fuel" aria-hidden="true"></i>
+                <div class="settings-view__title-text">
+                    <h4 id="settings-view-route-fuel-title">Tankowanie na trasie</h4>
+                </div>
+                <button class="settings-view__collapse-button" type="button" aria-label="Zwiń grupę" aria-expanded="true" data-settings-collapse>
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                </button>
+                <div class="settings-view__description">
+                    <p>Separatory dodawane między punktami trasy. Kolory odpowiadają stylowi jazdy, a próg określa pozostały poziom paliwa.</p>
+                </div>
+            </div>
+            <div class="settings-view__section-content" data-settings-section-content>
+                <dl class="settings-view__values" data-settings-group="route-fuel"></dl>
+            </div>
+        </section>
+
+        <section class="settings-view__section" aria-labelledby="settings-view-route-tolls-title" data-settings-section>
+            <div class="settings-view__titlebar">
+                <i class="settings-view__section-icon" data-lucide="ticket" aria-hidden="true"></i>
+                <div class="settings-view__title-text">
+                    <h4 id="settings-view-route-tolls-title">Płatne odcinki</h4>
+                </div>
+                <button class="settings-view__collapse-button" type="button" aria-label="Zwiń grupę" aria-expanded="true" data-settings-collapse>
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                </button>
+                <div class="settings-view__description">
+                    <p>Określa, czy trasa samochodowa może prowadzić przez płatne drogi i autostrady.</p>
+                </div>
+            </div>
+            <div class="settings-view__section-content" data-settings-section-content>
+                <dl class="settings-view__values" data-settings-group="route-tolls"></dl>
+            </div>
+        </section>
+    </div>
+
+    <div class="settings-view__group">
+        <header class="settings-view__group-header">
+            <h3>Eksport i Import danych</h3>
+            <p>Kopie wybranych danych aplikacji zapisywane i odtwarzane z plików JSON.</p>
+        </header>
+
+        <section class="settings-view__section" aria-labelledby="settings-view-data-transfer-title" data-settings-section>
+            <div class="settings-view__titlebar">
+                <i class="settings-view__section-icon" data-lucide="database-backup" aria-hidden="true"></i>
+                <div class="settings-view__title-text">
+                    <h4 id="settings-view-data-transfer-title">Dane aplikacji</h4>
+                </div>
+                <button class="settings-view__collapse-button" type="button" aria-label="Zwiń grupę" aria-expanded="true" data-settings-collapse>
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                </button>
+                <div class="settings-view__description">
+                    <p>Eksportuj lub importuj wybrane dane bez zmiany pozostałych ustawień aplikacji.</p>
+                </div>
+            </div>
+            <div class="settings-view__section-content" data-settings-section-content>
+                <div class="settings-view__transfer">
+                    <button class="settings-view__action-button" id="settings-export-data" type="button" aria-haspopup="menu" aria-expanded="false">
+                        <i data-lucide="download" aria-hidden="true"></i>
+                        <span>Eksportuj dane</span>
+                    </button>
+                    <button class="settings-view__action-button" id="settings-import-data" type="button" aria-haspopup="menu" aria-expanded="false">
+                        <i data-lucide="upload" aria-hidden="true"></i>
+                        <span>Importuj dane</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="settings-view__group">
+        <header class="settings-view__group-header">
+            <h3>Zapisany stan aplikacji</h3>
+            <p>Pozycje, warstwy i rozmiary paneli przywracane po ponownym uruchomieniu aplikacji.</p>
+        </header>
+
+        <section class="settings-view__section settings-view__section--collapsed" aria-labelledby="settings-view-map-title" data-settings-section>
+            <div class="settings-view__titlebar">
+                <i class="settings-view__section-icon" data-lucide="map" aria-hidden="true"></i>
+                <div class="settings-view__title-text">
+                    <h4 id="settings-view-map-title">Mapa</h4>
+                </div>
+                <button class="settings-view__collapse-button" type="button" aria-label="Rozwiń grupę" aria-expanded="false" data-settings-collapse>
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="settings-view__description">
+                    <p>Ostatnia pozycja i aktywna warstwa mapy.</p>
+                </div>
+            </div>
+            <div class="settings-view__section-content" data-settings-section-content>
+                <dl class="settings-view__values" data-settings-group="map"></dl>
+            </div>
+        </section>
+
+        <section class="settings-view__section settings-view__section--collapsed" aria-labelledby="settings-view-panels-title" data-settings-section>
+            <div class="settings-view__titlebar">
+                <i class="settings-view__section-icon" data-lucide="panel-right" aria-hidden="true"></i>
+                <div class="settings-view__title-text">
+                    <h4 id="settings-view-panels-title">Panele</h4>
+                </div>
+                <button class="settings-view__collapse-button" type="button" aria-label="Rozwiń grupę" aria-expanded="false" data-settings-collapse>
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="settings-view__description">
+                    <p>Zapamiętane szerokości paneli bocznych.</p>
+                </div>
+            </div>
+            <div class="settings-view__section-content" data-settings-section-content>
+                <dl class="settings-view__values" data-settings-group="panels"></dl>
+            </div>
+        </section>
+
+        <section class="settings-view__section settings-view__section--collapsed" aria-labelledby="settings-view-layers-title" data-settings-section>
+            <div class="settings-view__titlebar">
+                <i class="settings-view__section-icon" data-lucide="layers" aria-hidden="true"></i>
+                <div class="settings-view__title-text">
+                    <h4 id="settings-view-layers-title">Warstwy dodatkowe</h4>
+                </div>
+                <button class="settings-view__collapse-button" type="button" aria-label="Rozwiń grupę" aria-expanded="false" data-settings-collapse>
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="settings-view__description">
+                    <p>Warstwy przywracane podczas uruchamiania mapy.</p>
+                </div>
+            </div>
+            <div class="settings-view__section-content" data-settings-section-content>
+                <dl class="settings-view__values" data-settings-group="layers"></dl>
+            </div>
+        </section>
+    </div>
+</div>

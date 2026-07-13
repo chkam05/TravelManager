@@ -1,0 +1,150 @@
+.fuel-cost-editor {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    width: min(520px, calc(100vw - 48px));
+    max-height: min(640px, calc(100vh - 48px));
+    overflow: hidden;
+    border: 1px solid rgba(32, 36, 42, 0.12);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 24px 70px rgba(32, 36, 42, 0.28);
+}
+
+.fuel-cost-editor[aria-hidden="true"] {
+    display: none;
+}
+
+.fuel-cost-editor__header,
+.fuel-cost-editor__footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: #f8fafb;
+}
+
+.fuel-cost-editor__header {
+    border-bottom: 1px solid rgba(32, 36, 42, 0.1);
+}
+
+.fuel-cost-editor__footer {
+    justify-content: flex-end;
+    border-top: 1px solid rgba(32, 36, 42, 0.1);
+}
+
+.fuel-cost-editor__header h2 {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: #20242a;
+    font-size: 1.05rem;
+    font-weight: 900;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fuel-cost-editor__close {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(32, 36, 42, 0.12);
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.fuel-cost-editor__close::before,
+.fuel-cost-editor__close::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    background: #3f4852;
+}
+
+.fuel-cost-editor__close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.fuel-cost-editor__close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.fuel-cost-editor__content {
+    display: grid;
+    gap: 14px;
+    min-height: 0;
+    padding: 16px;
+    overflow: auto;
+}
+
+.fuel-cost-editor__grid,
+.fuel-cost-editor__prices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.fuel-cost-editor__prices {
+    margin: 0;
+    padding: 14px 12px 12px;
+    border: 1px solid rgba(32, 36, 42, 0.16);
+    border-radius: 8px;
+}
+
+.fuel-cost-editor__prices legend {
+    padding: 0 8px;
+    color: #20242a;
+    font-weight: 900;
+}
+
+.fuel-cost-editor__field {
+    display: grid;
+    gap: 6px;
+    color: #52606d;
+    font-size: 0.82rem;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+
+.fuel-cost-editor__field input,
+.fuel-cost-editor__field select {
+    height: 40px;
+    min-width: 0;
+    padding: 0 12px;
+    border: 1px solid rgba(32, 36, 42, 0.16);
+    border-radius: 8px;
+    color: #20242a;
+    font: inherit;
+    font-weight: 750;
+    text-transform: none;
+}
+
+.fuel-cost-editor__button {
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-radius: 8px;
+    background: #ffffff;
+    color: #20242a;
+    font: inherit;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.fuel-cost-editor__button--primary {
+    border-color: #1f6fae;
+    background: #1f6fae;
+    color: #ffffff;
+}
+
+@media (max-width: 560px) {
+    .fuel-cost-editor__grid,
+    .fuel-cost-editor__prices {
+        grid-template-columns: 1fr;
+    }
+}

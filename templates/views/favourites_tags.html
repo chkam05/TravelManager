@@ -1,0 +1,26 @@
+<section class="favourites-tags-view">
+    <header class="favourites-tags-view__header">
+        <form class="favourites-tags-view__search" id="favourites-tags-search" role="search" aria-label="Szukaj tagu ulubionych">
+            <input class="favourites-tags-view__search-input" id="favourites-tags-search-input" type="search" placeholder="Szukaj tagu" aria-label="Szukaj tagu">
+            <button class="favourites-tags-view__search-button" type="submit">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <span>Szukaj</span>
+            </button>
+        </form>
+        <div class="favourites-tags-view__spacer"></div>
+        <div class="favourites-tags-view__sort">
+            <button class="favourites-tags-view__sort-button" id="favourites-tags-sort-button" type="button" aria-haspopup="menu" aria-expanded="false">
+                <i data-lucide="arrow-up-down" aria-hidden="true"></i>
+                <span>Sortuj</span>
+            </button>
+            <div class="favourites-tags-view__sort-menu" id="favourites-tags-sort-menu" role="menu" aria-hidden="true">
+                <button type="button" role="menuitem" data-sort-direction="asc">Rosnąco</button>
+                <button type="button" role="menuitem" data-sort-direction="desc">Malejąco</button>
+            </div>
+        </div>
+    </header>
+    <div class="favourites-tags-view__list" id="favourites-tags-list" aria-live="polite"></div>
+    <button class="favourites-tags-view__add" id="favourites-tags-add" type="button" aria-label="Dodaj tag">
+        <i data-lucide="plus" aria-hidden="true"></i>
+    </button>
+</section>

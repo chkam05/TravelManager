@@ -1,0 +1,24 @@
+<section class="my-routes-view">
+    <header class="my-routes-view__header">
+        <form class="my-routes-view__search" id="my-routes-search" role="search" aria-label="Szukaj trasy">
+            <input class="my-routes-view__search-input" id="my-routes-search-input" type="search" placeholder="Szukaj trasy" aria-label="Szukaj trasy">
+            <button class="my-routes-view__search-button" type="submit">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <span>Szukaj</span>
+            </button>
+        </form>
+        <div class="my-routes-view__spacer"></div>
+        <div class="my-routes-view__sort">
+            <button class="my-routes-view__sort-button" id="my-routes-sort-button" type="button" aria-haspopup="menu" aria-expanded="false">
+                <i data-lucide="arrow-up-down" aria-hidden="true"></i>
+                <span>Sortuj</span>
+            </button>
+            <div class="my-routes-view__sort-menu" id="my-routes-sort-menu" role="menu" aria-hidden="true">
+                <button type="button" role="menuitem" data-sort-direction="asc">Rosnąco</button>
+                <button type="button" role="menuitem" data-sort-direction="desc">Malejąco</button>
+            </div>
+        </div>
+    </header>
+    <div class="my-routes-view__list" id="my-routes-list" aria-live="polite"></div>
+    <div class="my-routes-view__menu" id="my-routes-menu" role="menu" aria-hidden="true"></div>
+</section>

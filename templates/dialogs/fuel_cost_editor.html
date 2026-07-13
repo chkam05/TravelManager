@@ -1,0 +1,46 @@
+<form class="fuel-cost-editor" id="fuel-cost-editor" role="dialog" aria-modal="true" aria-labelledby="fuel-cost-editor-title" aria-hidden="true">
+    <header class="fuel-cost-editor__header">
+        <h2 id="fuel-cost-editor-title">Edytuj ceny paliw</h2>
+        <button class="fuel-cost-editor__close" data-fuel-cost-editor-cancel type="button" aria-label="Zamknij"></button>
+    </header>
+
+    <div class="fuel-cost-editor__content">
+        <input id="fuel-cost-editor-country-code" name="country_code" type="hidden">
+        <input id="fuel-cost-editor-country" name="country" type="hidden">
+
+        <label class="fuel-cost-editor__field">
+            <span>Państwo</span>
+            <select id="fuel-cost-editor-country-select" required></select>
+        </label>
+
+        <label class="fuel-cost-editor__field">
+            <span>Waluta</span>
+            <select id="fuel-cost-editor-currency" name="currency" required></select>
+        </label>
+
+        <fieldset class="fuel-cost-editor__prices">
+            <legend>Ceny za litr</legend>
+            <label class="fuel-cost-editor__field">
+                <span>95</span>
+                <input name="petrol_95" type="number" min="0" step="0.001" inputmode="decimal">
+            </label>
+            <label class="fuel-cost-editor__field">
+                <span>98</span>
+                <input name="petrol_98" type="number" min="0" step="0.001" inputmode="decimal">
+            </label>
+            <label class="fuel-cost-editor__field">
+                <span>Diesel</span>
+                <input name="diesel" type="number" min="0" step="0.001" inputmode="decimal">
+            </label>
+            <label class="fuel-cost-editor__field">
+                <span>LPG</span>
+                <input name="lpg" type="number" min="0" step="0.001" inputmode="decimal">
+            </label>
+        </fieldset>
+    </div>
+
+    <footer class="fuel-cost-editor__footer">
+        <button class="fuel-cost-editor__button" data-fuel-cost-editor-cancel type="button">Anuluj</button>
+        <button class="fuel-cost-editor__button fuel-cost-editor__button--primary" type="submit">Zapisz</button>
+    </footer>
+</form>

@@ -1,0 +1,18 @@
+<form class="fuel-update" id="fuel-update" role="dialog" aria-modal="true" aria-labelledby="fuel-update-title" aria-hidden="true">
+    <header class="fuel-update__header">
+        <h2 id="fuel-update-title">Aktualizacja cen paliw</h2>
+        <button class="fuel-update__close" data-fuel-update-cancel type="button" aria-label="Zamknij"></button>
+    </header>
+
+    <div class="fuel-update__content">
+        <p class="fuel-update__description">
+            Wybierz ręcznie zmienione kraje, które mają zostać nadpisane danymi pobranymi z sieci.
+        </p>
+        <div class="fuel-update__list" id="fuel-update-list" aria-live="polite"></div>
+    </div>
+
+    <footer class="fuel-update__footer">
+        <button class="fuel-update__button" data-fuel-update-cancel type="button">Anuluj</button>
+        <button class="fuel-update__button fuel-update__button--primary" type="submit">Aktualizuj</button>
+    </footer>
+</form>

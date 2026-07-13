@@ -1,0 +1,62 @@
+<section class="fuel-cost-view">
+    <header class="fuel-cost-view__header">
+        <form class="fuel-cost-view__search" id="fuel-cost-search" role="search" aria-label="Szukaj kraju">
+            <input class="fuel-cost-view__search-input" id="fuel-cost-search-input" type="search" placeholder="Szukaj kraju" aria-label="Szukaj kraju">
+            <button class="fuel-cost-view__search-button" type="submit">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <span>Szukaj</span>
+            </button>
+        </form>
+        <div class="fuel-cost-view__spacer"></div>
+        <button class="fuel-cost-view__update-button" id="fuel-cost-update" type="button">
+            <i data-lucide="refresh-cw" aria-hidden="true"></i>
+            <span>Aktualizuj dane</span>
+        </button>
+        <label class="fuel-cost-view__select-label">
+            <span>Przelicznik</span>
+            <select class="fuel-cost-view__select" id="fuel-cost-currency">
+                <option value="original">Oryginalne</option>
+            </select>
+        </label>
+        <label class="fuel-cost-view__select-label">
+            <span>Sortowanie</span>
+            <select class="fuel-cost-view__select" id="fuel-cost-sort-field">
+                <option value="country">Nazwa kraju</option>
+                <option value="petrol_95">Cena 95</option>
+                <option value="petrol_98">Cena 98</option>
+                <option value="diesel">Cena Diesel</option>
+                <option value="lpg">Cena LPG</option>
+                <option value="manual_updated_at">Data aktualizacji</option>
+            </select>
+        </label>
+        <div class="fuel-cost-view__sort">
+            <button class="fuel-cost-view__sort-button" id="fuel-cost-sort-button" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Sortuj">
+                <i data-lucide="arrow-up-down" aria-hidden="true"></i>
+            </button>
+            <div class="fuel-cost-view__sort-menu" id="fuel-cost-sort-menu" role="menu" aria-hidden="true">
+                <button type="button" role="menuitem" data-sort-direction="asc">Rosnąco</button>
+                <button type="button" role="menuitem" data-sort-direction="desc">Malejąco</button>
+            </div>
+        </div>
+    </header>
+    <div class="fuel-cost-view__meta" id="fuel-cost-meta" aria-live="polite"></div>
+    <div class="fuel-cost-view__table-wrap">
+        <table class="fuel-cost-view__table">
+            <thead>
+                <tr>
+                    <th>Państwo</th>
+                    <th>95 (l)</th>
+                    <th>98 (l)</th>
+                    <th>Diesel (l)</th>
+                    <th>LPG (l)</th>
+                    <th>Data aktualizacji</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody id="fuel-cost-table-body"></tbody>
+        </table>
+    </div>
+    <button class="fuel-cost-view__add" id="fuel-cost-add" type="button" aria-label="Dodaj kraj">
+        <i data-lucide="plus" aria-hidden="true"></i>
+    </button>
+</section>

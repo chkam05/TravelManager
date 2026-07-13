@@ -1,0 +1,102 @@
+<aside class="route-details-panel" id="route-details-panel" aria-live="polite" aria-hidden="true">
+    <div class="route-details-panel__grabber" data-route-details-panel-grabber aria-hidden="true"></div>
+    <div class="route-details-panel__body">
+        <div class="route-details-panel__header">
+            <h2 class="route-details-panel__title">
+                <span class="route-details-panel__title-icon" id="route-details-panel-title-icon" aria-hidden="true" hidden>🚗</span>
+                <span id="route-details-panel-title-text">Trasa</span>
+            </h2>
+            <div class="route-details-panel__transport" role="radiogroup" aria-label="Środek komunikacji">
+                <button class="route-details-panel__transport-button" data-route-transport="foot" type="button" role="radio" aria-checked="false" aria-label="Pieszo" title="Pieszo">
+                    <i data-lucide="person-standing" aria-hidden="true"></i>
+                    <span>Pieszo</span>
+                </button>
+                <button class="route-details-panel__transport-button" data-route-transport="bicycle" type="button" role="radio" aria-checked="false" aria-label="Rower" title="Rower">
+                    <i data-lucide="bike" aria-hidden="true"></i>
+                    <span>Rower</span>
+                </button>
+                <button class="route-details-panel__transport-button route-details-panel__transport-button--active" data-route-transport="car" type="button" role="radio" aria-checked="true" aria-label="Samochód" title="Samochód">
+                    <i data-lucide="car" aria-hidden="true"></i>
+                    <span>Samochód</span>
+                </button>
+                <button class="route-details-panel__transport-button" data-route-transport="public" type="button" role="radio" aria-checked="false" aria-label="Transport publiczny" title="Transport publiczny" disabled>
+                    <i data-lucide="bus" aria-hidden="true"></i>
+                    <span>Transport publiczny</span>
+                </button>
+            </div>
+            <div class="route-details-panel__header-separator" aria-hidden="true"></div>
+            <div class="route-details-panel__header-actions">
+                <button class="route-details-panel__edit-name" id="route-details-panel-edit-name" type="button" aria-label="Edytuj nazwę trasy" hidden>
+                    <i data-lucide="pencil" aria-hidden="true"></i>
+                </button>
+                <button class="route-details-panel__save" id="route-details-panel-save" type="button" aria-label="Zapisz trasę">
+                    <i data-lucide="save" aria-hidden="true"></i>
+                </button>
+                <button class="route-details-panel__close" data-route-details-panel-close type="button" aria-label="Zamknij panel"></button>
+            </div>
+        </div>
+        <nav class="route-details-panel__tabs" id="route-details-panel-tabs" aria-label="Zakładki trasy">
+            <button class="route-details-panel__tab route-details-panel__tab--active" data-route-tab="points" type="button" aria-selected="true">Punkty</button>
+            <button class="route-details-panel__tab" data-route-tab="navigation" type="button" aria-selected="false">Nawigacja</button>
+            <button class="route-details-panel__tab" data-route-tab="settings" type="button" aria-selected="false">Konfiguracja</button>
+        </nav>
+        <div class="route-details-panel__content">
+            <section class="route-details-panel__tab-panel route-details-panel__tab-panel--active" data-route-tab-panel="points">
+                <p class="route-details-panel__status" id="route-details-panel-status"></p>
+                <ol class="route-details-panel__points" id="route-details-panel-points"></ol>
+                <div class="route-details-panel__actions">
+                    <button class="route-details-panel__add" id="route-details-panel-add" type="button">
+                        <span class="route-details-panel__add-icon" aria-hidden="true"></span>
+                        <span>Dodaj punkt</span>
+                    </button>
+                    <button class="route-details-panel__reverse" id="route-details-panel-reverse" type="button">
+                        <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+                        <span>Odwróć trasę</span>
+                    </button>
+                </div>
+            </section>
+            <section class="route-details-panel__tab-panel" data-route-tab-panel="navigation" hidden>
+                <ol class="route-details-panel__instructions" id="route-details-panel-instructions"></ol>
+            </section>
+            <section class="route-details-panel__tab-panel" data-route-tab-panel="settings" hidden>
+            <section class="route-details-panel__fuel" id="route-details-panel-fuel" hidden>
+                <div class="route-details-panel__fuel-header">
+                    <span>Paliwo na start</span>
+                    <strong id="route-details-panel-fuel-label">45.0 L. (100 %)</strong>
+                </div>
+                <input class="route-details-panel__fuel-slider" id="route-details-panel-fuel-slider" type="range" min="0" max="100" step="1" value="100">
+            </section>
+                <fieldset class="route-details-panel__settings" id="route-details-panel-separator-settings">
+                    <legend>Separatory tankowania</legend>
+                    <label class="route-details-panel__checkbox">
+                        <input id="route-details-panel-separators-enabled" type="checkbox">
+                        <span>Pokazuj separatory tankowania</span>
+                    </label>
+                    <div class="route-details-panel__settings-options" id="route-details-panel-separators-options">
+                        <label class="route-details-panel__checkbox">
+                            <input id="route-details-panel-separator-economic" type="checkbox">
+                            <span>Jazda ekonomiczna</span>
+                        </label>
+                        <label class="route-details-panel__checkbox">
+                            <input id="route-details-panel-separator-average" type="checkbox">
+                            <span>Jazda średnia</span>
+                        </label>
+                        <label class="route-details-panel__checkbox">
+                            <input id="route-details-panel-separator-dynamic" type="checkbox">
+                            <span>Jazda dynamiczna</span>
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset class="route-details-panel__settings" id="route-details-panel-toll-settings">
+                    <legend>Płatne odcinki</legend>
+                    <label class="route-details-panel__checkbox">
+                        <input id="route-details-panel-toll-roads-enabled" type="checkbox">
+                        <span>Uwzględniaj płatne drogi i autostrady</span>
+                    </label>
+                </fieldset>
+            </section>
+        </div>
+        <div class="route-details-panel__summary" id="route-details-panel-summary" aria-live="polite"></div>
+    </div>
+    <div class="route-details-panel__menu" id="route-details-panel-menu" role="menu" aria-hidden="true"></div>
+</aside>

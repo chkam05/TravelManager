@@ -1,0 +1,26 @@
+<section class="car-profiles-view">
+    <header class="car-profiles-view__header">
+        <form class="car-profiles-view__search" id="car-profiles-search" role="search" aria-label="Szukaj samochodu">
+            <input class="car-profiles-view__search-input" id="car-profiles-search-input" type="search" placeholder="Szukaj samochodu" aria-label="Szukaj samochodu">
+            <button class="car-profiles-view__search-button" type="submit">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <span>Szukaj</span>
+            </button>
+        </form>
+        <div class="car-profiles-view__spacer"></div>
+        <div class="car-profiles-view__sort">
+            <button class="car-profiles-view__sort-button" id="car-profiles-sort-button" type="button" aria-haspopup="menu" aria-expanded="false">
+                <i data-lucide="arrow-up-down" aria-hidden="true"></i>
+                <span>Sortuj</span>
+            </button>
+            <div class="car-profiles-view__sort-menu" id="car-profiles-sort-menu" role="menu" aria-hidden="true">
+                <button type="button" role="menuitem" data-sort-direction="asc">Rosnąco</button>
+                <button type="button" role="menuitem" data-sort-direction="desc">Malejąco</button>
+            </div>
+        </div>
+    </header>
+    <div class="car-profiles-view__list" id="car-profiles-list" aria-live="polite"></div>
+    <button class="car-profiles-view__add" id="car-profiles-add" type="button" aria-label="Dodaj samochód">
+        <i data-lucide="plus" aria-hidden="true"></i>
+    </button>
+</section>

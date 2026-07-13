@@ -1,0 +1,58 @@
+<form class="favourites-tag-editor" id="favourites-tag-editor" role="dialog" aria-modal="true" aria-labelledby="favourites-tag-editor-title" aria-hidden="true">
+    <header class="favourites-tag-editor__header">
+        <h2 id="favourites-tag-editor-title">Dodaj tag</h2>
+        <button class="favourites-tag-editor__close" data-favourites-tag-editor-cancel type="button" aria-label="Zamknij"></button>
+    </header>
+
+    <div class="favourites-tag-editor__content">
+        <label class="favourites-tag-editor__field">
+            <span>Nazwa tagu</span>
+            <input id="favourites-tag-editor-name" name="name" type="text" maxlength="80" required autocomplete="off">
+        </label>
+
+        <input id="favourites-tag-editor-icon" name="icon" type="hidden" value="⭐">
+
+        <section class="favourites-tag-editor__emoji-picker" aria-label="Wybór emoji">
+            <div class="favourites-tag-editor__selected">
+                <span class="favourites-tag-editor__selected-icon" id="favourites-tag-editor-selected-icon" aria-hidden="true">⭐</span>
+                <div class="favourites-tag-editor__selected-text">
+                    <span>Wybrana ikona</span>
+                    <strong id="favourites-tag-editor-selected-name">Domyślna</strong>
+                </div>
+            </div>
+
+            <fieldset class="favourites-tag-editor__modifiers" id="favourites-tag-editor-modifiers" hidden>
+                <legend>Modyfikacje</legend>
+                <label class="favourites-tag-editor__modifier" id="favourites-tag-editor-gender-field" hidden>
+                    <span>Płeć</span>
+                    <select id="favourites-tag-editor-gender">
+                        <option value="">Bez zmian</option>
+                        <option value="female">Kobieta</option>
+                        <option value="neutral">Osoba</option>
+                        <option value="male">Mężczyzna</option>
+                    </select>
+                </label>
+                <label class="favourites-tag-editor__modifier" id="favourites-tag-editor-skin-tone-field" hidden>
+                    <span>Kolor skóry</span>
+                    <select id="favourites-tag-editor-skin-tone">
+                        <option value="">Domyślny</option>
+                        <option value="🏻">Jasny</option>
+                        <option value="🏼">Średnio jasny</option>
+                        <option value="🏽">Średni</option>
+                        <option value="🏾">Średnio ciemny</option>
+                        <option value="🏿">Ciemny</option>
+                    </select>
+                </label>
+            </fieldset>
+
+            <div class="favourites-tag-editor__tabs" id="favourites-tag-editor-tabs" role="tablist" aria-label="Kategorie emoji"></div>
+            <div class="favourites-tag-editor__separator" aria-hidden="true"></div>
+            <div class="favourites-tag-editor__presets" id="favourites-tag-editor-presets" role="tabpanel" aria-live="polite"></div>
+        </section>
+    </div>
+
+    <footer class="favourites-tag-editor__footer">
+        <button class="favourites-tag-editor__button" data-favourites-tag-editor-cancel type="button">Anuluj</button>
+        <button class="favourites-tag-editor__button favourites-tag-editor__button--primary" type="submit">Zapisz</button>
+    </footer>
+</form>

@@ -1,0 +1,30 @@
+from core.enums.enum_str import EnumStr
+
+
+class Boundary(EnumStr):
+    # https://wiki.openstreetmap.org/wiki/Key:boundary
+    ABORIGINAL_LANDS = 'aboriginal_lands'
+    ADMINISTRATIVE = 'administrative'
+    BORDER_ZONE = 'border_zone'
+    CENSUS = 'census'
+    DISPUTED = 'disputed'
+    FOREST = 'forest'
+    FOREST_COMPARTMENT = 'forest_compartment'
+    HAZARD = 'hazard'
+    HEALTH = 'health'
+    HISTORIC = 'historic'
+    LIMITED_TRAFFIC_ZONE = 'limited_traffic_zone'
+    LOCAL_AUTHORITY = 'local_authority'
+    LOW_EMISSION_ZONE = 'low_emission_zone'
+    MARITIME = 'maritime'
+    MARKER = 'marker'
+    NATIONAL_PARK = 'national_park'
+    PLACE = 'place'
+    POLITICAL = 'political'
+    POSTAL_CODE = 'postal_code'
+    PROTECTED_AREA = 'protected_area'
+    PUBLIC_TRANSPORT = 'public_transport'
+    RELIGIOUS_ADMINISTRATION = 'religious_administration'
+    SPECIAL_ECONOMIC_ZONE = 'special_economic_zone'
+    STATISTICAL = 'statistical'
+    TIMEZONE = 'timezone'
