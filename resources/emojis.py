@@ -1142,7 +1142,7 @@ class Emojis:
             },
             'boy': {
                 FIELD_SYMBOL: '👦',
-                FIELD_NAME: 'Chłopak',
+                FIELD_NAME: 'Chłopiec',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: False
             },
@@ -1165,110 +1165,110 @@ class Emojis:
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_emoji_component_curly_hair': {
-                FIELD_SYMBOL: '👩\u200d🦱',
-                FIELD_NAME: 'Woman z emoji component curly hair',
+                FIELD_SYMBOL: '👩‍🦱',
+                FIELD_NAME: 'Kobieta: kręcone włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_emoji_component_curly_hair': {
-                FIELD_SYMBOL: '🧑\u200d🦱',
-                FIELD_NAME: 'Adult z emoji component curly hair',
+                FIELD_SYMBOL: '🧑‍🦱',
+                FIELD_NAME: 'Dorosły: kręcone włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_emoji_component_curly_hair': {
-                FIELD_SYMBOL: '👨\u200d🦱',
-                FIELD_NAME: 'Man z emoji component curly hair',
+                FIELD_SYMBOL: '👨‍🦱',
+                FIELD_NAME: 'Mężczyzna: kręcone włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_emoji_component_red_hair': {
-                FIELD_SYMBOL: '👩\u200d🦰',
-                FIELD_NAME: 'Woman z emoji component czerwony hair',
+                FIELD_SYMBOL: '👩‍🦰',
+                FIELD_NAME: 'Kobieta: rude włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_emoji_component_red_hair': {
-                FIELD_SYMBOL: '🧑\u200d🦰',
-                FIELD_NAME: 'Adult z emoji component czerwony hair',
+                FIELD_SYMBOL: '🧑‍🦰',
+                FIELD_NAME: 'Dorosły: rude włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_emoji_component_red_hair': {
-                FIELD_SYMBOL: '👨\u200d🦰',
-                FIELD_NAME: 'Man z emoji component czerwony hair',
+                FIELD_SYMBOL: '👨‍🦰',
+                FIELD_NAME: 'Mężczyzna: rude włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_blond_hair_with_female_sign': {
-                FIELD_SYMBOL: '👱\u200d♀',
-                FIELD_NAME: 'Person z blond hair z female sign',
+                FIELD_SYMBOL: '👱‍♀',
+                FIELD_NAME: 'Blondynka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_blond_hair': {
                 FIELD_SYMBOL: '👱',
-                FIELD_NAME: 'Osoba o blond włosach',
+                FIELD_NAME: 'Osoba z włosami blond',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_blond_hair_with_male_sign': {
-                FIELD_SYMBOL: '👱\u200d♂️',
-                FIELD_NAME: 'Person z blond hair z male sign',
+                FIELD_SYMBOL: '👱‍♂️',
+                FIELD_NAME: 'Blondyn',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_emoji_component_white_hair': {
-                FIELD_SYMBOL: '👩\u200d🦳',
-                FIELD_NAME: 'Woman z emoji component biały hair',
+                FIELD_SYMBOL: '👩‍🦳',
+                FIELD_NAME: 'Kobieta: białe włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_emoji_component_white_hair': {
-                FIELD_SYMBOL: '🧑\u200d🦳',
-                FIELD_NAME: 'Adult z emoji component biały hair',
+                FIELD_SYMBOL: '🧑‍🦳',
+                FIELD_NAME: 'Dorosły: białe włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_emoji_component_white_hair': {
-                FIELD_SYMBOL: '👨\u200d🦳',
-                FIELD_NAME: 'Man z emoji component biały hair',
+                FIELD_SYMBOL: '👨‍🦳',
+                FIELD_NAME: 'Mężczyzna: białe włosy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_emoji_component_bald': {
-                FIELD_SYMBOL: '👩\u200d🦲',
-                FIELD_NAME: 'Woman z emoji component bald',
+                FIELD_SYMBOL: '👩‍🦲',
+                FIELD_NAME: 'Kobieta: łysy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_emoji_component_bald': {
-                FIELD_SYMBOL: '🧑\u200d🦲',
-                FIELD_NAME: 'Adult z emoji component bald',
+                FIELD_SYMBOL: '🧑‍🦲',
+                FIELD_NAME: 'Dorosły: łysy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_emoji_component_bald': {
-                FIELD_SYMBOL: '👨\u200d🦲',
-                FIELD_NAME: 'Man z emoji component bald',
+                FIELD_SYMBOL: '👨‍🦲',
+                FIELD_NAME: 'Mężczyzna: łysy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bearded_person_with_female_sign': {
-                FIELD_SYMBOL: '🧔\u200d♀',
-                FIELD_NAME: 'Bearded person z female sign',
+                FIELD_SYMBOL: '🧔‍♀',
+                FIELD_NAME: 'Kobieta z brodą',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bearded_person': {
                 FIELD_SYMBOL: '🧔',
-                FIELD_NAME: 'Brodata osoba',
+                FIELD_NAME: 'Osoba z brodą',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bearded_person_with_male_sign': {
-                FIELD_SYMBOL: '🧔\u200d♂️',
-                FIELD_NAME: 'Bearded person z male sign',
+                FIELD_SYMBOL: '🧔‍♂️',
+                FIELD_NAME: 'Mężczyzna z brodą',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -1280,49 +1280,49 @@ class Emojis:
             },
             'older_adult': {
                 FIELD_SYMBOL: '🧓',
-                FIELD_NAME: 'Starszy dorosły',
+                FIELD_NAME: 'Starsza osoba',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'older_man': {
                 FIELD_SYMBOL: '👴',
-                FIELD_NAME: 'Starszy człowiek',
+                FIELD_NAME: 'Starszy mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_gua_pi_mao': {
                 FIELD_SYMBOL: '👲',
-                FIELD_NAME: 'Człowiek z Gua Pi Mao',
+                FIELD_NAME: 'Osoba w chińskiej czapce',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_turban_with_female_sign': {
-                FIELD_SYMBOL: '👳\u200d♀️',
-                FIELD_NAME: 'Man z turban z female sign',
+                FIELD_SYMBOL: '👳‍♀️',
+                FIELD_NAME: 'Kobieta w turbanie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_turban': {
                 FIELD_SYMBOL: '👳',
-                FIELD_NAME: 'Człowiek z Turbanem',
+                FIELD_NAME: 'Osoba w turbanie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_turban_with_male_sign': {
-                FIELD_SYMBOL: '👳\u200d♂️',
-                FIELD_NAME: 'Man z turban z male sign',
+                FIELD_SYMBOL: '👳‍♂️',
+                FIELD_NAME: 'Mężczyzna w turbanie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_headscarf': {
                 FIELD_SYMBOL: '🧕',
-                FIELD_NAME: 'Osoba Z Chustka Na Głowę',
+                FIELD_NAME: 'Kobieta w chuście',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'police_officer_with_female_sign': {
-                FIELD_SYMBOL: '👮\u200d♀️',
-                FIELD_NAME: 'Police officer z female sign',
+                FIELD_SYMBOL: '👮‍♀️',
+                FIELD_NAME: 'Policjantka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -1333,14 +1333,14 @@ class Emojis:
                 FIELD_SUPPORT_SEX: True
             },
             'police_officer_with_male_sign': {
-                FIELD_SYMBOL: '👮\u200d♂️',
-                FIELD_NAME: 'Police officer z male sign',
+                FIELD_SYMBOL: '👮‍♂️',
+                FIELD_NAME: 'Pracownik policji',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'construction_worker_with_female_sign': {
-                FIELD_SYMBOL: '👷\u200d♀️',
-                FIELD_NAME: 'Construction worker z female sign',
+                FIELD_SYMBOL: '👷‍♀️',
+                FIELD_NAME: 'Budowlanka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
@@ -1351,368 +1351,368 @@ class Emojis:
                 FIELD_SUPPORT_SEX: True
             },
             'construction_worker_with_male_sign': {
-                FIELD_SYMBOL: '👷\u200d♂️',
-                FIELD_NAME: 'Construction worker z male sign',
+                FIELD_SYMBOL: '👷‍♂️',
+                FIELD_NAME: 'Budowlaniec',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'guardsman_with_female_sign': {
-                FIELD_SYMBOL: '💂\u200d♀️',
-                FIELD_NAME: 'Guardsman z female sign',
+                FIELD_SYMBOL: '💂‍♀️',
+                FIELD_NAME: 'Gwardzistka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'guardsman': {
                 FIELD_SYMBOL: '💂',
-                FIELD_NAME: 'Gwardzista',
+                FIELD_NAME: 'Członek gwardii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'guardsman_with_male_sign': {
-                FIELD_SYMBOL: '💂\u200d♂️',
-                FIELD_NAME: 'Guardsman z male sign',
+                FIELD_SYMBOL: '💂‍♂️',
+                FIELD_NAME: 'Gwardzista',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'sleuth_or_spy_with_female_sign': {
-                FIELD_SYMBOL: '🕵️\u200d♀️',
-                FIELD_NAME: 'Sleuth or spy z female sign',
+                FIELD_SYMBOL: '🕵️‍♀️',
+                FIELD_NAME: 'Detektywka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'sleuth_or_spy': {
                 FIELD_SYMBOL: '🕵️',
-                FIELD_NAME: 'Sleuth or Spy',
+                FIELD_NAME: 'Szpieg',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sleuth_or_spy_with_male_sign': {
-                FIELD_SYMBOL: '🕵️\u200d♂️',
-                FIELD_NAME: 'Sleuth or spy z male sign',
+                FIELD_SYMBOL: '🕵️‍♂️',
+                FIELD_NAME: 'Detektyw',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_staff_of_aesculapius': {
-                FIELD_SYMBOL: '👩\u200d⚕️',
-                FIELD_NAME: 'Woman z staff of aesculapius',
+                FIELD_SYMBOL: '👩‍⚕️',
+                FIELD_NAME: 'Lekarka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_staff_of_aesculapius': {
-                FIELD_SYMBOL: '🧑\u200d⚕️',
-                FIELD_NAME: 'Adult z staff of aesculapius',
+                FIELD_SYMBOL: '🧑‍⚕️',
+                FIELD_NAME: 'Pracownik medyczny',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_staff_of_aesculapius': {
-                FIELD_SYMBOL: '👨\u200d⚕️',
-                FIELD_NAME: 'Man z staff of aesculapius',
+                FIELD_SYMBOL: '👨‍⚕️',
+                FIELD_NAME: 'Lekarz',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_ear_of_rice': {
-                FIELD_SYMBOL: '👩\u200d🌾',
-                FIELD_NAME: 'Woman z ear of rice',
+                FIELD_SYMBOL: '👩‍🌾',
+                FIELD_NAME: 'Rolniczka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_ear_of_rice': {
-                FIELD_SYMBOL: '🧑\u200d🌾',
-                FIELD_NAME: 'Adult z ear of rice',
+                FIELD_SYMBOL: '🧑‍🌾',
+                FIELD_NAME: 'Pracownik roli',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_ear_of_rice': {
-                FIELD_SYMBOL: '👨\u200d🌾',
-                FIELD_NAME: 'Man z ear of rice',
+                FIELD_SYMBOL: '👨‍🌾',
+                FIELD_NAME: 'Rolnik',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_cooking': {
-                FIELD_SYMBOL: '👩\u200d🍳',
-                FIELD_NAME: 'Woman z cooking',
+                FIELD_SYMBOL: '👩‍🍳',
+                FIELD_NAME: 'Kucharka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_cooking': {
-                FIELD_SYMBOL: '🧑\u200d🍳',
-                FIELD_NAME: 'Adult z cooking',
+                FIELD_SYMBOL: '🧑‍🍳',
+                FIELD_NAME: 'Pracownik kuchnii',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_cooking': {
-                FIELD_SYMBOL: '👨\u200d🍳',
-                FIELD_NAME: 'Man z cooking',
+                FIELD_SYMBOL: '👨‍🍳',
+                FIELD_NAME: 'Kucharz',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_graduation_cap': {
-                FIELD_SYMBOL: '👩\u200d🎓',
-                FIELD_NAME: 'Woman z graduation cap',
+                FIELD_SYMBOL: '👩‍🎓',
+                FIELD_NAME: 'Studentka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_graduation_cap': {
-                FIELD_SYMBOL: '🧑\u200d🎓',
-                FIELD_NAME: 'Adult z graduation cap',
+                FIELD_SYMBOL: '🧑‍🎓',
+                FIELD_NAME: 'Członek studiów',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_graduation_cap': {
-                FIELD_SYMBOL: '👨\u200d🎓',
-                FIELD_NAME: 'Man z graduation cap',
+                FIELD_SYMBOL: '👨‍🎓',
+                FIELD_NAME: 'Student',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_microphone': {
-                FIELD_SYMBOL: '👩\u200d🎤',
-                FIELD_NAME: 'Woman z microphone',
+                FIELD_SYMBOL: '👩‍🎤',
+                FIELD_NAME: 'Piosenkarka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_microphone': {
-                FIELD_SYMBOL: '🧑\u200d🎤',
-                FIELD_NAME: 'Adult z microphone',
+                FIELD_SYMBOL: '🧑‍🎤',
+                FIELD_NAME: 'Osoba śpiewająca',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_microphone': {
-                FIELD_SYMBOL: '👨\u200d🎤',
-                FIELD_NAME: 'Man z microphone',
+                FIELD_SYMBOL: '👨‍🎤',
+                FIELD_NAME: 'Piosenkarz',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_school': {
-                FIELD_SYMBOL: '👩\u200d🏫',
-                FIELD_NAME: 'Woman z szkoła',
+                FIELD_SYMBOL: '👩‍🏫',
+                FIELD_NAME: 'Nauczycielka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_school': {
-                FIELD_SYMBOL: '🧑\u200d🏫',
-                FIELD_NAME: 'Adult z szkoła',
+                FIELD_SYMBOL: '🧑‍🏫',
+                FIELD_NAME: 'Osoba ucząca',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_school': {
-                FIELD_SYMBOL: '👨\u200d🏫',
-                FIELD_NAME: 'Man z szkoła',
+                FIELD_SYMBOL: '👨‍🏫',
+                FIELD_NAME: 'Nauczyciel',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_factory': {
-                FIELD_SYMBOL: '👩\u200d🏭',
-                FIELD_NAME: 'Woman z factory',
+                FIELD_SYMBOL: '👩‍🏭',
+                FIELD_NAME: 'Pracownica fabryki',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_factory': {
-                FIELD_SYMBOL: '🧑\u200d🏭',
-                FIELD_NAME: 'Adult z factory',
+                FIELD_SYMBOL: '🧑‍🏭',
+                FIELD_NAME: 'Osoba pracująca w fabryce',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_factory': {
-                FIELD_SYMBOL: '👨\u200d🏭',
-                FIELD_NAME: 'Man z factory',
+                FIELD_SYMBOL: '👨‍🏭',
+                FIELD_NAME: 'Pracownik fabryki',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_personal_computer': {
-                FIELD_SYMBOL: '👩\u200d💻',
-                FIELD_NAME: 'Woman z personal computer',
+                FIELD_SYMBOL: '👩‍💻',
+                FIELD_NAME: 'Technolożka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_personal_computer': {
-                FIELD_SYMBOL: '🧑\u200d💻',
-                FIELD_NAME: 'Adult z personal computer',
+                FIELD_SYMBOL: '🧑‍💻',
+                FIELD_NAME: 'Osoba techniczna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_personal_computer': {
-                FIELD_SYMBOL: '👨\u200d💻',
-                FIELD_NAME: 'Man z personal computer',
+                FIELD_SYMBOL: '👨‍💻',
+                FIELD_NAME: 'Technolog',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_briefcase': {
-                FIELD_SYMBOL: '👩\u200d💼',
-                FIELD_NAME: 'Woman z briefcase',
+                FIELD_SYMBOL: '👩‍💼',
+                FIELD_NAME: 'Pracownica biurowa',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_briefcase': {
-                FIELD_SYMBOL: '🧑\u200d💼',
-                FIELD_NAME: 'Adult z briefcase',
+                FIELD_SYMBOL: '🧑‍💼',
+                FIELD_NAME: 'Osoba pracująca w biurze',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_briefcase': {
-                FIELD_SYMBOL: '👨\u200d💼',
-                FIELD_NAME: 'Man z briefcase',
+                FIELD_SYMBOL: '👨‍💼',
+                FIELD_NAME: 'Pracownik biurowy',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_wrench': {
-                FIELD_SYMBOL: '👩\u200d🔧',
-                FIELD_NAME: 'Woman z wrench',
+                FIELD_SYMBOL: '👩‍🔧',
+                FIELD_NAME: 'Mechaniczka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_wrench': {
-                FIELD_SYMBOL: '🧑\u200d🔧',
-                FIELD_NAME: 'Adult z wrench',
+                FIELD_SYMBOL: '🧑‍🔧',
+                FIELD_NAME: 'Osoba pracująca jako mechanik',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_wrench': {
-                FIELD_SYMBOL: '👨\u200d🔧',
-                FIELD_NAME: 'Man z wrench',
+                FIELD_SYMBOL: '👨‍🔧',
+                FIELD_NAME: 'Mechanik',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_microscope': {
-                FIELD_SYMBOL: '👩\u200d🔬',
-                FIELD_NAME: 'Woman z microscope',
+                FIELD_SYMBOL: '👩‍🔬',
+                FIELD_NAME: 'Naukowczyni',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_microscope': {
-                FIELD_SYMBOL: '🧑\u200d🔬',
-                FIELD_NAME: 'Adult z microscope',
+                FIELD_SYMBOL: '🧑‍🔬',
+                FIELD_NAME: 'Osoba pracująca w labolatorium',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_microscope': {
-                FIELD_SYMBOL: '👨\u200d🔬',
-                FIELD_NAME: 'Man z microscope',
+                FIELD_SYMBOL: '👨‍🔬',
+                FIELD_NAME: 'Naukowiec',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_artist_palette': {
-                FIELD_SYMBOL: '👩\u200d🎨',
-                FIELD_NAME: 'Woman z artist palette',
+                FIELD_SYMBOL: '👩‍🎨',
+                FIELD_NAME: 'Artystka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_artist_palette': {
-                FIELD_SYMBOL: '🧑\u200d🎨',
-                FIELD_NAME: 'Adult z artist palette',
+                FIELD_SYMBOL: '🧑‍🎨',
+                FIELD_NAME: 'Osoba pracująca jako artysta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_artist_palette': {
-                FIELD_SYMBOL: '👨\u200d🎨',
-                FIELD_NAME: 'Man z artist palette',
+                FIELD_SYMBOL: '👨‍🎨',
+                FIELD_NAME: 'Artysta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_fire_engine': {
-                FIELD_SYMBOL: '👩\u200d🚒',
-                FIELD_NAME: 'Woman z fire engine',
+                FIELD_SYMBOL: '👩‍🚒',
+                FIELD_NAME: 'Strażaczka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_fire_engine': {
-                FIELD_SYMBOL: '🧑\u200d🚒',
-                FIELD_NAME: 'Adult z fire engine',
+                FIELD_SYMBOL: '🧑‍🚒',
+                FIELD_NAME: 'Pracownik straży pożarnej',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_fire_engine': {
-                FIELD_SYMBOL: '👨\u200d🚒',
-                FIELD_NAME: 'Man z fire engine',
+                FIELD_SYMBOL: '👨‍🚒',
+                FIELD_NAME: 'Strażak',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_airplane': {
-                FIELD_SYMBOL: '👩\u200d✈️',
-                FIELD_NAME: 'Woman z samolot',
+                FIELD_SYMBOL: '👩‍✈️',
+                FIELD_NAME: 'Pilotka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_airplane': {
-                FIELD_SYMBOL: '🧑\u200d✈️',
-                FIELD_NAME: 'Adult z samolot',
+                FIELD_SYMBOL: '🧑‍✈️',
+                FIELD_NAME: 'Osoba pilotująca samolot',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_airplane': {
-                FIELD_SYMBOL: '👨\u200d✈️',
-                FIELD_NAME: 'Man z samolot',
+                FIELD_SYMBOL: '👨‍✈️',
+                FIELD_NAME: 'Pilot',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_rocket': {
-                FIELD_SYMBOL: '👩\u200d🚀',
-                FIELD_NAME: 'Woman z rocket',
+                FIELD_SYMBOL: '👩‍🚀',
+                FIELD_NAME: 'Astronautka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_rocket': {
-                FIELD_SYMBOL: '🧑\u200d🚀',
-                FIELD_NAME: 'Adult z rocket',
+                FIELD_SYMBOL: '🧑‍🚀',
+                FIELD_NAME: 'Członek załogi kosmicznej',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_rocket': {
-                FIELD_SYMBOL: '👨\u200d🚀',
-                FIELD_NAME: 'Man z rocket',
+                FIELD_SYMBOL: '👨‍🚀',
+                FIELD_NAME: 'Astronauta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_scales': {
-                FIELD_SYMBOL: '👩\u200d⚖️',
-                FIELD_NAME: 'Woman z scales',
+                FIELD_SYMBOL: '👩‍⚖️',
+                FIELD_NAME: 'Sędzina',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_scales': {
-                FIELD_SYMBOL: '🧑\u200d⚖️',
-                FIELD_NAME: 'Adult z scales',
+                FIELD_SYMBOL: '🧑‍⚖️',
+                FIELD_NAME: 'Pracownik sądu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_scales': {
-                FIELD_SYMBOL: '👨\u200d⚖️',
-                FIELD_NAME: 'Man z scales',
+                FIELD_SYMBOL: '👨‍⚖️',
+                FIELD_NAME: 'Sędzia',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bride_with_veil_with_female_sign': {
-                FIELD_SYMBOL: '👰\u200d♀️',
-                FIELD_NAME: 'Bride z veil z female sign',
+                FIELD_SYMBOL: '👰‍♀️',
+                FIELD_NAME: 'Kobieta w welonie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bride_with_veil': {
                 FIELD_SYMBOL: '👰',
-                FIELD_NAME: 'Panna młoda z welonem',
+                FIELD_NAME: 'Osoba w welonie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bride_with_veil_with_male_sign': {
-                FIELD_SYMBOL: '👰\u200d♂️',
-                FIELD_NAME: 'Bride z veil z male sign',
+                FIELD_SYMBOL: '👰‍♂️',
+                FIELD_NAME: 'Mężczyzna w welonie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_in_tuxedo_with_female_sign': {
-                FIELD_SYMBOL: '🤵\u200d♀️',
-                FIELD_NAME: 'Man in tuxedo z female sign',
+                FIELD_SYMBOL: '🤵‍♀️',
+                FIELD_NAME: 'Kobieta w smokingu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_in_tuxedo': {
                 FIELD_SYMBOL: '🤵',
-                FIELD_NAME: 'Mężczyzna W Smokingu',
+                FIELD_NAME: 'Osoba w smokingu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_in_tuxedo_with_male_sign': {
-                FIELD_SYMBOL: '🤵\u200d♂️',
-                FIELD_NAME: 'Man in tuxedo z male sign',
+                FIELD_SYMBOL: '🤵‍♂️',
+                FIELD_NAME: 'Mężczyzna w smokingu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -1724,7 +1724,7 @@ class Emojis:
             },
             'person_with_crown': {
                 FIELD_SYMBOL: '🫅',
-                FIELD_NAME: 'Osoba W Koronie',
+                FIELD_NAME: 'Osoba w koronie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -1741,92 +1741,92 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'superhero_with_female_sign': {
-                FIELD_SYMBOL: '🦸\u200d♀️',
-                FIELD_NAME: 'Superhero z female sign',
+                FIELD_SYMBOL: '🦸‍♀️',
+                FIELD_NAME: 'Superbohaterka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'superhero': {
                 FIELD_SYMBOL: '🦸',
-                FIELD_NAME: 'Superbohatera',
+                FIELD_NAME: 'Osoba z supermocami',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'superhero_with_male_sign': {
-                FIELD_SYMBOL: '🦸\u200d♂️',
-                FIELD_NAME: 'Superhero z male sign',
+                FIELD_SYMBOL: '🦸‍♂️',
+                FIELD_NAME: 'Superbohater',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'supervillain_with_female_sign': {
-                FIELD_SYMBOL: '🦹\u200d♀️',
-                FIELD_NAME: 'Supervillain z female sign',
+                FIELD_SYMBOL: '🦹‍♀️',
+                FIELD_NAME: 'Superłotrzyni',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'supervillain': {
                 FIELD_SYMBOL: '🦹',
-                FIELD_NAME: 'Supervillain',
+                FIELD_NAME: 'Osoba superzła',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'supervillain_with_male_sign': {
-                FIELD_SYMBOL: '🦹\u200d♂️',
-                FIELD_NAME: 'Supervillain z male sign',
+                FIELD_SYMBOL: '🦹‍♂️',
+                FIELD_NAME: 'Superłotr',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'mother_christmas': {
                 FIELD_SYMBOL: '🤶',
-                FIELD_NAME: 'Matka Boże Narodzenie',
+                FIELD_NAME: 'Żona św. Mikołaja',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'adult_with_christmas_tree': {
-                FIELD_SYMBOL: '🧑\u200d🎄',
-                FIELD_NAME: 'Adult z christmas tree',
+                FIELD_SYMBOL: '🧑‍🎄',
+                FIELD_NAME: 'Mikołajka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'father_christmas': {
                 FIELD_SYMBOL: '🎅',
-                FIELD_NAME: 'Mikolaj',
+                FIELD_NAME: 'Święty Mikołaj',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mage_with_female_sign': {
-                FIELD_SYMBOL: '🧙\u200d♀️',
-                FIELD_NAME: 'Mage z female sign',
+                FIELD_SYMBOL: '🧙‍♀️',
+                FIELD_NAME: 'Czarownica',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'mage': {
                 FIELD_SYMBOL: '🧙',
-                FIELD_NAME: 'Mag',
+                FIELD_NAME: 'Osoba magiczna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'mage_with_male_sign': {
-                FIELD_SYMBOL: '🧙\u200d♂️',
-                FIELD_NAME: 'Mage z male sign',
+                FIELD_SYMBOL: '🧙‍♂️',
+                FIELD_NAME: 'Mag',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'elf_with_female_sign': {
-                FIELD_SYMBOL: '🧝\u200d♀️',
-                FIELD_NAME: 'Elf z female sign',
+                FIELD_SYMBOL: '🧝‍♀️',
+                FIELD_NAME: 'Elfica',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'elf': {
                 FIELD_SYMBOL: '🧝',
-                FIELD_NAME: 'Elf',
+                FIELD_NAME: 'Osoba rasy Elfickiej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'elf_with_male_sign': {
-                FIELD_SYMBOL: '🧝\u200d♂️',
-                FIELD_NAME: 'Elf z male sign',
+                FIELD_SYMBOL: '🧝‍♂️',
+                FIELD_NAME: 'Elf',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
@@ -1837,92 +1837,92 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'vampire_with_female_sign': {
-                FIELD_SYMBOL: '🧛\u200d♀️',
-                FIELD_NAME: 'Vampire z female sign',
+                FIELD_SYMBOL: '🧛‍♀️',
+                FIELD_NAME: 'Wampirzyca',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'vampire': {
                 FIELD_SYMBOL: '🧛',
-                FIELD_NAME: 'Wampir',
+                FIELD_NAME: 'Osoba razy Waimpirzej',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'vampire_with_male_sign': {
-                FIELD_SYMBOL: '🧛\u200d♂️',
-                FIELD_NAME: 'Vampire z male sign',
+                FIELD_SYMBOL: '🧛‍♂️',
+                FIELD_NAME: 'Wampir',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'zombie_with_female_sign': {
-                FIELD_SYMBOL: '🧟\u200d♀️',
-                FIELD_NAME: 'Zombie z female sign',
+                FIELD_SYMBOL: '🧟‍♀️',
+                FIELD_NAME: 'Kobieta: Zombie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'zombie': {
                 FIELD_SYMBOL: '🧟',
-                FIELD_NAME: 'Zambi',
+                FIELD_NAME: 'Zombie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'zombie_with_male_sign': {
-                FIELD_SYMBOL: '🧟\u200d♂️',
-                FIELD_NAME: 'Zombie z male sign',
+                FIELD_SYMBOL: '🧟‍♂️',
+                FIELD_NAME: 'Mężczyzna: Zombie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'genie_with_female_sign': {
-                FIELD_SYMBOL: '🧞\u200d♀️',
-                FIELD_NAME: 'Genie z female sign',
+                FIELD_SYMBOL: '🧞‍♀️',
+                FIELD_NAME: 'Dżini',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'genie': {
                 FIELD_SYMBOL: '🧞',
-                FIELD_NAME: 'dżin',
+                FIELD_NAME: 'Osoba dżin',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'genie_with_male_sign': {
-                FIELD_SYMBOL: '🧞\u200d♂️',
-                FIELD_NAME: 'Genie z male sign',
+                FIELD_SYMBOL: '🧞‍♂️',
+                FIELD_NAME: 'Dżin',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'merperson_with_female_sign': {
-                FIELD_SYMBOL: '🧜\u200d♀️',
-                FIELD_NAME: 'Merperson z female sign',
+                FIELD_SYMBOL: '🧜‍♀️',
+                FIELD_NAME: 'Syrena',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'merperson': {
                 FIELD_SYMBOL: '🧜',
-                FIELD_NAME: 'Merperson',
+                FIELD_NAME: 'Osoba rasy Syreniej',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'merperson_with_male_sign': {
-                FIELD_SYMBOL: '🧜\u200d♂️',
-                FIELD_NAME: 'Merperson z male sign',
+                FIELD_SYMBOL: '🧜‍♂️',
+                FIELD_NAME: 'Syren',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'fairy_with_female_sign': {
-                FIELD_SYMBOL: '🧚\u200d♀️',
-                FIELD_NAME: 'Fairy z female sign',
+                FIELD_SYMBOL: '🧚‍♀️',
+                FIELD_NAME: 'Wróżka',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'fairy': {
                 FIELD_SYMBOL: '🧚',
-                FIELD_NAME: 'Wróżka',
+                FIELD_NAME: 'Osoba rasy Wróżej',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'fairy_with_male_sign': {
-                FIELD_SYMBOL: '🧚\u200d♂️',
-                FIELD_NAME: 'Fairy z male sign',
+                FIELD_SYMBOL: '🧚‍♂️',
+                FIELD_NAME: 'Wróżek',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -1940,13 +1940,13 @@ class Emojis:
             },
             'pregnant_person': {
                 FIELD_SYMBOL: '🫄',
-                FIELD_NAME: 'Osoba W Ciąży',
+                FIELD_NAME: 'Osoba w ciąży',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'pregnant_man': {
                 FIELD_SYMBOL: '🫃',
-                FIELD_NAME: 'Mężczyzna W Ciąży',
+                FIELD_NAME: 'Mężczyzna w ciąży',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -1957,302 +1957,302 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'woman_with_baby_bottle': {
-                FIELD_SYMBOL: '👩\u200d🍼',
-                FIELD_NAME: 'Woman z baby bottle',
+                FIELD_SYMBOL: '👩‍🍼',
+                FIELD_NAME: 'Kobieta karmiąca niemowlę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_baby_bottle': {
-                FIELD_SYMBOL: '🧑\u200d🍼',
-                FIELD_NAME: 'Adult z baby bottle',
+                FIELD_SYMBOL: '🧑‍🍼',
+                FIELD_NAME: 'Osoba karmiąca niemowlę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_baby_bottle': {
-                FIELD_SYMBOL: '👨\u200d🍼',
-                FIELD_NAME: 'Man z baby bottle',
+                FIELD_SYMBOL: '👨‍🍼',
+                FIELD_NAME: 'Mężczyzna karmiący niemowlę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_bowing_deeply_with_female_sign': {
-                FIELD_SYMBOL: '🙇\u200d♀️',
-                FIELD_NAME: 'Person bowing deeply z female sign',
+                FIELD_SYMBOL: '🙇‍♀️',
+                FIELD_NAME: 'Kobieta w ukłonie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_bowing_deeply': {
                 FIELD_SYMBOL: '🙇',
-                FIELD_NAME: 'Osoba kłaniająca się głęboko',
+                FIELD_NAME: 'Osoba w ukłonie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_bowing_deeply_with_male_sign': {
-                FIELD_SYMBOL: '🙇\u200d♂',
-                FIELD_NAME: 'Person bowing deeply z male sign',
+                FIELD_SYMBOL: '🙇‍♂',
+                FIELD_NAME: 'Mężczyzna w ukłonie',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'information_desk_person_with_female_sign': {
-                FIELD_SYMBOL: '💁\u200d♀️',
-                FIELD_NAME: 'Information desk person z female sign',
+                FIELD_SYMBOL: '💁‍♀️',
+                FIELD_NAME: 'Kobieta z wystawioną dłonią',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'information_desk_person': {
                 FIELD_SYMBOL: '💁',
-                FIELD_NAME: 'Osoba informacyjna',
+                FIELD_NAME: 'Osoba z wystawioną dłonią',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'information_desk_person_with_male_sign': {
-                FIELD_SYMBOL: '💁\u200d♂',
-                FIELD_NAME: 'Information desk person z male sign',
+                FIELD_SYMBOL: '💁‍♂',
+                FIELD_NAME: 'Mężczyzna z wystawioną dłonią',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'face_with_no_good_gesture_with_female_sign': {
-                FIELD_SYMBOL: '🙅\u200d♀',
-                FIELD_NAME: 'Twarz z no good gesture z female sign',
+                FIELD_SYMBOL: '🙅‍♀',
+                FIELD_NAME: 'Kobieta pokazująca gest NIE',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'face_with_no_good_gesture': {
                 FIELD_SYMBOL: '🙅',
-                FIELD_NAME: 'Twarz bez dobrego gestu',
+                FIELD_NAME: 'Osoba pokazująca gest NIE',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'face_with_no_good_gesture_with_male_sign': {
-                FIELD_SYMBOL: '🙅\u200d♂',
-                FIELD_NAME: 'Twarz z no good gesture z male sign',
+                FIELD_SYMBOL: '🙅‍♂',
+                FIELD_NAME: 'Mężczyna pokazujący gest NIE',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'face_with_ok_gesture_with_female_sign': {
-                FIELD_SYMBOL: '🙆\u200d♀',
-                FIELD_NAME: 'Twarz z ok gesture z female sign',
+                FIELD_SYMBOL: '🙆‍♀',
+                FIELD_NAME: 'Kobieta pokazująca gest OK',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'face_with_ok_gesture': {
                 FIELD_SYMBOL: '🙆',
-                FIELD_NAME: 'Twarz Z Ok Gestem',
+                FIELD_NAME: 'Osoba pokazująca gest OK',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'face_with_ok_gesture_with_male_sign': {
-                FIELD_SYMBOL: '🙆\u200d♂️',
-                FIELD_NAME: 'Twarz z ok gesture z male sign',
+                FIELD_SYMBOL: '🙆‍♂️',
+                FIELD_NAME: 'Mężczyzna pokazujący gest OK',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'happy_person_raising_one_hand_with_female_sign': {
-                FIELD_SYMBOL: '🙋\u200d♀️',
-                FIELD_NAME: 'Happy person raising one hand z female sign',
+                FIELD_SYMBOL: '🙋‍♀️',
+                FIELD_NAME: 'Kobieta podnosząca rękę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'happy_person_raising_one_hand': {
                 FIELD_SYMBOL: '🙋',
-                FIELD_NAME: 'Szczęśliwa osoba podnosi jedną rękę',
+                FIELD_NAME: 'Osoba podnosząca rękę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'happy_person_raising_one_hand_2': {
-                FIELD_SYMBOL: '🙋\u200d️',
-                FIELD_NAME: 'Happy person raising one hand 2',
+                FIELD_SYMBOL: '🙋‍️',
+                FIELD_NAME: 'Mężczyzna podnoszący rękę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'deaf_person_with_female_sign': {
-                FIELD_SYMBOL: '🧏\u200d♀️',
-                FIELD_NAME: 'Deaf person z female sign',
+                FIELD_SYMBOL: '🧏‍♀️',
+                FIELD_NAME: 'Głucha kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'deaf_person': {
                 FIELD_SYMBOL: '🧏',
-                FIELD_NAME: 'Głucha osoba',
+                FIELD_NAME: 'Osoba głucha',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'deaf_person_with_male_sign': {
-                FIELD_SYMBOL: '🧏\u200d♂️',
-                FIELD_NAME: 'Deaf person z male sign',
+                FIELD_SYMBOL: '🧏‍♂️',
+                FIELD_NAME: 'Głuchy mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'face_palm_with_female_sign': {
-                FIELD_SYMBOL: '🤦\u200d♀️',
-                FIELD_NAME: 'Twarz palm z female sign',
+                FIELD_SYMBOL: '🤦‍♀️',
+                FIELD_NAME: 'Kobieta trzymająca się za czoło',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'face_palm': {
                 FIELD_SYMBOL: '🤦',
-                FIELD_NAME: 'Twarz dłoni',
+                FIELD_NAME: 'Osoba trzymająca się za czoło',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: False
             },
             'face_palm_with_male_sign': {
-                FIELD_SYMBOL: '🤦\u200d♂️',
-                FIELD_NAME: 'Twarz palm z male sign',
+                FIELD_SYMBOL: '🤦‍♂️',
+                FIELD_NAME: 'Mężczyzna trzymający się za czoło',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'shrug_with_female_sign': {
-                FIELD_SYMBOL: '🤷\u200d♀️',
-                FIELD_NAME: 'Shrug z female sign',
+                FIELD_SYMBOL: '🤷‍♀️',
+                FIELD_NAME: 'Kobieta wzruszająca ramionami',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'shrug': {
                 FIELD_SYMBOL: '🤷',
-                FIELD_NAME: 'Wzruszać ramionami',
+                FIELD_NAME: 'Osoba wzruszająca ramionami',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'shrug_2': {
-                FIELD_SYMBOL: '🤷🏻\u200d️',
-                FIELD_NAME: 'Shrug 2',
+                FIELD_SYMBOL: '🤷🏻‍️',
+                FIELD_NAME: 'Mężczyzna wzruszający ramionami',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'person_with_pouting_face_with_female_sign': {
-                FIELD_SYMBOL: '🙎\u200d♀️',
-                FIELD_NAME: 'Person z pouting twarz z female sign',
+                FIELD_SYMBOL: '🙎‍♀️',
+                FIELD_NAME: 'Nadąsana kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_pouting_face': {
                 FIELD_SYMBOL: '🙎',
-                FIELD_NAME: 'Osoba z Pouting Face',
+                FIELD_NAME: 'Nadąsana osoba',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_pouting_face_with_male_sign': {
-                FIELD_SYMBOL: '🙎\u200d♂️',
-                FIELD_NAME: 'Person z pouting twarz z male sign',
+                FIELD_SYMBOL: '🙎‍♂️',
+                FIELD_NAME: 'Nadąsany mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_frowning_with_female_sign': {
-                FIELD_SYMBOL: '🙍\u200d♀️',
-                FIELD_NAME: 'Person frowning z female sign',
+                FIELD_SYMBOL: '🙍‍♀️',
+                FIELD_NAME: 'Zachmurzona kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_frowning': {
                 FIELD_SYMBOL: '🙍',
-                FIELD_NAME: 'Osoba marszcząca brwi',
+                FIELD_NAME: 'Zachmurzona osoba',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_frowning_with_male_sign': {
-                FIELD_SYMBOL: '🙍\u200d♂️',
-                FIELD_NAME: 'Person frowning z male sign',
+                FIELD_SYMBOL: '🙍‍♂️',
+                FIELD_NAME: 'Zachmurzony mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'haircut_with_female_sign': {
-                FIELD_SYMBOL: '💇\u200d♀️',
-                FIELD_NAME: 'Haircut z female sign',
+                FIELD_SYMBOL: '💇‍♀️',
+                FIELD_NAME: 'Kobieta podczas strzyżenia',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'haircut': {
                 FIELD_SYMBOL: '💇',
-                FIELD_NAME: 'Ostrzyżenie',
+                FIELD_NAME: 'Osoba podczas strzyżenia',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'haircut_with_male_sign': {
-                FIELD_SYMBOL: '💇\u200d♂️',
-                FIELD_NAME: 'Haircut z male sign',
+                FIELD_SYMBOL: '💇‍♂️',
+                FIELD_NAME: 'Mężczyzna podczas strzyżenia',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'face_massage_with_female_sign': {
-                FIELD_SYMBOL: '💆\u200d♀️',
-                FIELD_NAME: 'Twarz massage z female sign',
+                FIELD_SYMBOL: '💆‍♀️',
+                FIELD_NAME: 'Kobieta podczas masażu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'face_massage': {
                 FIELD_SYMBOL: '💆',
-                FIELD_NAME: 'Masaż twarzy',
+                FIELD_NAME: 'Osoba podczas masażu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'face_massage_with_male_sign': {
-                FIELD_SYMBOL: '💆\u200d♂️',
-                FIELD_NAME: 'Twarz massage z male sign',
+                FIELD_SYMBOL: '💆‍♂️',
+                FIELD_NAME: 'Mężczyzna podczas masażu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_in_steamy_room_with_female_sign': {
-                FIELD_SYMBOL: '🧖\u200d♀️',
-                FIELD_NAME: 'Person in steamy room z female sign',
+                FIELD_SYMBOL: '🧖‍♀️',
+                FIELD_NAME: 'Kobieta w zaparowanym pomieszczeniu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_in_steamy_room': {
                 FIELD_SYMBOL: '🧖',
-                FIELD_NAME: 'Osoba W Pokoju Parnym',
+                FIELD_NAME: 'Osoba w zaparowanym pomieszczeniu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_in_steamy_room_with_male_sign': {
-                FIELD_SYMBOL: '🧖\u200d♂️',
-                FIELD_NAME: 'Person in steamy room z male sign',
+                FIELD_SYMBOL: '🧖‍♂️',
+                FIELD_NAME: 'Mężczyzna w zaparowanym pomieszczeniu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_heavy_black_heart_with_man': {
-                FIELD_SYMBOL: '👩\u200d❤️\u200d👨',
-                FIELD_NAME: 'Woman z heavy czarny sercem z man',
+                FIELD_SYMBOL: '👩‍❤️‍👨',
+                FIELD_NAME: 'Para z sercem: kobieta i mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_heavy_black_heart_with_woman': {
-                FIELD_SYMBOL: '👩\u200d❤️\u200d👩',
-                FIELD_NAME: 'Woman z heavy czarny sercem z woman',
+                FIELD_SYMBOL: '👩‍❤️‍👩',
+                FIELD_NAME: 'Para z sercem: kobieta i kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_heavy_black_heart_with_adult': {
-                FIELD_SYMBOL: '🧑\u200d❤️\u200d🧑',
-                FIELD_NAME: 'Adult z heavy czarny sercem z adult',
+                FIELD_SYMBOL: '🧑‍❤️‍🧑',
+                FIELD_NAME: 'Para z sercem',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_heavy_black_heart_with_man': {
-                FIELD_SYMBOL: '👨\u200d❤️\u200d👨',
-                FIELD_NAME: 'Man z heavy czarny sercem z man',
+                FIELD_SYMBOL: '👨‍❤️‍👨',
+                FIELD_NAME: 'Para z sercem: mężczyzna i mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_heavy_black_heart_with_kiss_mark_with_man': {
-                FIELD_SYMBOL: '👩\u200d❤️\u200d💋\u200d👨',
-                FIELD_NAME: 'Woman z heavy czarny sercem z kiss mark z man',
+                FIELD_SYMBOL: '👩‍❤️‍💋‍👨',
+                FIELD_NAME: 'Pocałunek: kobieta i mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_heavy_black_heart_with_kiss_mark_with_woman': {
-                FIELD_SYMBOL: '👩\u200d❤️\u200d💋\u200d👩',
-                FIELD_NAME: 'Woman z heavy czarny sercem z kiss mark z woman',
+                FIELD_SYMBOL: '👩‍❤️‍💋‍👩',
+                FIELD_NAME: 'Pocałunek: kobieta i kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_heavy_black_heart_with_kiss_mark_with_adult': {
-                FIELD_SYMBOL: '🧑\u200d❤️\u200d💋\u200d🧑',
-                FIELD_NAME: 'Adult z heavy czarny sercem z kiss mark z adult',
+                FIELD_SYMBOL: '🧑‍❤️‍💋‍🧑',
+                FIELD_NAME: 'Pocałunek',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_heavy_black_heart_with_kiss_mark_with_man': {
-                FIELD_SYMBOL: '👨\u200d❤️\u200d💋\u200d👨',
-                FIELD_NAME: 'Man z heavy czarny sercem z kiss mark z man',
+                FIELD_SYMBOL: '👨‍❤️‍💋‍👨',
+                FIELD_NAME: 'Pocałunek: mężczyzna i mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -2260,13 +2260,13 @@ class Emojis:
         BODY_PARTS: {
             'flexed_biceps': {
                 FIELD_SYMBOL: '💪',
-                FIELD_NAME: 'Zgięte bicepsy',
+                FIELD_NAME: 'Napięty biceps',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: False
             },
             'mechanical_arm': {
                 FIELD_SYMBOL: '🦾',
-                FIELD_NAME: 'Ramię mechaniczne',
+                FIELD_NAME: 'Mechaniczne ramię',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -2284,13 +2284,13 @@ class Emojis:
             },
             'mechanical_leg': {
                 FIELD_SYMBOL: '🦿',
-                FIELD_NAME: 'Mechaniczna noga',
+                FIELD_NAME: 'Proteza nogi',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: False
             },
             'kiss_mark': {
                 FIELD_SYMBOL: '💋',
-                FIELD_NAME: 'Ślad pocałunku',
+                FIELD_NAME: 'Ślad po pocałunku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -2302,7 +2302,7 @@ class Emojis:
             },
             'biting_lip': {
                 FIELD_SYMBOL: '🫦',
-                FIELD_NAME: 'Przygryzanie Wargi',
+                FIELD_NAME: 'Przygryzanie wargi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -2350,7 +2350,7 @@ class Emojis:
             },
             'anatomical_heart': {
                 FIELD_SYMBOL: '🫀',
-                FIELD_NAME: 'Anatomiczne serce',
+                FIELD_NAME: 'Serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -2370,193 +2370,193 @@ class Emojis:
         ACTIVITIES_AND_POSTURES: {
             'dancer': {
                 FIELD_SYMBOL: '💃',
-                FIELD_NAME: 'Tancerz',
+                FIELD_NAME: 'Tańcząca kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_dancing': {
                 FIELD_SYMBOL: '🕺',
-                FIELD_NAME: 'Człowiek tańczy',
+                FIELD_NAME: 'Tańczący mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_ballet_shoes': {
-                FIELD_SYMBOL: '🧑\u200d🩰',
-                FIELD_NAME: 'Adult z ballet shoes',
+                FIELD_SYMBOL: '🧑‍🩰',
+                FIELD_NAME: 'Baletnica',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_bunny_ears_with_female_sign': {
-                FIELD_SYMBOL: '👯\u200d♀️',
-                FIELD_NAME: 'Woman z bunny ears z female sign',
+                FIELD_SYMBOL: '👯‍♀️',
+                FIELD_NAME: 'Kobiety z uszami królika na przyjęciu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_bunny_ears': {
                 FIELD_SYMBOL: '👯',
-                FIELD_NAME: 'Kobieta z uszy królika',
+                FIELD_NAME: 'Osoby z uszami królika na przyjęciu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_bunny_ears_with_male_sign': {
-                FIELD_SYMBOL: '👯\u200d♂️',
-                FIELD_NAME: 'Woman z bunny ears z male sign',
+                FIELD_SYMBOL: '👯‍♂️',
+                FIELD_NAME: 'Mężczyźni z uszami królika na przyjęciu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_in_business_suit_levitating': {
                 FIELD_SYMBOL: '🕴️',
-                FIELD_NAME: 'Człowiek w garniturze Lewitujący',
+                FIELD_NAME: 'Lewitujący mężczyzna w garniturze',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_manual_wheelchair': {
-                FIELD_SYMBOL: '👩\u200d🦽',
-                FIELD_NAME: 'Woman z manual wheelchair',
+                FIELD_SYMBOL: '👩‍🦽',
+                FIELD_NAME: 'Kobieta na wózku inwalidzkim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_manual_wheelchair': {
-                FIELD_SYMBOL: '🧑\u200d🦽',
-                FIELD_NAME: 'Adult z manual wheelchair',
+                FIELD_SYMBOL: '🧑‍🦽',
+                FIELD_NAME: 'Osoba na wózku inwalidzkim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_manual_wheelchair': {
-                FIELD_SYMBOL: '👨\u200d🦽',
-                FIELD_NAME: 'Man z manual wheelchair',
+                FIELD_SYMBOL: '👨‍🦽',
+                FIELD_NAME: 'Mężczyzna na wózku inwalidzkim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_manual_wheelchair_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '👩\u200d🦽\u200d➡️',
-                FIELD_NAME: 'Woman z manual wheelchair z czarny rightwards strzałka',
+                FIELD_SYMBOL: '👩‍🦽‍➡️',
+                FIELD_NAME: 'Kobieta na wózku inwalidzkim: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_manual_wheelchair_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🧑\u200d🦽\u200d➡️',
-                FIELD_NAME: 'Adult z manual wheelchair z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🧑‍🦽‍➡️',
+                FIELD_NAME: 'Osoba na wózku inwalidzkim: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_manual_wheelchair_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '👨\u200d🦽\u200d➡️',
-                FIELD_NAME: 'Man z manual wheelchair z czarny rightwards strzałka',
+                FIELD_SYMBOL: '👨‍🦽‍➡️',
+                FIELD_NAME: 'Mężczyzna na wózku inwalidzkim: zwrócony w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_motorized_wheelchair': {
-                FIELD_SYMBOL: '👩\u200d🦼',
-                FIELD_NAME: 'Woman z motorized wheelchair',
+                FIELD_SYMBOL: '👩‍🦼',
+                FIELD_NAME: 'Kobieta na elektrycznym wózku inwalidzkim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_motorized_wheelchair': {
-                FIELD_SYMBOL: '🧑\u200d🦼',
-                FIELD_NAME: 'Adult z motorized wheelchair',
+                FIELD_SYMBOL: '🧑‍🦼',
+                FIELD_NAME: 'Osoba na elektrycznym wózku inwalidzkim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_motorized_wheelchair': {
-                FIELD_SYMBOL: '👨\u200d🦼',
-                FIELD_NAME: 'Man z motorized wheelchair',
+                FIELD_SYMBOL: '👨‍🦼',
+                FIELD_NAME: 'Mężczyzna na elektrycznym wózku inwalidzkim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_motorized_wheelchair_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '👩\u200d🦼\u200d➡️',
-                FIELD_NAME: 'Woman z motorized wheelchair z czarny rightwards strzałka',
+                FIELD_SYMBOL: '👩‍🦼‍➡️',
+                FIELD_NAME: 'Kobieta na elektrycznym wózku inwalidzkim: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_motorized_wheelchair_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🧑\u200d🦼\u200d➡️',
-                FIELD_NAME: 'Adult z motorized wheelchair z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🧑‍🦼‍➡️',
+                FIELD_NAME: 'Osoba na elektrycznym wózku inwalidzkim: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_motorized_wheelchair_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '👨\u200d🦼\u200d➡️',
-                FIELD_NAME: 'Man z motorized wheelchair z czarny rightwards strzałka',
+                FIELD_SYMBOL: '👨‍🦼‍➡️',
+                FIELD_NAME: 'Mężczyzna na elektrycznym wózku inwalidzkim: zwrócony w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'pedestrian_with_female_sign': {
-                FIELD_SYMBOL: '🚶\u200d♀️',
-                FIELD_NAME: 'Pedestrian z female sign',
+                FIELD_SYMBOL: '🚶‍♀️',
+                FIELD_NAME: 'Idąca kobieta',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'pedestrian': {
                 FIELD_SYMBOL: '🚶',
-                FIELD_NAME: 'Pieszy',
+                FIELD_NAME: 'Idąca osoba',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pedestrian_with_male_sign': {
-                FIELD_SYMBOL: '🚶\u200d♂️',
-                FIELD_NAME: 'Pedestrian z male sign',
+                FIELD_SYMBOL: '🚶‍♂️',
+                FIELD_NAME: 'Idący mężczyzna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'pedestrian_with_female_sign_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🚶\u200d♀️\u200d➡️',
-                FIELD_NAME: 'Pedestrian z female sign z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🚶‍♀️‍➡️',
+                FIELD_NAME: 'Idąca kobieta: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'pedestrian_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🚶\u200d➡️',
-                FIELD_NAME: 'Pedestrian z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🚶‍➡️',
+                FIELD_NAME: 'Idąca osoba: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pedestrian_with_male_sign_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🚶\u200d♂️\u200d➡️',
-                FIELD_NAME: 'Pedestrian z male sign z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🚶‍♂️‍➡️',
+                FIELD_NAME: 'Idąca mężczyzna: zwrócony w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_probing_cane': {
-                FIELD_SYMBOL: '👩\u200d🦯',
-                FIELD_NAME: 'Woman z probing cane',
+                FIELD_SYMBOL: '👩‍🦯',
+                FIELD_NAME: 'Kobieta z białą laską',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_probing_cane': {
-                FIELD_SYMBOL: '🧑\u200d🦯',
-                FIELD_NAME: 'Adult z probing cane',
+                FIELD_SYMBOL: '🧑‍🦯',
+                FIELD_NAME: 'Osoba z białą laską',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_probing_cane': {
-                FIELD_SYMBOL: '👨\u200d🦯',
-                FIELD_NAME: 'Man z probing cane',
+                FIELD_SYMBOL: '👨‍🦯',
+                FIELD_NAME: 'Mężczyzna z białą laską',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'woman_with_probing_cane_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '👩\u200d🦯\u200d➡️',
-                FIELD_NAME: 'Woman z probing cane z czarny rightwards strzałka',
+                FIELD_SYMBOL: '👩‍🦯‍➡️',
+                FIELD_NAME: 'Kobieta z białą laską: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'adult_with_probing_cane_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🧑\u200d🦯\u200d➡️',
-                FIELD_NAME: 'Adult z probing cane z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🧑‍🦯‍➡️',
+                FIELD_NAME: 'Osoba z białą laską: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_with_probing_cane_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '👨\u200d🦯\u200d➡️',
-                FIELD_NAME: 'Man z probing cane z czarny rightwards strzałka',
+                FIELD_SYMBOL: '👨‍🦯‍➡️',
+                FIELD_NAME: 'Mężczyzna z białą laską: zwrócony w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'kneeling_person_with_female_sign': {
-                FIELD_SYMBOL: '🧎\u200d♀️',
-                FIELD_NAME: 'Kneeling person z female sign',
+                FIELD_SYMBOL: '🧎‍♀️',
+                FIELD_NAME: 'Klęcząca kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -2567,68 +2567,68 @@ class Emojis:
                 FIELD_SUPPORT_SEX: True
             },
             'kneeling_person_with_male_sign': {
-                FIELD_SYMBOL: '🧎\u200d♂️',
-                FIELD_NAME: 'Kneeling person z male sign',
+                FIELD_SYMBOL: '🧎‍♂️',
+                FIELD_NAME: 'Klęczący mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'runner_with_female_sign': {
-                FIELD_SYMBOL: '🏃\u200d♀️',
-                FIELD_NAME: 'Runner z female sign',
+                FIELD_SYMBOL: '🏃‍♀️',
+                FIELD_NAME: 'Biegnąca kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'runner': {
                 FIELD_SYMBOL: '🏃',
-                FIELD_NAME: 'Biegacz',
+                FIELD_NAME: 'Biegnąca osoba',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'runner_with_male_sign': {
-                FIELD_SYMBOL: '🏃\u200d♂️',
-                FIELD_NAME: 'Runner z male sign',
+                FIELD_SYMBOL: '🏃‍♂️',
+                FIELD_NAME: 'Biegnący mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'runner_with_female_sign_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🏃\u200d♀️\u200d➡️',
-                FIELD_NAME: 'Runner z female sign z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🏃‍♀️‍➡️',
+                FIELD_NAME: 'Biegnąca kobieta: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'runner_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🏃\u200d➡️',
-                FIELD_NAME: 'Runner z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🏃‍➡️',
+                FIELD_NAME: 'Biegnąca osoba: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'runner_with_male_sign_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🏃\u200d♂️\u200d➡️',
-                FIELD_NAME: 'Runner z male sign z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🏃‍♂️‍➡️',
+                FIELD_NAME: 'Biegnący mężczyzna: zwrócony w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'kneeling_person_with_female_sign_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🧎\u200d♀️\u200d➡️',
-                FIELD_NAME: 'Kneeling person z female sign z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🧎‍♀️‍➡️',
+                FIELD_NAME: 'Klęcząca kobieta: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'kneeling_person_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🧎\u200d➡️',
-                FIELD_NAME: 'Kneeling person z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🧎‍➡️',
+                FIELD_NAME: 'Klęcząca osoba: zwrócona w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'kneeling_person_with_male_sign_with_black_rightwards_arrow': {
-                FIELD_SYMBOL: '🧎\u200d♂️\u200d➡️',
-                FIELD_NAME: 'Kneeling person z male sign z czarny rightwards strzałka',
+                FIELD_SYMBOL: '🧎‍♂️‍➡️',
+                FIELD_NAME: 'Klęczący mężczyzna: zwrócony w prawo',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'standing_person_with_female_sign': {
-                FIELD_SYMBOL: '🧍\u200d♀️',
-                FIELD_NAME: 'Standing person z female sign',
+                FIELD_SYMBOL: '🧍‍♀️',
+                FIELD_NAME: 'Stojąca kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -2639,26 +2639,26 @@ class Emojis:
                 FIELD_SUPPORT_SEX: True
             },
             'standing_person_with_male_sign': {
-                FIELD_SYMBOL: '🧍\u200d♂️',
-                FIELD_NAME: 'Standing person z male sign',
+                FIELD_SYMBOL: '🧍‍♂️',
+                FIELD_NAME: 'Stojący mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'man_and_woman_holding_hands': {
                 FIELD_SYMBOL: '👫',
-                FIELD_NAME: 'Mężczyzna i kobieta trzymając się za ręce',
+                FIELD_NAME: 'Mężczyzna i kobieta trzymający się za ręce',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'two_women_holding_hands': {
                 FIELD_SYMBOL: '👭',
-                FIELD_NAME: 'Dwie kobiety trzymając się za ręce',
+                FIELD_NAME: 'Kobiety trzymające się za ręce',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: False
             },
             'two_men_holding_hands': {
                 FIELD_SYMBOL: '👬',
-                FIELD_NAME: 'Dwóch mężczyzn, trzymając się za ręce',
+                FIELD_NAME: 'Dwóch mężczyzn trzymających się za ręce',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: False
             },
@@ -2670,7 +2670,7 @@ class Emojis:
             },
             'snowboarder': {
                 FIELD_SYMBOL: '🏂',
-                FIELD_NAME: 'Snowboarder',
+                FIELD_NAME: 'Snowboardzista',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -2681,116 +2681,116 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'weight_lifter_with_female_sign': {
-                FIELD_SYMBOL: '🏋️\u200d♀️',
-                FIELD_NAME: 'Weight lifter z female sign',
+                FIELD_SYMBOL: '🏋️‍♀️',
+                FIELD_NAME: 'Kobieta podnosząca ciężary',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'weight_lifter': {
                 FIELD_SYMBOL: '🏋️',
-                FIELD_NAME: 'Podnośnik wagi',
+                FIELD_NAME: 'Osoba podnosząca ciężary',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: False
             },
             'weight_lifter_with_male_sign': {
-                FIELD_SYMBOL: '🏋️\u200d♂️',
-                FIELD_NAME: 'Weight lifter z male sign',
+                FIELD_SYMBOL: '🏋️‍♂️',
+                FIELD_NAME: 'Mężczyzna podnoszący ciężary',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'wrestlers_with_female_sign': {
-                FIELD_SYMBOL: '🤼\u200d♀️',
-                FIELD_NAME: 'Wrestlers z female sign',
+                FIELD_SYMBOL: '🤼‍♀️',
+                FIELD_NAME: 'Kobiety uprawiające zapasy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'wrestlers': {
                 FIELD_SYMBOL: '🤼',
-                FIELD_NAME: 'Zapaśnicy',
+                FIELD_NAME: 'Osoby uprawiające zapasy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'wrestlers_with_male_sign': {
-                FIELD_SYMBOL: '🤼\u200d♂️',
-                FIELD_NAME: 'Wrestlers z male sign',
+                FIELD_SYMBOL: '🤼‍♂️',
+                FIELD_NAME: 'Mężczyźni uprawiający zapasy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'person_doing_cartwheel_with_female_sign': {
-                FIELD_SYMBOL: '🤸\u200d♀️',
-                FIELD_NAME: 'Person doing cartwheel z female sign',
+                FIELD_SYMBOL: '🤸‍♀️',
+                FIELD_NAME: 'Kobieta robiąca gwiazdę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_doing_cartwheel': {
                 FIELD_SYMBOL: '🤸',
-                FIELD_NAME: 'Osoba robi Cartwheel',
+                FIELD_NAME: 'Osoba robiąca gwiazdę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_doing_cartwheel_with_male_sign': {
-                FIELD_SYMBOL: '🤸\u200d♂️',
-                FIELD_NAME: 'Person doing cartwheel z male sign',
+                FIELD_SYMBOL: '🤸‍♂️',
+                FIELD_NAME: 'Mężczyzna robiący gwiazdę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_ball_with_female_sign': {
-                FIELD_SYMBOL: '⛹️\u200d♀️',
-                FIELD_NAME: 'Person z ball z female sign',
+                FIELD_SYMBOL: '⛹️‍♀️',
+                FIELD_NAME: 'Kobieta kozłująca piłkę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_ball': {
                 FIELD_SYMBOL: '⛹️',
-                FIELD_NAME: 'Osoba z piłką',
+                FIELD_NAME: 'Osoba kozłująca piłkę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_with_ball_with_male_sign': {
-                FIELD_SYMBOL: '⛹️\u200d♂️',
-                FIELD_NAME: 'Person z ball z male sign',
+                FIELD_SYMBOL: '⛹️‍♂️',
+                FIELD_NAME: 'Mężczyzna kozłujący piłkę',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'fencer': {
                 FIELD_SYMBOL: '🤺',
-                FIELD_NAME: 'Szermierz',
+                FIELD_NAME: 'Osoba uprawiająca szermierkę',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'handball_with_female_sign': {
-                FIELD_SYMBOL: '🤾\u200d♀️',
-                FIELD_NAME: 'Handball z female sign',
+                FIELD_SYMBOL: '🤾‍♀️',
+                FIELD_NAME: 'Kobieta grająca w piłkę ręczną',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'handball': {
                 FIELD_SYMBOL: '🤾',
-                FIELD_NAME: 'Gra w piłkę ręczną',
+                FIELD_NAME: 'Osoba grająca w piłkę ręczną',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'handball_with_male_sign': {
-                FIELD_SYMBOL: '🤾\u200d♂️',
-                FIELD_NAME: 'Handball z male sign',
+                FIELD_SYMBOL: '🤾‍♂️',
+                FIELD_NAME: 'Mężczyzna grający w piłkę ręczną',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'golfer_with_female_sign': {
-                FIELD_SYMBOL: '🏌️\u200d♀️',
-                FIELD_NAME: 'Golfer z female sign',
+                FIELD_SYMBOL: '🏌️‍♀️',
+                FIELD_NAME: 'Kobieta grająca w golfa',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'golfer': {
                 FIELD_SYMBOL: '🏌️',
-                FIELD_NAME: 'Golfista',
+                FIELD_NAME: 'Osoba grająca w golfa',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'golfer_with_male_sign': {
-                FIELD_SYMBOL: '🏌️\u200d♂️',
-                FIELD_NAME: 'Golfer z male sign',
+                FIELD_SYMBOL: '🏌️‍♂️',
+                FIELD_NAME: 'Mężczyzna grający w golfa',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
@@ -2801,188 +2801,188 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'person_in_lotus_position_with_female_sign': {
-                FIELD_SYMBOL: '🧘\u200d♀️',
-                FIELD_NAME: 'Person in lotus position z female sign',
+                FIELD_SYMBOL: '🧘‍♀️',
+                FIELD_NAME: 'Kobieta w pozycji lotosu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_in_lotus_position': {
                 FIELD_SYMBOL: '🧘',
-                FIELD_NAME: 'Osoba W Pozycji Lotosu',
+                FIELD_NAME: 'Osoba w pozycji lotosu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_in_lotus_position_with_male_sign': {
-                FIELD_SYMBOL: '🧘\u200d♂️',
-                FIELD_NAME: 'Person in lotus position z male sign',
+                FIELD_SYMBOL: '🧘‍♂️',
+                FIELD_NAME: 'Mężczyzna w pozycji lotosu',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'surfer_with_female_sign': {
-                FIELD_SYMBOL: '🏄\u200d♀️',
-                FIELD_NAME: 'Surfer z female sign',
+                FIELD_SYMBOL: '🏄‍♀️',
+                FIELD_NAME: 'Surfująca kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'surfer': {
                 FIELD_SYMBOL: '🏄',
-                FIELD_NAME: 'Surfer',
+                FIELD_NAME: 'Surfująca osoba',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'surfer_with_male_sign': {
-                FIELD_SYMBOL: '🏄\u200d♂️',
-                FIELD_NAME: 'Surfer z male sign',
+                FIELD_SYMBOL: '🏄‍♂️',
+                FIELD_NAME: 'Surfujący mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'swimmer_with_female_sign': {
-                FIELD_SYMBOL: '🏊\u200d♀️',
-                FIELD_NAME: 'Swimmer z female sign',
+                FIELD_SYMBOL: '🏊‍♀️',
+                FIELD_NAME: 'Pływająca kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'swimmer': {
                 FIELD_SYMBOL: '🏊',
-                FIELD_NAME: 'Pływak',
+                FIELD_NAME: 'Pływająca osoba',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'swimmer_with_male_sign': {
-                FIELD_SYMBOL: '🏊\u200d♂️',
-                FIELD_NAME: 'Swimmer z male sign',
+                FIELD_SYMBOL: '🏊‍♂️',
+                FIELD_NAME: 'Pływający mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'water_polo_with_female_sign': {
-                FIELD_SYMBOL: '🤽\u200d♀️',
-                FIELD_NAME: 'Water polo z female sign',
+                FIELD_SYMBOL: '🤽‍♀️',
+                FIELD_NAME: 'Kobieta grająca w piłkę wodną',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'water_polo': {
                 FIELD_SYMBOL: '🤽',
-                FIELD_NAME: 'Wodne polo',
+                FIELD_NAME: 'Osoba grająca w piłkę wodną',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'water_polo_with_male_sign': {
-                FIELD_SYMBOL: '🤽\u200d♂️',
-                FIELD_NAME: 'Water polo z male sign',
+                FIELD_SYMBOL: '🤽‍♂️',
+                FIELD_NAME: 'Mężczyzna grający w piłkę wodną',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: True
             },
             'rowboat_with_female_sign': {
-                FIELD_SYMBOL: '🚣\u200d♀️',
-                FIELD_NAME: 'Rowboat z female sign',
+                FIELD_SYMBOL: '🚣‍♀️',
+                FIELD_NAME: 'Kobieta wiosłująca w łodzi',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'rowboat': {
                 FIELD_SYMBOL: '🚣',
-                FIELD_NAME: 'Rowboat',
+                FIELD_NAME: 'Osoba wiosłująca w łodzi',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'rowboat_with_male_sign': {
-                FIELD_SYMBOL: '🚣\u200d♂️',
-                FIELD_NAME: 'Rowboat z male sign',
+                FIELD_SYMBOL: '🚣‍♂️',
+                FIELD_NAME: 'Mężczyzna wiosłujący w łodzi',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_climbing_with_female_sign': {
-                FIELD_SYMBOL: '🧗\u200d♀️',
-                FIELD_NAME: 'Person climbing z female sign',
+                FIELD_SYMBOL: '🧗‍♀️',
+                FIELD_NAME: 'Kobieta wspinająca się',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_climbing': {
                 FIELD_SYMBOL: '🧗',
-                FIELD_NAME: 'Wspinaczka osobowa',
+                FIELD_NAME: 'Osoba wspinająca się',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'person_climbing_with_male_sign': {
-                FIELD_SYMBOL: '🧗\u200d♂️',
-                FIELD_NAME: 'Person climbing z male sign',
+                FIELD_SYMBOL: '🧗‍♂️',
+                FIELD_NAME: 'Mężczyzna wspinający się',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'mountain_bicyclist_with_female_sign': {
-                FIELD_SYMBOL: '🚵\u200d♀️',
-                FIELD_NAME: 'Mountain bicyclist z female sign',
+                FIELD_SYMBOL: '🚵‍♀️',
+                FIELD_NAME: 'Kobieta na rowerze górskim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'mountain_bicyclist': {
                 FIELD_SYMBOL: '🚵',
-                FIELD_NAME: 'Mountain Bicyclist',
+                FIELD_NAME: 'Osoba na rowerze górskim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'mountain_bicyclist_with_male_sign': {
-                FIELD_SYMBOL: '🚵\u200d♂️',
-                FIELD_NAME: 'Mountain bicyclist z male sign',
+                FIELD_SYMBOL: '🚵‍♂️',
+                FIELD_NAME: 'Mężczyzna na rowerze górskim',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bicyclist_with_female_sign': {
-                FIELD_SYMBOL: '🚴\u200d♀️',
-                FIELD_NAME: 'Bicyclist z female sign',
+                FIELD_SYMBOL: '🚴‍♀️',
+                FIELD_NAME: 'Kobieta na rowerze',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bicyclist': {
                 FIELD_SYMBOL: '🚴',
-                FIELD_NAME: 'Kolarz',
+                FIELD_NAME: 'Osoba na rowerze',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'bicyclist_with_male_sign': {
-                FIELD_SYMBOL: '🚴\u200d♂️',
-                FIELD_NAME: 'Bicyclist z male sign',
+                FIELD_SYMBOL: '🚴‍♂️',
+                FIELD_NAME: 'Mężczyzna na rowerze',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'juggling_with_female_sign': {
-                FIELD_SYMBOL: '🤹\u200d♀️',
-                FIELD_NAME: 'Juggling z female sign',
+                FIELD_SYMBOL: '🤹‍♀️',
+                FIELD_NAME: 'Żonglująca kobieta',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'juggling': {
                 FIELD_SYMBOL: '🤹',
-                FIELD_NAME: 'Żonglerka',
+                FIELD_NAME: 'Żonglująca osoba',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'juggling_with_male_sign': {
-                FIELD_SYMBOL: '🤹\u200d♂️',
-                FIELD_NAME: 'Juggling z male sign',
+                FIELD_SYMBOL: '🤹‍♂️',
+                FIELD_NAME: 'Żonglujący mężczyzna',
                 FIELD_SUPPORT_COLOR: True,
                 FIELD_SUPPORT_SEX: True
             },
             'speaking_head_in_silhouette': {
                 FIELD_SYMBOL: '🗣️',
-                FIELD_NAME: 'Mówiąc Głową W Sylwetce',
+                FIELD_NAME: 'Mówiąca głowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bust_in_silhouette': {
                 FIELD_SYMBOL: '👤',
-                FIELD_NAME: 'Popiersie w sylwetce',
+                FIELD_NAME: 'Sylwetka popiersia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'busts_in_silhouette': {
                 FIELD_SYMBOL: '👥',
-                FIELD_NAME: 'Popiersia W Sylwetce',
+                FIELD_NAME: 'Sylwetki popiersi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'people_hugging': {
                 FIELD_SYMBOL: '🫂',
-                FIELD_NAME: 'Przytulanie ludzi',
+                FIELD_NAME: 'Obejmujące się osoby',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3014,19 +3014,19 @@ class Emojis:
             },
             'ball_of_yarn': {
                 FIELD_SYMBOL: '🧶',
-                FIELD_NAME: 'Piłka Przędzy',
+                FIELD_NAME: 'Włóczka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'spool_of_thread': {
                 FIELD_SYMBOL: '🧵',
-                FIELD_NAME: 'Szpula nici',
+                FIELD_NAME: 'Nić',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sewing_needle': {
                 FIELD_SYMBOL: '🪡',
-                FIELD_NAME: 'Igła',
+                FIELD_NAME: 'Igła krawiecka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3038,25 +3038,25 @@ class Emojis:
             },
             'lab_coat': {
                 FIELD_SYMBOL: '🥼',
-                FIELD_NAME: 'Fartuch laboratoryjny',
+                FIELD_NAME: 'Biały fartuch',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'safety_vest': {
                 FIELD_SYMBOL: '🦺',
-                FIELD_NAME: 'Kamizelka bezpieczeństwa',
+                FIELD_NAME: 'Kamizelka ratunkowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'womans_clothes': {
                 FIELD_SYMBOL: '👚',
-                FIELD_NAME: 'Womans Odzież',
+                FIELD_NAME: 'Ubranie damskie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             't_shirt': {
                 FIELD_SYMBOL: '👕',
-                FIELD_NAME: 'Podkoszulek',
+                FIELD_NAME: 'Koszulka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3068,7 +3068,7 @@ class Emojis:
             },
             'briefs': {
                 FIELD_SYMBOL: '🩲',
-                FIELD_NAME: 'Majtki',
+                FIELD_NAME: 'Kąpielówki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3098,7 +3098,7 @@ class Emojis:
             },
             'one_piece_swimsuit': {
                 FIELD_SYMBOL: '🩱',
-                FIELD_NAME: 'Jednoczęściowy kostium kąpielowy',
+                FIELD_NAME: 'Strój kąpielowy jednoczęściowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3116,13 +3116,13 @@ class Emojis:
             },
             'thong_sandal': {
                 FIELD_SYMBOL: '🩴',
-                FIELD_NAME: 'Sandały typu stringi',
+                FIELD_NAME: 'Japonka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'flat_shoe': {
                 FIELD_SYMBOL: '🥿',
-                FIELD_NAME: 'Płaskie buty',
+                FIELD_NAME: 'Baleriny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3134,37 +3134,37 @@ class Emojis:
             },
             'womans_sandal': {
                 FIELD_SYMBOL: '👡',
-                FIELD_NAME: 'Womans Sandal',
+                FIELD_NAME: 'Sandał damski',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'womans_boots': {
                 FIELD_SYMBOL: '👢',
-                FIELD_NAME: 'Womans Boots',
+                FIELD_NAME: 'Kozak damski',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mans_shoe': {
                 FIELD_SYMBOL: '👞',
-                FIELD_NAME: 'Mans Shoe',
+                FIELD_NAME: 'But męski',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'athletic_shoe': {
                 FIELD_SYMBOL: '👟',
-                FIELD_NAME: 'Buty sportowe',
+                FIELD_NAME: 'But do biegania',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hiking_boot': {
                 FIELD_SYMBOL: '🥾',
-                FIELD_NAME: 'But do wędrówek',
+                FIELD_NAME: 'But turystyczny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'socks': {
                 FIELD_SYMBOL: '🧦',
-                FIELD_NAME: 'Skarpety',
+                FIELD_NAME: 'Skarpetki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3188,25 +3188,25 @@ class Emojis:
             },
             'billed_cap': {
                 FIELD_SYMBOL: '🧢',
-                FIELD_NAME: 'Zafakturowana czapka',
+                FIELD_NAME: 'Bejsbolówka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'womans_hat': {
                 FIELD_SYMBOL: '👒',
-                FIELD_NAME: 'Womans Hat',
+                FIELD_NAME: 'Kapelusz damski',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'graduation_cap': {
                 FIELD_SYMBOL: '🎓',
-                FIELD_NAME: 'Czapka Graduation',
+                FIELD_NAME: 'Biret',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'helmet_with_white_cross': {
                 FIELD_SYMBOL: '⛑️',
-                FIELD_NAME: 'Kask z Białym Krzyżem',
+                FIELD_NAME: 'Kask z krzyżykiem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3224,13 +3224,13 @@ class Emojis:
             },
             'ring': {
                 FIELD_SYMBOL: '💍',
-                FIELD_NAME: 'Pierścień',
+                FIELD_NAME: 'Pierścionek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pouch': {
                 FIELD_SYMBOL: '👝',
-                FIELD_NAME: 'Kieszonka',
+                FIELD_NAME: 'Saszetka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3248,13 +3248,13 @@ class Emojis:
             },
             'briefcase': {
                 FIELD_SYMBOL: '💼',
-                FIELD_NAME: 'Aktówka',
+                FIELD_NAME: 'Teczka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'school_satchel': {
                 FIELD_SYMBOL: '🎒',
-                FIELD_NAME: 'Tornister szkolny',
+                FIELD_NAME: 'Tornister',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3272,7 +3272,7 @@ class Emojis:
             },
             'dark_sunglasses': {
                 FIELD_SYMBOL: '🕶️',
-                FIELD_NAME: 'Ciemne okulary',
+                FIELD_NAME: 'Okulary słoneczne',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3284,25 +3284,25 @@ class Emojis:
             },
             'closed_umbrella': {
                 FIELD_SYMBOL: '🌂',
-                FIELD_NAME: 'Zamknięty parasol',
+                FIELD_NAME: 'Złożony parasol',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'probing_cane': {
                 FIELD_SYMBOL: '🦯',
-                FIELD_NAME: 'Laska do sondowania',
+                FIELD_NAME: 'Biała laska',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'manual_wheelchair': {
                 FIELD_SYMBOL: '🦽',
-                FIELD_NAME: 'Ręczny wózek inwalidzki',
+                FIELD_NAME: 'Wózek inwalidzki ręczny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'motorized_wheelchair': {
                 FIELD_SYMBOL: '🦼',
-                FIELD_NAME: 'Zmotoryzowany wózek inwalidzki',
+                FIELD_NAME: 'Wózek inwalidzki elektryczny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3316,55 +3316,55 @@ class Emojis:
         ANIMALS: {
             'dog_face': {
                 FIELD_SYMBOL: '🐶',
-                FIELD_NAME: 'Pysk',
+                FIELD_NAME: 'Głowa psa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cat_face': {
                 FIELD_SYMBOL: '🐱',
-                FIELD_NAME: 'Kocia twarz',
+                FIELD_NAME: 'Głowa kota',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mouse_face': {
                 FIELD_SYMBOL: '🐭',
-                FIELD_NAME: 'Twarz Myszy',
+                FIELD_NAME: 'Głowa myszy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hamster_face': {
                 FIELD_SYMBOL: '🐹',
-                FIELD_NAME: 'Twarz chomika',
+                FIELD_NAME: 'Głowa chomika',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'rabbit_face': {
                 FIELD_SYMBOL: '🐰',
-                FIELD_NAME: 'Królik Twarz',
+                FIELD_NAME: 'Głowa królika',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'fox_face': {
                 FIELD_SYMBOL: '🦊',
-                FIELD_NAME: 'Twarz Lisa',
+                FIELD_NAME: 'Głowa lisa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bear_face': {
                 FIELD_SYMBOL: '🐻',
-                FIELD_NAME: 'Twarz Niedźwiedzia',
+                FIELD_NAME: 'Głowa niedźwiedzia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'panda_face': {
                 FIELD_SYMBOL: '🐼',
-                FIELD_NAME: 'Twarz Pandy',
+                FIELD_NAME: 'Głowa pandy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bear_face_with_snowflake': {
-                FIELD_SYMBOL: '🐻\u200d❄️',
-                FIELD_NAME: 'Bear twarz z snowflake',
+                FIELD_SYMBOL: '🐻‍❄️',
+                FIELD_NAME: 'Niedźwiedź polarny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3376,61 +3376,61 @@ class Emojis:
             },
             'tiger_face': {
                 FIELD_SYMBOL: '🐯',
-                FIELD_NAME: 'Tygrysia Twarz',
+                FIELD_NAME: 'Głowa tygrysa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lion_face': {
                 FIELD_SYMBOL: '🦁',
-                FIELD_NAME: 'Twarz Lwa',
+                FIELD_NAME: 'Głowa lwa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cow_face': {
                 FIELD_SYMBOL: '🐮',
-                FIELD_NAME: 'Twarz krowy',
+                FIELD_NAME: 'Głowa krowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pig_face': {
                 FIELD_SYMBOL: '🐷',
-                FIELD_NAME: 'Twarz świni',
+                FIELD_NAME: 'Głowa świni',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pig_nose': {
                 FIELD_SYMBOL: '🐽',
-                FIELD_NAME: 'Świński nos',
+                FIELD_NAME: 'Ryj świni',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'frog_face': {
                 FIELD_SYMBOL: '🐸',
-                FIELD_NAME: 'Żaba Twarz',
+                FIELD_NAME: 'Głowa żaby',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'monkey_face': {
                 FIELD_SYMBOL: '🐵',
-                FIELD_NAME: 'Twarz małpy',
+                FIELD_NAME: 'Głowa małpy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'see_no_evil_monkey': {
                 FIELD_SYMBOL: '🙈',
-                FIELD_NAME: 'Zobacz-No-Evil Monkey',
+                FIELD_NAME: 'Małpa zasłaniająca oczy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hear_no_evil_monkey': {
                 FIELD_SYMBOL: '🙉',
-                FIELD_NAME: 'Słuchaj, nie zła małpa',
+                FIELD_NAME: 'Małpa zasłaniająca uszy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'speak_no_evil_monkey': {
                 FIELD_SYMBOL: '🙊',
-                FIELD_NAME: 'Mów-No-Evil Monkey',
+                FIELD_NAME: 'Małpa zasłaniająca pyszczek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3442,7 +3442,7 @@ class Emojis:
             },
             'chicken': {
                 FIELD_SYMBOL: '🐔',
-                FIELD_NAME: 'kurczak',
+                FIELD_NAME: 'Kura',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3460,19 +3460,19 @@ class Emojis:
             },
             'baby_chick': {
                 FIELD_SYMBOL: '🐤',
-                FIELD_NAME: 'Baby Chick',
+                FIELD_NAME: 'Kurczątko',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hatching_chick': {
                 FIELD_SYMBOL: '🐣',
-                FIELD_NAME: 'Pisklę',
+                FIELD_NAME: 'Wykluwające się kurczątko',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'front_facing_baby_chick': {
                 FIELD_SYMBOL: '🐥',
-                FIELD_NAME: 'Przednia laska z przodu',
+                FIELD_NAME: 'Kurczątko od przodu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3484,13 +3484,13 @@ class Emojis:
             },
             'duck': {
                 FIELD_SYMBOL: '🦆',
-                FIELD_NAME: 'kaczka',
+                FIELD_NAME: 'Kaczka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bird_with_black_large_square': {
-                FIELD_SYMBOL: '🐦\u200d⬛',
-                FIELD_NAME: 'Bird z czarny large kwadrat',
+                FIELD_SYMBOL: '🐦‍⬛',
+                FIELD_NAME: 'Czarny ptak',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3514,7 +3514,7 @@ class Emojis:
             },
             'wolf_face': {
                 FIELD_SYMBOL: '🐺',
-                FIELD_NAME: 'Wilcza Twarz',
+                FIELD_NAME: 'Głowa wilka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3526,13 +3526,13 @@ class Emojis:
             },
             'horse_face': {
                 FIELD_SYMBOL: '🐴',
-                FIELD_NAME: 'Twarz konia',
+                FIELD_NAME: 'Głowa konia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'unicorn_face': {
                 FIELD_SYMBOL: '🦄',
-                FIELD_NAME: 'Jednorożec Twarz',
+                FIELD_NAME: 'Głowa jednorożca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3544,7 +3544,7 @@ class Emojis:
             },
             'honeybee': {
                 FIELD_SYMBOL: '🐝',
-                FIELD_NAME: 'Pszczoła miodna',
+                FIELD_NAME: 'Pszczoła',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3556,7 +3556,7 @@ class Emojis:
             },
             'bug': {
                 FIELD_SYMBOL: '🐛',
-                FIELD_NAME: 'Pluskwa',
+                FIELD_NAME: 'Gąsienica',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3574,7 +3574,7 @@ class Emojis:
             },
             'lady_beetle': {
                 FIELD_SYMBOL: '🐞',
-                FIELD_NAME: 'Lady Beetle',
+                FIELD_NAME: 'Biedronka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3586,7 +3586,7 @@ class Emojis:
             },
             'fly': {
                 FIELD_SYMBOL: '🪰',
-                FIELD_NAME: 'latać',
+                FIELD_NAME: 'Mucha',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3610,7 +3610,7 @@ class Emojis:
             },
             'cricket': {
                 FIELD_SYMBOL: '🦗',
-                FIELD_NAME: 'Krykiet',
+                FIELD_NAME: 'Świerszcz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3622,19 +3622,19 @@ class Emojis:
             },
             'spider_web': {
                 FIELD_SYMBOL: '🕸️',
-                FIELD_NAME: 'Pajęcza sieć',
+                FIELD_NAME: 'Pajęczyna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'scorpion': {
                 FIELD_SYMBOL: '🦂',
-                FIELD_NAME: 'Skorpion',
+                FIELD_NAME: 'Brązowy skorpion',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'turtle': {
                 FIELD_SYMBOL: '🐢',
-                FIELD_NAME: 'żółw',
+                FIELD_NAME: 'Żółw',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3652,13 +3652,13 @@ class Emojis:
             },
             't_rex': {
                 FIELD_SYMBOL: '🦖',
-                FIELD_NAME: 'T-Rex',
+                FIELD_NAME: 'T-rex',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sauropod': {
                 FIELD_SYMBOL: '🦕',
-                FIELD_NAME: 'Sauropod',
+                FIELD_NAME: 'Zauropod',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3700,13 +3700,13 @@ class Emojis:
             },
             'blowfish': {
                 FIELD_SYMBOL: '🐡',
-                FIELD_NAME: 'Blowfish',
+                FIELD_NAME: 'Ryba rozdymka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'tropical_fish': {
                 FIELD_SYMBOL: '🐠',
-                FIELD_NAME: 'Tropikalna ryba',
+                FIELD_NAME: 'Ryba tropikalna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3724,7 +3724,7 @@ class Emojis:
             },
             'spouting_whale': {
                 FIELD_SYMBOL: '🐳',
-                FIELD_NAME: 'Spouting Whale',
+                FIELD_NAME: 'Wieloryb tryskający wodą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3735,7 +3735,7 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'emoji': {
-                FIELD_SYMBOL: '\U0001facd',
+                FIELD_SYMBOL: '🫍',
                 FIELD_NAME: 'Orka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
@@ -3772,7 +3772,7 @@ class Emojis:
             },
             'zebra_face': {
                 FIELD_SYMBOL: '🦓',
-                FIELD_NAME: 'Twarz Zebry',
+                FIELD_NAME: 'Zebra',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3789,8 +3789,8 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'emoji_2': {
-                FIELD_SYMBOL: '\U0001fac8',
-                FIELD_NAME: 'Owłosione stworzenie',
+                FIELD_SYMBOL: '🫈',
+                FIELD_NAME: 'Wielka stopa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3820,19 +3820,19 @@ class Emojis:
             },
             'dromedary_camel': {
                 FIELD_SYMBOL: '🐪',
-                FIELD_NAME: 'Dromader Camel',
+                FIELD_NAME: 'Wielbłąd',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bactrian_camel': {
                 FIELD_SYMBOL: '🐫',
-                FIELD_NAME: 'Dwugarbny wielbłąd',
+                FIELD_NAME: 'Wielbłąd dwugarbny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'giraffe_face': {
                 FIELD_SYMBOL: '🦒',
-                FIELD_NAME: 'Twarz Żyrafy',
+                FIELD_NAME: 'Żyrafa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3844,13 +3844,13 @@ class Emojis:
             },
             'bison': {
                 FIELD_SYMBOL: '🦬',
-                FIELD_NAME: 'Bizon',
+                FIELD_NAME: 'Żubr',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'water_buffalo': {
                 FIELD_SYMBOL: '🐃',
-                FIELD_NAME: 'Wodny bawół',
+                FIELD_NAME: 'Wół domowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3886,7 +3886,7 @@ class Emojis:
             },
             'ram': {
                 FIELD_SYMBOL: '🐏',
-                FIELD_NAME: 'Baran',
+                FIELD_NAME: 'Biały baran',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3933,8 +3933,8 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'dog_with_safety_vest': {
-                FIELD_SYMBOL: '🐕\u200d🦺',
-                FIELD_NAME: 'Pies z safety vest',
+                FIELD_SYMBOL: '🐕‍🦺',
+                FIELD_NAME: 'Pies pomocnik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3945,8 +3945,8 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'cat_with_black_large_square': {
-                FIELD_SYMBOL: '🐈\u200d⬛',
-                FIELD_NAME: 'Kot z czarny large kwadrat',
+                FIELD_SYMBOL: '🐈‍⬛',
+                FIELD_NAME: 'Czarny kot',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -3970,13 +3970,13 @@ class Emojis:
             },
             'turkey': {
                 FIELD_SYMBOL: '🦃',
-                FIELD_NAME: 'indyk',
+                FIELD_NAME: 'Indyk',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'dodo': {
                 FIELD_SYMBOL: '🦤',
-                FIELD_NAME: 'Dront',
+                FIELD_NAME: 'Dodo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4006,7 +4006,7 @@ class Emojis:
             },
             'dove_of_peace': {
                 FIELD_SYMBOL: '🕊️',
-                FIELD_NAME: 'Gołąb pokoju',
+                FIELD_NAME: 'Gołąb',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4018,7 +4018,7 @@ class Emojis:
             },
             'raccoon': {
                 FIELD_SYMBOL: '🦝',
-                FIELD_NAME: 'szop pracz',
+                FIELD_NAME: 'Szop',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4066,7 +4066,7 @@ class Emojis:
             },
             'chipmunk': {
                 FIELD_SYMBOL: '🐿️',
-                FIELD_NAME: 'Wiewiórka',
+                FIELD_NAME: 'Pręgowiec',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4078,43 +4078,43 @@ class Emojis:
             },
             'paw_prints': {
                 FIELD_SYMBOL: '🐾',
-                FIELD_NAME: 'Odciski łap',
+                FIELD_NAME: 'Ślady łap',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'dragon': {
                 FIELD_SYMBOL: '🐉',
-                FIELD_NAME: 'smok',
+                FIELD_NAME: 'Smok',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'dragon_face': {
                 FIELD_SYMBOL: '🐲',
-                FIELD_NAME: 'Smocza Twarz',
+                FIELD_NAME: 'Głowa smoka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bird_with_fire': {
-                FIELD_SYMBOL: '🐦\u200d🔥',
-                FIELD_NAME: 'Bird z fire',
+                FIELD_SYMBOL: '🐦‍🔥',
+                FIELD_NAME: 'Feniks',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'nest_with_eggs': {
                 FIELD_SYMBOL: '🪺',
-                FIELD_NAME: 'Gniazdo Z Jajkami',
+                FIELD_NAME: 'Gniazdo z jajami',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'empty_nest': {
                 FIELD_SYMBOL: '🪹',
-                FIELD_NAME: 'Puste Gniazdo',
+                FIELD_NAME: 'Puste gniazdo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'spiral_shell': {
                 FIELD_SYMBOL: '🐚',
-                FIELD_NAME: 'Spiralna skorupa',
+                FIELD_NAME: 'Muszla spiralna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4128,7 +4128,7 @@ class Emojis:
             },
             'christmas_tree': {
                 FIELD_SYMBOL: '🎄',
-                FIELD_NAME: 'Drzewko świąteczne',
+                FIELD_NAME: 'Choinka bożonarodzeniowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4146,12 +4146,12 @@ class Emojis:
             },
             'palm_tree': {
                 FIELD_SYMBOL: '🌴',
-                FIELD_NAME: 'Drzewo palmowe',
+                FIELD_NAME: 'Palma',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'emoji': {
-                FIELD_SYMBOL: '\U0001fabe',
+                FIELD_SYMBOL: '🪾',
                 FIELD_NAME: 'Drzewo bez liści',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
@@ -4170,13 +4170,13 @@ class Emojis:
             },
             'herb': {
                 FIELD_SYMBOL: '🌿',
-                FIELD_NAME: 'Ziele',
+                FIELD_NAME: 'Zioło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'shamrock': {
                 FIELD_SYMBOL: '☘️',
-                FIELD_NAME: 'koniczyna',
+                FIELD_NAME: 'Koniczyna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4188,7 +4188,7 @@ class Emojis:
             },
             'pine_decoration': {
                 FIELD_SYMBOL: '🎍',
-                FIELD_NAME: 'Dekoracja Sosnowa',
+                FIELD_NAME: 'Japońska dekoracja kadomatsu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4200,25 +4200,25 @@ class Emojis:
             },
             'tanabata_tree': {
                 FIELD_SYMBOL: '🎋',
-                FIELD_NAME: 'Drzewo Tanabata',
+                FIELD_NAME: 'Drzewko na Tanabata',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'leaf_fluttering_in_wind': {
                 FIELD_SYMBOL: '🍃',
-                FIELD_NAME: 'Trzepotliwy Liść W Wiatrze',
+                FIELD_NAME: 'Liście na wietrze',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'fallen_leaf': {
                 FIELD_SYMBOL: '🍂',
-                FIELD_NAME: 'Fallen Leaf',
+                FIELD_NAME: 'Spadające liście',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'maple_leaf': {
                 FIELD_SYMBOL: '🍁',
-                FIELD_NAME: 'liść klonu',
+                FIELD_NAME: 'Liść klonowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4229,8 +4229,8 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'mushroom_with_large_brown_square': {
-                FIELD_SYMBOL: '🍄\u200d🟫',
-                FIELD_NAME: 'Mushroom z large brązowy kwadrat',
+                FIELD_SYMBOL: '🍄‍🟫',
+                FIELD_NAME: 'Brązowy grzyb',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4247,20 +4247,20 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'emoji_2': {
-                FIELD_SYMBOL: '\U0001f6d8',
+                FIELD_SYMBOL: '🛘',
                 FIELD_NAME: 'Osuwisko',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ear_of_rice': {
                 FIELD_SYMBOL: '🌾',
-                FIELD_NAME: 'Ucho Ryżu',
+                FIELD_NAME: 'Pędy ryżu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bouquet': {
                 FIELD_SYMBOL: '💐',
-                FIELD_NAME: 'Bukiet',
+                FIELD_NAME: 'Bukiet kwiatów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4278,7 +4278,7 @@ class Emojis:
             },
             'wilted_flower': {
                 FIELD_SYMBOL: '🥀',
-                FIELD_NAME: 'Zwiędły Kwiat',
+                FIELD_NAME: 'Zwiędły kwiat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4296,19 +4296,19 @@ class Emojis:
             },
             'hibiscus': {
                 FIELD_SYMBOL: '🌺',
-                FIELD_NAME: 'Poślubnik',
+                FIELD_NAME: 'Kwiat hibiskusa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cherry_blossom': {
                 FIELD_SYMBOL: '🌸',
-                FIELD_NAME: 'Kwiat Wiśni',
+                FIELD_NAME: 'Kwiat wiśni',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'blossom': {
                 FIELD_SYMBOL: '🌼',
-                FIELD_NAME: 'Kwitnąć',
+                FIELD_NAME: 'Kwiat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4320,7 +4320,7 @@ class Emojis:
             },
             'high_voltage_sign': {
                 FIELD_SYMBOL: '⚡️',
-                FIELD_NAME: 'Znak wysokiego napięcia',
+                FIELD_NAME: 'Wysokie napięcie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4331,14 +4331,14 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'emoji_3': {
-                FIELD_SYMBOL: '\U0001faef',
+                FIELD_SYMBOL: '🫯',
                 FIELD_NAME: 'Chmura walki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'water_wave': {
                 FIELD_SYMBOL: '🌊',
-                FIELD_NAME: 'Fala wodna',
+                FIELD_NAME: 'Fala',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4358,73 +4358,73 @@ class Emojis:
             },
             'full_moon_with_face': {
                 FIELD_SYMBOL: '🌝',
-                FIELD_NAME: 'Księżyc w pełni z twarzą',
+                FIELD_NAME: 'Pełnia z twarzą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'first_quarter_moon_with_face': {
                 FIELD_SYMBOL: '🌛',
-                FIELD_NAME: 'Pierwszy kwartał księżyca z twarzą',
+                FIELD_NAME: 'Pierwsza kwadra księżyca z twarzą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'last_quarter_moon_with_face': {
                 FIELD_SYMBOL: '🌜',
-                FIELD_NAME: 'Ostatni kwartał księżyca z twarzą',
+                FIELD_NAME: 'Ostatnia kwadra księżyca z twarzą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'new_moon_with_face': {
                 FIELD_SYMBOL: '🌚',
-                FIELD_NAME: 'Księżyc w nowiu z twarzą',
+                FIELD_NAME: 'Nów z twarzą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'full_moon_symbol': {
                 FIELD_SYMBOL: '🌕',
-                FIELD_NAME: 'Symbol pełni księżyca',
+                FIELD_NAME: 'Pełnia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waning_gibbous_moon_symbol': {
                 FIELD_SYMBOL: '🌖',
-                FIELD_NAME: 'Waning Gibbous Moon Symbol',
+                FIELD_NAME: 'Zanikający księżyc między pełnią a ostatnią kwadrą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'last_quarter_moon_symbol': {
                 FIELD_SYMBOL: '🌗',
-                FIELD_NAME: 'Ostatni symbol księżyca',
+                FIELD_NAME: 'Ostatnia kwadra księżyca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waning_crescent_moon_symbol': {
                 FIELD_SYMBOL: '🌘',
-                FIELD_NAME: 'Waning Crescent Moon Symbol',
+                FIELD_NAME: 'Zanikający półksiężyc',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'new_moon_symbol': {
                 FIELD_SYMBOL: '🌑',
-                FIELD_NAME: 'Symbol nowiu',
+                FIELD_NAME: 'Nów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waxing_crescent_moon_symbol': {
                 FIELD_SYMBOL: '🌒',
-                FIELD_NAME: 'Symbol wosku księżyca',
+                FIELD_NAME: 'Narastający półksiężyc',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'first_quarter_moon_symbol': {
                 FIELD_SYMBOL: '🌓',
-                FIELD_NAME: 'Pierwszy symbol księżyca',
+                FIELD_NAME: 'Pierwsza kwadra księżyca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waxing_gibbous_moon_symbol': {
                 FIELD_SYMBOL: '🌔',
-                FIELD_NAME: 'Woskowanie Gibbous Moon Symbol',
+                FIELD_NAME: 'Narastający księżyc między pierwszą kwadrą a pełnią',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4436,19 +4436,19 @@ class Emojis:
             },
             'earth_globe_americas': {
                 FIELD_SYMBOL: '🌎',
-                FIELD_NAME: 'Earth Globe Americas',
+                FIELD_NAME: 'Kula ziemska przedstawiająca Ameryki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'earth_globe_europe_africa': {
                 FIELD_SYMBOL: '🌍',
-                FIELD_NAME: 'Earth Globe Europa-Afryka',
+                FIELD_NAME: 'Kula ziemska przedstawiająca Europę i Afrykę',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'earth_globe_asia_australia': {
                 FIELD_SYMBOL: '🌏',
-                FIELD_NAME: 'Earth Globe Azja-Australia',
+                FIELD_NAME: 'Kula ziemska przedstawiająca Azję i Australię',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4460,25 +4460,25 @@ class Emojis:
             },
             'dizzy_symbol': {
                 FIELD_SYMBOL: '💫',
-                FIELD_NAME: 'Dizzy Symbol',
+                FIELD_NAME: 'Zawroty głowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_medium_star': {
                 FIELD_SYMBOL: '⭐️',
-                FIELD_NAME: 'Biała średnia gwiazda',
+                FIELD_NAME: 'Gwiazda',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'glowing_star': {
                 FIELD_SYMBOL: '🌟',
-                FIELD_NAME: 'Świecąca Gwiazda',
+                FIELD_NAME: 'Błyszcząca gwiazda',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sparkles': {
                 FIELD_SYMBOL: '✨',
-                FIELD_NAME: 'Błyska',
+                FIELD_NAME: 'Gwiazdki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4490,7 +4490,7 @@ class Emojis:
             },
             'collision_symbol': {
                 FIELD_SYMBOL: '💥',
-                FIELD_NAME: 'Symbol kolizji',
+                FIELD_NAME: 'Kolizja',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4508,7 +4508,7 @@ class Emojis:
             },
             'flying_saucer': {
                 FIELD_SYMBOL: '🛸',
-                FIELD_NAME: 'Latający spodek',
+                FIELD_NAME: 'Latający talerz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4528,7 +4528,7 @@ class Emojis:
         WEATHER: {
             'cloud_with_tornado': {
                 FIELD_SYMBOL: '🌪️',
-                FIELD_NAME: 'Chmura z Tornado',
+                FIELD_NAME: 'Tornado',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4540,25 +4540,25 @@ class Emojis:
             },
             'black_sun_with_rays': {
                 FIELD_SYMBOL: '☀️',
-                FIELD_NAME: 'Czarne słońce z promieniami',
+                FIELD_NAME: 'Słońce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_sun_with_small_cloud': {
                 FIELD_SYMBOL: '🌤️',
-                FIELD_NAME: 'Białe słońce z małą chmurką',
+                FIELD_NAME: 'Słońce za chmurką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sun_behind_cloud': {
                 FIELD_SYMBOL: '⛅️',
-                FIELD_NAME: 'Sun Behind Cloud',
+                FIELD_NAME: 'Słońce zza chmury',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_sun_behind_cloud': {
                 FIELD_SYMBOL: '🌥️',
-                FIELD_NAME: 'White Sun Behind Cloud',
+                FIELD_NAME: 'Słońce za chmurą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4570,31 +4570,31 @@ class Emojis:
             },
             'white_sun_behind_cloud_with_rain': {
                 FIELD_SYMBOL: '🌦️',
-                FIELD_NAME: 'Białe słońce za chmurą z deszczem',
+                FIELD_NAME: 'Słońce za chmurą i deszcz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cloud_with_rain': {
                 FIELD_SYMBOL: '🌧️',
-                FIELD_NAME: 'Chmura z deszczem',
+                FIELD_NAME: 'Chmura i deszcz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'thunder_cloud_and_rain': {
                 FIELD_SYMBOL: '⛈️',
-                FIELD_NAME: 'Chmura piorunów i deszcz',
+                FIELD_NAME: 'Chmura z piorunem i deszczem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cloud_with_lightning': {
                 FIELD_SYMBOL: '🌩️',
-                FIELD_NAME: 'Chmura z błyskawicą',
+                FIELD_NAME: 'Chmura i piorun',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cloud_with_snow': {
                 FIELD_SYMBOL: '🌨️',
-                FIELD_NAME: 'Chmura ze śniegiem',
+                FIELD_NAME: 'Chmura i śnieg',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4606,37 +4606,37 @@ class Emojis:
             },
             'snowman': {
                 FIELD_SYMBOL: '☃️',
-                FIELD_NAME: 'Bałwan',
+                FIELD_NAME: 'Bałwanek i płatki śniegu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'snowman_without_snow': {
                 FIELD_SYMBOL: '⛄️',
-                FIELD_NAME: 'Bałwan Bez Śniegu',
+                FIELD_NAME: 'Bałwanek bez śniegu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'wind_blowing_face': {
                 FIELD_SYMBOL: '🌬️',
-                FIELD_NAME: 'Twarz wiatru',
+                FIELD_NAME: 'Dmuchająca twarz wiatru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'dash_symbol': {
                 FIELD_SYMBOL: '💨',
-                FIELD_NAME: 'Symbol kreski',
+                FIELD_NAME: 'Szybkie poruszanie się',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'droplet': {
                 FIELD_SYMBOL: '💧',
-                FIELD_NAME: 'Kropelka',
+                FIELD_NAME: 'Kropla',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'splashing_sweat_symbol': {
                 FIELD_SYMBOL: '💦',
-                FIELD_NAME: 'Symbol rozpryskiwania potu',
+                FIELD_NAME: 'Krople potu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4668,7 +4668,7 @@ class Emojis:
             },
             'red_apple': {
                 FIELD_SYMBOL: '🍎',
-                FIELD_NAME: 'czerwone jabłko',
+                FIELD_NAME: 'Czerwone jabłko',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4686,13 +4686,13 @@ class Emojis:
             },
             'lemon': {
                 FIELD_SYMBOL: '🍋',
-                FIELD_NAME: 'Cytrynowy',
+                FIELD_NAME: 'Cytryna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lemon_with_large_green_square': {
-                FIELD_SYMBOL: '🍋\u200d🟩',
-                FIELD_NAME: 'Lemon z large zielony kwadrat',
+                FIELD_SYMBOL: '🍋‍🟩',
+                FIELD_NAME: 'Limonka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4722,7 +4722,7 @@ class Emojis:
             },
             'blueberries': {
                 FIELD_SYMBOL: '🫐',
-                FIELD_NAME: 'Jagody',
+                FIELD_NAME: 'Borówka amerykańska',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4758,13 +4758,13 @@ class Emojis:
             },
             'coconut': {
                 FIELD_SYMBOL: '🥥',
-                FIELD_NAME: 'Orzech kokosowy',
+                FIELD_NAME: 'Kokos',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'kiwifruit': {
                 FIELD_SYMBOL: '🥝',
-                FIELD_NAME: 'Kiwi',
+                FIELD_NAME: 'Owoc kiwi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4788,19 +4788,19 @@ class Emojis:
             },
             'pea_pod': {
                 FIELD_SYMBOL: '🫛',
-                FIELD_NAME: 'Strąk Grochu',
+                FIELD_NAME: 'Strąk grochu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'broccoli': {
                 FIELD_SYMBOL: '🥦',
-                FIELD_NAME: 'brokuły',
+                FIELD_NAME: 'Brokuł',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'leafy_green': {
                 FIELD_SYMBOL: '🥬',
-                FIELD_NAME: 'Liściasta zieleń',
+                FIELD_NAME: 'Warzywo liściaste',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4812,7 +4812,7 @@ class Emojis:
             },
             'hot_pepper': {
                 FIELD_SYMBOL: '🌶️',
-                FIELD_NAME: 'Ostra papryczka',
+                FIELD_NAME: 'Ostra papryka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4824,25 +4824,25 @@ class Emojis:
             },
             'ear_of_maize': {
                 FIELD_SYMBOL: '🌽',
-                FIELD_NAME: 'Ucho Kukurydzy',
+                FIELD_NAME: 'Kolba kukurydzy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'carrot': {
                 FIELD_SYMBOL: '🥕',
-                FIELD_NAME: 'Marchewka',
+                FIELD_NAME: 'Marchew',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'olive': {
                 FIELD_SYMBOL: '🫒',
-                FIELD_NAME: 'Oliwa',
+                FIELD_NAME: 'Oliwka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'garlic': {
                 FIELD_SYMBOL: '🧄',
-                FIELD_NAME: 'czosnek',
+                FIELD_NAME: 'Czosnek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4859,20 +4859,20 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'emoji': {
-                FIELD_SYMBOL: '\U0001fadc',
+                FIELD_SYMBOL: '🫜',
                 FIELD_NAME: 'Warzywo korzeniowe',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'roasted_sweet_potato': {
                 FIELD_SYMBOL: '🍠',
-                FIELD_NAME: 'Pieczone słodkie ziemniaki',
+                FIELD_NAME: 'Pieczony batat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ginger_root': {
                 FIELD_SYMBOL: '🫚',
-                FIELD_NAME: 'Korzeń Imbiru',
+                FIELD_NAME: 'Korzeń imbiru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4898,7 +4898,7 @@ class Emojis:
             },
             'baguette_bread': {
                 FIELD_SYMBOL: '🥖',
-                FIELD_NAME: 'Chleb Bagietkowy',
+                FIELD_NAME: 'Bagietka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4910,13 +4910,13 @@ class Emojis:
             },
             'cheese_wedge': {
                 FIELD_SYMBOL: '🧀',
-                FIELD_NAME: 'Klin klinowy',
+                FIELD_NAME: 'Kawałek sera',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'egg': {
                 FIELD_SYMBOL: '🥚',
-                FIELD_NAME: 'jajko',
+                FIELD_NAME: 'Jajko',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4928,19 +4928,19 @@ class Emojis:
             },
             'butter': {
                 FIELD_SYMBOL: '🧈',
-                FIELD_NAME: 'masło',
+                FIELD_NAME: 'Masło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pancakes': {
                 FIELD_SYMBOL: '🥞',
-                FIELD_NAME: 'naleśniki',
+                FIELD_NAME: 'Naleśniki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waffle': {
                 FIELD_SYMBOL: '🧇',
-                FIELD_NAME: 'Wafel',
+                FIELD_NAME: 'Gofr',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4952,19 +4952,19 @@ class Emojis:
             },
             'cut_of_meat': {
                 FIELD_SYMBOL: '🥩',
-                FIELD_NAME: 'Cięcie Mięsa',
+                FIELD_NAME: 'Kawałek mięsa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'poultry_leg': {
                 FIELD_SYMBOL: '🍗',
-                FIELD_NAME: 'Noga drobiu',
+                FIELD_NAME: 'Udko kurczaka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'meat_on_bone': {
                 FIELD_SYMBOL: '🍖',
-                FIELD_NAME: 'Mięso Na Kości',
+                FIELD_NAME: 'Mięso z kością',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -4994,13 +4994,13 @@ class Emojis:
             },
             'slice_of_pizza': {
                 FIELD_SYMBOL: '🍕',
-                FIELD_NAME: 'Kawałek pizzy',
+                FIELD_NAME: 'Pizza',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'flatbread': {
                 FIELD_SYMBOL: '🫓',
-                FIELD_NAME: 'Podpłomyki',
+                FIELD_NAME: 'Pita',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5012,7 +5012,7 @@ class Emojis:
             },
             'stuffed_flatbread': {
                 FIELD_SYMBOL: '🥙',
-                FIELD_NAME: 'Nadziewane Flatbread',
+                FIELD_NAME: 'Wrap',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5036,19 +5036,19 @@ class Emojis:
             },
             'tamale': {
                 FIELD_SYMBOL: '🫔',
-                FIELD_NAME: 'Tamale',
+                FIELD_NAME: 'Tamales',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'green_salad': {
                 FIELD_SYMBOL: '🥗',
-                FIELD_NAME: 'Zielona sałatka',
+                FIELD_NAME: 'Sałatka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'shallow_pan_of_food': {
                 FIELD_SYMBOL: '🥘',
-                FIELD_NAME: 'Płytka Pan Food',
+                FIELD_NAME: 'Danie z patelni',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5078,19 +5078,19 @@ class Emojis:
             },
             'steaming_bowl': {
                 FIELD_SYMBOL: '🍜',
-                FIELD_NAME: 'Parująca miska',
+                FIELD_NAME: 'Miska parującego jedzenia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pot_of_food': {
                 FIELD_SYMBOL: '🍲',
-                FIELD_NAME: 'Pot żywności',
+                FIELD_NAME: 'Garnek z jedzeniem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'curry_and_rice': {
                 FIELD_SYMBOL: '🍛',
-                FIELD_NAME: 'Curry i ryż',
+                FIELD_NAME: 'Ryż curry',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5102,13 +5102,13 @@ class Emojis:
             },
             'bento_box': {
                 FIELD_SYMBOL: '🍱',
-                FIELD_NAME: 'Bento Box',
+                FIELD_NAME: 'Pudełko bento',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'dumpling': {
                 FIELD_SYMBOL: '🥟',
-                FIELD_NAME: 'Kluska',
+                FIELD_NAME: 'Pieróg',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5120,7 +5120,7 @@ class Emojis:
             },
             'fried_shrimp': {
                 FIELD_SYMBOL: '🍤',
-                FIELD_NAME: 'Smażone Krewetki',
+                FIELD_NAME: 'Smażona krewetka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5138,13 +5138,13 @@ class Emojis:
             },
             'rice_cracker': {
                 FIELD_SYMBOL: '🍘',
-                FIELD_NAME: 'Ryżowy Krakers',
+                FIELD_NAME: 'Krakers ryżowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'fish_cake_with_swirl_design': {
                 FIELD_SYMBOL: '🍥',
-                FIELD_NAME: 'Ciasto Rybne z Projektem Wirowym',
+                FIELD_NAME: 'Ciastko rybne',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5156,7 +5156,7 @@ class Emojis:
             },
             'moon_cake': {
                 FIELD_SYMBOL: '🥮',
-                FIELD_NAME: 'Księżycowe ciasto',
+                FIELD_NAME: 'Ciasteczko księżycowe',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5174,7 +5174,7 @@ class Emojis:
             },
             'shaved_ice': {
                 FIELD_SYMBOL: '🍧',
-                FIELD_NAME: 'Ogolony Lód',
+                FIELD_NAME: 'Lody hawajskie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5186,7 +5186,7 @@ class Emojis:
             },
             'soft_ice_cream': {
                 FIELD_SYMBOL: '🍦',
-                FIELD_NAME: 'Miękkie Lody',
+                FIELD_NAME: 'Lody włoskie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5204,7 +5204,7 @@ class Emojis:
             },
             'shortcake': {
                 FIELD_SYMBOL: '🍰',
-                FIELD_NAME: 'Ciastko',
+                FIELD_NAME: 'Tort',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5216,7 +5216,7 @@ class Emojis:
             },
             'custard': {
                 FIELD_SYMBOL: '🍮',
-                FIELD_NAME: 'krem',
+                FIELD_NAME: 'Deser typu krem angielski',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5228,7 +5228,7 @@ class Emojis:
             },
             'candy': {
                 FIELD_SYMBOL: '🍬',
-                FIELD_NAME: 'cukierek',
+                FIELD_NAME: 'Cukierek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5240,13 +5240,13 @@ class Emojis:
             },
             'popcorn': {
                 FIELD_SYMBOL: '🍿',
-                FIELD_NAME: 'Prażona kukurydza',
+                FIELD_NAME: 'Popcorn',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'doughnut': {
                 FIELD_SYMBOL: '🍩',
-                FIELD_NAME: 'Pączek',
+                FIELD_NAME: 'Pączek z dziurką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5258,7 +5258,7 @@ class Emojis:
             },
             'chestnut': {
                 FIELD_SYMBOL: '🌰',
-                FIELD_NAME: 'kasztan',
+                FIELD_NAME: 'Kasztan',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5288,13 +5288,13 @@ class Emojis:
             },
             'pouring_liquid': {
                 FIELD_SYMBOL: '🫗',
-                FIELD_NAME: 'Nalewanie Płynu',
+                FIELD_NAME: 'Nalewanie płynu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'baby_bottle': {
                 FIELD_SYMBOL: '🍼',
-                FIELD_NAME: 'Butelka dla dziecka',
+                FIELD_NAME: 'Butelka ze smoczkiem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5312,85 +5312,85 @@ class Emojis:
             },
             'teacup_without_handle': {
                 FIELD_SYMBOL: '🍵',
-                FIELD_NAME: 'Filiżanka bez uchwytu',
+                FIELD_NAME: 'Filiżanka bez uszka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'beverage_box': {
                 FIELD_SYMBOL: '🧃',
-                FIELD_NAME: 'Pudełko na napoje',
+                FIELD_NAME: 'Napój w kartoniku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cup_with_straw': {
                 FIELD_SYMBOL: '🥤',
-                FIELD_NAME: 'Kubek Z Słomką',
+                FIELD_NAME: 'Szklanka ze słomką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bubble_tea': {
                 FIELD_SYMBOL: '🧋',
-                FIELD_NAME: 'Herbata z bąbelkami',
+                FIELD_NAME: 'Napój bubble tea',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sake_bottle_and_cup': {
                 FIELD_SYMBOL: '🍶',
-                FIELD_NAME: 'Sake Bottle and Cup',
+                FIELD_NAME: 'Sake',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'beer_mug': {
                 FIELD_SYMBOL: '🍺',
-                FIELD_NAME: 'Kufel do piwa',
+                FIELD_NAME: 'Kufel piwa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clinking_beer_mugs': {
                 FIELD_SYMBOL: '🍻',
-                FIELD_NAME: 'Clinking Beer Mugs',
+                FIELD_NAME: 'Stukające się kufle piwa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clinking_glasses': {
                 FIELD_SYMBOL: '🥂',
-                FIELD_NAME: 'Clinking Glasses',
+                FIELD_NAME: 'Stukające się kieliszki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'wine_glass': {
                 FIELD_SYMBOL: '🍷',
-                FIELD_NAME: 'Lampka wina',
+                FIELD_NAME: 'Kieliszek wina',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'tumbler_glass': {
                 FIELD_SYMBOL: '🥃',
-                FIELD_NAME: 'Tumbler Glass',
+                FIELD_NAME: 'Szklanka z grubym dnem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cocktail_glass': {
                 FIELD_SYMBOL: '🍸',
-                FIELD_NAME: 'Szklanka do drinków',
+                FIELD_NAME: 'Kieliszek z koktajlem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'tropical_drink': {
                 FIELD_SYMBOL: '🍹',
-                FIELD_NAME: 'Tropikalny napój',
+                FIELD_NAME: 'Drink tropikalny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mate_drink': {
                 FIELD_SYMBOL: '🧉',
-                FIELD_NAME: 'Napój Mate',
+                FIELD_NAME: 'Yerba mate',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bottle_with_popping_cork': {
                 FIELD_SYMBOL: '🍾',
-                FIELD_NAME: 'Butelka z Popping Cork',
+                FIELD_NAME: 'Butelka z wystrzelającym korkiem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5414,13 +5414,13 @@ class Emojis:
             },
             'fork_and_knife_with_plate': {
                 FIELD_SYMBOL: '🍽️',
-                FIELD_NAME: 'Widelec i nóż z talerzem',
+                FIELD_NAME: 'Talerz z nożem i widelcem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bowl_with_spoon': {
                 FIELD_SYMBOL: '🥣',
-                FIELD_NAME: 'Miska Z łyżką',
+                FIELD_NAME: 'Miska z łyżką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5432,13 +5432,13 @@ class Emojis:
             },
             'chopsticks': {
                 FIELD_SYMBOL: '🥢',
-                FIELD_NAME: 'Pałeczki do jedzenia',
+                FIELD_NAME: 'Pałeczki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'salt_shaker': {
                 FIELD_SYMBOL: '🧂',
-                FIELD_NAME: 'Solniczka',
+                FIELD_NAME: 'Sól',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5452,13 +5452,13 @@ class Emojis:
             },
             'basketball_and_hoop': {
                 FIELD_SYMBOL: '🏀',
-                FIELD_NAME: 'Koszykówka i obręcz',
+                FIELD_NAME: 'Koszykówka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'american_football': {
                 FIELD_SYMBOL: '🏈',
-                FIELD_NAME: 'futbol amerykański',
+                FIELD_NAME: 'Futbol amerykański',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5476,7 +5476,7 @@ class Emojis:
             },
             'tennis_racquet_and_ball': {
                 FIELD_SYMBOL: '🎾',
-                FIELD_NAME: 'Rakieta tenisowa i piłka',
+                FIELD_NAME: 'Tenis',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5488,61 +5488,61 @@ class Emojis:
             },
             'rugby_football': {
                 FIELD_SYMBOL: '🏉',
-                FIELD_NAME: 'Piłka nożna rugby',
+                FIELD_NAME: 'Piłka do rugby',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'flying_disc': {
                 FIELD_SYMBOL: '🥏',
-                FIELD_NAME: 'Latający dysk',
+                FIELD_NAME: 'Frisbee',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'billiards': {
                 FIELD_SYMBOL: '🎱',
-                FIELD_NAME: 'Bilard',
+                FIELD_NAME: 'Bila 8',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'yo_yo': {
                 FIELD_SYMBOL: '🪀',
-                FIELD_NAME: 'Jo-jo',
+                FIELD_NAME: 'Jojo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'table_tennis_paddle_and_ball': {
                 FIELD_SYMBOL: '🏓',
-                FIELD_NAME: 'Wiosło i piłka do tenisa stołowego',
+                FIELD_NAME: 'Tenis stołowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'badminton_racquet_and_shuttlecock': {
                 FIELD_SYMBOL: '🏸',
-                FIELD_NAME: 'Rakietka do badmintona i wolant',
+                FIELD_NAME: 'Badminton',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ice_hockey_stick_and_puck': {
                 FIELD_SYMBOL: '🏒',
-                FIELD_NAME: 'Kij do hokeja na lodzie i krążek',
+                FIELD_NAME: 'Hokej na lodzie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'field_hockey_stick_and_ball': {
                 FIELD_SYMBOL: '🏑',
-                FIELD_NAME: 'Kij na lodzie i piłka',
+                FIELD_NAME: 'Hokej na trawie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lacrosse_stick_and_ball': {
                 FIELD_SYMBOL: '🥍',
-                FIELD_NAME: 'Lacrosse Stick and Ball',
+                FIELD_NAME: 'Lacrosse',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cricket_bat_and_ball': {
                 FIELD_SYMBOL: '🏏',
-                FIELD_NAME: 'Kij krykietowy i piłka',
+                FIELD_NAME: 'Krykiet',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5554,13 +5554,13 @@ class Emojis:
             },
             'goal_net': {
                 FIELD_SYMBOL: '🥅',
-                FIELD_NAME: 'Sieć bramkowa',
+                FIELD_NAME: 'Bramka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'flag_in_hole': {
                 FIELD_SYMBOL: '⛳️',
-                FIELD_NAME: 'Flaga w otworze',
+                FIELD_NAME: 'Flaga w dołku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5584,7 +5584,7 @@ class Emojis:
             },
             'fishing_pole_and_fish': {
                 FIELD_SYMBOL: '🎣',
-                FIELD_NAME: 'Wędka i ryby',
+                FIELD_NAME: 'Wędka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5602,13 +5602,13 @@ class Emojis:
             },
             'martial_arts_uniform': {
                 FIELD_SYMBOL: '🥋',
-                FIELD_NAME: 'Mundur sztuk walki',
+                FIELD_NAME: 'Strój do sztuk walki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'running_shirt_with_sash': {
                 FIELD_SYMBOL: '🎽',
-                FIELD_NAME: 'Koszulka do biegania z szarfą',
+                FIELD_NAME: 'Koszulka do biegania',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5620,55 +5620,55 @@ class Emojis:
             },
             'roller_skate': {
                 FIELD_SYMBOL: '🛼',
-                FIELD_NAME: 'Görkorcsolya',
+                FIELD_NAME: 'Wrotka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sled': {
                 FIELD_SYMBOL: '🛷',
-                FIELD_NAME: 'Sanki',
+                FIELD_NAME: 'Sanie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ice_skate': {
                 FIELD_SYMBOL: '⛸️',
-                FIELD_NAME: 'Lodowa łyżwa',
+                FIELD_NAME: 'But z łyżwą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'curling_stone': {
                 FIELD_SYMBOL: '🥌',
-                FIELD_NAME: 'Curling Stone',
+                FIELD_NAME: 'Kamień do curlingu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ski_and_ski_boot': {
                 FIELD_SYMBOL: '🎿',
-                FIELD_NAME: 'Buty narciarskie i narciarskie',
+                FIELD_NAME: 'Narty',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'trophy': {
                 FIELD_SYMBOL: '🏆',
-                FIELD_NAME: 'Trofeum',
+                FIELD_NAME: 'Puchar',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'first_place_medal': {
                 FIELD_SYMBOL: '🥇',
-                FIELD_NAME: 'Medal Pierwszego Miejsca',
+                FIELD_NAME: 'Medal za 1. miejsce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'second_place_medal': {
                 FIELD_SYMBOL: '🥈',
-                FIELD_NAME: 'Medal drugiego miejsca',
+                FIELD_NAME: 'Medal za 2. miejsce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'third_place_medal': {
                 FIELD_SYMBOL: '🥉',
-                FIELD_NAME: 'Medal trzeciego miejsca',
+                FIELD_NAME: 'Medal za 3. miejsce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5680,7 +5680,7 @@ class Emojis:
             },
             'military_medal': {
                 FIELD_SYMBOL: '🎖️',
-                FIELD_NAME: 'Medal wojskowy',
+                FIELD_NAME: 'Order wojskowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5706,7 +5706,7 @@ class Emojis:
         ART_AND_CULTURE: {
             'reminder_ribbon': {
                 FIELD_SYMBOL: '🎗️',
-                FIELD_NAME: 'Przypomnienie wstążki',
+                FIELD_NAME: 'Wstążka pamięci',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5730,7 +5730,7 @@ class Emojis:
             },
             'performing_arts': {
                 FIELD_SYMBOL: '🎭',
-                FIELD_NAME: 'Sztuki widowiskowe',
+                FIELD_NAME: 'Maski teatralne',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5742,19 +5742,19 @@ class Emojis:
             },
             'artist_palette': {
                 FIELD_SYMBOL: '🎨',
-                FIELD_NAME: 'Paleta artystów',
+                FIELD_NAME: 'Paleta malarska',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'emoji': {
-                FIELD_SYMBOL: '\U0001fadf',
-                FIELD_NAME: 'Chlapanie',
+                FIELD_SYMBOL: '🫟',
+                FIELD_NAME: 'Rozbryzg',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clapper_board': {
                 FIELD_SYMBOL: '🎬',
-                FIELD_NAME: 'Zarząd klapy',
+                FIELD_NAME: 'Klaps',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5766,7 +5766,7 @@ class Emojis:
             },
             'film_frames': {
                 FIELD_SYMBOL: '🎞️',
-                FIELD_NAME: 'Ramki filmowe',
+                FIELD_NAME: 'Taśma filmowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5786,13 +5786,13 @@ class Emojis:
             },
             'musical_score': {
                 FIELD_SYMBOL: '🎼',
-                FIELD_NAME: 'Zapis nutowy',
+                FIELD_NAME: 'Partytura',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'musical_keyboard': {
                 FIELD_SYMBOL: '🎹',
-                FIELD_NAME: 'Klawiatura muzyczna',
+                FIELD_NAME: 'Klawisze',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5804,13 +5804,13 @@ class Emojis:
             },
             'drum_with_drumsticks': {
                 FIELD_SYMBOL: '🥁',
-                FIELD_NAME: 'Bęben z pałeczkami',
+                FIELD_NAME: 'Bęben',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'long_drum': {
                 FIELD_SYMBOL: '🪘',
-                FIELD_NAME: 'Długi bęben',
+                FIELD_NAME: 'Konga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5827,7 +5827,7 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'emoji': {
-                FIELD_SYMBOL: '\U0001fa8a',
+                FIELD_SYMBOL: '🪊',
                 FIELD_NAME: 'Puzon',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
@@ -5851,7 +5851,7 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'emoji_2': {
-                FIELD_SYMBOL: '\U0001fa89',
+                FIELD_SYMBOL: '🪉',
                 FIELD_NAME: 'Harfa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
@@ -5876,55 +5876,55 @@ class Emojis:
             },
             'multiple_musical_notes': {
                 FIELD_SYMBOL: '🎶',
-                FIELD_NAME: 'Wiele nut',
+                FIELD_NAME: 'Nuty',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'speaker': {
                 FIELD_SYMBOL: '🔈',
-                FIELD_NAME: 'Głośnik',
+                FIELD_NAME: 'Niska głośność głośnika',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'speaker_with_cancellation_stroke': {
                 FIELD_SYMBOL: '🔇',
-                FIELD_NAME: 'Głośnik ze skokiem anulowania',
+                FIELD_NAME: 'Wyciszony głośnik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'speaker_with_one_sound_wave': {
                 FIELD_SYMBOL: '🔉',
-                FIELD_NAME: 'Głośnik z One Sound Wave',
+                FIELD_NAME: 'Średnia głośność głośnika',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'speaker_with_three_sound_waves': {
                 FIELD_SYMBOL: '🔊',
-                FIELD_NAME: 'Głośnik z trzema falami dźwiękowymi',
+                FIELD_NAME: 'Wysoka głośność głośnika',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bell': {
                 FIELD_SYMBOL: '🔔',
-                FIELD_NAME: 'dzwon',
+                FIELD_NAME: 'Dzwonek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bell_with_cancellation_stroke': {
                 FIELD_SYMBOL: '🔕',
-                FIELD_NAME: 'Dzwon z udarem anulowania',
+                FIELD_NAME: 'Przekreślony dzwonek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cheering_megaphone': {
                 FIELD_SYMBOL: '📣',
-                FIELD_NAME: 'Dopingujący megafon',
+                FIELD_NAME: 'Megafon',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'public_address_loudspeaker': {
                 FIELD_SYMBOL: '📢',
-                FIELD_NAME: 'Głośnik nagłośnieniowy',
+                FIELD_NAME: 'Głośnik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5938,13 +5938,13 @@ class Emojis:
             },
             'taxi': {
                 FIELD_SYMBOL: '🚕',
-                FIELD_NAME: 'Taxi',
+                FIELD_NAME: 'Taksówka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'recreational_vehicle': {
                 FIELD_SYMBOL: '🚙',
-                FIELD_NAME: 'Pojazd rekreacyjny',
+                FIELD_NAME: 'Samochód SUV',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5956,7 +5956,7 @@ class Emojis:
             },
             'trolleybus': {
                 FIELD_SYMBOL: '🚎',
-                FIELD_NAME: 'Trolejbusowy',
+                FIELD_NAME: 'Trolejbus',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5968,7 +5968,7 @@ class Emojis:
             },
             'police_car': {
                 FIELD_SYMBOL: '🚓',
-                FIELD_NAME: 'Radiowóz',
+                FIELD_NAME: 'Samochód policyjny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5980,7 +5980,7 @@ class Emojis:
             },
             'fire_engine': {
                 FIELD_SYMBOL: '🚒',
-                FIELD_NAME: 'Fire Engine',
+                FIELD_NAME: 'Samochód strażacki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -5992,19 +5992,19 @@ class Emojis:
             },
             'pickup_truck': {
                 FIELD_SYMBOL: '🛻',
-                FIELD_NAME: 'Teherautó',
+                FIELD_NAME: 'Pick-up',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'delivery_truck': {
                 FIELD_SYMBOL: '🚚',
-                FIELD_NAME: 'Ciężarówka dostawcza',
+                FIELD_NAME: 'Samochód dostawczy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'articulated_lorry': {
                 FIELD_SYMBOL: '🚛',
-                FIELD_NAME: 'Przegubowa ciężarówka',
+                FIELD_NAME: 'Samochód ciężarowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6016,7 +6016,7 @@ class Emojis:
             },
             'scooter': {
                 FIELD_SYMBOL: '🛴',
-                FIELD_NAME: 'Skuter',
+                FIELD_NAME: 'Hulajnoga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6034,31 +6034,31 @@ class Emojis:
             },
             'racing_motorcycle': {
                 FIELD_SYMBOL: '🏍️',
-                FIELD_NAME: 'Wyścigowy motocykl',
+                FIELD_NAME: 'Motocykl',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'auto_rickshaw': {
                 FIELD_SYMBOL: '🛺',
-                FIELD_NAME: 'Auto riksa',
+                FIELD_NAME: 'Autoriksza',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'wheel': {
                 FIELD_SYMBOL: '🛞',
-                FIELD_NAME: 'Koło Pojazdu',
+                FIELD_NAME: 'Koło pojazdu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'police_cars_revolving_light': {
                 FIELD_SYMBOL: '🚨',
-                FIELD_NAME: 'Rewolwerowe światło samochodów policyjnych',
+                FIELD_NAME: 'Kogut policyjny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'oncoming_police_car': {
                 FIELD_SYMBOL: '🚔',
-                FIELD_NAME: 'Nadjeżdżający samochód policyjny',
+                FIELD_NAME: 'Nadjeżdżający radiowóz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6070,7 +6070,7 @@ class Emojis:
             },
             'oncoming_automobile': {
                 FIELD_SYMBOL: '🚘',
-                FIELD_NAME: 'Nadchodzący samochód',
+                FIELD_NAME: 'Nadjeżdżający samochód',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6082,19 +6082,19 @@ class Emojis:
             },
             'aerial_tramway': {
                 FIELD_SYMBOL: '🚡',
-                FIELD_NAME: 'Tramwaj powietrzny',
+                FIELD_NAME: 'Kolej linowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mountain_cableway': {
                 FIELD_SYMBOL: '🚠',
-                FIELD_NAME: 'Kolejka linowa górska',
+                FIELD_NAME: 'Górska kolej linowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'suspension_railway': {
                 FIELD_SYMBOL: '🚟',
-                FIELD_NAME: 'Kolej wisząca',
+                FIELD_NAME: 'Kolej podwieszana',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6106,7 +6106,7 @@ class Emojis:
             },
             'tram_car': {
                 FIELD_SYMBOL: '🚋',
-                FIELD_NAME: 'Tramwaj samochodowy',
+                FIELD_NAME: 'Wagon tramwajowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6118,31 +6118,31 @@ class Emojis:
             },
             'monorail': {
                 FIELD_SYMBOL: '🚝',
-                FIELD_NAME: 'Jednoszynowy',
+                FIELD_NAME: 'Kolej jednoszynowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'high_speed_train': {
                 FIELD_SYMBOL: '🚄',
-                FIELD_NAME: 'Pociąg ekspresowy',
+                FIELD_NAME: 'Szybki pociąg',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'high_speed_train_with_bullet_nose': {
                 FIELD_SYMBOL: '🚅',
-                FIELD_NAME: 'Szybki pociąg z Bullet Nose',
+                FIELD_NAME: 'Szybki pociąg z zaokrąglonym przodem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'light_rail': {
                 FIELD_SYMBOL: '🚈',
-                FIELD_NAME: 'Lekka kolej',
+                FIELD_NAME: 'Kolej miejska',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'steam_locomotive': {
                 FIELD_SYMBOL: '🚂',
-                FIELD_NAME: 'Lokomotywa parowa',
+                FIELD_NAME: 'Lokomotywa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6160,7 +6160,7 @@ class Emojis:
             },
             'tram': {
                 FIELD_SYMBOL: '🚊',
-                FIELD_NAME: 'Tramwajowy',
+                FIELD_NAME: 'Tramwaj',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6196,25 +6196,25 @@ class Emojis:
             },
             'seat': {
                 FIELD_SYMBOL: '💺',
-                FIELD_NAME: 'Siedzenie',
+                FIELD_NAME: 'Fotel',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'helicopter': {
                 FIELD_SYMBOL: '🚁',
-                FIELD_NAME: 'Śmigłowiec',
+                FIELD_NAME: 'Helikopter',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'speedboat': {
                 FIELD_SYMBOL: '🚤',
-                FIELD_NAME: 'Łódź motorowa',
+                FIELD_NAME: 'Ścigacz wodny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'motor_boat': {
                 FIELD_SYMBOL: '🛥️',
-                FIELD_NAME: 'Łódź motorowa',
+                FIELD_NAME: 'Motorówka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6238,7 +6238,7 @@ class Emojis:
             },
             'ring_buoy': {
                 FIELD_SYMBOL: '🛟',
-                FIELD_NAME: 'Koło Ratunkowe',
+                FIELD_NAME: 'Koło ratunkowe',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6256,25 +6256,25 @@ class Emojis:
             },
             'fuel_pump': {
                 FIELD_SYMBOL: '⛽️',
-                FIELD_NAME: 'Pompa paliwowa',
+                FIELD_NAME: 'Dystrybutor paliwa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'construction_sign': {
                 FIELD_SYMBOL: '🚧',
-                FIELD_NAME: 'Znak budowlany',
+                FIELD_NAME: 'Prace drogowe',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'vertical_traffic_light': {
                 FIELD_SYMBOL: '🚦',
-                FIELD_NAME: 'Pionowe światła drogowe',
+                FIELD_NAME: 'Pionowa sygnalizacja uliczna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'horizontal_traffic_light': {
                 FIELD_SYMBOL: '🚥',
-                FIELD_NAME: 'Sygnalizacja świetlna pozioma',
+                FIELD_NAME: 'Pozioma sygnalizacja uliczna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6312,7 +6312,7 @@ class Emojis:
             },
             'moyai': {
                 FIELD_SYMBOL: '🗿',
-                FIELD_NAME: 'Moyai',
+                FIELD_NAME: 'Moai',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6324,13 +6324,13 @@ class Emojis:
             },
             'tokyo_tower': {
                 FIELD_SYMBOL: '🗼',
-                FIELD_NAME: 'wieża Tokyo',
+                FIELD_NAME: 'Tokyo Tower',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'european_castle': {
                 FIELD_SYMBOL: '🏰',
-                FIELD_NAME: 'Europejski zamek',
+                FIELD_NAME: 'Tokyo Tower',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6342,19 +6342,19 @@ class Emojis:
             },
             'umbrella_on_ground': {
                 FIELD_SYMBOL: '⛱️',
-                FIELD_NAME: 'Parasol Na Ziemi',
+                FIELD_NAME: 'Parasol plażowy wbity w ziemię',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'beach_with_umbrella': {
                 FIELD_SYMBOL: '🏖️',
-                FIELD_NAME: 'Plaża z parasolem',
+                FIELD_NAME: 'Parasol na plaży',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'desert_island': {
                 FIELD_SYMBOL: '🏝️',
-                FIELD_NAME: 'Pustynna wyspa',
+                FIELD_NAME: 'Bezludna wyspa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6378,13 +6378,13 @@ class Emojis:
             },
             'snow_capped_mountain': {
                 FIELD_SYMBOL: '🏔️',
-                FIELD_NAME: 'Ośnieżona góra',
+                FIELD_NAME: 'Góra z czapą lodową',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mount_fuji': {
                 FIELD_SYMBOL: '🗻',
-                FIELD_NAME: 'góra Fuji',
+                FIELD_NAME: 'Góra Fudżi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6402,7 +6402,7 @@ class Emojis:
             },
             'silhouette_of_japan': {
                 FIELD_SYMBOL: '🗾',
-                FIELD_NAME: 'Sylwetka Japonii',
+                FIELD_NAME: 'Mapa Japonii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6414,19 +6414,19 @@ class Emojis:
             },
             'national_park': {
                 FIELD_SYMBOL: '🏞️',
-                FIELD_NAME: 'Park Narodowy',
+                FIELD_NAME: 'Park narodowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sunrise': {
                 FIELD_SYMBOL: '🌅',
-                FIELD_NAME: 'wschód słońca',
+                FIELD_NAME: 'Wschód słońca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sunrise_over_mountains': {
                 FIELD_SYMBOL: '🌄',
-                FIELD_NAME: 'Wschód słońca nad górami',
+                FIELD_NAME: 'Wschód słońca zza gór',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6438,7 +6438,7 @@ class Emojis:
             },
             'firework_sparkler': {
                 FIELD_SYMBOL: '🎇',
-                FIELD_NAME: 'Fajerwerk Brylant',
+                FIELD_NAME: 'Zimne ognie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6450,19 +6450,19 @@ class Emojis:
             },
             'sunset_over_buildings': {
                 FIELD_SYMBOL: '🌇',
-                FIELD_NAME: 'Zachód słońca nad budynkami',
+                FIELD_NAME: 'Zachód słońca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cityscape_at_dusk': {
                 FIELD_SYMBOL: '🌆',
-                FIELD_NAME: 'Pejzaż Miejski O Zmierzchu',
+                FIELD_NAME: 'Miasto o zmierzchu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'cityscape': {
                 FIELD_SYMBOL: '🏙️',
-                FIELD_NAME: 'Pejzaż miejski',
+                FIELD_NAME: 'Drapacze chmur',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6474,19 +6474,19 @@ class Emojis:
             },
             'milky_way': {
                 FIELD_SYMBOL: '🌌',
-                FIELD_NAME: 'droga Mleczna',
+                FIELD_NAME: 'Droga Mleczna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bridge_at_night': {
                 FIELD_SYMBOL: '🌉',
-                FIELD_NAME: 'Most W Nocy',
+                FIELD_NAME: 'Most nocą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'foggy': {
                 FIELD_SYMBOL: '🌁',
-                FIELD_NAME: 'Mglisty',
+                FIELD_NAME: 'Zamglenie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6500,7 +6500,7 @@ class Emojis:
             },
             'house_building': {
                 FIELD_SYMBOL: '🏠',
-                FIELD_NAME: 'Budowa domu',
+                FIELD_NAME: 'Dom',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6512,19 +6512,19 @@ class Emojis:
             },
             'house_buildings': {
                 FIELD_SYMBOL: '🏘️',
-                FIELD_NAME: 'Budynki mieszkalne',
+                FIELD_NAME: 'Domki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'derelict_house_building': {
                 FIELD_SYMBOL: '🏚️',
-                FIELD_NAME: 'Opuszczony dom',
+                FIELD_NAME: 'Stary dom',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'building_construction': {
                 FIELD_SYMBOL: '🏗️',
-                FIELD_NAME: 'Budownictwo',
+                FIELD_NAME: 'Dźwig budowlany',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6536,25 +6536,25 @@ class Emojis:
             },
             'office_building': {
                 FIELD_SYMBOL: '🏢',
-                FIELD_NAME: 'Budynek biurowy',
+                FIELD_NAME: 'Biurowiec',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'department_store': {
                 FIELD_SYMBOL: '🏬',
-                FIELD_NAME: 'Dom handlowy',
+                FIELD_NAME: 'Dom towarowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'japanese_post_office': {
                 FIELD_SYMBOL: '🏣',
-                FIELD_NAME: 'Poczta Japońska',
+                FIELD_NAME: 'Japońska poczta',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'european_post_office': {
                 FIELD_SYMBOL: '🏤',
-                FIELD_NAME: 'Europejski Urząd Pocztowy',
+                FIELD_NAME: 'Urząd pocztowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6578,7 +6578,7 @@ class Emojis:
             },
             'convenience_store': {
                 FIELD_SYMBOL: '🏪',
-                FIELD_NAME: 'Sklep spożywczy',
+                FIELD_NAME: 'Sklep całodobowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6602,7 +6602,7 @@ class Emojis:
             },
             'classical_building': {
                 FIELD_SYMBOL: '🏛️',
-                FIELD_NAME: 'Klasyczny budynek',
+                FIELD_NAME: 'Klasyczna budowla',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6626,7 +6626,7 @@ class Emojis:
             },
             'hindu_temple': {
                 FIELD_SYMBOL: '🛕',
-                FIELD_NAME: 'Świątynia hinduska',
+                FIELD_NAME: 'Świątynia hinduistyczna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6638,7 +6638,7 @@ class Emojis:
             },
             'shinto_shrine': {
                 FIELD_SYMBOL: '⛩️',
-                FIELD_NAME: 'Shinto Shrine',
+                FIELD_NAME: 'Świątynia shinto',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6646,19 +6646,19 @@ class Emojis:
         ENTERTAINMENT: {
             'game_die': {
                 FIELD_SYMBOL: '🎲',
-                FIELD_NAME: 'Zgiń grę',
+                FIELD_NAME: 'Kostka do gry',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_chess_pawn': {
                 FIELD_SYMBOL: '♟️',
-                FIELD_NAME: 'Czarny pionek szachowy',
+                FIELD_NAME: 'Pionek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'direct_hit': {
                 FIELD_SYMBOL: '🎯',
-                FIELD_NAME: 'Bezpośrednie uderzenie',
+                FIELD_NAME: 'Strzał w 10',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6676,19 +6676,19 @@ class Emojis:
             },
             'slot_machine': {
                 FIELD_SYMBOL: '🎰',
-                FIELD_NAME: 'Automat',
+                FIELD_NAME: 'Automat do gier',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'jigsaw_puzzle_piece': {
                 FIELD_SYMBOL: '🧩',
-                FIELD_NAME: 'Kawałek układanki',
+                FIELD_NAME: 'Element układankiv',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'stadium': {
                 FIELD_SYMBOL: '🏟️',
-                FIELD_NAME: 'stadion',
+                FIELD_NAME: 'Stadion',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6706,49 +6706,49 @@ class Emojis:
             },
             'carousel_horse': {
                 FIELD_SYMBOL: '🎠',
-                FIELD_NAME: 'Koń karuzeli',
+                FIELD_NAME: 'Koń z karuzeli',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_spade_suit': {
                 FIELD_SYMBOL: '♠️',
-                FIELD_NAME: 'Czarny kombinezon pikowy',
+                FIELD_NAME: 'Pik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_club_suit': {
                 FIELD_SYMBOL: '♣️',
-                FIELD_NAME: 'Czarny garnitur klubu',
+                FIELD_NAME: 'Trefl',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_heart_suit': {
                 FIELD_SYMBOL: '♥️',
-                FIELD_NAME: 'Czarny garnitur z sercem',
+                FIELD_NAME: 'Kier',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_diamond_suit': {
                 FIELD_SYMBOL: '♦️',
-                FIELD_NAME: 'Czarny diamentowy garnitur',
+                FIELD_NAME: 'Karo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'playing_card_black_joker': {
                 FIELD_SYMBOL: '🃏',
-                FIELD_NAME: 'Karta do gry Czarny Joker',
+                FIELD_NAME: 'Dżoker',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'flower_playing_cards': {
                 FIELD_SYMBOL: '🎴',
-                FIELD_NAME: 'Kwiatowe karty do gry',
+                FIELD_NAME: 'Gra karciana hanafuda',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mahjong_tile_red_dragon': {
                 FIELD_SYMBOL: '🀄️',
-                FIELD_NAME: 'Mahjong Tile Red Dragon',
+                FIELD_NAME: 'Madżong: czerwony smok',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6768,13 +6768,13 @@ class Emojis:
             },
             'mobile_phone_with_rightwards_arrow_at_left': {
                 FIELD_SYMBOL: '📲',
-                FIELD_NAME: 'Telefon komórkowy ze strzałką w prawo po lewej stronie',
+                FIELD_NAME: 'Telefon komórkowy ze strzałką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'personal_computer': {
                 FIELD_SYMBOL: '💻',
-                FIELD_NAME: 'Komputer osobisty',
+                FIELD_NAME: 'Laptop',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6786,7 +6786,7 @@ class Emojis:
             },
             'desktop_computer': {
                 FIELD_SYMBOL: '🖥️',
-                FIELD_NAME: 'Komputer stacjonarny',
+                FIELD_NAME: 'Komputer',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6798,7 +6798,7 @@ class Emojis:
             },
             'three_button_mouse': {
                 FIELD_SYMBOL: '🖱️',
-                FIELD_NAME: 'Mysz z trzema przyciskami',
+                FIELD_NAME: 'Mysz komputerowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6810,13 +6810,13 @@ class Emojis:
             },
             'joystick': {
                 FIELD_SYMBOL: '🕹️',
-                FIELD_NAME: 'Drążek sterowy',
+                FIELD_NAME: 'Dżojstik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'minidisc': {
                 FIELD_SYMBOL: '💽',
-                FIELD_NAME: 'Minidisc',
+                FIELD_NAME: 'Dysk komputerowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6834,7 +6834,7 @@ class Emojis:
             },
             'dvd': {
                 FIELD_SYMBOL: '📀',
-                FIELD_NAME: 'Płyta DVD',
+                FIELD_NAME: 'DVD',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6852,7 +6852,7 @@ class Emojis:
             },
             'camera_with_flash': {
                 FIELD_SYMBOL: '📸',
-                FIELD_NAME: 'Aparat z lampą błyskową',
+                FIELD_NAME: 'Aparat fotograficzny z lampą błyskową',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6876,13 +6876,13 @@ class Emojis:
             },
             'telephone_receiver': {
                 FIELD_SYMBOL: '📞',
-                FIELD_NAME: 'Odbiornik telefoniczny',
+                FIELD_NAME: 'Słuchawka telefoniczna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_telephone': {
                 FIELD_SYMBOL: '☎️',
-                FIELD_NAME: 'Czarny telefon',
+                FIELD_NAME: 'Telefon',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6918,13 +6918,13 @@ class Emojis:
             },
             'level_slider': {
                 FIELD_SYMBOL: '🎚️',
-                FIELD_NAME: 'Suwak poziomu',
+                FIELD_NAME: 'Suwak miksera dźwięku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'control_knobs': {
                 FIELD_SYMBOL: '🎛️',
-                FIELD_NAME: 'Pokrętła sterowania',
+                FIELD_NAME: 'Pokrętła',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6942,7 +6942,7 @@ class Emojis:
             },
             'low_battery': {
                 FIELD_SYMBOL: '🪫',
-                FIELD_NAME: 'Słaba Bateria',
+                FIELD_NAME: 'Słaba bateria',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6960,7 +6960,7 @@ class Emojis:
             },
             'electric_torch': {
                 FIELD_SYMBOL: '🔦',
-                FIELD_NAME: 'Latarka elektryczna',
+                FIELD_NAME: 'Latarka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6974,7 +6974,7 @@ class Emojis:
             },
             'timer_clock': {
                 FIELD_SYMBOL: '⏲️',
-                FIELD_NAME: 'Zegar sterujący',
+                FIELD_NAME: 'Minutnik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6986,7 +6986,7 @@ class Emojis:
             },
             'mantelpiece_clock': {
                 FIELD_SYMBOL: '🕰️',
-                FIELD_NAME: 'Zegar z Mantelpiece',
+                FIELD_NAME: 'Zegar kominkowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -6998,151 +6998,151 @@ class Emojis:
             },
             'hourglass_with_flowing_sand': {
                 FIELD_SYMBOL: '⏳',
-                FIELD_NAME: 'Klepsydra z płynącym piaskiem',
+                FIELD_NAME: 'Klepsydra z przesypującym się piaskiem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_one_oclock': {
                 FIELD_SYMBOL: '🕐',
-                FIELD_NAME: 'Clock Face One Oclock',
+                FIELD_NAME: 'Godzina 1:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_two_oclock': {
                 FIELD_SYMBOL: '🕑',
-                FIELD_NAME: 'Twarz zegara Dwie godziny',
+                FIELD_NAME: 'Godzina 2:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_three_oclock': {
                 FIELD_SYMBOL: '🕒',
-                FIELD_NAME: 'Twarz zegara Trzy godziny',
+                FIELD_NAME: 'Godzina 3:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_four_oclock': {
                 FIELD_SYMBOL: '🕓',
-                FIELD_NAME: 'Zegarowa twarz Cztery godziny',
+                FIELD_NAME: 'Godzina 4:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_five_oclock': {
                 FIELD_SYMBOL: '🕔',
-                FIELD_NAME: 'Twarz zegara Pięć godzin',
+                FIELD_NAME: 'Godzina 5:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_six_oclock': {
                 FIELD_SYMBOL: '🕕',
-                FIELD_NAME: 'Clock Face Six Oclock',
+                FIELD_NAME: 'Godzina 6:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_seven_oclock': {
                 FIELD_SYMBOL: '🕖',
-                FIELD_NAME: 'Clock Face Seven Oclock',
+                FIELD_NAME: 'Godzina 7:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_eight_oclock': {
                 FIELD_SYMBOL: '🕗',
-                FIELD_NAME: 'Clock Face Eight Oclock',
+                FIELD_NAME: 'Godzina 8:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_nine_oclock': {
                 FIELD_SYMBOL: '🕘',
-                FIELD_NAME: 'Clock Face Nine Oclock',
+                FIELD_NAME: 'Godzina 9:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_ten_oclock': {
                 FIELD_SYMBOL: '🕙',
-                FIELD_NAME: 'Zegarowa twarz Dziesięć',
+                FIELD_NAME: 'Godzina 10:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_eleven_oclock': {
                 FIELD_SYMBOL: '🕚',
-                FIELD_NAME: 'Clock Face Eleven Oclock',
+                FIELD_NAME: 'Godzina 11:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_twelve_oclock': {
                 FIELD_SYMBOL: '🕛',
-                FIELD_NAME: 'Tarczy zegara Dwanaście godzin',
+                FIELD_NAME: 'Godzina 12:00',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_one_thirty': {
                 FIELD_SYMBOL: '🕜',
-                FIELD_NAME: 'Zegarowa Twarz Trzydzieści',
+                FIELD_NAME: 'Godzina 1:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_two_thirty': {
                 FIELD_SYMBOL: '🕝',
-                FIELD_NAME: 'Zegarowa Twarz Dwa-Trzydzieści',
+                FIELD_NAME: 'Godzina 2:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_three_thirty': {
                 FIELD_SYMBOL: '🕞',
-                FIELD_NAME: 'Twarz zegara trzydzieści trzydzieści',
+                FIELD_NAME: 'Godzina 3:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_four_thirty': {
                 FIELD_SYMBOL: '🕟',
-                FIELD_NAME: 'Twarz zegara czterdzieści trzydzieści',
+                FIELD_NAME: 'Godzina 4:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_five_thirty': {
                 FIELD_SYMBOL: '🕠',
-                FIELD_NAME: 'Twarz zegara Piąta trzydzieści',
+                FIELD_NAME: 'Godzina 5:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_six_thirty': {
                 FIELD_SYMBOL: '🕡',
-                FIELD_NAME: 'Clock Face Six-Thirty',
+                FIELD_NAME: 'Godzina 6:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_seven_thirty': {
                 FIELD_SYMBOL: '🕢',
-                FIELD_NAME: 'Tarcza zegara Siedem trzydzieści',
+                FIELD_NAME: 'Godzina 7:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_eight_thirty': {
                 FIELD_SYMBOL: '🕣',
-                FIELD_NAME: 'Zegarowa twarz ósma-trzydzieści',
+                FIELD_NAME: 'Godzina 8:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_nine_thirty': {
                 FIELD_SYMBOL: '🕤',
-                FIELD_NAME: 'Zegarowa Dziewięć-Trzydzieści',
+                FIELD_NAME: 'Godzina 9:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_ten_thirty': {
                 FIELD_SYMBOL: '🕥',
-                FIELD_NAME: 'Tarcza zegara Dziesiąta trzydzieści',
+                FIELD_NAME: 'Godzina 10:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_eleven_thirty': {
                 FIELD_SYMBOL: '🕦',
-                FIELD_NAME: 'Zegarowa twarz jedenaście-trzydzieści',
+                FIELD_NAME: 'Godzina 11:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clock_face_twelve_thirty': {
                 FIELD_SYMBOL: '🕧',
-                FIELD_NAME: 'Tarcza zegara dwunasta trzydzieści',
+                FIELD_NAME: 'Godzina 12:30',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7150,37 +7150,37 @@ class Emojis:
         MONEY_AND_VALUABLES: {
             'money_with_wings': {
                 FIELD_SYMBOL: '💸',
-                FIELD_NAME: 'Pieniądze ze skrzydłami',
+                FIELD_NAME: 'Uskrzydlone pieniądze',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'banknote_with_dollar_sign': {
                 FIELD_SYMBOL: '💵',
-                FIELD_NAME: 'Banknot z znakiem dolara',
+                FIELD_NAME: 'Banknot dolara',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'banknote_with_yen_sign': {
                 FIELD_SYMBOL: '💴',
-                FIELD_NAME: 'Banknot ze znakiem jena',
+                FIELD_NAME: 'Banknot jena',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'banknote_with_euro_sign': {
                 FIELD_SYMBOL: '💶',
-                FIELD_NAME: 'Banknot z Euro znakiem',
+                FIELD_NAME: 'Banknot euro',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'banknote_with_pound_sign': {
                 FIELD_SYMBOL: '💷',
-                FIELD_NAME: 'Banknot ze znakiem funta',
+                FIELD_NAME: 'Banknot funta',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'money_bag': {
                 FIELD_SYMBOL: '💰',
-                FIELD_NAME: 'Torba z pieniędzmi',
+                FIELD_NAME: 'Worek z pieniędzmi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7197,14 +7197,14 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'emoji': {
-                FIELD_SYMBOL: '\U0001fa8e',
+                FIELD_SYMBOL: '🪎',
                 FIELD_NAME: 'Skrzynia skarbów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_dollar_sign': {
                 FIELD_SYMBOL: '💲',
-                FIELD_NAME: 'Ciężki znak dolara',
+                FIELD_NAME: 'Gruby symbol dolara',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7216,27 +7216,27 @@ class Emojis:
             },
             'chart_with_upwards_trend_and_yen_sign': {
                 FIELD_SYMBOL: '💹',
-                FIELD_NAME: 'Wykres z trendem w górę i znakiem jena',
+                FIELD_NAME: 'Wykres wzrostu z symbolem jena',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
         },
         OBJECTS_AND_TOOLS: {
             'emoji': {
-                FIELD_SYMBOL: '\U0001fac6',
+                FIELD_SYMBOL: '🫆',
                 FIELD_NAME: 'Odcisk palca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'identification_card': {
                 FIELD_SYMBOL: '🪪',
-                FIELD_NAME: 'Dowód Tożsamości',
+                FIELD_NAME: 'Dowód tożsamości',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'compression': {
                 FIELD_SYMBOL: '🗜️',
-                FIELD_NAME: 'Kompresja',
+                FIELD_NAME: 'Ścisk',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7248,7 +7248,7 @@ class Emojis:
             },
             'diya_lamp': {
                 FIELD_SYMBOL: '🪔',
-                FIELD_NAME: 'Lampa Diya',
+                FIELD_NAME: 'Dipa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7260,13 +7260,13 @@ class Emojis:
             },
             'oil_drum': {
                 FIELD_SYMBOL: '🛢️',
-                FIELD_NAME: 'Bęben olejowy',
+                FIELD_NAME: 'Beczka oleju',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'scales': {
                 FIELD_SYMBOL: '⚖️',
-                FIELD_NAME: 'Waga',
+                FIELD_NAME: 'Waga szalkowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7278,7 +7278,7 @@ class Emojis:
             },
             'toolbox': {
                 FIELD_SYMBOL: '🧰',
-                FIELD_NAME: 'Przybornik',
+                FIELD_NAME: 'Skrzynka na narzędzia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7290,49 +7290,49 @@ class Emojis:
             },
             'wrench': {
                 FIELD_SYMBOL: '🔧',
-                FIELD_NAME: 'Klucz',
+                FIELD_NAME: 'Klucz warsztatowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hammer': {
                 FIELD_SYMBOL: '🔨',
-                FIELD_NAME: 'Młot',
+                FIELD_NAME: 'Młotek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hammer_and_pick': {
                 FIELD_SYMBOL: '⚒️',
-                FIELD_NAME: 'Hammer and Pick',
+                FIELD_NAME: 'Młoty',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hammer_and_wrench': {
                 FIELD_SYMBOL: '🛠️',
-                FIELD_NAME: 'Młotek i klucz',
+                FIELD_NAME: 'Młot i klucz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pick': {
                 FIELD_SYMBOL: '⛏️',
-                FIELD_NAME: 'Wybierać',
+                FIELD_NAME: 'Kilof',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'emoji_2': {
-                FIELD_SYMBOL: '\U0001fa8f',
+                FIELD_SYMBOL: '🪏',
                 FIELD_NAME: 'Łopata',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'carpentry_saw': {
                 FIELD_SYMBOL: '🪚',
-                FIELD_NAME: 'Piła stolarska',
+                FIELD_NAME: 'Piła do drewna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'nut_and_bolt': {
                 FIELD_SYMBOL: '🔩',
-                FIELD_NAME: 'Nakrętka i śruba',
+                FIELD_NAME: 'Śruba i nakrętka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7356,13 +7356,13 @@ class Emojis:
             },
             'chains': {
                 FIELD_SYMBOL: '⛓️',
-                FIELD_NAME: 'Więzy',
+                FIELD_NAME: 'Łańcuchy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'chains_with_collision_symbol': {
-                FIELD_SYMBOL: '⛓️\u200d💥',
-                FIELD_NAME: 'Chains z collision symbol',
+                FIELD_SYMBOL: '⛓️‍💥',
+                FIELD_NAME: 'Zerwany łańcuch',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7374,7 +7374,7 @@ class Emojis:
             },
             'pistol': {
                 FIELD_SYMBOL: '🔫',
-                FIELD_NAME: 'Pistolet',
+                FIELD_NAME: 'Pistolet na wodę',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7392,19 +7392,19 @@ class Emojis:
             },
             'axe': {
                 FIELD_SYMBOL: '🪓',
-                FIELD_NAME: 'Topór',
+                FIELD_NAME: 'Siekiera',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hocho': {
                 FIELD_SYMBOL: '🔪',
-                FIELD_NAME: 'Hocho',
+                FIELD_NAME: 'Nóż kuchenny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'dagger_knife': {
                 FIELD_SYMBOL: '🗡️',
-                FIELD_NAME: 'Nóż Sztylet',
+                FIELD_NAME: 'Sztylet',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7422,7 +7422,7 @@ class Emojis:
             },
             'smoking_symbol': {
                 FIELD_SYMBOL: '🚬',
-                FIELD_NAME: 'Symbol palenia',
+                FIELD_NAME: 'Papieros',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7440,7 +7440,7 @@ class Emojis:
             },
             'funeral_urn': {
                 FIELD_SYMBOL: '⚱️',
-                FIELD_NAME: 'Urna pogrzebowa',
+                FIELD_NAME: 'Urna na prochy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7458,13 +7458,13 @@ class Emojis:
             },
             'prayer_beads': {
                 FIELD_SYMBOL: '📿',
-                FIELD_NAME: 'Różańce',
+                FIELD_NAME: 'Sznur modlitewny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'nazar_amulet': {
                 FIELD_SYMBOL: '🧿',
-                FIELD_NAME: 'Nazar Amulet',
+                FIELD_NAME: 'Amulet nazar',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7476,7 +7476,7 @@ class Emojis:
             },
             'barber_pole': {
                 FIELD_SYMBOL: '💈',
-                FIELD_NAME: 'Polak fryzjerski',
+                FIELD_NAME: 'Słup fryzjerski',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7488,7 +7488,7 @@ class Emojis:
             },
             'plunger': {
                 FIELD_SYMBOL: '🪠',
-                FIELD_NAME: 'Tłok nurnikowy',
+                FIELD_NAME: 'Przepychacz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7506,13 +7506,13 @@ class Emojis:
             },
             'toilet': {
                 FIELD_SYMBOL: '🚽',
-                FIELD_NAME: 'Toaleta',
+                FIELD_NAME: 'Muszla klozetowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'potable_water_symbol': {
                 FIELD_SYMBOL: '🚰',
-                FIELD_NAME: 'Symbol wody pitnej',
+                FIELD_NAME: 'Woda pitna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7530,13 +7530,13 @@ class Emojis:
             },
             'bath': {
                 FIELD_SYMBOL: '🛀',
-                FIELD_NAME: 'Kąpiel',
+                FIELD_NAME: 'Osoba biorąca kąpiel',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bar_of_soap': {
                 FIELD_SYMBOL: '🧼',
-                FIELD_NAME: 'Kostka mydła',
+                FIELD_NAME: 'Mydło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7554,7 +7554,7 @@ class Emojis:
             },
             'hair_pick': {
                 FIELD_SYMBOL: '🪮',
-                FIELD_NAME: 'Grzebień Fryzjerski',
+                FIELD_NAME: 'Grzebień fryzjerski',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7572,25 +7572,25 @@ class Emojis:
             },
             'lotion_bottle': {
                 FIELD_SYMBOL: '🧴',
-                FIELD_NAME: 'Butelka z balsamem',
+                FIELD_NAME: 'Butelka z płynem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bellhop_bell': {
                 FIELD_SYMBOL: '🛎️',
-                FIELD_NAME: 'Bellhop Bell',
+                FIELD_NAME: 'Dzwonek w recepcji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'key': {
                 FIELD_SYMBOL: '🔑',
-                FIELD_NAME: 'Klawisz',
+                FIELD_NAME: 'Klucz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'old_key': {
                 FIELD_SYMBOL: '🗝️',
-                FIELD_NAME: 'Stary klucz',
+                FIELD_NAME: 'Staroświecki klucz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7620,25 +7620,25 @@ class Emojis:
             },
             'sleeping_accommodation': {
                 FIELD_SYMBOL: '🛌',
-                FIELD_NAME: 'Spanie Zakwaterowanie',
+                FIELD_NAME: 'Osoba w łóżku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'teddy_bear': {
                 FIELD_SYMBOL: '🧸',
-                FIELD_NAME: 'Miś',
+                FIELD_NAME: 'Miś pluszowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'nesting_dolls': {
                 FIELD_SYMBOL: '🪆',
-                FIELD_NAME: 'Zagnieżdżanie lalek',
+                FIELD_NAME: 'Matrioszki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'frame_with_picture': {
                 FIELD_SYMBOL: '🖼️',
-                FIELD_NAME: 'Ramka z obrazem',
+                FIELD_NAME: 'Obrazek w ramce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7662,13 +7662,13 @@ class Emojis:
             },
             'shopping_trolley': {
                 FIELD_SYMBOL: '🛒',
-                FIELD_NAME: 'Wózek na zakupy',
+                FIELD_NAME: 'Wózek sklepowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'wrapped_present': {
                 FIELD_SYMBOL: '🎁',
-                FIELD_NAME: 'Wrapped Present',
+                FIELD_NAME: 'Zapakowany prezent',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7680,37 +7680,37 @@ class Emojis:
             },
             'carp_streamer': {
                 FIELD_SYMBOL: '🎏',
-                FIELD_NAME: 'Carp Streamer',
+                FIELD_NAME: 'Flaga w kształcie karpia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ribbon': {
                 FIELD_SYMBOL: '🎀',
-                FIELD_NAME: 'Faborek',
+                FIELD_NAME: 'Wstążka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'magic_wand': {
                 FIELD_SYMBOL: '🪄',
-                FIELD_NAME: 'magiczna różdżka',
+                FIELD_NAME: 'Czarodziejska różdżka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'pinata': {
                 FIELD_SYMBOL: '🪅',
-                FIELD_NAME: 'Pinata',
+                FIELD_NAME: 'Piniata',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'confetti_ball': {
                 FIELD_SYMBOL: '🎊',
-                FIELD_NAME: 'Konfetti Ball',
+                FIELD_NAME: 'Kula z konfetti',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'party_popper': {
                 FIELD_SYMBOL: '🎉',
-                FIELD_NAME: 'Party Popper',
+                FIELD_NAME: 'Tuba z konfetti',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7728,55 +7728,55 @@ class Emojis:
             },
             'izakaya_lantern': {
                 FIELD_SYMBOL: '🏮',
-                FIELD_NAME: 'Latarnia Izakaya',
+                FIELD_NAME: 'Czerwony lampion',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'wind_chime': {
                 FIELD_SYMBOL: '🎐',
-                FIELD_NAME: 'Wiatr Chime',
+                FIELD_NAME: 'Dzwonek wietrzny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mirror_ball': {
                 FIELD_SYMBOL: '🪩',
-                FIELD_NAME: 'Kula Dyskotekowa',
+                FIELD_NAME: 'Kula dyskotekowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'red_gift_envelope': {
                 FIELD_SYMBOL: '🧧',
-                FIELD_NAME: 'Czerwona koperta na prezent',
+                FIELD_NAME: 'Czerwona koperta',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'link_symbol': {
                 FIELD_SYMBOL: '🔗',
-                FIELD_NAME: 'Symbol łącza',
+                FIELD_NAME: 'Ogniwa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lock_with_ink_pen': {
                 FIELD_SYMBOL: '🔏',
-                FIELD_NAME: 'Zablokuj za pomocą pióra atramentowego',
+                FIELD_NAME: 'Zamknięta kłódka z piórem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'closed_lock_with_key': {
                 FIELD_SYMBOL: '🔐',
-                FIELD_NAME: 'Zamknięty zamek z kluczem',
+                FIELD_NAME: 'Zamknięta kłódka z kluczem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lock': {
                 FIELD_SYMBOL: '🔒',
-                FIELD_NAME: 'Zamek',
+                FIELD_NAME: 'Zamknięta kłódka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'open_lock': {
                 FIELD_SYMBOL: '🔓',
-                FIELD_NAME: 'Otwórz blokadę',
+                FIELD_NAME: 'Otwarta kłódka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7802,13 +7802,13 @@ class Emojis:
             },
             'x_ray': {
                 FIELD_SYMBOL: '🩻',
-                FIELD_NAME: 'Zdjęcie Rentgenowskie',
+                FIELD_NAME: 'Zdjęcie rentgenowskie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'adhesive_bandage': {
                 FIELD_SYMBOL: '🩹',
-                FIELD_NAME: 'Bandaż samoprzylepny',
+                FIELD_NAME: 'Plaster',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7820,7 +7820,7 @@ class Emojis:
             },
             'pill': {
                 FIELD_SYMBOL: '💊',
-                FIELD_NAME: 'Pigułka',
+                FIELD_NAME: 'Kapsułka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7838,19 +7838,19 @@ class Emojis:
             },
             'dna_double_helix': {
                 FIELD_SYMBOL: '🧬',
-                FIELD_NAME: 'Dna Double Helix',
+                FIELD_NAME: 'Dna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'microbe': {
                 FIELD_SYMBOL: '🦠',
-                FIELD_NAME: 'Mikrob',
+                FIELD_NAME: 'Zarazek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'petri_dish': {
                 FIELD_SYMBOL: '🧫',
-                FIELD_NAME: 'Szalka Petriego',
+                FIELD_NAME: 'Płytka Petriego',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7876,19 +7876,19 @@ class Emojis:
             },
             'envelope_with_downwards_arrow_above': {
                 FIELD_SYMBOL: '📩',
-                FIELD_NAME: 'Koperta ze strzałką w dół powyżej',
+                FIELD_NAME: 'Koperta ze strzałką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'incoming_envelope': {
                 FIELD_SYMBOL: '📨',
-                FIELD_NAME: 'Przychodząca koperta',
+                FIELD_NAME: 'Koperta przychodząca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'e_mail_symbol': {
                 FIELD_SYMBOL: '📧',
-                FIELD_NAME: 'Symbol e-maila',
+                FIELD_NAME: 'E-mail',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7912,13 +7912,13 @@ class Emojis:
             },
             'package': {
                 FIELD_SYMBOL: '📦',
-                FIELD_NAME: 'Pakiet',
+                FIELD_NAME: 'Paczka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'label': {
                 FIELD_SYMBOL: '🏷️',
-                FIELD_NAME: 'Etykieta',
+                FIELD_NAME: 'Przywieszka do kluczy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7930,37 +7930,37 @@ class Emojis:
             },
             'closed_mailbox_with_lowered_flag': {
                 FIELD_SYMBOL: '📪',
-                FIELD_NAME: 'Zamknięta skrzynka pocztowa z obniżoną flagą',
+                FIELD_NAME: 'Zamknięta skrzynka pocztowa z opuszczoną flagą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'closed_mailbox_with_raised_flag': {
                 FIELD_SYMBOL: '📫',
-                FIELD_NAME: 'Zamknięta skrzynka pocztowa z flagą podniesioną',
+                FIELD_NAME: 'Zamknięta skrzynka pocztowa z podniesioną flagą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'open_mailbox_with_raised_flag': {
                 FIELD_SYMBOL: '📬',
-                FIELD_NAME: 'Otwórz skrzynkę pocztową z flagą podniesioną',
+                FIELD_NAME: 'Otwarta skrzynka pocztowa z podniesioną flagą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'open_mailbox_with_lowered_flag': {
                 FIELD_SYMBOL: '📭',
-                FIELD_NAME: 'Otwórz skrzynkę pocztową z obniżoną flagą',
+                FIELD_NAME: 'Otwarta skrzynka pocztowa z opuszczoną flagą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'postbox': {
                 FIELD_SYMBOL: '📮',
-                FIELD_NAME: 'Skrzynka pocztowa',
+                FIELD_NAME: 'Skrzynka na listy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'postal_horn': {
                 FIELD_SYMBOL: '📯',
-                FIELD_NAME: 'Róg pocztowy',
+                FIELD_NAME: 'Trąbka pocztowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -7972,19 +7972,19 @@ class Emojis:
             },
             'page_with_curl': {
                 FIELD_SYMBOL: '📃',
-                FIELD_NAME: 'Strona z zawinięciem',
+                FIELD_NAME: 'Zawinięta strona',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'page_facing_up': {
                 FIELD_SYMBOL: '📄',
-                FIELD_NAME: 'Strona zwrócona w górę',
+                FIELD_NAME: 'Strona',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'bookmark_tabs': {
                 FIELD_SYMBOL: '📑',
-                FIELD_NAME: 'Zakładki zakładek',
+                FIELD_NAME: 'Karty zakładek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -8002,31 +8002,31 @@ class Emojis:
             },
             'chart_with_upwards_trend': {
                 FIELD_SYMBOL: '📈',
-                FIELD_NAME: 'Wykres z trendem w górę',
+                FIELD_NAME: 'Wykres wzrostu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'chart_with_downwards_trend': {
                 FIELD_SYMBOL: '📉',
-                FIELD_NAME: 'Wykres z trendem w dół',
+                FIELD_NAME: 'Wykres spadku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'spiral_note_pad': {
                 FIELD_SYMBOL: '🗒️',
-                FIELD_NAME: 'Spiralny notes',
+                FIELD_NAME: 'Kołonotatnik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'spiral_calendar_pad': {
                 FIELD_SYMBOL: '🗓️',
-                FIELD_NAME: 'Spiral Calendar Pad',
+                FIELD_NAME: 'Kalendarz na spirali',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'tear_off_calendar': {
                 FIELD_SYMBOL: '📆',
-                FIELD_NAME: 'Kalendarz odrywania',
+                FIELD_NAME: 'Kalendarz z wyrywanymi kartkami',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -8044,55 +8044,55 @@ class Emojis:
             },
             'card_index': {
                 FIELD_SYMBOL: '📇',
-                FIELD_NAME: 'Indeks kart',
+                FIELD_NAME: 'Wizytownik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'card_file_box': {
                 FIELD_SYMBOL: '🗃️',
-                FIELD_NAME: 'Pudełko z kartami',
+                FIELD_NAME: 'Pudełko-kartoteka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ballot_box_with_ballot': {
                 FIELD_SYMBOL: '🗳️',
-                FIELD_NAME: 'Urny z kartą do głosowania',
+                FIELD_NAME: 'Urna wyborcza z głosem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'file_cabinet': {
                 FIELD_SYMBOL: '🗄️',
-                FIELD_NAME: 'Szafka na akta',
+                FIELD_NAME: 'Szafka-kartoteka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clipboard': {
                 FIELD_SYMBOL: '📋',
-                FIELD_NAME: 'Schowek',
+                FIELD_NAME: 'Podkładka do pisania',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'file_folder': {
                 FIELD_SYMBOL: '📁',
-                FIELD_NAME: 'Folder z plikami',
+                FIELD_NAME: 'Folder',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'open_file_folder': {
                 FIELD_SYMBOL: '📂',
-                FIELD_NAME: 'Otwórz folder plików',
+                FIELD_NAME: 'Otwarty folder',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'card_index_dividers': {
                 FIELD_SYMBOL: '🗂️',
-                FIELD_NAME: 'Dzielniki indeksu kart',
+                FIELD_NAME: 'Rozdzielacze kartoteki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'rolled_up_newspaper': {
                 FIELD_SYMBOL: '🗞️',
-                FIELD_NAME: 'Zwijana gazeta',
+                FIELD_NAME: 'Zwinięta gazeta',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -8104,31 +8104,31 @@ class Emojis:
             },
             'notebook': {
                 FIELD_SYMBOL: '📓',
-                FIELD_NAME: 'Notatnik',
+                FIELD_NAME: 'Notes',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'notebook_with_decorative_cover': {
                 FIELD_SYMBOL: '📔',
-                FIELD_NAME: 'Notatnik z ozdobną pokrywą',
+                FIELD_NAME: 'Notes z dekoracyjną okładką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ledger': {
                 FIELD_SYMBOL: '📒',
-                FIELD_NAME: 'Księga główna',
+                FIELD_NAME: 'Skoroszyt',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'closed_book': {
                 FIELD_SYMBOL: '📕',
-                FIELD_NAME: 'Zamknięta księga',
+                FIELD_NAME: 'Zamknięta książka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'green_book': {
                 FIELD_SYMBOL: '📗',
-                FIELD_NAME: 'Zielona Książka',
+                FIELD_NAME: 'Zielona książka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -8176,19 +8176,19 @@ class Emojis:
             },
             'linked_paperclips': {
                 FIELD_SYMBOL: '🖇️',
-                FIELD_NAME: 'Połączone spinacze do papieru',
+                FIELD_NAME: 'Złączone spinacze',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'triangular_ruler': {
                 FIELD_SYMBOL: '📐',
-                FIELD_NAME: 'Trójkątna miarka',
+                FIELD_NAME: 'Ekierka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'straight_ruler': {
                 FIELD_SYMBOL: '📏',
-                FIELD_NAME: 'Prosta miarka',
+                FIELD_NAME: 'Linijka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -8206,43 +8206,43 @@ class Emojis:
             },
             'round_pushpin': {
                 FIELD_SYMBOL: '📍',
-                FIELD_NAME: 'Okrągła Pinezka',
+                FIELD_NAME: 'Okrągła pinezka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_scissors': {
                 FIELD_SYMBOL: '✂️',
-                FIELD_NAME: 'Czarne nożyczki',
+                FIELD_NAME: 'Nożyczki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lower_left_ballpoint_pen': {
                 FIELD_SYMBOL: '🖊️',
-                FIELD_NAME: 'Dolny lewy długopis',
+                FIELD_NAME: 'Długopis',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lower_left_fountain_pen': {
                 FIELD_SYMBOL: '🖋️',
-                FIELD_NAME: 'Dolne lewe pióro wieczne',
+                FIELD_NAME: 'Wieczne pióro',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_nib': {
                 FIELD_SYMBOL: '✒️',
-                FIELD_NAME: 'Czarna stalówka',
+                FIELD_NAME: 'Pióro z czarną stalówką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lower_left_paintbrush': {
                 FIELD_SYMBOL: '🖌️',
-                FIELD_NAME: 'Dolny lewy pędzel',
+                FIELD_NAME: 'Pędzel',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'lower_left_crayon': {
                 FIELD_SYMBOL: '🖍️',
-                FIELD_NAME: 'Dolna lewa kredka',
+                FIELD_NAME: 'Kredka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -8260,13 +8260,13 @@ class Emojis:
             },
             'left_pointing_magnifying_glass': {
                 FIELD_SYMBOL: '🔍',
-                FIELD_NAME: 'Lewe szkło powiększające',
+                FIELD_NAME: 'Lupa pochylona w lewo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'right_pointing_magnifying_glass': {
                 FIELD_SYMBOL: '🔎',
-                FIELD_NAME: 'Prawe szkło powiększające',
+                FIELD_NAME: 'Lupa pochylona w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -8274,607 +8274,607 @@ class Emojis:
         FLAGS: {
             'waving_white_flag': {
                 FIELD_SYMBOL: '🏳️',
-                FIELD_NAME: 'Macha białą flagą',
+                FIELD_NAME: 'Biała flaga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waving_black_flag': {
                 FIELD_SYMBOL: '🏴',
-                FIELD_NAME: 'Macha Czarną Flagą',
+                FIELD_NAME: 'Czarna flaga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waving_black_flag_with_skull_and_crossbones': {
-                FIELD_SYMBOL: '🏴\u200d☠️',
-                FIELD_NAME: 'Waving czarny flaga z skull i crossbones',
+                FIELD_SYMBOL: '🏴‍☠️',
+                FIELD_NAME: 'Piracka flaga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'chequered_flag': {
                 FIELD_SYMBOL: '🏁',
-                FIELD_NAME: 'Flaga w kratkę',
+                FIELD_NAME: 'Flaga mety',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'triangular_flag_on_post': {
                 FIELD_SYMBOL: '🚩',
-                FIELD_NAME: 'Trójkątna flaga na poczcie',
+                FIELD_NAME: 'Czerwona trójkątna flaga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waving_white_flag_with_rainbow': {
-                FIELD_SYMBOL: '🏳️\u200d🌈',
-                FIELD_NAME: 'Waving biały flaga z rainbow',
+                FIELD_SYMBOL: '🏳️‍🌈',
+                FIELD_NAME: 'Flaga LGBTQ',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waving_white_flag_with_male_with_stroke_and_male_and_female_sign': {
-                FIELD_SYMBOL: '🏳️\u200d⚧️',
-                FIELD_NAME: 'Waving biały flaga z male z stroke i male i female sign',
+                FIELD_SYMBOL: '🏳️‍⚧️',
+                FIELD_NAME: 'Flaga Transgender',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_u_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇺🇳',
-                FIELD_NAME: 'Regional indicator symbol letter u z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Organizacji Narodów Zjednoczonych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_f': {
                 FIELD_SYMBOL: '🇦🇫',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter f',
+                FIELD_NAME: 'Flaga Afganistanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇦🇱',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Albani',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_d_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇩🇿',
-                FIELD_NAME: 'Regional indicator symbol letter d z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Algieri',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_d': {
                 FIELD_SYMBOL: '🇦🇩',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter d',
+                FIELD_NAME: 'Flaga Andory',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇦🇴',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Angoli',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇦🇮',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Anguilli',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_q': {
                 FIELD_SYMBOL: '🇦🇶',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter q',
+                FIELD_NAME: 'Flaga Antarktyki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇦🇬',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Antigui i Barbudy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇸🇦',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Arabii Saudyjskiej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇦🇷',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Argentyny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇦🇲',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Armenii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇦🇼',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Aruby',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇦🇺',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Australii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇦🇹',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Austri',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇦🇿',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Azerbejdżanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇧🇸',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Bahamów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇧🇭',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Bahrajnu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_d': {
                 FIELD_SYMBOL: '🇧🇩',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter d',
+                FIELD_NAME: 'Flaga Bangladeszu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_b': {
                 FIELD_SYMBOL: '🇧🇧',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter b',
+                FIELD_NAME: 'Flaga Barbadosu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇧🇪',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Belgii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇧🇿',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Belize',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_j': {
                 FIELD_SYMBOL: '🇧🇯',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter j',
+                FIELD_NAME: 'Flaga Beninu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇧🇲',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Bermudów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇧🇹',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Bhutan',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇧🇾',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Białoruś',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇧🇴',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Boliwię',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇧🇦',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Bośni i Hercegowiny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇧🇼',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Botswany',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇧🇷',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Brazylii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇧🇳',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Brunei',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_v_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇻🇬',
-                FIELD_NAME: 'Regional indicator symbol letter v z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Brytyjskich Wysp Dziewiczych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇧🇬',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Bułgari',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_f': {
                 FIELD_SYMBOL: '🇧🇫',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter f',
+                FIELD_NAME: 'Flaga Burkiny Faso',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇧🇮',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Burundi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇨🇱',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Republiki Chile',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇨🇳',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Chińskiej Republiki Ludowej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_h_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇭🇷',
-                FIELD_NAME: 'Regional indicator symbol letter h z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Chorwacji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇨🇮',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Wybrzeża Kości Słoniowej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇨🇼',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Curaçao',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇨🇾',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Republiki Cypru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_d': {
                 FIELD_SYMBOL: '🇹🇩',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter d',
+                FIELD_NAME: 'Flaga Czadu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇮🇴',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Brytyjskiego Terytorium Oceanu Indyjskiego',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇲🇪',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Czarnogóry',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇨🇿',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Czech',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_d_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇩🇰',
-                FIELD_NAME: 'Regional indicator symbol letter d z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Danii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_d': {
                 FIELD_SYMBOL: '🇨🇩',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter d',
+                FIELD_NAME: 'Flaga Demokratycznej Republiki Konga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_d_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇩🇲',
-                FIELD_NAME: 'Regional indicator symbol letter d z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Dominiki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_d_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇩🇴',
-                FIELD_NAME: 'Regional indicator symbol letter d z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Dominikany',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_d_with_regional_indicator_symbol_letter_j': {
                 FIELD_SYMBOL: '🇩🇯',
-                FIELD_NAME: 'Regional indicator symbol letter d z regional indicator symbol letter j',
+                FIELD_NAME: 'Flaga Dżibuti',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_e_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇪🇬',
-                FIELD_NAME: 'Regional indicator symbol letter e z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Egiptu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_e_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇪🇨',
-                FIELD_NAME: 'Regional indicator symbol letter e z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Ekwadoru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_e_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇪🇷',
-                FIELD_NAME: 'Regional indicator symbol letter e z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Erytrei',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_e_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇪🇪',
-                FIELD_NAME: 'Regional indicator symbol letter e z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Estonii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇸🇿',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Eswatini',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_e_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇪🇹',
-                FIELD_NAME: 'Regional indicator symbol letter e z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Etiopii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_f_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇫🇰',
-                FIELD_NAME: 'Regional indicator symbol letter f z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Falklandów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_f_with_regional_indicator_symbol_letter_j': {
                 FIELD_SYMBOL: '🇫🇯',
-                FIELD_NAME: 'Regional indicator symbol letter f z regional indicator symbol letter j',
+                FIELD_NAME: 'Flaga Fidżi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇵🇭',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Filipin',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_f_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇫🇮',
-                FIELD_NAME: 'Regional indicator symbol letter f z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Finlandii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_f_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇫🇷',
-                FIELD_NAME: 'Regional indicator symbol letter f z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Francji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_f': {
                 FIELD_SYMBOL: '🇹🇫',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter f',
+                FIELD_NAME: 'Flaga Francuskich Terytoriów Południowych i Antarktycznych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇬🇦',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Gabon',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇬🇲',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Gambii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇬🇸',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Georgii Południowej i Sandwich Południowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇬🇭',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Ghany',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇬🇮',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Gibraltaru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇬🇷',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Grecji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_d': {
                 FIELD_SYMBOL: '🇬🇩',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter d',
+                FIELD_NAME: 'Flaga Grenady',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇬🇱',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Grenlandii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇬🇪',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Gruzji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇬🇺',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Guamu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇬🇬',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Guernsey',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇬🇾',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Gujany',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_f': {
                 FIELD_SYMBOL: '🇬🇫',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter f',
+                FIELD_NAME: 'Flaga Gujany Francuskiej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_p': {
                 FIELD_SYMBOL: '🇬🇵',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter p',
+                FIELD_NAME: 'Flaga Gwadelupy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇬🇹',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Gwatemali',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇬🇳',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Republiki Gwinei',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇬🇼',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Gwinei Bissau',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_q': {
                 FIELD_SYMBOL: '🇬🇶',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter q',
+                FIELD_NAME: 'Flaga Gwinei Równikowej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_h_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇭🇹',
-                FIELD_NAME: 'Regional indicator symbol letter h z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Haiti',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_e_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇪🇸',
-                FIELD_NAME: 'Regional indicator symbol letter e z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Hiszpani',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇳🇱',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Holandi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_h_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇭🇳',
-                FIELD_NAME: 'Regional indicator symbol letter h z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Hondurasu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_h_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇭🇰',
-                FIELD_NAME: 'Regional indicator symbol letter h z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Hongkongu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇮🇳',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Indii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_d': {
                 FIELD_SYMBOL: '🇮🇩',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter d',
+                FIELD_NAME: 'Flaga Indonezji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_q': {
                 FIELD_SYMBOL: '🇮🇶',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter q',
+                FIELD_NAME: 'Flaga Iraku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇮🇷',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Iranu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇮🇪',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Irlandii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇮🇸',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Islandii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇮🇱',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Izraela',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_j_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇯🇲',
-                FIELD_NAME: 'Regional indicator symbol letter j z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Jamajki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_j_with_regional_indicator_symbol_letter_p': {
                 FIELD_SYMBOL: '🇯🇵',
-                FIELD_NAME: 'Regional indicator symbol letter j z regional indicator symbol letter p',
+                FIELD_NAME: 'Flaga Japoni',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -8886,949 +8886,949 @@ class Emojis:
             },
             'regional_indicator_symbol_letter_y_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇾🇪',
-                FIELD_NAME: 'Regional indicator symbol letter y z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Jemenu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_j_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇯🇪',
-                FIELD_NAME: 'Regional indicator symbol letter j z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Jersey',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_j_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇯🇴',
-                FIELD_NAME: 'Regional indicator symbol letter j z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Jordanii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇰🇾',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Kajmanów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇰🇭',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Kambodży',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇨🇲',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Kamerunu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇨🇦',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Kanady',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_q_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇶🇦',
-                FIELD_NAME: 'Regional indicator symbol letter q z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Kataru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇰🇿',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Kazachstanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇰🇪',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Kenii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇰🇬',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Kirgistanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇰🇮',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Kiribati',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇨🇴',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Kolumbii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇰🇲',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Komorów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇨🇬',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Republiki Konga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇰🇷',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Republiki Korei',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_p': {
                 FIELD_SYMBOL: '🇰🇵',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter p',
+                FIELD_NAME: 'Flaga Koreańskiej Republiki Ludowo-Demokratycznej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_x_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇽🇰',
-                FIELD_NAME: 'Regional indicator symbol letter x z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Kosowa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇨🇷',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Kostaryki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇨🇺',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Kuby',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇰🇼',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Kuwejtu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇱🇦',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Laosu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇱🇸',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Lesotho',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_b': {
                 FIELD_SYMBOL: '🇱🇧',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter b',
+                FIELD_NAME: 'Flaga Libanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇱🇷',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Liberii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇱🇾',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Libii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇱🇮',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Liechtensteinu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇱🇹',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Litwy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇱🇺',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Luksemburga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_v': {
                 FIELD_SYMBOL: '🇱🇻',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter v',
+                FIELD_NAME: 'Flaga Łotwy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇲🇰',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Macedonii Północnej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇲🇬',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Madagaskaru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_y_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇾🇹',
-                FIELD_NAME: 'Regional indicator symbol letter y z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Majotty',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇲🇴',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Makau',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇲🇼',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Malawi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_v': {
                 FIELD_SYMBOL: '🇲🇻',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter v',
+                FIELD_NAME: 'Flaga Malediwów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇲🇾',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Malezji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇲🇱',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Mali',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇲🇹',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Malty',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_p': {
                 FIELD_SYMBOL: '🇲🇵',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter p',
+                FIELD_NAME: 'Flaga Wspólnoty Marianów Północnych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇲🇦',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Maroka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_q': {
                 FIELD_SYMBOL: '🇲🇶',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter q',
+                FIELD_NAME: 'Flaga Martyniki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇲🇷',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Mauretanii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇲🇺',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Mauritius',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_x': {
                 FIELD_SYMBOL: '🇲🇽',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter x',
+                FIELD_NAME: 'Flaga Meksyku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_f_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇫🇲',
-                FIELD_NAME: 'Regional indicator symbol letter f z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Mikronezji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇲🇲',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Mjanmy (Birmy)',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_d': {
                 FIELD_SYMBOL: '🇲🇩',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter d',
+                FIELD_NAME: 'Flaga Mołdawi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇲🇨',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Monako',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇲🇳',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Mongolii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇲🇸',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Montserrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇲🇿',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Mozambiku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇳🇦',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Namibi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇳🇷',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Nauru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_p': {
                 FIELD_SYMBOL: '🇳🇵',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter p',
+                FIELD_NAME: 'Flaga Nepalu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_q': {
                 FIELD_SYMBOL: '🇧🇶',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter q',
+                FIELD_NAME: 'Flaga Holandii Karaibskiej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_d_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇩🇪',
-                FIELD_NAME: 'Regional indicator symbol letter d z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Niemiec',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇳🇪',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Nigru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇳🇬',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Nigerii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇳🇮',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Nikaragui',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇳🇺',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Niue',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_f': {
                 FIELD_SYMBOL: '🇳🇫',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter f',
+                FIELD_NAME: 'Flaga Wyspy Norfolk',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇳🇴',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Norwegi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇳🇨',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Nowej Kaledonii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_n_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇳🇿',
-                FIELD_NAME: 'Regional indicator symbol letter n z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Nowej Zelandi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_o_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇴🇲',
-                FIELD_NAME: 'Regional indicator symbol letter o z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Omanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇵🇰',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Pakistanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇵🇼',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Republiki Palau',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇵🇦',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Panamy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇵🇬',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Papui-Nowej Gwinei',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇵🇾',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Paragwaju',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇵🇪',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Peru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇵🇳',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Pitcairn',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_f': {
                 FIELD_SYMBOL: '🇵🇫',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter f',
+                FIELD_NAME: 'Flaga Polinezji Francuskiej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇵🇱',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Polski',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇵🇷',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Portoryko',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇵🇹',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Portugalii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_z_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇿🇦',
-                FIELD_NAME: 'Regional indicator symbol letter z z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Republiki Południowej Afryki (RPA)',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_f': {
                 FIELD_SYMBOL: '🇨🇫',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter f',
+                FIELD_NAME: 'Flaga Republiki Środkowoafrykańskiej (RŚA)',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_v': {
                 FIELD_SYMBOL: '🇨🇻',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter v',
+                FIELD_NAME: 'Flaga Republiki Zielonego Przylądka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_r_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇷🇪',
-                FIELD_NAME: 'Regional indicator symbol letter r z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Reunionu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_r_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇷🇺',
-                FIELD_NAME: 'Regional indicator symbol letter r z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Rosji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_r_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇷🇴',
-                FIELD_NAME: 'Regional indicator symbol letter r z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Rumunii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_r_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇷🇼',
-                FIELD_NAME: 'Regional indicator symbol letter r z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Rwandy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_e_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇪🇭',
-                FIELD_NAME: 'Regional indicator symbol letter e z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Sahary Zachodniej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_k_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇰🇳',
-                FIELD_NAME: 'Regional indicator symbol letter k z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Saint Kitts i Nevis',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇱🇨',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Saint Lucia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_v_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇻🇨',
-                FIELD_NAME: 'Regional indicator symbol letter v z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Saint Vincent i Grenadyn',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_b_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇧🇱',
-                FIELD_NAME: 'Regional indicator symbol letter b z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Saint-Barthélemy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇵🇲',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Saint-Pierre i Miquelon',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_v': {
                 FIELD_SYMBOL: '🇸🇻',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter v',
+                FIELD_NAME: 'Flaga Salwadoru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_w_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇼🇸',
-                FIELD_NAME: 'Regional indicator symbol letter w z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Samoa',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇦🇸',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Samoa Amerykańskiego',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇸🇲',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga San Marino',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_q': {
                 FIELD_SYMBOL: '🇨🇶',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter q',
+                FIELD_NAME: 'Flaga Sark',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇸🇳',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Senegalu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_r_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇷🇸',
-                FIELD_NAME: 'Regional indicator symbol letter r z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Serbii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇸🇨',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Seszeli',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇸🇱',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Sierra Leone',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇸🇬',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Singapuru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_x': {
                 FIELD_SYMBOL: '🇸🇽',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter x',
+                FIELD_NAME: 'Flaga Sint Maarten',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇸🇰',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Słowacji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇸🇮',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Słowenii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇸🇴',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Somalii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_l_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇱🇰',
-                FIELD_NAME: 'Regional indicator symbol letter l z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Sri Lanki',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_u_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇺🇸',
-                FIELD_NAME: 'Regional indicator symbol letter u z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Stanów Zjednoczonych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_d': {
                 FIELD_SYMBOL: '🇸🇩',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter d',
+                FIELD_NAME: 'Flaga Sudanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇸🇸',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Sudanu Południowego',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇸🇷',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Surinamu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇸🇾',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Syrii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇨🇭',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Szwajcarii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇸🇪',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Szwecji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_j': {
                 FIELD_SYMBOL: '🇹🇯',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter j',
+                FIELD_NAME: 'Flaga Tadżykistanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇹🇭',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Tajlandii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇹🇼',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Tajwanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇹🇿',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Tanzanii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_p_with_regional_indicator_symbol_letter_s': {
                 FIELD_SYMBOL: '🇵🇸',
-                FIELD_NAME: 'Regional indicator symbol letter p z regional indicator symbol letter s',
+                FIELD_NAME: 'Flaga Palestyny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_l': {
                 FIELD_SYMBOL: '🇹🇱',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter l',
+                FIELD_NAME: 'Flaga Timoru Wschodniego',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇹🇬',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Togo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇹🇰',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Tokelau',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇹🇴',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Królestwa Tonga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇹🇹',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Trynidadu i Tobago',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇹🇳',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Tunezji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_r': {
                 FIELD_SYMBOL: '🇹🇷',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter r',
+                FIELD_NAME: 'Flaga Turcji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇹🇲',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Turkmenistanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇹🇨',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Turks i Caicos',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_t_with_regional_indicator_symbol_letter_v': {
                 FIELD_SYMBOL: '🇹🇻',
-                FIELD_NAME: 'Regional indicator symbol letter t z regional indicator symbol letter v',
+                FIELD_NAME: 'Flaga Tuvalu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_u_with_regional_indicator_symbol_letter_g': {
                 FIELD_SYMBOL: '🇺🇬',
-                FIELD_NAME: 'Regional indicator symbol letter u z regional indicator symbol letter g',
+                FIELD_NAME: 'Flaga Ugandy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_u_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇺🇦',
-                FIELD_NAME: 'Regional indicator symbol letter u z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Ukrainy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_e_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇪🇺',
-                FIELD_NAME: 'Regional indicator symbol letter e z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Unii Europejskiej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_u_with_regional_indicator_symbol_letter_y': {
                 FIELD_SYMBOL: '🇺🇾',
-                FIELD_NAME: 'Regional indicator symbol letter u z regional indicator symbol letter y',
+                FIELD_NAME: 'Flaga Urugwaju',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_u_with_regional_indicator_symbol_letter_z': {
                 FIELD_SYMBOL: '🇺🇿',
-                FIELD_NAME: 'Regional indicator symbol letter u z regional indicator symbol letter z',
+                FIELD_NAME: 'Flaga Uzbekistanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_v_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇻🇺',
-                FIELD_NAME: 'Regional indicator symbol letter v z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Vanuatu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_w_with_regional_indicator_symbol_letter_f': {
                 FIELD_SYMBOL: '🇼🇫',
-                FIELD_NAME: 'Regional indicator symbol letter w z regional indicator symbol letter f',
+                FIELD_NAME: 'Flaga Wallis i Futuny',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_v_with_regional_indicator_symbol_letter_a': {
                 FIELD_SYMBOL: '🇻🇦',
-                FIELD_NAME: 'Regional indicator symbol letter v z regional indicator symbol letter a',
+                FIELD_NAME: 'Flaga Watykanu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_v_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇻🇪',
-                FIELD_NAME: 'Regional indicator symbol letter v z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Venezueli',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_h_with_regional_indicator_symbol_letter_u': {
                 FIELD_SYMBOL: '🇭🇺',
-                FIELD_NAME: 'Regional indicator symbol letter h z regional indicator symbol letter u',
+                FIELD_NAME: 'Flaga Węgier',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_g_with_regional_indicator_symbol_letter_b': {
                 FIELD_SYMBOL: '🇬🇧',
-                FIELD_NAME: 'Regional indicator symbol letter g z regional indicator symbol letter b',
+                FIELD_NAME: 'Flaga Zjednoczonego Królestwa (Wielkiej Brytanii i Irlandii Północnej)',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waving_black_flag_with_tag_latin_small_letter_g_with_tag_latin_small_letter_b_with_tag_latin_small_letter_e_with_tag_latin_small_letter_n_with_tag_latin_small_letter_g_with_cancel_tag': {
-                FIELD_SYMBOL: '🏴\U000e0067\U000e0062\U000e0065\U000e006e\U000e0067\U000e007f',
-                FIELD_NAME: 'Waving czarny flaga z tag latin small letter g z tag latin small letter b z tag latin small letter e z tag latin small letter n z tag latin small letter g z cancel tag',
+                FIELD_SYMBOL: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+                FIELD_NAME: 'Flaga Anglii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waving_black_flag_with_tag_latin_small_letter_g_with_tag_latin_small_letter_b_with_tag_latin_small_letter_s_with_tag_latin_small_letter_c_with_tag_latin_small_letter_t_with_cancel_tag': {
-                FIELD_SYMBOL: '🏴\U000e0067\U000e0062\U000e0073\U000e0063\U000e0074\U000e007f',
-                FIELD_NAME: 'Waving czarny flaga z tag latin small letter g z tag latin small letter b z tag latin small letter s z tag latin small letter c z tag latin small letter t z cancel tag',
+                FIELD_SYMBOL: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+                FIELD_NAME: 'Flaga Szkocji',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'waving_black_flag_with_tag_latin_small_letter_g_with_tag_latin_small_letter_b_with_tag_latin_small_letter_w_with_tag_latin_small_letter_l_with_tag_latin_small_letter_s_with_cancel_tag': {
-                FIELD_SYMBOL: '🏴\U000e0067\U000e0062\U000e0077\U000e006c\U000e0073\U000e007f',
-                FIELD_NAME: 'Waving czarny flaga z tag latin small letter g z tag latin small letter b z tag latin small letter w z tag latin small letter l z tag latin small letter s z cancel tag',
+                FIELD_SYMBOL: '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
+                FIELD_NAME: 'Flaga Walii',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_v_with_regional_indicator_symbol_letter_n': {
                 FIELD_SYMBOL: '🇻🇳',
-                FIELD_NAME: 'Regional indicator symbol letter v z regional indicator symbol letter n',
+                FIELD_NAME: 'Flaga Wietnamu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇮🇹',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Włoch',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_x': {
                 FIELD_SYMBOL: '🇨🇽',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter x',
+                FIELD_NAME: 'Flaga Wyspy Bożego Narodzenia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇮🇲',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Wyspy Man',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇸🇭',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Wyspy Świętej Heleny, Wyspy Wniebowstąpienia i Tristan da Cunha',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_x': {
                 FIELD_SYMBOL: '🇦🇽',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter x',
+                FIELD_NAME: 'Flaga Wysp Alandzkich',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_k': {
                 FIELD_SYMBOL: '🇨🇰',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter k',
+                FIELD_NAME: 'Flaga Wyspy Cooka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_v_with_regional_indicator_symbol_letter_i': {
                 FIELD_SYMBOL: '🇻🇮',
-                FIELD_NAME: 'Regional indicator symbol letter v z regional indicator symbol letter i',
+                FIELD_NAME: 'Flaga Wysp Dziewiczych Stanów Zjednoczonych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_i_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇮🇨',
-                FIELD_NAME: 'Regional indicator symbol letter i z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Wysp Kanaryjskich',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_c_with_regional_indicator_symbol_letter_c': {
                 FIELD_SYMBOL: '🇨🇨',
-                FIELD_NAME: 'Regional indicator symbol letter c z regional indicator symbol letter c',
+                FIELD_NAME: 'Flaga Wysp Kokosowych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_m_with_regional_indicator_symbol_letter_h': {
                 FIELD_SYMBOL: '🇲🇭',
-                FIELD_NAME: 'Regional indicator symbol letter m z regional indicator symbol letter h',
+                FIELD_NAME: 'Flaga Wysp Marshalla',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_f_with_regional_indicator_symbol_letter_o': {
                 FIELD_SYMBOL: '🇫🇴',
-                FIELD_NAME: 'Regional indicator symbol letter f z regional indicator symbol letter o',
+                FIELD_NAME: 'Flaga Wysp Owczych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_b': {
                 FIELD_SYMBOL: '🇸🇧',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter b',
+                FIELD_NAME: 'Flaga Wysp Salomona',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_s_with_regional_indicator_symbol_letter_t': {
                 FIELD_SYMBOL: '🇸🇹',
-                FIELD_NAME: 'Regional indicator symbol letter s z regional indicator symbol letter t',
+                FIELD_NAME: 'Flaga Wyspy Świętego Tomasza i Książęcą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_z_with_regional_indicator_symbol_letter_m': {
                 FIELD_SYMBOL: '🇿🇲',
-                FIELD_NAME: 'Regional indicator symbol letter z z regional indicator symbol letter m',
+                FIELD_NAME: 'Flaga Zambi',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_z_with_regional_indicator_symbol_letter_w': {
                 FIELD_SYMBOL: '🇿🇼',
-                FIELD_NAME: 'Regional indicator symbol letter z z regional indicator symbol letter w',
+                FIELD_NAME: 'Flaga Zimbabwe',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'regional_indicator_symbol_letter_a_with_regional_indicator_symbol_letter_e': {
                 FIELD_SYMBOL: '🇦🇪',
-                FIELD_NAME: 'Regional indicator symbol letter a z regional indicator symbol letter e',
+                FIELD_NAME: 'Flaga Zjednoczonych Emiratów Arabskich',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9836,19 +9836,19 @@ class Emojis:
         SYMBOLS: {
             'pink_heart': {
                 FIELD_SYMBOL: '🩷',
-                FIELD_NAME: 'Różowe Serce',
+                FIELD_NAME: 'Różowe serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_black_heart': {
                 FIELD_SYMBOL: '❤️',
-                FIELD_NAME: 'Czarny symbol serca',
+                FIELD_NAME: 'Czerwone serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'orange_heart': {
                 FIELD_SYMBOL: '🧡',
-                FIELD_NAME: 'Pomarańczowe Serce',
+                FIELD_NAME: 'Pomarańczowe serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9866,7 +9866,7 @@ class Emojis:
             },
             'light_blue_heart': {
                 FIELD_SYMBOL: '🩵',
-                FIELD_NAME: 'Jasnoniebieskie Serce',
+                FIELD_NAME: 'Jasnoniebieskie serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9878,7 +9878,7 @@ class Emojis:
             },
             'purple_heart': {
                 FIELD_SYMBOL: '💜',
-                FIELD_NAME: 'Fioletowe serce',
+                FIELD_NAME: 'Purpurowe serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9890,7 +9890,7 @@ class Emojis:
             },
             'grey_heart': {
                 FIELD_SYMBOL: '🩶',
-                FIELD_NAME: 'Szare Serce',
+                FIELD_NAME: 'Szare serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9913,20 +9913,20 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_black_heart_with_fire': {
-                FIELD_SYMBOL: '❤️\u200d🔥',
-                FIELD_NAME: 'Heavy czarny sercem z fire',
+                FIELD_SYMBOL: '❤️‍🔥',
+                FIELD_NAME: 'Serce w płomieniach',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_black_heart_with_adhesive_bandage': {
-                FIELD_SYMBOL: '❤️\u200d🩹',
-                FIELD_NAME: 'Heavy czarny sercem z adhesive bandage',
+                FIELD_SYMBOL: '❤️‍🩹',
+                FIELD_NAME: 'Uleczone serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_heart_exclamation_mark_ornament': {
                 FIELD_SYMBOL: '❣️',
-                FIELD_NAME: 'Ornament z wykrzyknikiem ciężkiego serca',
+                FIELD_NAME: 'Wykrzyknik w kształcie serca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9938,7 +9938,7 @@ class Emojis:
             },
             'revolving_hearts': {
                 FIELD_SYMBOL: '💞',
-                FIELD_NAME: 'Obracające się serca',
+                FIELD_NAME: 'Wirujące serca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9950,19 +9950,19 @@ class Emojis:
             },
             'growing_heart': {
                 FIELD_SYMBOL: '💗',
-                FIELD_NAME: 'Rosnące Serce',
+                FIELD_NAME: 'Rosnące serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sparkling_heart': {
                 FIELD_SYMBOL: '💖',
-                FIELD_NAME: 'Musujące Serce',
+                FIELD_NAME: 'Migoczące serce',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heart_with_arrow': {
                 FIELD_SYMBOL: '💘',
-                FIELD_NAME: 'Serce ze strzałką',
+                FIELD_NAME: 'Serce przebite strzałą',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9976,7 +9976,7 @@ class Emojis:
         AV_SYMBOLS: {
             'mobile_phone_off': {
                 FIELD_SYMBOL: '📴',
-                FIELD_NAME: 'Telefon komórkowy wyłączony',
+                FIELD_NAME: 'Wyłączony telefon komórkowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -9988,13 +9988,13 @@ class Emojis:
             },
             'low_brightness_symbol': {
                 FIELD_SYMBOL: '🔅',
-                FIELD_NAME: 'Symbol niskiej jasności',
+                FIELD_NAME: 'Przycisk małej jasności',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'high_brightness_symbol': {
                 FIELD_SYMBOL: '🔆',
-                FIELD_NAME: 'Symbol wysokiej jasności',
+                FIELD_NAME: 'Przycisk dużej jasności',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10012,115 +10012,115 @@ class Emojis:
             },
             'antenna_with_bars': {
                 FIELD_SYMBOL: '📶',
-                FIELD_NAME: 'Antena z prętami',
+                FIELD_NAME: 'Siła sygnału',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'eject_symbol': {
                 FIELD_SYMBOL: '⏏️',
-                FIELD_NAME: 'Wysuń symbol',
+                FIELD_NAME: 'Wysuń',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_right_pointing_triangle': {
                 FIELD_SYMBOL: '▶️',
-                FIELD_NAME: 'Czarny prawy trójkąt wskazujący',
+                FIELD_NAME: 'Odtwórz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'double_vertical_bar': {
                 FIELD_SYMBOL: '⏸️',
-                FIELD_NAME: 'Podwójny pionowy pasek',
+                FIELD_NAME: 'Pauza',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_right_pointing_triangle_with_double_vertical_bar': {
                 FIELD_SYMBOL: '⏯️',
-                FIELD_NAME: 'Czarny trójkąt wskazujący z podwójnym pionowym paskiem',
+                FIELD_NAME: 'Odtwórz lub wstrzymaj',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_square_for_stop': {
                 FIELD_SYMBOL: '⏹️',
-                FIELD_NAME: 'Czarny kwadrat dla przystanku',
+                FIELD_NAME: 'Zatrzymaj',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_circle_for_record': {
                 FIELD_SYMBOL: '⏺️',
-                FIELD_NAME: 'Czarny krąg do nagrywania',
+                FIELD_NAME: 'Nagraj',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_right_pointing_double_triangle_with_vertical_bar': {
                 FIELD_SYMBOL: '⏭️',
-                FIELD_NAME: 'Czarny trójkąt z prawej strony z pionowym paskiem',
+                FIELD_NAME: 'Następny utwór',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_left_pointing_double_triangle_with_vertical_bar': {
                 FIELD_SYMBOL: '⏮️',
-                FIELD_NAME: 'Czarny lewy trójkątny trójkąt z pionowym paskiem',
+                FIELD_NAME: 'Poprzedni utwór',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_right_pointing_double_triangle': {
                 FIELD_SYMBOL: '⏩️',
-                FIELD_NAME: 'Czarny trójkąt trójkątny z prawej strony',
+                FIELD_NAME: 'Przycisk szybkiego przewijania do przodu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_left_pointing_double_triangle': {
                 FIELD_SYMBOL: '⏪️',
-                FIELD_NAME: 'Czarny lewy trójkąt wskazujący',
+                FIELD_NAME: 'Przycisk szybkiego przewijania do tyłu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_up_pointing_double_triangle': {
                 FIELD_SYMBOL: '⏫️',
-                FIELD_NAME: 'Czarny trójkąt skierowany w górę',
+                FIELD_NAME: 'Przycisk „szybko w górę”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_down_pointing_double_triangle': {
                 FIELD_SYMBOL: '⏬️',
-                FIELD_NAME: 'Czarny trójkąt skierowany w dół',
+                FIELD_NAME: 'Przycisk „szybko w dół”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_left_pointing_triangle': {
                 FIELD_SYMBOL: '◀️',
-                FIELD_NAME: 'Czarny lewy trójkąt wskazujący',
+                FIELD_NAME: 'Wstecz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'up_pointing_small_red_triangle': {
                 FIELD_SYMBOL: '🔼',
-                FIELD_NAME: 'Wskazujący mały czerwony trójkąt',
+                FIELD_NAME: 'Przycisk „w górę”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'down_pointing_small_red_triangle': {
                 FIELD_SYMBOL: '🔽',
-                FIELD_NAME: 'Mały czerwony trójkąt skierowany w dół',
+                FIELD_NAME: 'Przycisk „w dół”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'twisted_rightwards_arrows': {
                 FIELD_SYMBOL: '🔀',
-                FIELD_NAME: 'Skręcone strzałki w prawo',
+                FIELD_NAME: 'Przycisk losowego odtwarzania utworów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clockwise_rightwards_and_leftwards_open_circle_arrows': {
                 FIELD_SYMBOL: '🔁',
-                FIELD_NAME: 'Strzałki w prawo i w lewo Otwarte koło',
+                FIELD_NAME: 'Przycisk powtarzania',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clockwise_rightwards_and_leftwards_open_circle_arrows_with_circled_one_overlay': {
                 FIELD_SYMBOL: '🔂',
-                FIELD_NAME: 'Zgodnie z ruchem wskazówek zegara w prawo i po lewej stronie Otwieranie strzałek okręgu za pomocą jednej nakładki z kółkiem',
+                FIELD_NAME: 'Przycisk powtarzania jednokrotnego',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10128,37 +10128,37 @@ class Emojis:
         MATHEMATICAL_SYMBOLS: {
             'heavy_plus_sign': {
                 FIELD_SYMBOL: '➕',
-                FIELD_NAME: 'Ciężki znak plus',
+                FIELD_NAME: 'Znak plus',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_minus_sign': {
                 FIELD_SYMBOL: '➖',
-                FIELD_NAME: 'Ciężki znak minus',
+                FIELD_NAME: 'Znak minus',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_division_sign': {
                 FIELD_SYMBOL: '➗',
-                FIELD_NAME: 'Znak ciężkiej dywizji',
+                FIELD_NAME: 'Znak dzielenia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_multiplication_x': {
                 FIELD_SYMBOL: '✖️',
-                FIELD_NAME: 'Ciężkie mnożenie X',
+                FIELD_NAME: 'Znak mnożenia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_equals_sign': {
                 FIELD_SYMBOL: '🟰',
-                FIELD_NAME: 'Gruby Znak Równości',
+                FIELD_NAME: 'Gruby znak równości',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'permanent_paper_sign': {
                 FIELD_SYMBOL: '♾️',
-                FIELD_NAME: 'Znak stałego papieru',
+                FIELD_NAME: 'Nieskończoność',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10166,13 +10166,13 @@ class Emojis:
         RELIGIOUS_SYMBOLS: {
             'peace_symbol': {
                 FIELD_SYMBOL: '☮️',
-                FIELD_NAME: 'Znak pokoju',
+                FIELD_NAME: 'Symbol pokoju',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'latin_cross': {
                 FIELD_SYMBOL: '✝️',
-                FIELD_NAME: 'Krzyż Łaciński',
+                FIELD_NAME: 'Krzyż łaciński',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10184,13 +10184,13 @@ class Emojis:
             },
             'om_symbol': {
                 FIELD_SYMBOL: '🕉️',
-                FIELD_NAME: 'Symbol Om',
+                FIELD_NAME: 'Om',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'wheel_of_dharma': {
                 FIELD_SYMBOL: '☸️',
-                FIELD_NAME: 'Koło Dharmy',
+                FIELD_NAME: 'Koło dharmy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10208,19 +10208,19 @@ class Emojis:
             },
             'six_pointed_star_with_middle_dot': {
                 FIELD_SYMBOL: '🔯',
-                FIELD_NAME: 'Sześć spiczastych gwiazd z środkową kropką',
+                FIELD_NAME: 'Gwiazda sześcioramienna z kropką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'menorah_with_nine_branches': {
                 FIELD_SYMBOL: '🕎',
-                FIELD_NAME: 'Menora z dziewięcioma gałęziami',
+                FIELD_NAME: 'Menora',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'yin_yang': {
                 FIELD_SYMBOL: '☯️',
-                FIELD_NAME: 'Yin Yang',
+                FIELD_NAME: 'Yin-yang',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10240,7 +10240,7 @@ class Emojis:
         OTHER_SYMBOLS: {
             'heart_decoration': {
                 FIELD_SYMBOL: '💟',
-                FIELD_NAME: 'Dekoracja Serca',
+                FIELD_NAME: 'Dekoracja z sercem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10252,13 +10252,13 @@ class Emojis:
             },
             'atom_symbol': {
                 FIELD_SYMBOL: '⚛️',
-                FIELD_NAME: 'Symbol Atomu',
+                FIELD_NAME: 'Symbol atomu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'eight_pointed_black_star': {
                 FIELD_SYMBOL: '✴️',
-                FIELD_NAME: 'Osiem Pointed Black Star',
+                FIELD_NAME: 'Gwiazda ośmioramienna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10270,31 +10270,31 @@ class Emojis:
             },
             'cross_mark': {
                 FIELD_SYMBOL: '❌',
-                FIELD_NAME: 'Znak krzyża',
+                FIELD_NAME: 'Znak krzyżyka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_large_circle': {
                 FIELD_SYMBOL: '⭕️',
-                FIELD_NAME: 'Ciężki Duży Krąg',
+                FIELD_NAME: 'Gruby czerwony okrąg',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'octagonal_sign': {
                 FIELD_SYMBOL: '🛑️',
-                FIELD_NAME: 'Znak ośmiokątny',
+                FIELD_NAME: 'Znak stopu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'name_badge': {
                 FIELD_SYMBOL: '📛',
-                FIELD_NAME: 'Odznaka imienia',
+                FIELD_NAME: 'Plakietka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'hundred_points_symbol': {
                 FIELD_SYMBOL: '💯',
-                FIELD_NAME: 'Symbol stu punktów',
+                FIELD_NAME: 'Sto punktów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10312,73 +10312,73 @@ class Emojis:
             },
             'part_alternation_mark': {
                 FIELD_SYMBOL: '〽️',
-                FIELD_NAME: 'Znak zmiany części',
+                FIELD_NAME: 'Początek partii wokalnej',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'children_crossing': {
                 FIELD_SYMBOL: '🚸',
-                FIELD_NAME: 'Przejście dla dzieci',
+                FIELD_NAME: 'Dzieci przechodzące przez jezdnię',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'trident_emblem': {
                 FIELD_SYMBOL: '🔱',
-                FIELD_NAME: 'Trident Emblem',
+                FIELD_NAME: 'Emblemat z trójzębem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'fleur_de_lis': {
                 FIELD_SYMBOL: '⚜️',
-                FIELD_NAME: 'Fleur-De-Lis',
+                FIELD_NAME: 'Lilijka',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'japanese_symbol_for_beginner': {
                 FIELD_SYMBOL: '🔰',
-                FIELD_NAME: 'Japoński symbol dla początkujących',
+                FIELD_NAME: 'Japoński symbol początkującego kierowcy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_universal_recycling_symbol': {
                 FIELD_SYMBOL: '♻️',
-                FIELD_NAME: 'Czarny uniwersalny symbol recyklingu',
+                FIELD_NAME: 'Recykling',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_heavy_check_mark': {
                 FIELD_SYMBOL: '✅',
-                FIELD_NAME: 'Biały znacznik wyboru',
+                FIELD_NAME: 'Przycisk ze znacznikiem wyboru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'sparkle': {
                 FIELD_SYMBOL: '❇️',
-                FIELD_NAME: 'Iskierka',
+                FIELD_NAME: 'Iskra',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'eight_spoked_asterisk': {
                 FIELD_SYMBOL: '✳️',
-                FIELD_NAME: 'Osiem Spoked Asterisk',
+                FIELD_NAME: 'Gwiazdka ośmioramienna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'negative_squared_cross_mark': {
                 FIELD_SYMBOL: '❎',
-                FIELD_NAME: 'Negatywny kwadratowy znak krzyża',
+                FIELD_NAME: 'Przycisk z krzyżykiem',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'globe_with_meridians': {
                 FIELD_SYMBOL: '🌐',
-                FIELD_NAME: 'Globe with Meridians',
+                FIELD_NAME: 'Kula ziemska z południkami',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'diamond_shape_with_a_dot_inside': {
                 FIELD_SYMBOL: '💠',
-                FIELD_NAME: 'Diamentowy kształt z kropką w środku',
+                FIELD_NAME: 'Romb z kropką',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10390,7 +10390,7 @@ class Emojis:
             },
             'sleeping_symbol': {
                 FIELD_SYMBOL: '💤️',
-                FIELD_NAME: 'Symbol spania',
+                FIELD_NAME: 'Chrapanie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10401,74 +10401,74 @@ class Emojis:
                 FIELD_SUPPORT_SEX: False
             },
             'adult_with_adult_with_child': {
-                FIELD_SYMBOL: '🧑\u200d🧑\u200d🧒',
-                FIELD_NAME: 'Adult z adult z child',
+                FIELD_SYMBOL: '🧑‍🧑‍🧒',
+                FIELD_NAME: 'Rodzice i dziecko',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'adult_with_adult_with_child_with_child': {
-                FIELD_SYMBOL: '🧑\u200d🧑\u200d🧒\u200d🧒',
-                FIELD_NAME: 'Adult z adult z child z child',
+                FIELD_SYMBOL: '🧑‍🧑‍🧒‍🧒',
+                FIELD_NAME: 'Rodzice i dzieci',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'adult_with_child': {
-                FIELD_SYMBOL: '🧑\u200d🧒',
-                FIELD_NAME: 'Adult z child',
+                FIELD_SYMBOL: '🧑‍🧒',
+                FIELD_NAME: 'Rodzic i dziecko',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'adult_with_child_with_child': {
-                FIELD_SYMBOL: '🧑\u200d🧒\u200d🧒',
-                FIELD_NAME: 'Adult z child z child',
+                FIELD_SYMBOL: '🧑‍🧒‍🧒',
+                FIELD_NAME: 'Rodzic i dzieci',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'male_with_stroke_and_male_and_female_sign': {
                 FIELD_SYMBOL: '⚧️',
-                FIELD_NAME: 'Mężczyzna z udarem i męskim i żeńskim znakiem',
+                FIELD_NAME: 'Symbol transpłciowości',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_katakana_koko': {
                 FIELD_SYMBOL: '🈁',
-                FIELD_NAME: 'Kwadrat Katakana Koko',
+                FIELD_NAME: 'Japoński przycisk „tutaj”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'eye_with_left_speech_bubble': {
-                FIELD_SYMBOL: '👁️\u200d🗨️',
-                FIELD_NAME: 'Okiem z lewo speech bubble',
+                FIELD_SYMBOL: '👁️‍🗨️',
+                FIELD_NAME: 'Oko w dymku',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'wavy_dash': {
                 FIELD_SYMBOL: '〰️',
-                FIELD_NAME: 'Falisty Dash',
+                FIELD_NAME: 'Falista kreska',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'curly_loop': {
                 FIELD_SYMBOL: '➰',
-                FIELD_NAME: 'Curly Loop',
+                FIELD_NAME: 'Pętla',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'double_curly_loop': {
                 FIELD_SYMBOL: '➿',
-                FIELD_NAME: 'Podwójna kręta pętla',
+                FIELD_NAME: 'Podwójna pętla',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'heavy_check_mark': {
                 FIELD_SYMBOL: '✔️',
-                FIELD_NAME: 'Ciężki znacznik wyboru',
+                FIELD_NAME: 'Znacznik wyboru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'ballot_box_with_check': {
                 FIELD_SYMBOL: '☑️',
-                FIELD_NAME: 'Urny z czekiem',
+                FIELD_NAME: 'Pole ze znacznikiem wyboru',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10480,19 +10480,19 @@ class Emojis:
             },
             'speech_balloon': {
                 FIELD_SYMBOL: '💬',
-                FIELD_NAME: 'Balon Mowy',
+                FIELD_NAME: 'Dymek',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'thought_balloon': {
                 FIELD_SYMBOL: '💭',
-                FIELD_NAME: 'Balon Myśli',
+                FIELD_NAME: 'Dymek myśli',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'right_anger_bubble': {
                 FIELD_SYMBOL: '🗯️',
-                FIELD_NAME: 'Prawy bąbelek gniewu',
+                FIELD_NAME: 'Prawostronny dymek złości',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10536,13 +10536,13 @@ class Emojis:
             },
             'libra': {
                 FIELD_SYMBOL: '♎️',
-                FIELD_NAME: 'Libra',
+                FIELD_NAME: 'Waga',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'scorpius': {
                 FIELD_SYMBOL: '♏️',
-                FIELD_NAME: 'Scorpius',
+                FIELD_NAME: 'Skorpion',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10574,73 +10574,73 @@ class Emojis:
         WARNING_SIGNS: {
             'radioactive_sign': {
                 FIELD_SYMBOL: '☢️',
-                FIELD_NAME: 'Radioaktywny znak',
+                FIELD_NAME: 'Promieniowanie radioaktywne',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'biohazard_sign': {
                 FIELD_SYMBOL: '☣️',
-                FIELD_NAME: 'Znak zagrożenia biologicznego',
+                FIELD_NAME: 'Zagrożenie ze strony organizmów żywych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'warning_sign': {
                 FIELD_SYMBOL: '⚠️',
-                FIELD_NAME: 'Znak ostrzegawczy',
+                FIELD_NAME: 'Ostrzeżenie',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'no_entry': {
                 FIELD_SYMBOL: '⛔',
-                FIELD_NAME: 'Brak wejścia',
+                FIELD_NAME: 'Zakaz wjazdu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'no_entry_sign': {
                 FIELD_SYMBOL: '🚫',
-                FIELD_NAME: 'Brak wpisu',
+                FIELD_NAME: 'Zakaz',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'no_pedestrians': {
                 FIELD_SYMBOL: '🚷',
-                FIELD_NAME: 'Żadnych pieszych',
+                FIELD_NAME: 'Zakaz ruchu pieszych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'do_not_litter_symbol': {
                 FIELD_SYMBOL: '🚯',
-                FIELD_NAME: 'Nie używaj symbolu miotu',
+                FIELD_NAME: 'Zakaz śmiecenia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'no_bicycles': {
                 FIELD_SYMBOL: '🚳',
-                FIELD_NAME: 'Brak rowerów',
+                FIELD_NAME: 'Zakaz wjazdu rowerów',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'non_potable_water_symbol': {
                 FIELD_SYMBOL: '🚱',
-                FIELD_NAME: 'Symbol wody niezdatnej do picia',
+                FIELD_NAME: 'Woda niezdatna do picia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'no_one_under_eighteen_symbol': {
                 FIELD_SYMBOL: '🔞',
-                FIELD_NAME: 'Nikt pod osiemnastym symbolem',
+                FIELD_NAME: 'Zakaz poniżej osiemnastego roku życia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'no_mobile_phones': {
                 FIELD_SYMBOL: '📵',
-                FIELD_NAME: 'Brak telefonów komórkowych',
+                FIELD_NAME: 'Zakaz korzystania z telefonów komórkowych',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'no_smoking_symbol': {
                 FIELD_SYMBOL: '🚭',
-                FIELD_NAME: 'Symbol zakazu palenia',
+                FIELD_NAME: 'Zakaz palenia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10648,127 +10648,127 @@ class Emojis:
         ARROW_SIGNS: {
             'black_rightwards_arrow': {
                 FIELD_SYMBOL: '➡️',
-                FIELD_NAME: 'Czarna strzałka w prawo',
+                FIELD_NAME: 'Strzałka w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'leftwards_black_arrow': {
                 FIELD_SYMBOL: '⬅️',
-                FIELD_NAME: 'Czarna strzałka od lewej strony',
+                FIELD_NAME: 'Strzałka w lewo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'upwards_black_arrow': {
                 FIELD_SYMBOL: '⬆️',
-                FIELD_NAME: 'Czarna strzałka w górę',
+                FIELD_NAME: 'Strzałka w górę',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'downwards_black_arrow': {
                 FIELD_SYMBOL: '⬇️',
-                FIELD_NAME: 'W dół czarna strzałka',
+                FIELD_NAME: 'Strzałka w dół',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'north_east_arrow': {
                 FIELD_SYMBOL: '↗️',
-                FIELD_NAME: 'North East Arrow',
+                FIELD_NAME: 'Strzałka w górę w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'south_east_arrow': {
                 FIELD_SYMBOL: '↘️',
-                FIELD_NAME: 'South East Arrow',
+                FIELD_NAME: 'Strzałka w dół w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'south_west_arrow': {
                 FIELD_SYMBOL: '↙️',
-                FIELD_NAME: 'South West Arrow',
+                FIELD_NAME: 'Strzałka w dół w lewo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'north_west_arrow': {
                 FIELD_SYMBOL: '↖️',
-                FIELD_NAME: 'North West Arrow',
+                FIELD_NAME: 'Strzałka w górę w lewo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'up_down_arrow': {
                 FIELD_SYMBOL: '↕️',
-                FIELD_NAME: 'Strzałka w górę',
+                FIELD_NAME: 'Strzałka w górę i w dół',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'left_right_arrow': {
                 FIELD_SYMBOL: '↔️',
-                FIELD_NAME: 'Strzałka w lewo w prawo',
+                FIELD_NAME: 'Strzałka w lewo i w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'rightwards_arrow_with_hook': {
                 FIELD_SYMBOL: '↪️',
-                FIELD_NAME: 'Strzałka w prawo z hakiem',
+                FIELD_NAME: 'Strzałka zakręcona w prawo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'leftwards_arrow_with_hook': {
                 FIELD_SYMBOL: '↩️',
-                FIELD_NAME: 'Leftwards Arrow with Hook',
+                FIELD_NAME: 'Strzałka zakręcona w lewo',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'arrow_pointing_rightwards_then_curving_upwards': {
                 FIELD_SYMBOL: '⤴️',
-                FIELD_NAME: 'Strzałka skierowana w prawo, a następnie zakrzywiona w górę',
+                FIELD_NAME: 'Strzałka w prawo skręcająca w górę',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'arrow_pointing_rightwards_then_curving_downwards': {
                 FIELD_SYMBOL: '⤵️',
-                FIELD_NAME: 'Strzałka skierowana w prawo, a następnie zakrzywiona w dół',
+                FIELD_NAME: 'Strzałka w prawo skręcająca w dół',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'anticlockwise_downwards_and_upwards_open_circle_arrows': {
                 FIELD_SYMBOL: '🔄',
-                FIELD_NAME: 'Anticlockwise Downwards and Upwards Open Circle Arrows',
+                FIELD_NAME: 'Przycisk ze strzałkami przeciwnie do ruchu wskazówek zegara',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'clockwise_downwards_and_upwards_open_circle_arrows': {
                 FIELD_SYMBOL: '🔃',
-                FIELD_NAME: 'Strzałki w prawo iw dół Otwarte strzałki okręgu',
+                FIELD_NAME: 'Pionowe strzałki zgodne z ruchem wskazówek zegara',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'end_with_leftwards_arrow_above': {
                 FIELD_SYMBOL: '🔚',
-                FIELD_NAME: 'Zakończ z lewą strzałą powyżej',
+                FIELD_NAME: 'Strzałka z napisem END',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'back_with_leftwards_arrow_above': {
                 FIELD_SYMBOL: '🔙',
-                FIELD_NAME: 'Powrót z lewą strzałą powyżej',
+                FIELD_NAME: 'Strzałka z napisem BACK',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'on_with_exclamation_mark_with_left_right_arrow_above': {
                 FIELD_SYMBOL: '🔛',
-                FIELD_NAME: 'On z wykrzyknikiem z strzałką w lewo w prawo powyżej',
+                FIELD_NAME: 'Strzałka z napisem ON!',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'top_with_upwards_arrow_above': {
                 FIELD_SYMBOL: '🔝',
-                FIELD_NAME: 'Góra ze strzałką w górę powyżej',
+                FIELD_NAME: 'Strzałka z napisem TOP',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'soon_with_rightwards_arrow_above': {
                 FIELD_SYMBOL: '🔜',
-                FIELD_NAME: 'Wkrótce ze strzałką w prawo powyżej',
+                FIELD_NAME: 'Strzałka z napisem SOON',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10776,49 +10776,49 @@ class Emojis:
         TRANSPORT_SIGNS: {
             'automated_teller_machine': {
                 FIELD_SYMBOL: '🏧',
-                FIELD_NAME: 'Bankomat',
+                FIELD_NAME: 'Znak bankomatu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'baby_symbol': {
                 FIELD_SYMBOL: '🚼',
-                FIELD_NAME: 'Symbol dziecka',
+                FIELD_NAME: 'Symbol niemowlęcia',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'restroom': {
                 FIELD_SYMBOL: '🚻',
-                FIELD_NAME: 'Ubikacja',
+                FIELD_NAME: 'Toalety',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'mens_symbol': {
                 FIELD_SYMBOL: '🚹',
-                FIELD_NAME: 'Męski symbol',
+                FIELD_NAME: 'Toaleta męska',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'womens_symbol': {
                 FIELD_SYMBOL: '🚺',
-                FIELD_NAME: 'Symbol kobiety',
+                FIELD_NAME: 'Toaleta damska',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'put_litter_in_its_place_symbol': {
                 FIELD_SYMBOL: '🚮',
-                FIELD_NAME: 'Umieść miot w symbolu miejsca',
+                FIELD_NAME: 'Znak kosza na śmieci',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'left_luggage': {
                 FIELD_SYMBOL: '🛅',
-                FIELD_NAME: 'Lewy bagaż',
+                FIELD_NAME: 'Przechowalnia bagażu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'baggage_claim': {
                 FIELD_SYMBOL: '🛄',
-                FIELD_NAME: 'Roszczenie bagażowe',
+                FIELD_NAME: 'Odbiór bagażu',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10830,13 +10830,13 @@ class Emojis:
             },
             'customs': {
                 FIELD_SYMBOL: '🛃',
-                FIELD_NAME: 'Zwyczaje',
+                FIELD_NAME: 'Kontrola celna',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'water_closet': {
                 FIELD_SYMBOL: '🚾',
-                FIELD_NAME: 'Szafa na wodę',
+                FIELD_NAME: 'WC',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -10850,223 +10850,223 @@ class Emojis:
         ALPHANUMERIC_SIGNS: {
             'squared_id': {
                 FIELD_SYMBOL: '🆔',
-                FIELD_NAME: 'Kwadratowy Id',
+                FIELD_NAME: 'Przycisk ID',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'circled_ideograph_accept': {
                 FIELD_SYMBOL: '🉑',
-                FIELD_NAME: 'Okrągły Ideogram Zaakceptuj',
+                FIELD_NAME: 'Japoński przycisk „dozwolone”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_6709': {
                 FIELD_SYMBOL: '🈶',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-6709',
+                FIELD_NAME: 'Japoński przycisk „płatne”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_7121': {
                 FIELD_SYMBOL: '🈚️',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-7121',
+                FIELD_NAME: 'Japoński przycisk „bezpłatne”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_7533': {
                 FIELD_SYMBOL: '🈸',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-7533',
+                FIELD_NAME: 'Japoński przycisk „wniosek”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_55b6': {
                 FIELD_SYMBOL: '🈺',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-55b6',
+                FIELD_NAME: 'Japoński przycisk „czynne”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_6708': {
                 FIELD_SYMBOL: '🈷️',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-6708',
+                FIELD_NAME: 'Ideogram księżyca',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_vs': {
                 FIELD_SYMBOL: '🆚',
-                FIELD_NAME: 'Kwadratowe Vs',
+                FIELD_NAME: 'Przycisk VS',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'circled_ideograph_advantage': {
                 FIELD_SYMBOL: '🉐',
-                FIELD_NAME: 'Zaleta kółka Ideogram',
+                FIELD_NAME: 'Japoński przycisk „okazja”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'circled_ideograph_secret': {
                 FIELD_SYMBOL: '㊙️',
-                FIELD_NAME: 'Zakreślony Ideogram Secret',
+                FIELD_NAME: 'Japoński przycisk „tajemnica”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'circled_ideograph_congratulation': {
                 FIELD_SYMBOL: '㊗️',
-                FIELD_NAME: 'Okrągła Ideogramiczna gratulacje',
+                FIELD_NAME: 'Japoński przycisk „gratulacje”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_5408': {
                 FIELD_SYMBOL: '🈴',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-5408',
+                FIELD_NAME: 'Japoński przycisk „ocena pozytywna”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_6e80': {
                 FIELD_SYMBOL: '🈵',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-6e80',
+                FIELD_NAME: 'Japoński przycisk „brak wolnych miejsc”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_5272': {
                 FIELD_SYMBOL: '🈹',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-5272',
+                FIELD_NAME: 'Japoński przycisk „rabat”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_7981': {
                 FIELD_SYMBOL: '🈲',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-7981',
+                FIELD_NAME: 'Japoński przycisk „zabronione”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'negative_squared_latin_capital_letter_a': {
                 FIELD_SYMBOL: '🅰️',
-                FIELD_NAME: 'Ujemna kwadratowa łacińska litera A',
+                FIELD_NAME: 'Grupa krwi A',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'negative_squared_latin_capital_letter_b': {
                 FIELD_SYMBOL: '🅱️',
-                FIELD_NAME: 'Ujemna kwadratowa łacińska litera B',
+                FIELD_NAME: 'Grupa krwi B',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'negative_squared_ab': {
                 FIELD_SYMBOL: '🆎',
-                FIELD_NAME: 'Negatywne kwadraty Ab',
+                FIELD_NAME: 'Grupa krwi AB',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cl': {
                 FIELD_SYMBOL: '🆑',
-                FIELD_NAME: 'Kwadrat Cl',
+                FIELD_NAME: 'Przycisk CL',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'negative_squared_latin_capital_letter_o': {
                 FIELD_SYMBOL: '🅾️',
-                FIELD_NAME: 'Negatywna kwadratowa łacińska litera O',
+                FIELD_NAME: 'Grupa krwi 0',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_sos': {
                 FIELD_SYMBOL: '🆘',
-                FIELD_NAME: 'Kwadrat Sos',
+                FIELD_NAME: 'Przycisk SOS',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_6307': {
                 FIELD_SYMBOL: '🈯️',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-6307',
+                FIELD_NAME: 'Japoński przycisk „zarezerwowane”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'circled_latin_capital_letter_m': {
                 FIELD_SYMBOL: 'Ⓜ️',
-                FIELD_NAME: 'Zakreślona łacińska litera M',
+                FIELD_NAME: 'Koło z literą M',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'negative_squared_latin_capital_letter_p': {
                 FIELD_SYMBOL: '🅿️',
-                FIELD_NAME: 'Ujemna kwadratowa łacińska litera P',
+                FIELD_NAME: 'Parking',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cjk_unified_ideograph_7a7a': {
                 FIELD_SYMBOL: '🈳',
-                FIELD_NAME: 'Ujednolicony ideogram CJK do kwadratu-7a7a',
+                FIELD_NAME: 'Japoński przycisk „wolne miejsce”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_katakana_sa': {
                 FIELD_SYMBOL: '🈂️',
-                FIELD_NAME: 'Kwadratowa Katakana Sa',
+                FIELD_NAME: 'Japoński przycisk „usługa”',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'input_symbol_for_symbols': {
                 FIELD_SYMBOL: '🔣',
-                FIELD_NAME: 'Wprowadź symbol symboli',
+                FIELD_NAME: 'Symbole',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'information_source': {
                 FIELD_SYMBOL: 'ℹ️',
-                FIELD_NAME: 'Źródło informacji',
+                FIELD_NAME: 'Informacja',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'input_symbol_for_latin_letters': {
                 FIELD_SYMBOL: '🔤',
-                FIELD_NAME: 'Wpisz symbol liter łacińskich',
+                FIELD_NAME: 'Litery (alfabet łaciński)',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'input_symbol_for_latin_small_letters': {
                 FIELD_SYMBOL: '🔡',
-                FIELD_NAME: 'Wpisz symbol małych liter łacińskich',
+                FIELD_NAME: 'Małe litery (alfabet łaciński)',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'input_symbol_for_latin_capital_letters': {
                 FIELD_SYMBOL: '🔠',
-                FIELD_NAME: 'Wpisz symbol łacińskich wielkich liter',
+                FIELD_NAME: 'Wielkie litery (alfabet łaciński)',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_ng': {
                 FIELD_SYMBOL: '🆖',
-                FIELD_NAME: 'Kwadrat Ng',
+                FIELD_NAME: 'Przycisk NG Ng',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_ok': {
                 FIELD_SYMBOL: '🆗',
-                FIELD_NAME: 'Kwadrat Ok',
+                FIELD_NAME: 'Przycisk OK',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_up_with_exclamation_mark': {
                 FIELD_SYMBOL: '🆙',
-                FIELD_NAME: 'Squared Up with Exclamation Mark',
+                FIELD_NAME: 'Przycisk UP!',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_cool': {
                 FIELD_SYMBOL: '🆒',
-                FIELD_NAME: 'Squared Cool',
+                FIELD_NAME: 'Przycisk COOL',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_new': {
                 FIELD_SYMBOL: '🆕',
-                FIELD_NAME: 'Kwadratowy nowy',
+                FIELD_NAME: 'Przycisk NEW',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'squared_free': {
                 FIELD_SYMBOL: '🆓',
-                FIELD_NAME: 'Kwadrat wolny',
+                FIELD_NAME: 'Przycisk FREE',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -11084,7 +11084,7 @@ class Emojis:
             },
             'registered_sign': {
                 FIELD_SYMBOL: '®️',
-                FIELD_NAME: 'Zarejestrowany znak',
+                FIELD_NAME: 'Zarejestrowany znak towarowy',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -11092,85 +11092,85 @@ class Emojis:
         NUMERIC_SIGNS: {
             'digit_zero_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '0️⃣',
-                FIELD_NAME: 'Cyfra zero z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 0',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_one_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '1️⃣',
-                FIELD_NAME: 'Cyfra one z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 1',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_two_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '2️⃣',
-                FIELD_NAME: 'Cyfra two z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 2',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_three_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '3️⃣',
-                FIELD_NAME: 'Cyfra three z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 3',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_four_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '4️⃣',
-                FIELD_NAME: 'Cyfra four z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 4',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_five_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '5️⃣',
-                FIELD_NAME: 'Cyfra five z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 5',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_six_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '6️⃣',
-                FIELD_NAME: 'Cyfra six z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 6',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_seven_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '7️⃣',
-                FIELD_NAME: 'Cyfra seven z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 7',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_eight_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '8️⃣',
-                FIELD_NAME: 'Cyfra eight z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 8',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'digit_nine_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '9️⃣',
-                FIELD_NAME: 'Cyfra nine z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: 9',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'keycap_ten': {
                 FIELD_SYMBOL: '🔟',
-                FIELD_NAME: 'Klawiatura numer dziesięć',
+                FIELD_NAME: 'Klawisz: 10',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'input_symbol_for_numbers': {
                 FIELD_SYMBOL: '🔢',
-                FIELD_NAME: 'Wprowadź symbol liczb',
+                FIELD_NAME: 'Cyfry',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'number_sign_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '#️⃣',
-                FIELD_NAME: 'Liczba sign z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: #',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'asterisk_with_combining_enclosing_keycap': {
                 FIELD_SYMBOL: '*️⃣',
-                FIELD_NAME: 'Asterisk z combining enclosing klawisz',
+                FIELD_NAME: 'Klawisz: *',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -11178,25 +11178,25 @@ class Emojis:
         PUNCTUATION_SIGNS: {
             'heavy_exclamation_mark_symbol': {
                 FIELD_SYMBOL: '❗️',
-                FIELD_NAME: 'Symbol ciężkiego wykrzyknika',
+                FIELD_NAME: 'Czerwony wykrzyknik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_exclamation_mark_ornament': {
                 FIELD_SYMBOL: '❕',
-                FIELD_NAME: 'Ornament biały wykrzyknik',
+                FIELD_NAME: 'Biały wykrzyknik',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_question_mark_ornament': {
                 FIELD_SYMBOL: '❓',
-                FIELD_NAME: 'Czarny ornament ze znakiem zapytania',
+                FIELD_NAME: 'Czerwony znak zapytania',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_question_mark_ornament': {
                 FIELD_SYMBOL: '❔',
-                FIELD_NAME: 'Biały ornament ze znakiem zapytania',
+                FIELD_NAME: 'Biały znak zapytania',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -11208,7 +11208,7 @@ class Emojis:
             },
             'exclamation_question_mark': {
                 FIELD_SYMBOL: '⁉️',
-                FIELD_NAME: 'Znak zapytania wykrzyknika',
+                FIELD_NAME: 'Wykrzyknik ze znakiem zapytania',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -11216,61 +11216,61 @@ class Emojis:
         GEOMETRIC_SIGNS: {
             'large_red_circle': {
                 FIELD_SYMBOL: '🔴',
-                FIELD_NAME: 'Duży Czerwony Okrąg',
+                FIELD_NAME: 'Czerwone koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_orange_circle': {
                 FIELD_SYMBOL: '🟠',
-                FIELD_NAME: 'Duże pomarańczowe koło',
+                FIELD_NAME: 'Pomarańczowe koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_yellow_circle': {
                 FIELD_SYMBOL: '🟡',
-                FIELD_NAME: 'Duże żółte kółko',
+                FIELD_NAME: 'Żółte koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_green_circle': {
                 FIELD_SYMBOL: '🟢',
-                FIELD_NAME: 'Duże zielone kółko',
+                FIELD_NAME: 'Zielone koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_blue_circle': {
                 FIELD_SYMBOL: '🔵',
-                FIELD_NAME: 'Duży niebieski okrąg',
+                FIELD_NAME: 'Niebieskie koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_purple_circle': {
                 FIELD_SYMBOL: '🟣',
-                FIELD_NAME: 'Duże fioletowe koło',
+                FIELD_NAME: 'Fioletowe koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'medium_black_circle': {
                 FIELD_SYMBOL: '⚫️',
-                FIELD_NAME: 'Średni czarny krąg',
+                FIELD_NAME: 'Czarne koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'medium_white_circle': {
                 FIELD_SYMBOL: '⚪️',
-                FIELD_NAME: 'Średni biały okrąg',
+                FIELD_NAME: 'Białe koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_brown_circle': {
                 FIELD_SYMBOL: '🟤',
-                FIELD_NAME: 'Duże brązowe koło',
+                FIELD_NAME: 'Brązowe koło',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'up_pointing_red_triangle': {
                 FIELD_SYMBOL: '🔺',
-                FIELD_NAME: 'Wskazujący czerwony trójkąt',
+                FIELD_NAME: 'Czerwony trójkąt skierowany w górę',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
@@ -11282,127 +11282,127 @@ class Emojis:
             },
             'small_orange_diamond': {
                 FIELD_SYMBOL: '🔸',
-                FIELD_NAME: 'Mały pomarańczowy diament',
+                FIELD_NAME: 'Mały pomarańczowy romb',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'small_blue_diamond': {
                 FIELD_SYMBOL: '🔹',
-                FIELD_NAME: 'Mały niebieski diament',
+                FIELD_NAME: 'Mały niebieski romb',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_orange_diamond': {
                 FIELD_SYMBOL: '🔶',
-                FIELD_NAME: 'Duży pomarańczowy diament',
+                FIELD_NAME: 'Duży pomarańczowy romb',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_blue_diamond': {
                 FIELD_SYMBOL: '🔷',
-                FIELD_NAME: 'Duży niebieski diament',
+                FIELD_NAME: 'Duży niebieski romb',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_square_button': {
                 FIELD_SYMBOL: '🔳',
-                FIELD_NAME: 'Przycisk białego kwadratu',
+                FIELD_NAME: 'Biały kwadratowy przycisk',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_square_button': {
                 FIELD_SYMBOL: '🔲',
-                FIELD_NAME: 'Przycisk czarny kwadrat',
+                FIELD_NAME: 'Czarny kwadratowy przycisk',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_small_square': {
                 FIELD_SYMBOL: '▪️',
-                FIELD_NAME: 'Czarny mały kwadrat',
+                FIELD_NAME: 'Mały czarny kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_small_square': {
                 FIELD_SYMBOL: '▫️',
-                FIELD_NAME: 'Biały mały kwadrat',
+                FIELD_NAME: 'Mały biały kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_medium_small_square': {
                 FIELD_SYMBOL: '◾️',
-                FIELD_NAME: 'Czarny średni mały kwadrat',
+                FIELD_NAME: 'Mały/średni czarny kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_medium_small_square': {
                 FIELD_SYMBOL: '◽️',
-                FIELD_NAME: 'Biały Średni Mały Kwadrat',
+                FIELD_NAME: 'Mały/średni biały kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_medium_square': {
                 FIELD_SYMBOL: '◼️',
-                FIELD_NAME: 'Czarny średni kwadrat',
+                FIELD_NAME: 'Średni czarny kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_medium_square': {
                 FIELD_SYMBOL: '◻️',
-                FIELD_NAME: 'Biały średni kwadrat',
+                FIELD_NAME: 'Średni biały kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_red_square': {
                 FIELD_SYMBOL: '🟥',
-                FIELD_NAME: 'Duży czerwony kwadrat',
+                FIELD_NAME: 'Czerwony kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_orange_square': {
                 FIELD_SYMBOL: '🟧',
-                FIELD_NAME: 'Duży pomarańczowy kwadrat',
+                FIELD_NAME: 'Pomarańczowy kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_yellow_square': {
                 FIELD_SYMBOL: '🟨',
-                FIELD_NAME: 'Duży żółty kwadrat',
+                FIELD_NAME: 'Żółty kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_green_square': {
                 FIELD_SYMBOL: '🟩',
-                FIELD_NAME: 'Duży zielony plac',
+                FIELD_NAME: 'Zielony kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_blue_square': {
                 FIELD_SYMBOL: '🟦',
-                FIELD_NAME: 'Duży niebieski kwadrat',
+                FIELD_NAME: 'Niebieski kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_purple_square': {
                 FIELD_SYMBOL: '🟪',
-                FIELD_NAME: 'Duży fioletowy kwadrat',
+                FIELD_NAME: 'Fioletowy kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'black_large_square': {
                 FIELD_SYMBOL: '⬛️',
-                FIELD_NAME: 'Czarny duży kwadrat',
+                FIELD_NAME: 'Duży czarny kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'white_large_square': {
                 FIELD_SYMBOL: '⬜️',
-                FIELD_NAME: 'Biały duży plac',
+                FIELD_NAME: 'Duży biały kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
             'large_brown_square': {
                 FIELD_SYMBOL: '🟫',
-                FIELD_NAME: 'Duży brązowy kwadrat',
+                FIELD_NAME: 'Brązowy kwadrat',
                 FIELD_SUPPORT_COLOR: False,
                 FIELD_SUPPORT_SEX: False
             },
