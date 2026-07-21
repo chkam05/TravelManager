@@ -15,7 +15,11 @@ TEMPLATE_FOLDER = str(PROJECT_ROOT / 'templates')
 # Application and package informations.
 APP_NAME = 'Travel Manager'
 APP_AUTHOR = 'Kamil Karpiński'
-APP_DESCRIPTION = ''
+APP_DESCRIPTION = (
+    'Aplikacja desktopowa do przeglądania map OpenStreetMap, wyszukiwania miejsc, '
+    'planowania i zapisywania tras oraz szacowania kosztów podróży na podstawie '
+    'profili samochodów i aktualnych cen paliw.'
+)
 APP_VERSION = '1.0.0.0'
 
 # Application settings storage.
