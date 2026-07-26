@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const newRouteButton = document.querySelector('[data-navigation-action="new-route"]');
     let activeCarProfile = null;
     let currentView = 'map';
+    let settingsReturnView = 'map';
     const carButtonViews = new Set(['map', 'car-profiles']);
 
     window.lucide?.createIcons({
@@ -117,6 +118,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return false;
         }
 
+        if (viewName === 'settings' && currentView !== 'settings') {
+            settingsReturnView = currentView;
+        }
+
         document.querySelectorAll('[data-app-view]').forEach((view) => {
             const active = view === target;
             view.classList.toggle('app-view--active', active);
@@ -160,8 +165,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         showView('car-profiles');
     }));
-    saveButtons.forEach((button) => button.addEventListener('click', () => {
-        document.dispatchEvent(new CustomEvent('travel-manager:settings-save-requested'));
+    saveButtons.forEach((button) => button.addEventListener('click', async () => {
+        const pendingSaves = [];
+        document.dispatchEvent(new CustomEvent('travel-manager:settings-save-requested', {
+            detail: {
+                waitUntil: (promise) => pendingSaves.push(Promise.resolve(promise))
+            }
+        }));
+        await Promise.all(pendingSaves);
+        showView(settingsReturnView);
     }));
 
     newRouteButton?.addEventListener('click', async () => {

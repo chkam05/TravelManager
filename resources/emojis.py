@@ -1,5 +1,7 @@
 from typing import Any, ClassVar, Dict, List
 
+from flask import jsonify, request
+
 
 class Emojis:
     """Stores grouped emoji presets for favourite tags."""
@@ -11450,3 +11452,61 @@ class Emojis:
         )
 
     #endregion Queries
+
+    #region Endpoints
+
+    @classmethod
+    def emoji_groups(cls):
+        """Returns emoji group metadata for the emoji picker."""
+        response = jsonify({
+            'status': 'ok',
+            'groups': [
+                {
+                    'key': group_key,
+                    'name': cls.get_group_name(group_key),
+                    'label': cls.get_group_name(group_key),
+                    'emoji': cls.get_group_first_symbol(group_key),
+                    'support_color': cls.supports_color(group_key),
+                    'support_sex': cls.supports_sex(group_key)
+                }
+                for group_key in cls.groups()
+            ]
+        })
+        response.headers['Cache-Control'] = 'no-store'
+
+        return response
+
+    @classmethod
+    def emojis(cls):
+        """Returns emoji presets for the requested group."""
+        groups = cls.groups()
+        group_key = request.args.get('group', groups[0] if groups else '')
+        group_name = cls.get_group_name(group_key)
+        response = jsonify({
+            'status': 'ok',
+            'group': {
+                'key': group_key,
+                'name': group_name,
+                'label': group_name,
+                'support_color': cls.supports_color(group_key),
+                'support_sex': cls.supports_sex(group_key)
+            },
+            'emojis': [
+                {
+                    'key': key,
+                    'name': data.get(cls.FIELD_NAME, key),
+                    'label': data.get(cls.FIELD_NAME, key),
+                    'emoji': data.get(cls.FIELD_SYMBOL, ''),
+                    'support_color': bool(data.get(cls.FIELD_SUPPORT_COLOR)),
+                    'support_sex': bool(data.get(cls.FIELD_SUPPORT_SEX)),
+                    'supports_skin_tone': bool(data.get(cls.FIELD_SUPPORT_COLOR)),
+                    'supports_gender': bool(data.get(cls.FIELD_SUPPORT_SEX))
+                }
+                for key, data in cls.get_group(group_key).items()
+            ]
+        })
+        response.headers['Cache-Control'] = 'no-store'
+
+        return response
+
+    #endregion Endpoints

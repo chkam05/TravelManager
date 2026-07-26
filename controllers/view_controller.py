@@ -1,5 +1,5 @@
 from typing import ClassVar
-from flask import jsonify, render_template, request
+from flask import render_template
 
 from config import APP_AUTHOR, APP_DESCRIPTION, APP_NAME, APP_VERSION, HOST, PORT
 from core.api.base_controller import BaseController
@@ -26,8 +26,8 @@ class ViewController(BaseController):
         self.add_url_rule('/api/panels/search-results', view_func=self.search_results_panel, methods=['GET'])
         self.add_url_rule('/api/dialogs/yesno', view_func=self.yesno_dialog, methods=['GET'])
         self.add_url_rule('/api/dialogs', view_func=self.dialogs, methods=['GET'])
-        self.add_url_rule('/api/emojis/groups', view_func=self.emoji_groups, methods=['GET'])
-        self.add_url_rule('/api/emojis', view_func=self.emojis, methods=['GET'])
+        self.add_url_rule('/api/emojis/groups', view_func=Emojis.emoji_groups, methods=['GET'])
+        self.add_url_rule('/api/emojis', view_func=Emojis.emojis, methods=['GET'])
 
     # --- ENDPOINTS ---
 
@@ -85,53 +85,3 @@ class ViewController(BaseController):
 
     def dialogs(self):
         return render_template('dialogs/dialogs.html')
-
-    def emoji_groups(self):
-        response = jsonify({
-            'status': 'ok',
-            'groups': [
-                {
-                    'key': group_key,
-                    'name': Emojis.get_group_name(group_key),
-                    'label': Emojis.get_group_name(group_key),
-                    'emoji': Emojis.get_group_first_symbol(group_key),
-                    'support_color': Emojis.supports_color(group_key),
-                    'support_sex': Emojis.supports_sex(group_key)
-                }
-                for group_key in Emojis.groups()
-            ]
-        })
-        response.headers['Cache-Control'] = 'no-store'
-
-        return response
-
-    def emojis(self):
-        group_key = request.args.get('group', Emojis.groups()[0])
-        group_name = Emojis.get_group_name(group_key)
-
-        response = jsonify({
-            'status': 'ok',
-            'group': {
-                'key': group_key,
-                'name': group_name,
-                'label': group_name,
-                'support_color': Emojis.supports_color(group_key),
-                'support_sex': Emojis.supports_sex(group_key)
-            },
-            'emojis': [
-                {
-                    'key': key,
-                    'name': data.get(Emojis.FIELD_NAME, key),
-                    'label': data.get(Emojis.FIELD_NAME, key),
-                    'emoji': data.get(Emojis.FIELD_SYMBOL, ''),
-                    'support_color': bool(data.get(Emojis.FIELD_SUPPORT_COLOR)),
-                    'support_sex': bool(data.get(Emojis.FIELD_SUPPORT_SEX)),
-                    'supports_skin_tone': bool(data.get(Emojis.FIELD_SUPPORT_COLOR)),
-                    'supports_gender': bool(data.get(Emojis.FIELD_SUPPORT_SEX))
-                }
-                for key, data in Emojis.get_group(group_key).items()
-            ]
-        })
-        response.headers['Cache-Control'] = 'no-store'
-
-        return response

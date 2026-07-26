@@ -212,7 +212,6 @@
 
 .information-view__app-icon {
     position: relative;
-    border-radius: 8px;
 }
 
 .settings-view__values {
@@ -383,7 +382,7 @@
 .information-view__app-icon {
     width: 64px;
     height: 64px;
-    background: #1f6fae url("../../icons/favicon.png") center / 42px 42px no-repeat;
+    background: transparent url("../../icons/favicon.png") center / contain no-repeat;
 }
 
 .information-view__details {

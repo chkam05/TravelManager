@@ -1,4 +1,5 @@
 from __future__ import annotations
+import json
 from math import isfinite
 from typing import Any, ClassVar, Dict
 from uuid import uuid4
@@ -10,8 +11,8 @@ from models.settings.ui_settings import UiSettings
 from models.settings.car_profile import CarProfile
 from models.settings.favourite_place import FavouritePlace
 from models.settings.favourite_tag import FavouriteTag
-from models.settings.fuel_cost_cache import FuelCostCache
 from models.settings.saved_route import SavedRoute
+from resources.settings_transfer import SettingsTransferTypes
 from storage.settings_storage import SettingsStorage
 
 
@@ -19,20 +20,6 @@ class SettingsController(BaseController):
     """Controller for application settings."""
 
     CONTROLLER_NAME: ClassVar[str] = 'SettingsController'
-    _EXPORT_TYPES: ClassVar[Dict[str, Dict[str, str]]] = {
-        'fuel_costs': {
-            'filename': 'travel-manager-ceny-paliwa.json',
-            'label': 'Ceny paliwa'
-        },
-        'routes': {
-            'filename': 'travel-manager-trasy.json',
-            'label': 'Trasy'
-        },
-        'favourites': {
-            'filename': 'travel-manager-ulubione-i-tagi.json',
-            'label': 'Ulubione i Tagi'
-        }
-    }
 
     def __init__(self, settings_storage: SettingsStorage):
         self._settings_storage = settings_storage
@@ -86,24 +73,27 @@ class SettingsController(BaseController):
         })
 
     def export_data(self, data_type: str):
-        if data_type not in self._EXPORT_TYPES:
+        if not SettingsTransferTypes.is_supported(data_type):
             return jsonify({'status': 'error', 'message': 'Unsupported export data type.'}), 404
+
+        plaintext = self._export_settings_text(data_type)
 
         return jsonify({
             'status': 'ok',
-            'filename': self._EXPORT_TYPES[data_type]['filename'],
-            'payload': self._export_payload(data_type)
+            'filename': SettingsTransferTypes.file_name(data_type),
+            'payload': json.loads(plaintext)
         })
 
     def import_data(self, data_type: str):
-        if data_type not in self._EXPORT_TYPES:
+        if not SettingsTransferTypes.is_supported(data_type):
             return jsonify({'status': 'error', 'message': 'Unsupported import data type.'}), 404
 
         payload = request.get_json(silent=True)
 
         try:
-            counts = self._import_payload(data_type, payload)
-        except (TypeError, ValueError):
+            plaintext = json.dumps(payload, ensure_ascii=False)
+            self._import_settings_text(data_type, plaintext)
+        except (TypeError, ValueError, json.JSONDecodeError):
             return jsonify({
                 'status': 'error',
                 'message': 'Selected JSON does not match the requested data type.'
@@ -112,8 +102,7 @@ class SettingsController(BaseController):
         return jsonify({
             'status': 'imported',
             'type': data_type,
-            'label': self._EXPORT_TYPES[data_type]['label'],
-            'counts': counts
+            'label': SettingsTransferTypes.label(data_type)
         })
 
     def get_favourites(self):
@@ -435,77 +424,27 @@ class SettingsController(BaseController):
 
         return UiSettings.from_dict(merged)
 
-    def _export_payload(self, data_type: str) -> Dict[str, Any]:
-        """Builds the JSON payload for a selected export type."""
-        settings = self._settings_storage.load()
+    def _export_settings_text(self, data_type: str) -> str:
+        """Calls the explicit storage exporter assigned to a settings type."""
+        if data_type == SettingsTransferTypes.FUEL_COSTS:
+            return self._settings_storage.export_fuel_costs()
+        if data_type == SettingsTransferTypes.ROUTES:
+            return self._settings_storage.export_routes()
+        if data_type == SettingsTransferTypes.FAVOURITES:
+            return self._settings_storage.export_favourites_and_tags()
+        raise ValueError('Unsupported export data type.')
 
-        if data_type == 'fuel_costs':
-            data = settings.fuel_cost_cache.to_dict() if settings.fuel_cost_cache else FuelCostCache.from_dict({}).to_dict()
-        elif data_type == 'routes':
-            data = {
-                'routes': SavedRoute.to_dict_list(settings.routes)
-            }
-        elif data_type == 'favourites':
-            data = {
-                'favourite_tags': FavouriteTag.to_dict_list(settings.favourite_tags),
-                'favourites': FavouritePlace.to_dict_list(settings.favourites)
-            }
-        else:
-            raise ValueError('Unsupported export data type.')
-
-        return {
-            'type': data_type,
-            'label': self._EXPORT_TYPES[data_type]['label'],
-            'data': data
-        }
-
-    def _import_payload(self, data_type: str, payload: Dict[str, Any]) -> Dict[str, int]:
-        """Imports selected data into settings storage."""
-        if not isinstance(payload, dict):
-            raise ValueError('Invalid JSON root.')
-
-        data = payload.get('data', payload)
-        settings = self._settings_storage.load()
-
-        if data_type == 'fuel_costs':
-            settings.fuel_cost_cache = FuelCostCache.from_dict(data if isinstance(data, dict) else {})
-            counts = {'fuel_costs': len(settings.fuel_cost_cache.data.get('rows', []))}
-        elif data_type == 'routes':
-            routes = data.get('routes', data) if isinstance(data, dict) else data
-
-            if not isinstance(routes, list):
-                raise ValueError('Invalid routes data.')
-
-            settings.routes = SavedRoute.from_dict_list(routes)
-            counts = {'routes': len(settings.routes)}
-        elif data_type == 'favourites':
-            if not isinstance(data, dict):
-                raise ValueError('Invalid favourites data.')
-
-            tags = FavouriteTag.from_dict_list(data.get('favourite_tags', []))
-            favourites = FavouritePlace.from_dict_list(data.get('favourites', []))
-            has_default_tag = any(tag.id == FavouriteTag.DEFAULT_TAG_ID for tag in tags)
-
-            if not has_default_tag:
-                tags.insert(0, FavouriteTag.default())
-
-            tag_ids = {tag.id for tag in tags}
-
-            for favourite in favourites:
-                if favourite.tag_id not in tag_ids:
-                    favourite.tag_id = FavouriteTag.DEFAULT_TAG_ID
-
-            settings.favourite_tags = tags
-            settings.favourites = favourites
-            counts = {
-                'favourite_tags': len(settings.favourite_tags),
-                'favourites': len(settings.favourites)
-            }
-        else:
-            raise ValueError('Unsupported import data type.')
-
-        self._settings_storage.save(settings)
-
-        return counts
+    def _import_settings_text(self, data_type: str, plaintext: str) -> None:
+        """Calls the explicit storage importer assigned to a settings type."""
+        if data_type == SettingsTransferTypes.FUEL_COSTS:
+            self._settings_storage.import_fuel_costs(plaintext)
+            return
+        if data_type == SettingsTransferTypes.ROUTES:
+            self._settings_storage.import_routes(plaintext)
+            return
+        if data_type == SettingsTransferTypes.FAVOURITES:
+            self._settings_storage.import_favourites_and_tags(plaintext)
+            return
+        raise ValueError('Unsupported import data type.')
 
     #endregion Helpers

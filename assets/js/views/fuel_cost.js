@@ -158,7 +158,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             style: 'currency',
             currency,
             minimumFractionDigits: 2,
-            maximumFractionDigits: 3
+            maximumFractionDigits: 2
         }).format(converted);
     };
 
@@ -355,6 +355,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             state.countries = data.countries || [];
             state.rates = data.rates || {};
             state.metadata = data.metadata || {};
+            state.selectedCurrency = data.selected_exchange_rate || 'original';
             renderCurrencyOptions();
             document.dispatchEvent(new CustomEvent('travel-manager:fuel-costs-changed', {
                 detail: {
@@ -395,6 +396,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         state.countries = data.countries || [];
         state.rates = data.rates || {};
         state.metadata = data.metadata || {};
+        state.selectedCurrency = data.selected_exchange_rate || state.selectedCurrency;
         renderCurrencyOptions();
         render();
         document.dispatchEvent(new CustomEvent('travel-manager:fuel-costs-changed', {
@@ -466,9 +468,38 @@ document.addEventListener('travel-manager:views-ready', () => {
     updateButton.addEventListener('click', confirmUpdate);
     addButton.addEventListener('click', () => editRow(null));
 
-    currencySelect.addEventListener('change', () => {
+    currencySelect.addEventListener('change', async () => {
+        const previousCurrency = state.selectedCurrency;
         state.selectedCurrency = currencySelect.value;
         render();
+
+        try {
+            const response = await fetch('/api/fuel-costs/exchange-rate', {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    selected_exchange_rate: state.selectedCurrency
+                })
+            });
+            const data = await response.json();
+
+            if (!response.ok || data.status !== 'ok') {
+                throw new Error(data.message || `HTTP ${response.status}`);
+            }
+
+            state.selectedCurrency = data.selected_exchange_rate;
+        } catch (error) {
+            state.selectedCurrency = previousCurrency;
+            currencySelect.value = previousCurrency;
+            state.metadata = {
+                ...state.metadata,
+                warning: `Nie udało się zapisać przelicznika: ${error.message}`
+            };
+            render();
+        }
     });
 
     sortFieldSelect.addEventListener('change', () => {

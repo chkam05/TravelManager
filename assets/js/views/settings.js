@@ -242,12 +242,12 @@ document.addEventListener('travel-manager:views-ready', () => {
         window.clearTimeout(saveTimer);
 
         if (!Object.keys(pendingSettings).length) {
-            return;
+            return Promise.resolve();
         }
 
         const payload = pendingSettings;
         pendingSettings = {};
-        patchUiSettings(payload);
+        return patchUiSettings(payload);
     };
 
     const addNumberSetting = (group, label, field, value, unit, options = {}) => {
@@ -586,7 +586,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             loadSettings();
         }
     });
-    document.addEventListener('travel-manager:settings-save-requested', flushPendingSettings);
+    document.addEventListener('travel-manager:settings-save-requested', (event) => {
+        event.detail?.waitUntil?.(flushPendingSettings());
+    });
 
     document.querySelector('#settings-export-data')?.addEventListener('click', (event) => {
         showDataTransferMenu('export', event.currentTarget);

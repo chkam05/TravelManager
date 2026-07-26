@@ -1,37 +1,37 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Any, ClassVar, Dict
+from typing import Any, ClassVar, Dict, List
 
 from core.data.base_data_model import BaseDataModel
+from models.settings.saved_route import SavedRoute
 
 
 @dataclass
-class FuelCostCache(BaseDataModel):
-    """Stores cached fuel cost table data inside application settings."""
+class RoutesTransferDataModel(BaseDataModel):
+    """Stores the explicit saved routes transfer payload."""
 
     # Default values
 
     # Field name declarations
-    FIELD_DATA: ClassVar[str] = 'data'
+    FIELD_ROUTES: ClassVar[str] = 'routes'
 
     # Fields
-    data: Dict[str, Any]
+    routes: List[SavedRoute]
 
     #region Serialization
 
     @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> FuelCostCache:
+    def from_dict(cls, d: Dict[str, Any]) -> RoutesTransferDataModel:
         """Deserializes data from a dictionary in "attribute:value" format to an object."""
-        data = d.get(cls.FIELD_DATA, d if isinstance(d, dict) else {})
-
+        routes = d.get(cls.FIELD_ROUTES, [])
         return cls(
-            data=data if isinstance(data, dict) else {}
+            routes=SavedRoute.from_dict_list(routes if isinstance(routes, list) else [])
         )
 
     def to_dict(self) -> Dict[str, Any]:
         """Serializes object to a dictionary in the format "attribute:value"."""
         return {
-            self.FIELD_DATA: self.data if isinstance(self.data, dict) else {}
+            self.FIELD_ROUTES: self.to_dict_list(self.routes)
         }
 
     #endregion Serialization
