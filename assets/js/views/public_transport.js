@@ -293,11 +293,23 @@ document.addEventListener('travel-manager:views-ready', () => {
             : [];
 
         if (routeButton) {
-            routeButton.hidden = route.length < 2;
+            routeButton.hidden = !metadata.show_route_map || route.length < 2;
             routeButton.dataset.route = JSON.stringify(route);
             routeButton.dataset.name = metadata.line
                 ? `Przebieg linii ${metadata.line}`
                 : 'Przebieg przejazdu';
+        }
+
+        const vehiclesButton = header.querySelector(
+            '[data-public-transport-vehicles]'
+        );
+
+        if (vehiclesButton) {
+            vehiclesButton.hidden = (
+                !metadata.show_vehicle_positions
+                || !metadata.line
+            );
+            vehiclesButton.dataset.line = metadata.line || '';
         }
 
         fillDateSelect(header, metadata, screen);
@@ -575,6 +587,35 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     };
 
+    const showVehiclesOnMap = async (line) => {
+        try {
+            const params = new URLSearchParams({ line });
+            const response = await fetch(`${endpoint('vehicles')}?${params}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error || 'Nie udało się pobrać pozycji pojazdów.'
+                );
+            }
+            if (!Array.isArray(data.positions) || !data.positions.length) {
+                throw new Error(`Brak aktywnych pojazdów linii ${line}.`);
+            }
+
+            window.travelManagerNavigation?.showView('map');
+            window.setTimeout(() => {
+                window.travelManagerMap?.showPublicTransportVehicles(
+                    data.positions,
+                    `Pojazdy linii ${line}`
+                );
+            }, 0);
+        } catch (error) {
+            window.alert(error.message);
+        }
+    };
+
     view.querySelectorAll('[data-public-transport-search]').forEach((form) => {
         const input = form.querySelector('input');
         const run = () => filterItems(form.dataset.publicTransportSearch, input?.value || '');
@@ -655,6 +696,15 @@ document.addEventListener('travel-manager:views-ready', () => {
                 routeAction.dataset.name,
                 routeAction.dataset.route
             );
+            return;
+        }
+
+        const vehiclesAction = event.target.closest(
+            '[data-public-transport-vehicles]'
+        );
+
+        if (vehiclesAction?.dataset.line) {
+            showVehiclesOnMap(vehiclesAction.dataset.line);
             return;
         }
 

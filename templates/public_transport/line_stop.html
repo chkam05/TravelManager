@@ -33,9 +33,9 @@
                     </header>
                     <div class="public-transport-line-stop__departures" id="public-transport-day-{{ loop.index0 }}">
                         {% for departure in day.departures %}
-                            <button type="button" data-public-transport-action="ride" data-url="{{ departure.url }}" title="{% if departure.is_high_floor %}Pojazd wysokopodłogowy{% else %}Pokaż kurs{% endif %}">
+                            <button type="button"{% if capabilities.show_ride and departure.url %} data-public-transport-action="ride" data-url="{{ departure.url }}" title="Pokaż kurs"{% endif %}{% if not capabilities.show_ride or not departure.url %} disabled{% endif %}>
                                 <span>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</span>
-                                {% if departure.variant %}<small>{{ departure.variant }}</small>{% endif %}
+                                {% if departure.variant %}<small title="{{ departure.variant }}">{{ variant_codes.get(departure.variant, departure.variant) }}</small>{% endif %}
                                 {% if capabilities.show_high_floor and departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
                             </button>
                         {% else %}
@@ -50,8 +50,13 @@
             {% for timetable_date, day in timetable_days %}
                 {% if day.variants %}
                     <section>
-                        <span>{{ timetable_date.strftime('%d.%m.%Y') }}</span>
-                        {% for variant in day.variants %}<strong>{{ variant }}</strong>{% endfor %}
+                        <span class="public-transport-line-stop__variant-date">{{ timetable_date.strftime('%d.%m.%Y') }}</span>
+                        {% for variant in day.variants %}
+                            <div class="public-transport-line-stop__variant">
+                                <strong>{{ variant_codes.get(variant, variant) }}</strong>
+                                <span>{{ variant }}</span>
+                            </div>
+                        {% endfor %}
                     </section>
                 {% endif %}
             {% else %}

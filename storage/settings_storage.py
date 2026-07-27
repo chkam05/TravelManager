@@ -1,6 +1,6 @@
 from __future__ import annotations
 import json
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, Iterable, List
 
 from config import SETTINGS_DIR, SETTINGS_FILE_NAME
 from core.data.base_data_model import BaseDataModel
@@ -49,6 +49,26 @@ class SettingsStorage(BaseJsonStorage):
         with self._lock:
             settings = self.load()
             settings.public_transport_cache[cache.carrier] = cache
+            self.save(settings)
+
+    def remove_public_transport_caches(
+        self,
+        carriers: Iterable[str]
+    ) -> None:
+        """Removes obsolete provider caches from application settings."""
+        carrier_ids = set(carriers)
+        if not carrier_ids:
+            return
+        with self._lock:
+            settings = self.load()
+            retained = {
+                carrier: cache
+                for carrier, cache in settings.public_transport_cache.items()
+                if carrier not in carrier_ids
+            }
+            if len(retained) == len(settings.public_transport_cache):
+                return
+            settings.public_transport_cache = retained
             self.save(settings)
 
     def save_public_transport_lines(

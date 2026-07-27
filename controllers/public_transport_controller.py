@@ -23,6 +23,9 @@ class PublicTransportController(BaseController):
 
     def __init__(self, settings_storage: SettingsStorage):
         self._settings_storage = settings_storage
+        self._settings_storage.remove_public_transport_caches(
+            PublicTransportProviders.providers_without_settings_cache()
+        )
         self._cache: dict[str, tuple[float, Any]] = {}
         self._download_progress: dict[str, dict[str, Any]] = {}
         self._cache_lock = Lock()
@@ -74,6 +77,11 @@ class PublicTransportController(BaseController):
             view_func=self.announcement,
             methods=['GET']
         )
+        self.add_url_rule(
+            '/api/public-transport/<provider_id>/vehicles',
+            view_func=self.vehicle_positions,
+            methods=['GET']
+        )
 
     #region Endpoints
 
@@ -120,6 +128,7 @@ class PublicTransportController(BaseController):
             lambda model: render_template(
                 'public_transport/line_view.html',
                 line=model,
+                route_points=self._line_route_points(model),
                 date_options=self._date_options(model.dates),
                 capabilities=PublicTransportProviders.capabilities(provider_id)
             )
@@ -139,6 +148,9 @@ class PublicTransportController(BaseController):
                 'public_transport/line_stop.html',
                 timetable=model,
                 timetable_days=sorted(model.timetable.items()),
+                variant_codes=self._variant_codes(
+                    model.timetable.values()
+                ),
                 date_options=self._date_options(model.dates),
                 capabilities=PublicTransportProviders.capabilities(provider_id)
             )
@@ -171,6 +183,7 @@ class PublicTransportController(BaseController):
             lambda model: render_template(
                 'public_transport/stop_lines.html',
                 stop=model,
+                line_rows=self._stop_line_rows(model),
                 capabilities=PublicTransportProviders.capabilities(provider_id)
             )
         )(self._cached(
@@ -197,6 +210,36 @@ class PublicTransportController(BaseController):
             return jsonify({
                 'error': (
                     'Nie udało się pobrać treści komunikatu: '
+                    f'{error}'
+                )
+            }), 502
+
+    def vehicle_positions(self, provider_id: str):
+        """Returns current GTFS-Realtime vehicle positions."""
+        try:
+            capabilities = PublicTransportProviders.capabilities(provider_id)
+            if not capabilities.get(
+                PublicTransportProviders.CAPABILITY_SHOW_VEHICLE_POSITIONS,
+                False
+            ):
+                raise ValueError(
+                    'Ten przewoźnik nie udostępnia pozycji pojazdów.'
+                )
+            downloader = PublicTransportProviders.downloader(provider_id)
+            line = str(request.args.get('line') or '').strip()
+            positions = downloader.download_vehicle_positions(line=line)
+            return jsonify({
+                'positions': [
+                    position.to_dict()
+                    for position in positions
+                ]
+            })
+        except ValueError as error:
+            return jsonify({'error': str(error)}), 400
+        except Exception as error:
+            return jsonify({
+                'error': (
+                    'Nie udało się pobrać pozycji pojazdów: '
                     f'{error}'
                 )
             }), 502
@@ -303,45 +346,64 @@ class PublicTransportController(BaseController):
     def _load_lines(self, provider_id: str, downloader) -> Any:
         """Loads persistent lines or refreshes them explicitly."""
         refresh = self._refresh_requested()
-        cache = self._settings_storage.load_public_transport_cache(provider_id)
-        if cache and cache.lines and not refresh:
-            return cache.lines
+        uses_settings_cache = PublicTransportProviders.uses_settings_cache(
+            provider_id
+        )
+        if uses_settings_cache:
+            cache = self._settings_storage.load_public_transport_cache(
+                provider_id
+            )
+            if cache and cache.lines and not refresh:
+                return cache.lines
 
-        lines = downloader.download_lines()
-        self._settings_storage.save_public_transport_lines(provider_id, lines)
+        lines = downloader.download_lines(refresh=refresh)
+        if uses_settings_cache:
+            self._settings_storage.save_public_transport_lines(
+                provider_id,
+                lines
+            )
         if refresh:
+            self._invalidate_provider_cache(provider_id)
             self._refresh_cached_announcements(provider_id, downloader)
         return lines
 
     def _load_stops(self, provider_id: str, downloader) -> Any:
         """Loads persistent stops or refreshes them explicitly."""
         refresh = self._refresh_requested()
-        cache = self._settings_storage.load_public_transport_cache(provider_id)
-        if cache and cache.stops and not refresh:
-            if not cache.stop_locations_initialized:
-                stops = cache.stops
-                if not any(
-                    platform.latitude is not None
-                    and platform.longitude is not None
-                    for stop in stops
-                    for platform in stop.platforms
-                ):
-                    stops = downloader.enrich_stop_locations(stops)
-                self._settings_storage.save_public_transport_stops(
-                    provider_id,
-                    stops,
-                    stop_locations_initialized=True
-                )
-                return stops
-            return cache.stops
-
-        stops = self._download_stops(provider_id, downloader)
-        self._settings_storage.save_public_transport_stops(
-            provider_id,
-            stops,
-            stop_locations_initialized=True
+        uses_settings_cache = PublicTransportProviders.uses_settings_cache(
+            provider_id
         )
+        if uses_settings_cache:
+            cache = self._settings_storage.load_public_transport_cache(
+                provider_id
+            )
+            if cache and cache.stops and not refresh:
+                if not cache.stop_locations_initialized:
+                    stops = cache.stops
+                    if not any(
+                        platform.latitude is not None
+                        and platform.longitude is not None
+                        for stop in stops
+                        for platform in stop.platforms
+                    ):
+                        stops = downloader.enrich_stop_locations(stops)
+                    self._settings_storage.save_public_transport_stops(
+                        provider_id,
+                        stops,
+                        stop_locations_initialized=True
+                    )
+                    return stops
+                return cache.stops
+
+        stops = downloader.download_stops(refresh=refresh)
+        if uses_settings_cache:
+            self._settings_storage.save_public_transport_stops(
+                provider_id,
+                stops,
+                stop_locations_initialized=True
+            )
         if refresh:
+            self._invalidate_provider_cache(provider_id)
             self._refresh_cached_announcements(provider_id, downloader)
         return stops
 
@@ -375,6 +437,17 @@ class PublicTransportController(BaseController):
         refresh: bool = False
     ):
         """Loads persistent provider announcements or downloads them once."""
+        if not PublicTransportProviders.uses_settings_cache(provider_id):
+            try:
+                return self._cached(
+                    f'{provider_id}:announcements',
+                    lambda: downloader.download_announcements(
+                        include_content=False
+                    ),
+                    refresh=refresh
+                )
+            except Exception:
+                return []
         cache = self._settings_storage.load_public_transport_cache(provider_id)
         if cache and cache.announcements and not refresh:
             return cache.announcements
@@ -389,6 +462,16 @@ class PublicTransportController(BaseController):
             announcements
         )
         return announcements
+
+    def _invalidate_provider_cache(self, provider_id: str) -> None:
+        """Invalidates temporary detail models after a provider refresh."""
+        prefix = f'{provider_id}:'
+        with self._cache_lock:
+            self._cache = {
+                key: value
+                for key, value in self._cache.items()
+                if not key.startswith(prefix)
+            }
 
     def _refresh_cached_announcements(
         self,
@@ -465,6 +548,53 @@ class PublicTransportController(BaseController):
             stop.latitude is not None and stop.longitude is not None
         ))
         return points
+
+    @staticmethod
+    def _line_route_points(line) -> list[dict[str, float]]:
+        """Returns the selected line direction geometry for the map."""
+        if not line.directions:
+            return []
+        return [
+            {
+                'latitude': point.latitude,
+                'longitude': point.longitude
+            }
+            for point in line.directions[0].route
+        ]
+
+    @staticmethod
+    def _variant_codes(timetables) -> dict[str, str]:
+        """Assigns compact, stable labels to timetable variants."""
+        variants: list[str] = []
+        for timetable in timetables:
+            values = [
+                *timetable.variants,
+                *(
+                    departure.variant
+                    for departure in timetable.departures
+                    if departure.variant
+                )
+            ]
+            for value in values:
+                normalized = str(value).strip()
+                if normalized and normalized not in variants:
+                    variants.append(normalized)
+        return {
+            variant: f'W{index}'
+            for index, variant in enumerate(variants, start=1)
+        }
+
+    @classmethod
+    def _stop_line_rows(cls, stop) -> list[dict[str, Any]]:
+        """Builds stop-line rows with a separate variant legend per line."""
+        return [
+            {
+                'line': line,
+                'timetable': timetable,
+                'variant_codes': cls._variant_codes([timetable])
+            }
+            for line, timetable in stop.lines.items()
+        ]
 
     @staticmethod
     def _line_groups(lines) -> list[dict[str, Any]]:

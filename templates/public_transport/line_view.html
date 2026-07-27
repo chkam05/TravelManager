@@ -5,6 +5,9 @@
         'directions': line.directions|map(attribute='name')|list,
         'route_variants': line.route_variants,
         'direction_label': capabilities.direction_selector_label,
+        'route': route_points,
+        'show_route_map': capabilities.show_route_map,
+        'show_vehicle_positions': capabilities.show_vehicle_positions,
         'dates': date_options
     }|tojson }}</script>
 

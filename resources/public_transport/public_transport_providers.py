@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 
 from utils.public_transport.czestochowa_downloader import CzestochowaDownloader
 from utils.public_transport.gzm_downloader import GzmDownloader
+from utils.public_transport.krakow_downloader import KrakowDownloader
 
 
 class PublicTransportProviders:
@@ -11,12 +12,14 @@ class PublicTransportProviders:
 
     GZM: ClassVar[str] = 'gzm'
     CZESTOCHOWA: ClassVar[str] = 'czestochowa'
+    KRAKOW: ClassVar[str] = 'krakow'
 
     FIELD_NAME: ClassVar[str] = 'name'
     FIELD_DESCRIPTION: ClassVar[str] = 'description'
     FIELD_ICON: ClassVar[str] = 'icon'
     FIELD_DOWNLOADER: ClassVar[str] = 'downloader'
     FIELD_CAPABILITIES: ClassVar[str] = 'capabilities'
+    FIELD_SETTINGS_CACHE: ClassVar[str] = 'settings_cache'
 
     CAPABILITY_SHOW_PLATFORMS: ClassVar[str] = 'show_platforms'
     CAPABILITY_SHOW_STOP_MAP: ClassVar[str] = 'show_stop_map'
@@ -25,6 +28,11 @@ class PublicTransportProviders:
     CAPABILITY_SHOW_VEHICLE_DETAILS: ClassVar[str] = 'show_vehicle_details'
     CAPABILITY_SHOW_HIGH_FLOOR: ClassVar[str] = 'show_high_floor'
     CAPABILITY_SHOW_STOP_DEPARTURES: ClassVar[str] = 'show_stop_departures'
+    CAPABILITY_SHOW_RIDE: ClassVar[str] = 'show_ride'
+    CAPABILITY_SHOW_ROUTE_MAP: ClassVar[str] = 'show_route_map'
+    CAPABILITY_SHOW_VEHICLE_POSITIONS: ClassVar[str] = (
+        'show_vehicle_positions'
+    )
     CAPABILITY_CACHE_ANNOUNCEMENTS: ClassVar[str] = 'cache_announcements'
     CAPABILITY_DIRECTION_SELECTOR_LABEL: ClassVar[str] = (
         'direction_selector_label'
@@ -38,6 +46,9 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_VEHICLE_DETAILS: True,
         CAPABILITY_SHOW_HIGH_FLOOR: True,
         CAPABILITY_SHOW_STOP_DEPARTURES: True,
+        CAPABILITY_SHOW_RIDE: True,
+        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True,
         CAPABILITY_CACHE_ANNOUNCEMENTS: False,
         CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Kierunek'
     }
@@ -49,6 +60,23 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_VEHICLE_DETAILS: False,
         CAPABILITY_SHOW_HIGH_FLOOR: False,
         CAPABILITY_SHOW_STOP_DEPARTURES: False,
+        CAPABILITY_SHOW_RIDE: True,
+        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False,
+        CAPABILITY_CACHE_ANNOUNCEMENTS: True,
+        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Wariant trasy'
+    }
+    KRAKOW_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        CAPABILITY_SHOW_PLATFORMS: True,
+        CAPABILITY_SHOW_STOP_MAP: True,
+        CAPABILITY_SHOW_RIDE_MAP: True,
+        CAPABILITY_SHOW_RIDE_DISTANCES: False,
+        CAPABILITY_SHOW_VEHICLE_DETAILS: False,
+        CAPABILITY_SHOW_HIGH_FLOOR: False,
+        CAPABILITY_SHOW_STOP_DEPARTURES: True,
+        CAPABILITY_SHOW_RIDE: True,
+        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True,
         CAPABILITY_CACHE_ANNOUNCEMENTS: True,
         CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Wariant trasy'
     }
@@ -59,14 +87,24 @@ class PublicTransportProviders:
             FIELD_DESCRIPTION: 'Transport GZM',
             FIELD_ICON: 'bus-front',
             FIELD_DOWNLOADER: GzmDownloader,
-            FIELD_CAPABILITIES: GZM_CAPABILITIES
+            FIELD_CAPABILITIES: GZM_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False
         },
         CZESTOCHOWA: {
             FIELD_NAME: 'Częstochowa',
             FIELD_DESCRIPTION: 'MPK w Częstochowie',
             FIELD_ICON: 'tram-front',
             FIELD_DOWNLOADER: CzestochowaDownloader,
-            FIELD_CAPABILITIES: CZESTOCHOWA_CAPABILITIES
+            FIELD_CAPABILITIES: CZESTOCHOWA_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: True
+        },
+        KRAKOW: {
+            FIELD_NAME: 'Kraków',
+            FIELD_DESCRIPTION: 'Komunikacja Miejska w Krakowie (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: KrakowDownloader,
+            FIELD_CAPABILITIES: KRAKOW_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False
         }
     }
 
@@ -92,6 +130,23 @@ class PublicTransportProviders:
         return dict(capabilities) if isinstance(capabilities, dict) else {}
 
     @classmethod
+    def uses_settings_cache(cls, provider_id: str) -> bool:
+        """Returns whether view data is persisted in settings JSON."""
+        provider = cls.VALUES.get(provider_id)
+        if not provider:
+            raise ValueError('Unsupported public transport provider.')
+        return bool(provider.get(cls.FIELD_SETTINGS_CACHE, False))
+
+    @classmethod
+    def providers_without_settings_cache(cls) -> list[str]:
+        """Returns providers whose persistent cache has a separate backend."""
+        return [
+            provider_id
+            for provider_id in cls.VALUES
+            if not cls.uses_settings_cache(provider_id)
+        ]
+
+    @classmethod
     def options(cls) -> list[dict[str, str]]:
         """Returns provider identifiers and labels for selection controls."""
         return [
@@ -108,12 +163,18 @@ class PublicTransportProviders:
     def validate_url(cls, provider_id: str, url: str) -> str:
         """Validates that a detail URL belongs to the selected provider."""
         downloader = cls.downloader(provider_id)
-        expected = urlparse(downloader.BASE_URL)
         parsed = urlparse(url)
-        if (
-            parsed.scheme != expected.scheme
-            or parsed.netloc != expected.netloc
-            or not parsed.path.startswith(expected.path)
-        ):
+        prefixes = getattr(
+            downloader,
+            'URL_PREFIXES',
+            (downloader.BASE_URL,)
+        )
+        is_allowed = any(
+            parsed.scheme == expected.scheme
+            and parsed.netloc == expected.netloc
+            and parsed.path.startswith(expected.path)
+            for expected in map(urlparse, prefixes)
+        )
+        if not is_allowed:
             raise ValueError('Invalid public transport URL.')
         return url

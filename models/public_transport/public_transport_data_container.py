@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, ClassVar, Dict, List
 
 from core.data.base_data_model import BaseDataModel
@@ -9,6 +9,7 @@ from models.public_transport.public_transport_line_stop_timetable import PublicT
 from models.public_transport.public_transport_ride import PublicTransportRide
 from models.public_transport.public_transport_stop import PublicTransportStop
 from models.public_transport.public_transport_stop_all import PublicTransportStopAll
+from models.public_transport.public_transport_vehicle_position import PublicTransportVehiclePosition
 
 
 @dataclass
@@ -24,6 +25,7 @@ class PublicTransportDataContainer(BaseDataModel):
     FIELD_RIDES: ClassVar[str] = 'rides'
     FIELD_STOPS: ClassVar[str] = 'stops'
     FIELD_STOP_ALL: ClassVar[str] = 'stop_all'
+    FIELD_VEHICLE_POSITIONS: ClassVar[str] = 'vehicle_positions'
 
     # Fields
     carrier: str
@@ -34,6 +36,9 @@ class PublicTransportDataContainer(BaseDataModel):
     rides: List[PublicTransportRide]
     stops: List[PublicTransportStop]
     stop_all: List[PublicTransportStopAll]
+    vehicle_positions: List[PublicTransportVehiclePosition] = field(
+        default_factory=list
+    )
 
     #region Serialization
 
@@ -66,6 +71,10 @@ class PublicTransportDataContainer(BaseDataModel):
             stop_all=PublicTransportStopAll.from_dict_list(
                 d.get(cls.FIELD_STOP_ALL, [])
                 if isinstance(d.get(cls.FIELD_STOP_ALL), list) else []
+            ),
+            vehicle_positions=PublicTransportVehiclePosition.from_dict_list(
+                d.get(cls.FIELD_VEHICLE_POSITIONS, [])
+                if isinstance(d.get(cls.FIELD_VEHICLE_POSITIONS), list) else []
             )
         )
 
@@ -79,7 +88,10 @@ class PublicTransportDataContainer(BaseDataModel):
             self.FIELD_LINE_STOP_TIMETABLES: self.to_dict_list(self.line_stop_timetables),
             self.FIELD_RIDES: self.to_dict_list(self.rides),
             self.FIELD_STOPS: self.to_dict_list(self.stops),
-            self.FIELD_STOP_ALL: self.to_dict_list(self.stop_all)
+            self.FIELD_STOP_ALL: self.to_dict_list(self.stop_all),
+            self.FIELD_VEHICLE_POSITIONS: self.to_dict_list(
+                self.vehicle_positions
+            )
         }
 
     #endregion Serialization

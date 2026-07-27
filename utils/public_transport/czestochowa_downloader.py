@@ -488,9 +488,11 @@ class CzestochowaDownloader:
     @classmethod
     def download_lines(
         cls,
-        url: str | None = None
+        url: str | None = None,
+        refresh: bool = False
     ) -> list[PublicTransportBaseLine]:
         """Downloads the tram and bus line lists."""
+        del refresh
         source_url = url or cls.TIMETABLE_URL
         return cls.parse_lines(
             cls._download_html(source_url, 'Lista linii'),
@@ -914,9 +916,11 @@ class CzestochowaDownloader:
     def download_stops(
         cls,
         url: str | None = None,
-        progress_callback: Callable[[int, int, str], None] | None = None
+        progress_callback: Callable[[int, int, str], None] | None = None,
+        refresh: bool = False
     ) -> list[PublicTransportStop]:
         """Downloads the provider's single-page stop index."""
+        del refresh
         source_url = url or cls.STOPS_URL
         if progress_callback:
             progress_callback(1, 1, cls.CITY_NAME)

@@ -1205,6 +1205,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     }
 
     let publicTransportRouteLayer = null;
+    let publicTransportVehicleLayer = null;
 
     const showPublicTransportRoute = (points, title = 'Przebieg przejazdu') => {
         const coordinates = (Array.isArray(points) ? points : [])
@@ -1235,6 +1236,63 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
     };
 
+    const showPublicTransportVehicles = (
+        positions,
+        title = 'Pojazdy komunikacji miejskiej'
+    ) => {
+        const vehicles = (Array.isArray(positions) ? positions : [])
+            .filter((position) => (
+                Number.isFinite(Number(position.latitude))
+                && Number.isFinite(Number(position.longitude))
+            ));
+
+        if (!vehicles.length) {
+            return;
+        }
+        if (publicTransportVehicleLayer) {
+            map.removeLayer(publicTransportVehicleLayer);
+        }
+
+        publicTransportVehicleLayer = L.layerGroup().addTo(map);
+        const bounds = [];
+        vehicles.forEach((vehicle) => {
+            const latitude = Number(vehicle.latitude);
+            const longitude = Number(vehicle.longitude);
+            const marker = L.circleMarker([latitude, longitude], {
+                radius: 8,
+                color: '#ffffff',
+                weight: 2,
+                fillColor: vehicle.type === 'tram' ? '#d73535' : '#1f6fae',
+                fillOpacity: 0.95
+            }).addTo(publicTransportVehicleLayer);
+            const popup = document.createElement('div');
+            const heading = document.createElement('strong');
+            heading.textContent = vehicle.line
+                ? `Linia ${vehicle.line}`
+                : 'Pojazd';
+            const identifier = document.createElement('div');
+            identifier.textContent = vehicle.vehicle_id
+                ? `Pojazd: ${vehicle.vehicle_id}`
+                : 'Brak numeru pojazdu';
+            popup.append(heading, identifier);
+
+            if (vehicle.recorded_at) {
+                const timestamp = document.createElement('small');
+                const recordedAt = new Date(vehicle.recorded_at);
+                timestamp.textContent = Number.isNaN(recordedAt.getTime())
+                    ? ''
+                    : `Aktualizacja: ${recordedAt.toLocaleTimeString('pl-PL')}`;
+                popup.append(timestamp);
+            }
+
+            marker.bindPopup(popup);
+            bounds.push([latitude, longitude]);
+        });
+
+        publicTransportVehicleLayer.bindPopup?.(title);
+        map.fitBounds(bounds, { padding: [42, 42], maxZoom: 15 });
+    };
+
     window.travelManagerMap = {
         map,
         clearSelectedMarker,
@@ -1244,7 +1302,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         searchAdvanced,
         showElement,
         showFavourite,
-        showPublicTransportRoute
+        showPublicTransportRoute,
+        showPublicTransportVehicles
     };
 
     window.travelManagerFavourites?.list().then(renderFavourites).catch(() => {});

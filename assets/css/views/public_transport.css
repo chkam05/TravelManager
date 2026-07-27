@@ -594,10 +594,13 @@ button.public-transport-line-pill {
 .public-transport-line-stop__departures button {
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    min-height: 42px;
+    gap: 1px;
+    min-width: 0;
+    min-height: 50px;
+    padding: 5px 7px;
     border: 1px solid var(--public-transport-border);
     border-radius: 8px;
     background: #ffffff;
@@ -610,6 +613,8 @@ button.public-transport-line-pill {
 
 .public-transport-line-stop__departures small {
     color: #155f98;
+    font-size: 0.7rem;
+    line-height: 1;
 }
 
 .public-transport-line-stop__departures svg {
@@ -1160,18 +1165,37 @@ button.public-transport-line-pill {
     border-top: 1px solid var(--public-transport-border);
 }
 
-.public-transport-line-stop__variant-list section span {
+.public-transport-line-stop__variant-date {
     color: #697682;
     font-size: 0.74rem;
     font-weight: 800;
 }
 
-.public-transport-line-stop__variant-list section strong {
-    padding: 6px 8px;
+.public-transport-line-stop__variant {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 7px;
+}
+
+.public-transport-line-stop__variant strong {
+    display: grid;
+    place-items: center;
+    min-width: 32px;
+    min-height: 28px;
+    padding: 3px 6px;
     border-radius: 6px;
     background: #e8f2f9;
     color: #155f98;
     font-size: 0.82rem;
+}
+
+.public-transport-line-stop__variant span {
+    min-width: 0;
+    color: #33414d;
+    font-size: 0.8rem;
+    font-weight: 750;
+    overflow-wrap: anywhere;
 }
 
 .public-transport-line-stop__day > header .public-transport-collapse-button {
@@ -1322,7 +1346,7 @@ button.public-transport-line-pill {
 
 .public-transport-stop-lines__departures {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
     gap: 7px;
     padding: 13px 14px;
 }
@@ -1345,10 +1369,13 @@ button.public-transport-line-pill {
 
 .public-transport-stop-lines__departures > button {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    min-height: 40px;
+    gap: 1px;
+    min-width: 0;
+    min-height: 50px;
+    padding: 5px 7px;
     border: 1px solid var(--public-transport-border);
     border-radius: 8px;
     background: #ffffff;
@@ -1364,6 +1391,8 @@ button.public-transport-line-pill {
 
 .public-transport-stop-lines__departures small {
     color: #155f98;
+    font-size: 0.7rem;
+    line-height: 1;
 }
 
 .public-transport-stop-lines__departures svg {

@@ -10,7 +10,10 @@
     }|tojson }}</script>
 
     <div class="public-transport-stop-lines__list">
-        {% for line, timetable in stop.lines.items() %}
+        {% for row in line_rows %}
+            {% set line = row.line %}
+            {% set timetable = row.timetable %}
+            {% set variant_codes = row.variant_codes %}
             <article data-public-transport-filter-item data-search="{{ line.line }} {{ timetable.direction_name }}">
                 <header>
                     <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}">
@@ -34,9 +37,9 @@
                     <div class="public-transport-stop-lines__content">
                         <div class="public-transport-stop-lines__departures">
                             {% for departure in timetable.departures %}
-                                <button type="button" data-public-transport-action="ride" data-url="{{ departure.url }}">
+                                <button type="button"{% if capabilities.show_ride and departure.url %} data-public-transport-action="ride" data-url="{{ departure.url }}"{% endif %}{% if not capabilities.show_ride or not departure.url %} disabled{% endif %}>
                                     <strong>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</strong>
-                                    {% if departure.variant %}<small>{{ departure.variant }}</small>{% endif %}
+                                    {% if departure.variant %}<small title="{{ departure.variant }}">{{ variant_codes.get(departure.variant, departure.variant) }}</small>{% endif %}
                                     {% if capabilities.show_high_floor and departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
                                 </button>
                             {% else %}
@@ -47,8 +50,13 @@
                             <aside class="public-transport-line-stop__variant-list">
                                 <h3>Warianty</h3>
                                 <section>
-                                    <span>{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else 'Rozkład' }}</span>
-                                    {% for variant in timetable.variants %}<strong>{{ variant }}</strong>{% endfor %}
+                                    <span class="public-transport-line-stop__variant-date">{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else 'Rozkład' }}</span>
+                                    {% for variant in timetable.variants %}
+                                        <div class="public-transport-line-stop__variant">
+                                            <strong>{{ variant_codes.get(variant, variant) }}</strong>
+                                            <span>{{ variant }}</span>
+                                        </div>
+                                    {% endfor %}
                                 </section>
                             </aside>
                         {% endif %}

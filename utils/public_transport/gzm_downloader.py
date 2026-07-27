@@ -1,5 +1,8 @@
 from __future__ import annotations
-from datetime import date, datetime, time
+import csv
+from datetime import date, datetime, time, timedelta, timezone
+from io import BytesIO, TextIOWrapper
+from pathlib import Path
 import re
 import ssl
 from threading import Lock
@@ -7,7 +10,10 @@ from typing import Any, Callable, ClassVar
 from urllib.error import URLError
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
+from zipfile import ZipFile
 
+from config import SETTINGS_DIR
+from core.gtfs_database import GtfsDatabase
 from models.public_transport.public_transport_announcement import PublicTransportAnnouncement
 from models.public_transport.public_transport_base_line import PublicTransportBaseLine
 from models.public_transport.public_transport_city import PublicTransportCity
@@ -23,9 +29,11 @@ from models.public_transport.public_transport_ride_stop import PublicTransportRi
 from models.public_transport.public_transport_stop import PublicTransportStop
 from models.public_transport.public_transport_stop_all import PublicTransportStopAll
 from models.public_transport.public_transport_stop_platform import PublicTransportStopPlatform
+from models.public_transport.public_transport_vehicle_position import PublicTransportVehiclePosition
 from resources.public_transport.public_transport_type import PublicTransportType
 from utils.data.map_data_downloader import MapDataDownloader
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
+from utils.public_transport.gzm_gtfs_repository import GzmGtfsRepository
 from utils.public_transport.html_document import (
     HtmlNode as _HtmlNode,
     normalize_text as _normalize_text,
@@ -39,6 +47,14 @@ class GzmDownloader:
     BASE_URL = 'https://rj.transportgzm.pl/v2/'
     STOPS_URL = urljoin(BASE_URL, 'przystanki/')
     STOP_LOCATIONS_URL = 'https://rj.transportgzm.pl/api/v2/stops/data/'
+    GTFS_DATASET_API = (
+        'https://otwartedane.metropoliagzm.pl/api/3/action/package_show'
+        '?id=rozklady-jazdy-i-lokalizacja-przystankow-gtfs-wersja-rozszerzona'
+    )
+    GTFS_RT_VEHICLES_URL = (
+        'https://gtfsrt.transportgzm.pl:5443/'
+        'gtfsrt/gzm/vehiclePositions'
+    )
     CARRIER = 'Zarząd Transportu Metropolitalnego'
     _USER_AGENT = 'TravelManager/1.0'
     _REQUEST_TIMEOUT = 15
@@ -51,6 +67,21 @@ class GzmDownloader:
     _STOP_LOCATIONS_CACHE: ClassVar[
         dict[str, tuple[float, float]] | None
     ] = None
+    _DATABASE_PATH: ClassVar[Path] = (
+        Path(SETTINGS_DIR)
+        / 'gzm_gtfs.sqlite3'
+    )
+    _LEGACY_DATABASE_PATH: ClassVar[Path] = (
+        Path(SETTINGS_DIR)
+        / 'public_transport'
+        / 'gzm'
+        / 'gtfs.sqlite3'
+    )
+    _DATABASE_LOCK: ClassVar[Lock] = Lock()
+    _GTFS_RESOURCE_PATTERN: ClassVar[re.Pattern[str]] = re.compile(
+        r'schedule_ZTM_(\d{4}\.\d{2}\.\d{2})_(\d+)_(\d+)\.zip$',
+        re.IGNORECASE
+    )
 
     #region HTTP
 
@@ -105,6 +136,186 @@ class GzmDownloader:
         ) as response:
             charset = response.headers.get_content_charset() or 'utf-8'
             return response.read().decode(charset, errors='replace')
+
+    @classmethod
+    def _download_bytes(
+        cls,
+        url: str,
+        item: str,
+        current: int = 1,
+        total: int = 1
+    ) -> bytes:
+        """Downloads one binary GTFS resource with retries."""
+        request = Request(url, headers={
+            'Accept': '*/*',
+            'User-Agent': cls._USER_AGENT
+        })
+        ssl_context: list[ssl.SSLContext | None] = [None]
+
+        def download() -> bytes:
+            try:
+                with urlopen(
+                    request,
+                    timeout=max(cls._REQUEST_TIMEOUT, 45),
+                    context=ssl_context[0]
+                ) as response:
+                    return response.read()
+            except URLError as error:
+                if (
+                    ssl_context[0] is None
+                    and isinstance(error.reason, ssl.SSLCertVerificationError)
+                ):
+                    ssl_context[0] = ssl._create_unverified_context()
+                raise
+
+        return PublicTransportDownloadProgress.retry(
+            download,
+            item,
+            current,
+            total
+        )
+
+    @classmethod
+    def _gtfs_resources(cls, metadata: Any) -> list[tuple[str, str, str]]:
+        """Returns all dated GZM GTFS packages published as one CKAN set."""
+        result = metadata.get('result') if isinstance(metadata, dict) else None
+        resources = (
+            result.get('resources')
+            if isinstance(result, dict) else None
+        )
+        candidates: list[tuple[tuple[str, int, int], str, str, str]] = []
+        for resource in resources if isinstance(resources, list) else []:
+            if not isinstance(resource, dict):
+                continue
+            name = str(resource.get('name') or '')
+            url = str(resource.get('url') or '')
+            match = cls._GTFS_RESOURCE_PATTERN.fullmatch(name)
+            if not match or not url:
+                continue
+            candidates.append((
+                (
+                    match.group(1),
+                    int(match.group(2)),
+                    int(match.group(3))
+                ),
+                match.group(2),
+                name,
+                url
+            ))
+        if not candidates:
+            raise ValueError('Portal GZM nie udostępnił paczki GTFS.')
+        return [
+            (serial, name, url)
+            for _, serial, name, url in sorted(
+                candidates,
+                key=lambda item: item[0]
+            )
+        ]
+
+    @staticmethod
+    def _archive_coverage(payload: bytes) -> tuple[date, date] | None:
+        """Reads the service range from feed_info.txt inside a GTFS ZIP."""
+        try:
+            with ZipFile(BytesIO(payload)) as archive:
+                with archive.open('feed_info.txt') as source:
+                    reader = csv.DictReader(TextIOWrapper(
+                        source,
+                        encoding='utf-8-sig',
+                        newline=''
+                    ))
+                    row = next(reader, None)
+            if not row:
+                return None
+            start = datetime.strptime(
+                str(row.get('feed_start_date') or ''),
+                '%Y%m%d'
+            ).date()
+            end = datetime.strptime(
+                str(row.get('feed_end_date') or ''),
+                '%Y%m%d'
+            ).date()
+            return start, end
+        except (KeyError, StopIteration, ValueError):
+            return None
+
+    @classmethod
+    def _ensure_database(cls, refresh: bool = False) -> Path:
+        """Returns a current relational GZM GTFS cache."""
+        with cls._DATABASE_LOCK:
+            GtfsDatabase.migrate_cache(
+                cls._LEGACY_DATABASE_PATH,
+                cls._DATABASE_PATH
+            )
+            required_date = date.today() + timedelta(
+                days=GzmGtfsRepository.DATE_RANGE_DAYS - 1
+            )
+            if (
+                not refresh
+                and GtfsDatabase.covers(cls._DATABASE_PATH, required_date)
+            ):
+                return cls._DATABASE_PATH
+            metadata = PublicTransportDownloadProgress.retry(
+                lambda: MapDataDownloader.get_json(
+                    cls.GTFS_DATASET_API,
+                    timeout=cls._REQUEST_TIMEOUT
+                ),
+                'Lista paczek GTFS GZM',
+                1,
+                3
+            )
+            resources = cls._gtfs_resources(metadata)
+            total = 1 + len(resources) * 2
+            archives: dict[str, bytes] = {}
+            coverage_from = date.today()
+            for index, (serial, archive_name, archive_url) in enumerate(
+                resources,
+                start=1
+            ):
+                archive = cls._download_bytes(
+                    archive_url,
+                    archive_name,
+                    1 + index,
+                    total
+                )
+                coverage = cls._archive_coverage(archive)
+                if (
+                    coverage is None
+                    or (
+                        coverage[1] >= coverage_from
+                        and coverage[0] <= required_date
+                    )
+                ):
+                    archives[f'{GzmGtfsRepository.FEED_ID}:{serial}'] = archive
+            if not archives:
+                raise ValueError(
+                    'Paczki GTFS GZM nie obejmują wymaganego okresu.'
+                )
+            build_total = 1 + len(resources) + len(archives)
+            GtfsDatabase.build(
+                cls._DATABASE_PATH,
+                archives,
+                lambda feed_id, current, _count: (
+                    PublicTransportDownloadProgress.report(
+                        f'Przetwarzanie GTFS GZM: {feed_id}',
+                        1 + len(resources) + current,
+                        build_total
+                    )
+                ),
+                coverage_days=GzmGtfsRepository.DATE_RANGE_DAYS,
+                compact_shapes=True
+            )
+            return cls._DATABASE_PATH
+
+    @classmethod
+    def _repository(
+        cls,
+        refresh: bool = False
+    ) -> GzmGtfsRepository:
+        """Builds a repository backed by the current GZM cache."""
+        return GzmGtfsRepository(
+            cls._ensure_database(refresh),
+            cls.BASE_URL
+        )
 
     @staticmethod
     def _document(html: str) -> _HtmlNode:
@@ -178,7 +389,14 @@ class GzmDownloader:
         cls,
         stops: list[PublicTransportStop]
     ) -> list[PublicTransportStop]:
-        """Adds coordinates to cached platforms without redownloading city pages."""
+        """Returns GTFS stops, which already contain platform coordinates."""
+        if any(
+            platform.latitude is not None
+            and platform.longitude is not None
+            for stop in stops
+            for platform in stop.platforms
+        ):
+            return stops
         locations = cls._safe_stop_locations()
         for stop in stops:
             for platform in stop.platforms:
@@ -315,13 +533,14 @@ class GzmDownloader:
     #region Lines
 
     @classmethod
-    def download_lines(cls, url: str | None = None) -> list[PublicTransportBaseLine]:
-        """Downloads the provider's complete line list."""
-        source_url = url or cls.BASE_URL
-        return cls.parse_lines(
-            cls._download_html(source_url, 'Lista linii'),
-            source_url
-        )
+    def download_lines(
+        cls,
+        url: str | None = None,
+        refresh: bool = False
+    ) -> list[PublicTransportBaseLine]:
+        """Loads the complete line list from the relational GTFS cache."""
+        del url
+        return cls._repository(refresh).lines()
 
     @classmethod
     def parse_lines(
@@ -359,12 +578,21 @@ class GzmDownloader:
         url: str,
         include_announcement_content: bool = False
     ) -> PublicTransportLine:
-        """Downloads detailed directions, stops, dates and announcements for one line."""
-        line = cls._line_from_url(url)
-        model = cls.parse_line(
-            cls._download_html(url, f'Linia {line}'),
-            url
-        )
+        """Loads one GTFS line and keeps HTML as its announcement source."""
+        repository = cls._repository()
+        model = repository.line(url)
+        announcement_url = cls._legacy_line_url(model.line, model.type)
+        try:
+            document = cls._document(cls._download_html(
+                announcement_url,
+                f'Komunikaty linii {model.line}'
+            ))
+            model.announcements = cls._parse_announcements(
+                document,
+                announcement_url
+            )
+        except Exception:
+            model.announcements = []
         if include_announcement_content:
             announcements = []
             total = len(model.announcements)
@@ -379,6 +607,21 @@ class GzmDownloader:
                 )
             model.announcements = announcements
         return model
+
+    @classmethod
+    def _legacy_line_url(
+        cls,
+        line: str,
+        transport_type: PublicTransportType
+    ) -> str:
+        """Builds the HTML timetable URL used only for announcements."""
+        if transport_type == PublicTransportType.TRAM:
+            identifier = f'0-t{line.casefold()}'
+        elif transport_type == PublicTransportType.TROLLEY:
+            identifier = f'11-{line.casefold()}'
+        else:
+            identifier = f'3-{line.casefold()}'
+        return urljoin(cls.BASE_URL, f'rozklady/{identifier}/')
 
     @classmethod
     def parse_line(cls, html: str, source_url: str) -> PublicTransportLine:
@@ -559,12 +802,19 @@ class GzmDownloader:
         url: str,
         include_announcement_content: bool = False
     ) -> PublicTransportLineStopTimetable:
-        """Downloads all dates and departures shown for one line and platform."""
-        model = cls.parse_line_stop_timetable(
-            cls._download_html(url, 'Rozkład przystankowy'),
-            url,
-            cls._safe_stop_locations()
-        )
+        """Loads one platform timetable from GTFS."""
+        model = cls._repository().line_stop(url)
+        announcement_url = cls._legacy_line_url(model.line, model.type)
+        try:
+            model.announcements = cls._parse_announcements(
+                cls._document(cls._download_html(
+                    announcement_url,
+                    f'Komunikaty linii {model.line}'
+                )),
+                announcement_url
+            )
+        except Exception:
+            model.announcements = []
         if include_announcement_content:
             announcements = []
             total = len(model.announcements)
@@ -710,16 +960,9 @@ class GzmDownloader:
         url: str,
         from_first_stop: bool = True
     ) -> PublicTransportRide:
-        """Downloads one ride, optionally reloading it from its first stop."""
-        html = cls._download_html(url, 'Szczegóły przejazdu')
-        first_url = cls._first_ride_stop_url(html, url)
-        if from_first_stop and first_url and cls._without_fragment(first_url) != cls._without_fragment(url):
-            return cls.download_ride(first_url, from_first_stop=False)
-        return cls.parse_ride(
-            html,
-            url,
-            cls._safe_stop_locations()
-        )
+        """Loads a complete ride by joining relational GTFS tables."""
+        del from_first_stop
+        return cls._repository().ride(url)
 
     @classmethod
     def _first_ride_stop_url(cls, html: str, source_url: str) -> str:
@@ -851,35 +1094,15 @@ class GzmDownloader:
     def download_stops(
         cls,
         url: str | None = None,
-        progress_callback: Callable[[int, int, str], None] | None = None
+        progress_callback: Callable[[int, int, str], None] | None = None,
+        refresh: bool = False
     ) -> list[PublicTransportStop]:
-        """Downloads the city index and all city stop pages."""
-        source_url = url or cls.STOPS_URL
-        cities = cls.parse_stop_cities(
-            cls._download_html(source_url, 'Lista miast'),
-            source_url
-        )
-        total = len(cities) + 1
-        try:
-            stop_locations = cls.download_stop_locations(
-                refresh=True,
-                current=1,
-                total=total
-            )
-        except Exception:
-            stop_locations = {}
-        result: list[PublicTransportStop] = []
-        for index, (city_name, city_url) in enumerate(cities, start=1):
-            if progress_callback:
-                progress_callback(index, len(cities), city_name)
-            result.extend(cls.download_city_stops(
-                city_url,
-                city_name,
-                stop_locations,
-                index + 1,
-                total
-            ))
-        return result
+        """Loads all cities, stops and platforms from GTFS."""
+        del url
+        stops = cls._repository(refresh).stops()
+        if progress_callback:
+            progress_callback(1, 1, 'GZM')
+        return stops
 
     @classmethod
     def parse_stop_cities(
@@ -1006,12 +1229,8 @@ class GzmDownloader:
 
     @classmethod
     def download_stop_all(cls, url: str) -> PublicTransportStopAll:
-        """Downloads every line-direction timetable shown for one platform."""
-        return cls.parse_stop_all(
-            cls._download_html(url, 'Linie i odjazdy przystanku'),
-            url,
-            cls._safe_stop_locations()
-        )
+        """Loads every line-direction timetable for one GTFS platform."""
+        return cls._repository().stop_all(url)
 
     @classmethod
     def parse_stop_all(
@@ -1085,6 +1304,98 @@ class GzmDownloader:
 
     #endregion Stops
 
+    #region GTFS-Realtime
+
+    @classmethod
+    def download_vehicle_positions(
+        cls,
+        line: str = ''
+    ) -> list[PublicTransportVehiclePosition]:
+        """Downloads current GZM vehicle positions from GTFS-Realtime."""
+        repository = cls._repository()
+        route_names, trip_names, line_types = repository.realtime_maps()
+        payload = cls._download_bytes(
+            cls.GTFS_RT_VEHICLES_URL,
+            'Pojazdy GZM na żywo'
+        )
+        return cls.parse_vehicle_positions(
+            payload,
+            route_names,
+            trip_names,
+            line_types,
+            line
+        )
+
+    @classmethod
+    def parse_vehicle_positions(
+        cls,
+        payload: bytes,
+        route_names: dict[tuple[str, str], str],
+        trip_names: dict[tuple[str, str], str],
+        line_types: dict[str, PublicTransportType],
+        line: str = ''
+    ) -> list[PublicTransportVehiclePosition]:
+        """Deserializes the official GZM VehiclePositions protobuf feed."""
+        try:
+            from google.transit import gtfs_realtime_pb2
+        except ImportError as error:
+            raise RuntimeError(
+                'Brak biblioteki gtfs-realtime-bindings.'
+            ) from error
+        message = gtfs_realtime_pb2.FeedMessage()
+        message.ParseFromString(payload)
+        result: list[PublicTransportVehiclePosition] = []
+        feed_id = GzmGtfsRepository.FEED_ID
+        for entity in message.entity:
+            if not entity.HasField('vehicle'):
+                continue
+            vehicle = entity.vehicle
+            route_id = str(vehicle.trip.route_id or '')
+            trip_id = str(vehicle.trip.trip_id or '')
+            line_name = (
+                trip_names.get((feed_id, trip_id))
+                or route_names.get((feed_id, route_id))
+                or route_id
+            )
+            if line and line_name != line:
+                continue
+            latitude = float(vehicle.position.latitude)
+            longitude = float(vehicle.position.longitude)
+            if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
+                continue
+            descriptor = vehicle.vehicle
+            result.append(PublicTransportVehiclePosition(
+                vehicle_id=str(
+                    descriptor.id or descriptor.label or entity.id
+                ),
+                line=line_name,
+                trip_id=trip_id,
+                type=line_types.get(
+                    line_name,
+                    PublicTransportType.BUS
+                ),
+                latitude=latitude,
+                longitude=longitude,
+                bearing=(
+                    float(vehicle.position.bearing)
+                    if vehicle.position.HasField('bearing') else None
+                ),
+                speed=(
+                    float(vehicle.position.speed)
+                    if vehicle.position.HasField('speed') else None
+                ),
+                recorded_at=(
+                    datetime.fromtimestamp(
+                        int(vehicle.timestamp),
+                        tz=timezone.utc
+                    )
+                    if vehicle.timestamp else None
+                )
+            ))
+        return result
+
+    #endregion GTFS-Realtime
+
     #region Container
 
     @classmethod
@@ -1092,6 +1403,7 @@ class GzmDownloader:
         cls,
         include_line_details: bool = False,
         include_stops: bool = False,
+        include_vehicle_positions: bool = False,
         progress_callback: Callable[[int, int, str], None] | None = None
     ) -> PublicTransportDataContainer:
         """Downloads a selectable provider snapshot into one typed container."""
@@ -1106,6 +1418,10 @@ class GzmDownloader:
         stops = cls.download_stops(
             progress_callback=progress_callback
         ) if include_stops else []
+        positions = (
+            cls.download_vehicle_positions()
+            if include_vehicle_positions else []
+        )
         return PublicTransportDataContainer(
             carrier=cls.CARRIER,
             base_url=cls.BASE_URL,
@@ -1114,7 +1430,8 @@ class GzmDownloader:
             line_stop_timetables=[],
             rides=[],
             stops=stops,
-            stop_all=[]
+            stop_all=[],
+            vehicle_positions=positions
         )
 
     #endregion Container
