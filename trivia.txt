@@ -1,0 +1,26 @@
+Lepszym źródłem offline jest oficjalny rozszerzony GTFS GZM.
+https://otwartedane.metropoliagzm.pl/dataset/rozklady-jazdy-i-lokalizacja-przystankow-gtfs-wersja-rozszerzona
+GTFS jest właśnie relacyjnym formatem obejmującym linie, przystanki, kursy i czasy odjazdów.
+
+Proponowany proces:
+1. Pobranie jednego ZIP-a GTFS.
+2. Import do SQLite.
+3. Budowa indeksów.
+4. Dociągnięcie komunikatów przez HTML.
+5. Atomowa podmiana starej bazy po udanym imporcie.
+Progressbar można aktualizować według etapów i liczby importowanych rekordów.
+
+Docelowy model relacyjny:
+- PublicTransportProvider
+- PublicTransportCity
+- PublicTransportLine
+- PublicTransportStop
+- PublicTransportStopPlatform
+- PublicTransportRoutePattern
+- PublicTransportRoutePatternStop
+- PublicTransportService
+- PublicTransportTrip
+- PublicTransportStopTime
+- PublicTransportAnnouncement
+Aktualne modele zostałyby modelami widokowymi przeniesionymi do "models/public_transport/view/".
+Nie wykonywałem jeszcze tej przebudowy, zgodnie z prośbą o wcześniejszą akceptację architektury.

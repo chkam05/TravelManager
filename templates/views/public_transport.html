@@ -1,0 +1,14 @@
+<section class="public-transport-view">
+    <header class="public-transport-view__header">
+        {% include 'public_transport/headers/carriers.html' %}
+        {% include 'public_transport/headers/lines.html' %}
+        {% include 'public_transport/headers/stops.html' %}
+        {% include 'public_transport/headers/line_view.html' %}
+        {% include 'public_transport/headers/line_stop.html' %}
+        {% include 'public_transport/headers/ride.html' %}
+        {% include 'public_transport/headers/stop_lines.html' %}
+    </header>
+    <div class="public-transport-view__content" id="public-transport-content" aria-live="polite">
+        {% include 'public_transport/carriers.html' %}
+    </div>
+</section>

@@ -1,0 +1,18 @@
+{% set announcements = line.announcements if line is defined else timetable.announcements %}
+<section class="public-transport-announcements">
+    <header>
+        <i data-lucide="triangle-alert" aria-hidden="true"></i>
+        <h3>Komunikaty</h3>
+        <span>{{ announcements|length }}</span>
+    </header>
+    <div class="public-transport-announcements__list">
+        {% for announcement in announcements %}
+            <button type="button" data-public-transport-announcement="{{ announcement.to_dict()|tojson|forceescape }}">
+                <span>{{ announcement.description }}</span>
+                <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+        {% else %}
+            <p class="public-transport-empty">Brak komunikatów dla wybranej linii.</p>
+        {% endfor %}
+    </div>
+</section>

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/car_profiles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/my_routes.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/fuel_cost.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/views/public_transport.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/settings.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/legend_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/layer_details.css') }}">
@@ -28,6 +29,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/advanced_search.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/fuel_cost_editor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/fuel_update.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/public_transport_announcement.css') }}">
 </head>
 <body>
     <div class="app-shell" data-current-view="map">
@@ -47,6 +49,7 @@
                 {% include 'headers/favourites.html' %}
                 {% include 'headers/my_routes.html' %}
                 {% include 'headers/fuel_cost.html' %}
+                {% include 'headers/public_transport.html' %}
                 {% include 'headers/information.html' %}
                 {% include 'headers/settings.html' %}
             </div>
@@ -82,6 +85,10 @@
                     <i class="side-menu__icon" data-lucide="fuel" aria-hidden="true"></i>
                     <span>Ceny paliw</span>
                 </button>
+                <button class="side-menu__item side-menu__item--public-transport" data-navigation-view="public-transport" type="button">
+                    <i class="side-menu__icon" data-lucide="bus-front" aria-hidden="true"></i>
+                    <span>Komunikacja miejska</span>
+                </button>
                 <div class="side-menu__separator" role="separator"></div>
                 <button class="side-menu__item side-menu__item--settings" data-navigation-view="settings" type="button">
                     <i class="side-menu__icon" data-lucide="settings" aria-hidden="true"></i>
@@ -108,6 +115,7 @@
             <section class="app-view" data-app-view="car-profiles" data-view-url="{{ url_for('ViewController.car_profiles_view') }}" hidden></section>
             <section class="app-view" data-app-view="my-routes" data-view-url="{{ url_for('ViewController.my_routes_view') }}" hidden></section>
             <section class="app-view" data-app-view="fuel-cost" data-view-url="{{ url_for('ViewController.fuel_cost_view') }}" hidden></section>
+            <section class="app-view" data-app-view="public-transport" data-view-url="{{ url_for('ViewController.public_transport_view') }}" hidden></section>
             <section class="app-view" data-app-view="settings" data-view-url="{{ url_for('ViewController.settings_view') }}" hidden></section>
             <section class="app-view" data-app-view="information" data-view-url="{{ url_for('ViewController.information_view') }}" hidden></section>
         </main>
@@ -124,6 +132,7 @@
     <script src="{{ url_for('static', filename='js/dialogs/advanced_search.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/fuel_cost_editor.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/fuel_update.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dialogs/public_transport_announcement.js') }}"></script>
     <script src="{{ url_for('static', filename='js/favourites.js') }}"></script>
     <script src="{{ url_for('static', filename='js/car_profiles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/routes.js') }}"></script>
@@ -138,6 +147,7 @@
     <script src="{{ url_for('static', filename='js/views/car_profiles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/my_routes.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/fuel_cost.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/views/public_transport.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/settings.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/map.js') }}"></script>
 </body>

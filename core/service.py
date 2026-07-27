@@ -35,6 +35,7 @@ class Service:
     def _register_controllers(self):
         from controllers.fuel_controller import FuelController
         from controllers.map_controller import MapController
+        from controllers.public_transport_controller import PublicTransportController
         from controllers.settings_controller import SettingsController
         from controllers.view_controller import ViewController
         from controllers.window_controller import WindowController
@@ -43,6 +44,7 @@ class Service:
         self._register_controller(WindowController())
         self._register_controller(ViewController())
         self._register_controller(MapController())
+        self._register_controller(PublicTransportController(self._settings_storage))
         self._register_controller(SettingsController(self._settings_storage))
     
     def _register_controller(self, controller: Blueprint, **options: Any):

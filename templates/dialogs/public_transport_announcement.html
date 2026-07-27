@@ -1,0 +1,25 @@
+<article class="public-transport-announcement-dialog" id="public-transport-announcement-dialog" role="dialog" aria-modal="true" aria-labelledby="public-transport-announcement-title" aria-hidden="true">
+    <header class="public-transport-announcement-dialog__header">
+        <div>
+            <span id="public-transport-announcement-city"></span>
+            <h2 id="public-transport-announcement-title">Komunikat</h2>
+        </div>
+        <button type="button" data-public-transport-announcement-close aria-label="Zamknij"></button>
+    </header>
+    <div class="public-transport-announcement-dialog__content">
+        <dl>
+            <div>
+                <dt>Obowiązuje</dt>
+                <dd id="public-transport-announcement-effective-date"></dd>
+            </div>
+            <div>
+                <dt>Ostatnia aktualizacja</dt>
+                <dd id="public-transport-announcement-updated"></dd>
+            </div>
+        </dl>
+        <p id="public-transport-announcement-content"></p>
+    </div>
+    <footer class="public-transport-announcement-dialog__footer">
+        <button type="button" data-public-transport-announcement-close>Zamknij</button>
+    </footer>
+</article>

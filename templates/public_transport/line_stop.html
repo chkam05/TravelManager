@@ -1,0 +1,62 @@
+<div class="public-transport-detail public-transport-line-stop">
+    <script type="application/json" data-public-transport-metadata>{{ {
+        'line': timetable.line,
+        'type': timetable.type.value,
+        'stop': timetable.stop_name,
+        'direction': timetable.direction_name,
+        'platform': timetable.platform,
+        'latitude': timetable.latitude,
+        'longitude': timetable.longitude,
+        'dates': date_options
+    }|tojson }}</script>
+
+    <div class="public-transport-line-stop__layout">
+        <div class="public-transport-line-stop__days">
+            {% for timetable_date, day in timetable_days %}
+                <section class="public-transport-line-stop__day">
+                    <header>
+                        <div>
+                            <h3>Dzień {{ timetable_date.strftime('%d.%m.%Y') }}</h3>
+                            {% if day.effective_date_from %}
+                                <p>
+                                    Rozkład obowiązuje od {{ day.effective_date_from.strftime('%d.%m.%Y') }}
+                                    {% if day.effective_date_to %} do {{ day.effective_date_to.strftime('%d.%m.%Y') }}{% endif %}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <button class="public-transport-collapse-button" type="button" aria-expanded="true" aria-controls="public-transport-day-{{ loop.index0 }}" data-public-transport-collapse>
+                            <i data-lucide="chevron-up" aria-hidden="true"></i>
+                            <span class="sr-only">Zwiń lub rozwiń dzień</span>
+                        </button>
+                    </header>
+                    <div class="public-transport-line-stop__departures" id="public-transport-day-{{ loop.index0 }}">
+                        {% for departure in day.departures %}
+                            <button type="button" data-public-transport-action="ride" data-url="{{ departure.url }}" title="{% if departure.is_high_floor %}Pojazd wysokopodłogowy{% else %}Pokaż kurs{% endif %}">
+                                <span>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</span>
+                                {% if departure.variant %}<small>{{ departure.variant }}</small>{% endif %}
+                                {% if departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
+                            </button>
+                        {% else %}
+                            <span class="public-transport-empty">Brak odjazdów.</span>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
+        <aside class="public-transport-line-stop__variant-list">
+            <h3>Warianty</h3>
+            {% for timetable_date, day in timetable_days %}
+                {% if day.variants %}
+                    <section>
+                        <span>{{ timetable_date.strftime('%d.%m.%Y') }}</span>
+                        {% for variant in day.variants %}<strong>{{ variant }}</strong>{% endfor %}
+                    </section>
+                {% endif %}
+            {% else %}
+                <p class="public-transport-empty">Brak wariantów.</p>
+            {% endfor %}
+        </aside>
+    </div>
+
+    {% include 'public_transport/announcements.html' with context %}
+</div>

@@ -10,6 +10,7 @@ from models.settings.favourite_tag import FavouriteTag
 from models.exchange_rate_data_model import ExchangeRateDataModel
 from models.fuel_data_model import FuelDataModel
 from models.settings.saved_route import SavedRoute
+from models.settings.public_transport_cache import PublicTransportCache
 from models.settings.window_settings import WindowSettings
 
 
@@ -30,6 +31,7 @@ class SettingsDataModel(BaseDataModel):
     FIELD_EXCHANGE_RATES: ClassVar[str] = 'exchange_rates'
     FIELD_SELECTED_EXCHANGE_RATE: ClassVar[str] = 'selected_exchange_rate'
     FIELD_ROUTES: ClassVar[str] = 'routes'
+    FIELD_PUBLIC_TRANSPORT_CACHE: ClassVar[str] = 'public_transport_cache'
     FIELD_UI: ClassVar[str] = 'ui'
     FIELD_WINDOW: ClassVar[str] = 'window'
 
@@ -42,6 +44,7 @@ class SettingsDataModel(BaseDataModel):
     exchange_rates: List[ExchangeRateDataModel]
     selected_exchange_rate: str
     routes: List[SavedRoute]
+    public_transport_cache: Dict[str, PublicTransportCache]
     ui: UiSettings | None
     window: WindowSettings | None
 
@@ -84,6 +87,7 @@ class SettingsDataModel(BaseDataModel):
             else:
                 exchange_rates = legacy_rates
         routes = d.get(cls.FIELD_ROUTES, [])
+        public_transport_cache = d.get(cls.FIELD_PUBLIC_TRANSPORT_CACHE, {})
         ui = d.get(cls.FIELD_UI, {})
         window = d.get(cls.FIELD_WINDOW, {})
         tags = FavouriteTag.from_dict_list(favourite_tags if isinstance(favourite_tags, list) else [])
@@ -118,6 +122,11 @@ class SettingsDataModel(BaseDataModel):
                 selected_exchange_rate or cls.DEFAULT_SELECTED_EXCHANGE_RATE
             ),
             routes=mapped_routes,
+            public_transport_cache={
+                str(carrier): PublicTransportCache.from_dict(value)
+                for carrier, value in public_transport_cache.items()
+                if isinstance(value, dict)
+            } if isinstance(public_transport_cache, dict) else {},
             ui=UiSettings.from_dict(ui),
             window=WindowSettings.from_dict(window)
         )
@@ -133,6 +142,10 @@ class SettingsDataModel(BaseDataModel):
             self.FIELD_EXCHANGE_RATES: self.to_dict_list(self.exchange_rates),
             self.FIELD_SELECTED_EXCHANGE_RATE: self.selected_exchange_rate,
             self.FIELD_ROUTES: self.to_dict_list(self.routes),
+            self.FIELD_PUBLIC_TRANSPORT_CACHE: {
+                carrier: cache.to_dict()
+                for carrier, cache in self.public_transport_cache.items()
+            },
             self.FIELD_UI: self.ui.to_dict() if self.ui else UiSettings.from_dict({}).to_dict(),
             self.FIELD_WINDOW: self.window.to_dict() if self.window else WindowSettings.from_dict({}).to_dict()
         }

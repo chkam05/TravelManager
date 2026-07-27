@@ -1,0 +1,54 @@
+<div class="public-transport-detail public-transport-stop-lines">
+    <script type="application/json" data-public-transport-metadata>{{ {
+        'stop': stop.stop_name,
+        'platform': stop.platform,
+        'latitude': stop.latitude,
+        'longitude': stop.longitude,
+        'directions_count': stop.lines|length
+    }|tojson }}</script>
+
+    <div class="public-transport-stop-lines__list">
+        {% for line, timetable in stop.lines.items() %}
+            <article data-public-transport-filter-item data-search="{{ line.line }} {{ timetable.direction_name }}">
+                <header>
+                    <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}">
+                        {% if line.type.value == 'tram' %}<i data-lucide="tram-front" aria-hidden="true"></i>{% else %}<i data-lucide="bus" aria-hidden="true"></i>{% endif %}
+                        <strong>{{ line.line }}</strong>
+                    </button>
+                    <div>
+                        <strong>{{ timetable.direction_name or 'Brak danych o kierunku' }}</strong>
+                        <span>{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else 'Rozkład' }} · {{ timetable.departures|length }} odjazdów</span>
+                    </div>
+                    <button type="button" data-public-transport-action="line" data-url="{{ line.url }}">
+                        <span>Pokaż linię</span>
+                        <i data-lucide="chevron-right" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="public-transport-stop-lines__content">
+                    <div class="public-transport-stop-lines__departures">
+                        {% for departure in timetable.departures %}
+                            <button type="button" data-public-transport-action="ride" data-url="{{ departure.url }}">
+                                <strong>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</strong>
+                                {% if departure.variant %}<small>{{ departure.variant }}</small>{% endif %}
+                                {% if departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
+                            </button>
+                        {% else %}
+                            <span class="public-transport-empty">Brak odjazdów.</span>
+                        {% endfor %}
+                    </div>
+                    {% if timetable.variants %}
+                        <aside class="public-transport-line-stop__variant-list">
+                            <h3>Warianty</h3>
+                            <section>
+                                <span>{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else 'Rozkład' }}</span>
+                                {% for variant in timetable.variants %}<strong>{{ variant }}</strong>{% endfor %}
+                            </section>
+                        </aside>
+                    {% endif %}
+                </div>
+            </article>
+        {% else %}
+            <p class="public-transport-empty">Brak linii dla tego stanowiska.</p>
+        {% endfor %}
+    </div>
+</div>

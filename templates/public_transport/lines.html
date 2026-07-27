@@ -1,0 +1,40 @@
+<div class="public-transport-lines">
+    {% for group in groups %}
+        <section class="public-transport-lines__group">
+            <header class="public-transport-lines__group-header">
+                <span class="public-transport-type public-transport-type--{{ group.type.value }}">
+                    {% if group.type.value == 'tram' %}
+                        <i data-lucide="tram-front" aria-hidden="true"></i>
+                    {% elif group.type.value == 'trolley' %}
+                        <i data-lucide="bus-front" aria-hidden="true"></i>
+                    {% else %}
+                        <i data-lucide="bus" aria-hidden="true"></i>
+                    {% endif %}
+                </span>
+                <h2>{{ group.label }}</h2>
+                <span class="public-transport-lines__count">{{ group.lines|length }}</span>
+                <button class="public-transport-collapse-button" type="button" aria-expanded="true" aria-controls="public-transport-lines-group-{{ loop.index0 }}" data-public-transport-collapse>
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                    <span class="sr-only">Zwiń lub rozwiń grupę</span>
+                </button>
+            </header>
+            <div class="public-transport-lines__grid" id="public-transport-lines-group-{{ loop.index0 }}">
+                {% for line in group.lines %}
+                    <button class="public-transport-lines__tile{% if line.updated %} public-transport-lines__tile--updated{% endif %}" type="button" data-public-transport-action="line" data-url="{{ line.url }}" data-public-transport-filter-item data-search="{{ line.line }}">
+                        <span class="public-transport-lines__number">{{ line.line }}</span>
+                        <span class="public-transport-lines__badges">
+                            {% if line.free_of_charge %}
+                                <span class="public-transport-badge public-transport-badge--free">Bezpłatna</span>
+                            {% endif %}
+                            {% if line.updated %}
+                                <span class="public-transport-badge public-transport-badge--updated">Aktualizacja</span>
+                            {% endif %}
+                        </span>
+                    </button>
+                {% endfor %}
+            </div>
+        </section>
+    {% else %}
+        <p class="public-transport-empty">Brak dostępnych linii.</p>
+    {% endfor %}
+</div>

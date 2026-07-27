@@ -1,0 +1,38 @@
+<div class="public-transport-detail public-transport-line-view">
+    <script type="application/json" data-public-transport-metadata>{{ {
+        'line': line.line,
+        'type': line.type.value,
+        'directions': line.directions|map(attribute='name')|list,
+        'dates': date_options
+    }|tojson }}</script>
+
+    <div class="public-transport-line-view__directions">
+        {% for direction in line.directions %}
+            <section class="public-transport-line-view__direction" data-public-transport-direction="{{ loop.index0 }}"{% if not loop.first %} hidden{% endif %}>
+                <ol class="public-transport-line-view__stops">
+                    {% for stop in direction.stops %}
+                        <li{% if stop.is_variant %} class="public-transport-line-view__stop--variant"{% endif %}>
+                            <span class="public-transport-line-view__marker" style="--public-transport-city-color: {{ stop.city.color }}"></span>
+                            <button type="button" data-public-transport-action="line-stop" data-url="{{ stop.url }}">
+                                <span>
+                                    <strong>{{ stop.name }}</strong>
+                                    {% if stop.is_variant %}<small>Przystanek wariantowy</small>{% endif %}
+                                </span>
+                                <span class="public-transport-line-view__platform">{{ stop.platform }}</span>
+                                <i data-lucide="chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </li>
+                    {% endfor %}
+                </ol>
+                <aside class="public-transport-line-view__cities">
+                    <h3>Miasta</h3>
+                    {% for city in direction.cities %}
+                        <span style="--public-transport-city-color: {{ city.color }}">{{ city.name }}</span>
+                    {% endfor %}
+                </aside>
+            </section>
+        {% endfor %}
+    </div>
+
+    {% include 'public_transport/announcements.html' with context %}
+</div>

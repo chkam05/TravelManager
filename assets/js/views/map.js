@@ -1204,6 +1204,37 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
     }
 
+    let publicTransportRouteLayer = null;
+
+    const showPublicTransportRoute = (points, title = 'Przebieg przejazdu') => {
+        const coordinates = (Array.isArray(points) ? points : [])
+            .map((point) => [
+                Number(point.latitude),
+                Number(point.longitude)
+            ])
+            .filter(([latitude, longitude]) => (
+                Number.isFinite(latitude) && Number.isFinite(longitude)
+            ));
+
+        if (coordinates.length < 2) {
+            return;
+        }
+
+        if (publicTransportRouteLayer) {
+            map.removeLayer(publicTransportRouteLayer);
+        }
+
+        publicTransportRouteLayer = L.polyline(coordinates, {
+            color: '#1f6fae',
+            weight: 5,
+            opacity: 0.9
+        }).addTo(map);
+        publicTransportRouteLayer.bindPopup(title);
+        map.fitBounds(publicTransportRouteLayer.getBounds(), {
+            padding: [42, 42]
+        });
+    };
+
     window.travelManagerMap = {
         map,
         clearSelectedMarker,
@@ -1212,7 +1243,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         getSearchContext,
         searchAdvanced,
         showElement,
-        showFavourite
+        showFavourite,
+        showPublicTransportRoute
     };
 
     window.travelManagerFavourites?.list().then(renderFavourites).catch(() => {});

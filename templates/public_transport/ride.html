@@ -1,0 +1,58 @@
+<div class="public-transport-detail public-transport-ride">
+    <script type="application/json" data-public-transport-metadata>{{ {
+        'line': ride.line,
+        'type': ride.type.value,
+        'stop': ride.stop_name,
+        'platform': ride.platform,
+        'departure': ride.departure_time.strftime('%H:%M') if ride.departure_time else '',
+        'route': route_points
+    }|tojson }}</script>
+
+    <section class="public-transport-ride__summary">
+        <div><span>Przewoźnik</span><strong>{{ ride.carrier or 'Brak danych' }}</strong></div>
+        <div><span>Typ pojazdu</span><strong>{{ ride.vehicle_type or 'Brak danych' }}</strong></div>
+        <div><span>Liczba kolejnych przystanków</span><strong>{{ ride.next_stops|length }}</strong></div>
+    </section>
+
+    <div class="public-transport-table-wrap">
+        <table class="public-transport-table">
+            <thead>
+                <tr>
+                    <th>Przystanek</th>
+                    <th>Odjazd</th>
+                    <th>Czas odcinka</th>
+                    <th>Czas łącznie</th>
+                    <th>Odległość odcinka</th>
+                    <th>Odległość łącznie</th>
+                    <th>Mapa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stop in ride.next_stops %}
+                    <tr>
+                        <td>
+                            <span class="public-transport-table__city-marker" style="--public-transport-city-color: {{ stop.city.color }}"></span>
+                            {{ stop.stop }}
+                        </td>
+                        <td>{{ stop.departure_time.strftime('%H:%M') if stop.departure_time else '—' }}</td>
+                        <td>{{ stop.travel_time }} min</td>
+                        <td>{{ stop.travel_time_sum }} min</td>
+                        <td>{{ '%.2f'|format(stop.distance) }} km</td>
+                        <td>{{ '%.2f'|format(stop.distance_sum) }} km</td>
+                        <td>
+                            {% if stop.latitude is not none and stop.longitude is not none %}
+                                <button class="public-transport-table__map-button" type="button" data-public-transport-map data-name="{{ stop.stop }}" data-latitude="{{ stop.latitude }}" data-longitude="{{ stop.longitude }}" aria-label="Pokaż {{ stop.stop }} na mapie">
+                                    <i data-lucide="map-pin" aria-hidden="true"></i>
+                                </button>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="7" class="public-transport-empty">Brak kolejnych przystanków.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

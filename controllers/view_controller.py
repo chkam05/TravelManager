@@ -4,6 +4,7 @@ from flask import render_template
 from config import APP_AUTHOR, APP_DESCRIPTION, APP_NAME, APP_VERSION, HOST, PORT
 from core.api.base_controller import BaseController
 from resources.emojis import Emojis
+from resources.public_transport.public_transport_providers import PublicTransportProviders
 
 
 class ViewController(BaseController):
@@ -16,6 +17,7 @@ class ViewController(BaseController):
         self.add_url_rule('/api/views/car-profiles', view_func=self.car_profiles_view, methods=['GET'])
         self.add_url_rule('/api/views/my-routes', view_func=self.my_routes_view, methods=['GET'])
         self.add_url_rule('/api/views/fuel-cost', view_func=self.fuel_cost_view, methods=['GET'])
+        self.add_url_rule('/api/views/public-transport', view_func=self.public_transport_view, methods=['GET'])
         self.add_url_rule('/api/views/settings', view_func=self.settings_view, methods=['GET'])
         self.add_url_rule('/api/views/information', view_func=self.information_view, methods=['GET'])
         self.add_url_rule('/api/panels/legend-details', view_func=self.legend_details_panel, methods=['GET'])
@@ -48,6 +50,12 @@ class ViewController(BaseController):
 
     def fuel_cost_view(self):
         return render_template('views/fuel_cost.html')
+
+    def public_transport_view(self):
+        return render_template(
+            'views/public_transport.html',
+            providers=PublicTransportProviders.options()
+        )
 
     def settings_view(self):
         return render_template('views/settings.html')
