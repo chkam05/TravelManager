@@ -5,6 +5,7 @@ from typing import Any, ClassVar, Dict, Iterable, List
 from config import SETTINGS_DIR, SETTINGS_FILE_NAME
 from core.data.base_data_model import BaseDataModel
 from models.settings.favourite_tag import FavouriteTag
+from models.settings_transfer.cars_transfer_data_model import CarsTransferDataModel
 from models.settings_transfer.favourites_transfer_data_model import FavouritesTransferDataModel
 from models.settings_transfer.fuel_costs_transfer_data_model import FuelCostsTransferDataModel
 from models.settings_transfer.routes_transfer_data_model import RoutesTransferDataModel
@@ -158,6 +159,15 @@ class SettingsStorage(BaseJsonStorage):
         )
         return self._serialize_transfer_model(model)
 
+    def export_cars(self) -> str:
+        """Serializes car profiles and the active car selection to JSON text."""
+        settings = self.load()
+        model = CarsTransferDataModel(
+            active_car_profile_id=settings.active_car_profile_id,
+            car_profiles=list(settings.car_profiles)
+        )
+        return self._serialize_transfer_model(model)
+
     def import_fuel_costs(self, plaintext: str) -> None:
         """Deserializes fuel cost JSON text and updates application settings."""
         data = self._deserialize_transfer_text(plaintext)
@@ -217,6 +227,30 @@ class SettingsStorage(BaseJsonStorage):
         settings = self.load()
         settings.favourite_tags = tags
         settings.favourites = transfer.favourites
+        self.save(settings)
+
+    def import_cars(self, plaintext: str) -> None:
+        """Deserializes car profile JSON text and updates application settings."""
+        data = self._deserialize_transfer_text(plaintext)
+        if isinstance(data, list):
+            data = {CarsTransferDataModel.FIELD_CAR_PROFILES: data}
+
+        if not isinstance(data, dict) or not isinstance(
+            data.get(CarsTransferDataModel.FIELD_CAR_PROFILES),
+            list
+        ):
+            raise ValueError('Invalid cars data.')
+
+        transfer = CarsTransferDataModel.from_dict(data)
+        car_profile_ids = {profile.id for profile in transfer.car_profiles}
+        active_car_profile_id = transfer.active_car_profile_id
+
+        if active_car_profile_id not in car_profile_ids:
+            active_car_profile_id = None
+
+        settings = self.load()
+        settings.active_car_profile_id = active_car_profile_id
+        settings.car_profiles = transfer.car_profiles
         self.save(settings)
 
     @staticmethod

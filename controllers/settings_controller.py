@@ -432,6 +432,8 @@ class SettingsController(BaseController):
             return self._settings_storage.export_routes()
         if data_type == SettingsTransferTypes.FAVOURITES:
             return self._settings_storage.export_favourites_and_tags()
+        if data_type == SettingsTransferTypes.CARS:
+            return self._settings_storage.export_cars()
         raise ValueError('Unsupported export data type.')
 
     def _import_settings_text(self, data_type: str, plaintext: str) -> None:
@@ -444,6 +446,9 @@ class SettingsController(BaseController):
             return
         if data_type == SettingsTransferTypes.FAVOURITES:
             self._settings_storage.import_favourites_and_tags(plaintext)
+            return
+        if data_type == SettingsTransferTypes.CARS:
+            self._settings_storage.import_cars(plaintext)
             return
         raise ValueError('Unsupported import data type.')
 

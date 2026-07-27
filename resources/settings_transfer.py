@@ -12,18 +12,21 @@ class SettingsTransferTypes:
     FUEL_COSTS: ClassVar[str] = 'fuel_costs'
     ROUTES: ClassVar[str] = 'routes'
     FAVOURITES: ClassVar[str] = 'favourites'
+    CARS: ClassVar[str] = 'cars'
 
     # File name declarations
     FUEL_COSTS_FILE_NAME: ClassVar[str] = 'travel-manager-ceny-paliwa.json'
     ROUTES_FILE_NAME: ClassVar[str] = 'travel-manager-trasy.json'
     FAVOURITES_FILE_NAME: ClassVar[str] = 'travel-manager-ulubione-i-tagi.json'
+    CARS_FILE_NAME: ClassVar[str] = 'travel-manager-samochody.json'
 
     # Label declarations
     FUEL_COSTS_LABEL: ClassVar[str] = 'Ceny paliwa'
     ROUTES_LABEL: ClassVar[str] = 'Trasy'
     FAVOURITES_LABEL: ClassVar[str] = 'Ulubione i Tagi'
+    CARS_LABEL: ClassVar[str] = 'Samochody'
 
-    VALUES: ClassVar[tuple[str, ...]] = (FUEL_COSTS, ROUTES, FAVOURITES)
+    VALUES: ClassVar[tuple[str, ...]] = (FUEL_COSTS, ROUTES, FAVOURITES, CARS)
 
     @classmethod
     def is_supported(cls, data_type: str) -> bool:
@@ -39,6 +42,8 @@ class SettingsTransferTypes:
             return cls.ROUTES_FILE_NAME
         if data_type == cls.FAVOURITES:
             return cls.FAVOURITES_FILE_NAME
+        if data_type == cls.CARS:
+            return cls.CARS_FILE_NAME
         raise ValueError('Unsupported settings transfer type.')
 
     @classmethod
@@ -50,4 +55,6 @@ class SettingsTransferTypes:
             return cls.ROUTES_LABEL
         if data_type == cls.FAVOURITES:
             return cls.FAVOURITES_LABEL
+        if data_type == cls.CARS:
+            return cls.CARS_LABEL
         raise ValueError('Unsupported settings transfer type.')

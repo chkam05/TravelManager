@@ -17,7 +17,8 @@ document.addEventListener('travel-manager:views-ready', () => {
     const dataTransferOptions = [
         { id: 'fuel_costs', label: 'Ceny paliwa' },
         { id: 'routes', label: 'Trasy' },
-        { id: 'favourites', label: 'Ulubione i Tagi' }
+        { id: 'favourites', label: 'Ulubione i Tagi' },
+        { id: 'cars', label: 'Samochody' }
     ];
     const dataTransferMenu = document.createElement('div');
     dataTransferMenu.className = 'settings-view__context-menu';
@@ -110,6 +111,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (dataType === 'favourites') {
             await window.travelManagerFavourites?.listTags(true);
             await window.travelManagerFavourites?.list(true);
+            return;
+        }
+
+        if (dataType === 'cars') {
+            await window.travelManagerCarProfiles?.list(true);
         }
     };
 
