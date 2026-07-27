@@ -7,6 +7,8 @@
         'platform': timetable.platform,
         'latitude': timetable.latitude,
         'longitude': timetable.longitude,
+        'show_stop_map': capabilities.show_stop_map,
+        'show_platforms': capabilities.show_platforms,
         'dates': date_options
     }|tojson }}</script>
 
@@ -34,7 +36,7 @@
                             <button type="button" data-public-transport-action="ride" data-url="{{ departure.url }}" title="{% if departure.is_high_floor %}Pojazd wysokopodłogowy{% else %}Pokaż kurs{% endif %}">
                                 <span>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</span>
                                 {% if departure.variant %}<small>{{ departure.variant }}</small>{% endif %}
-                                {% if departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
+                                {% if capabilities.show_high_floor and departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
                             </button>
                         {% else %}
                             <span class="public-transport-empty">Brak odjazdów.</span>

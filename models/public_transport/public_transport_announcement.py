@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Any, ClassVar, Dict
+from typing import Any, ClassVar, Dict, List
 
 from core.data.base_data_model import BaseDataModel
 from models.public_transport.model_serialization import parse_date, parse_datetime
@@ -12,6 +12,7 @@ class PublicTransportAnnouncement(BaseDataModel):
     """Stores a public transport service announcement."""
 
     # Field name declarations
+    FIELD_LINES: ClassVar[str] = 'lines'
     FIELD_CITY: ClassVar[str] = 'city'
     FIELD_CONTENT: ClassVar[str] = 'content'
     FIELD_DESCRIPTION: ClassVar[str] = 'description'
@@ -21,6 +22,7 @@ class PublicTransportAnnouncement(BaseDataModel):
     FIELD_URL: ClassVar[str] = 'url'
 
     # Fields
+    lines: List[str]
     city: str
     content: str
     description: str
@@ -34,7 +36,9 @@ class PublicTransportAnnouncement(BaseDataModel):
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> PublicTransportAnnouncement:
         """Deserializes data from a dictionary in "attribute:value" format to an object."""
+        lines = d.get(cls.FIELD_LINES, [])
         return cls(
+            lines=[str(line) for line in lines] if isinstance(lines, list) else [],
             city=str(d.get(cls.FIELD_CITY) or ''),
             content=str(d.get(cls.FIELD_CONTENT) or ''),
             description=str(d.get(cls.FIELD_DESCRIPTION) or ''),
@@ -47,6 +51,7 @@ class PublicTransportAnnouncement(BaseDataModel):
     def to_dict(self) -> Dict[str, Any]:
         """Serializes object to a dictionary in the format "attribute:value"."""
         return {
+            self.FIELD_LINES: list(self.lines),
             self.FIELD_CITY: self.city,
             self.FIELD_CONTENT: self.content,
             self.FIELD_DESCRIPTION: self.description,

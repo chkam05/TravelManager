@@ -43,72 +43,77 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     const renderLoading = (screen) => {
-        const progress = screen === 'stops'
-            ? `
-                <div class="public-transport-view__progress">
-                    <progress value="0" max="1" data-public-transport-progress></progress>
-                    <span data-public-transport-progress-text>Przygotowywanie listy miast…</span>
-                </div>
-            `
-            : '';
-
         content.innerHTML = `
             <div class="public-transport-view__loading">
                 <i data-lucide="loader-circle" aria-hidden="true"></i>
                 <span>Ładowanie danych…</span>
-                ${progress}
+                <div class="public-transport-view__progress">
+                    <progress value="0" max="1" data-public-transport-progress hidden></progress>
+                    <span data-public-transport-progress-text>Przygotowywanie danych…</span>
+                </div>
             </div>
         `;
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
 
-    const pollStopsProgress = async () => {
+    const pollDownloadProgress = async () => {
         clearProgressTimer();
 
-        if (!state.loading || state.current.screen !== 'stops') {
+        if (!state.loading) {
             return;
         }
 
         try {
-            const response = await fetch(`${endpoint('stops-progress')}?t=${Date.now()}`, {
+            const response = await fetch(`${endpoint('progress')}?t=${Date.now()}`, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
             const progress = await response.json();
             const bar = content.querySelector('[data-public-transport-progress]');
             const text = content.querySelector('[data-public-transport-progress-text]');
+            const hasMultipleItems = progress.total > 1;
 
-            if (bar && progress.total > 0) {
-                bar.max = progress.total;
-                bar.value = progress.status === 'complete'
-                    ? progress.current
-                    : Math.max(0, progress.current - 1);
+            if (bar) {
+                bar.hidden = !hasMultipleItems;
+                if (hasMultipleItems) {
+                    bar.max = progress.total;
+                    bar.value = progress.status === 'complete'
+                        ? progress.total
+                        : Math.max(0, progress.current - 1);
+                }
             }
 
             if (text && progress.status === 'downloading') {
                 const position = progress.total > 0
                     ? ` (${progress.current}/${progress.total})`
                     : '';
-                text.textContent = progress.city
-                    ? `Pobieranie „${progress.city}”${position}…`
-                    : 'Pobieranie listy miast…';
+                const retry = progress.attempt > 1
+                    ? ` — próba ${progress.attempt}/${progress.max_attempts}`
+                    : '';
+                text.textContent = progress.item
+                    ? `Pobieranie „${progress.item}”${position}${retry}…`
+                    : 'Przygotowywanie danych…';
             }
         } catch (error) {
             // The main request remains responsible for reporting download errors.
         }
 
-        if (state.loading && state.current.screen === 'stops') {
-            state.progressTimer = window.setTimeout(pollStopsProgress, 300);
+        if (state.loading) {
+            state.progressTimer = window.setTimeout(pollDownloadProgress, 250);
         }
     };
 
     const selectedDateFromUrl = (url) => {
-        const match = String(url || '').match(/\/(20\d{6})\//);
+        const pathMatch = String(url || '').match(/\/(20\d{6})\//);
 
-        if (!match) {
-            return '';
+        if (pathMatch) {
+            return `${pathMatch[1].slice(0, 4)}-${pathMatch[1].slice(4, 6)}-${pathMatch[1].slice(6, 8)}`;
         }
 
-        return `${match[1].slice(0, 4)}-${match[1].slice(4, 6)}-${match[1].slice(6, 8)}`;
+        try {
+            return new URL(String(url || '')).searchParams.get('data') || '';
+        } catch (error) {
+            return '';
+        }
     };
 
     const fragmentMetadata = () => {
@@ -196,31 +201,62 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (details) {
             if (screen === 'line-stop') {
-                details.textContent = `Kierunek: ${metadata.direction || '—'} · stanowisko ${metadata.platform || '—'}`;
+                const platform = metadata.show_platforms
+                    ? ` · stanowisko ${metadata.platform || '—'}`
+                    : '';
+                details.textContent = `Kierunek: ${metadata.direction || '—'}${platform}`;
             } else if (screen === 'ride') {
-                const platform = metadata.platform ? ` · stanowisko ${metadata.platform}` : '';
+                const platform = metadata.show_platforms && metadata.platform
+                    ? ` · stanowisko ${metadata.platform}`
+                    : '';
                 details.textContent = `Odjazd ${metadata.departure || '—'}${platform}`;
             } else if (screen === 'stop-lines') {
-                details.textContent = `Stanowisko ${metadata.platform || '—'} · ${metadata.directions_count || 0} kierunków`;
+                const platform = metadata.show_platforms
+                    ? `Stanowisko ${metadata.platform || '—'} · `
+                    : '';
+                details.textContent = `${platform}${metadata.directions_count || 0} kierunków`;
             }
         }
 
         const directionSelect = header.querySelector('[data-public-transport-direction-select]');
         const directionField = directionSelect?.closest('label');
         const directions = Array.isArray(metadata.directions) ? metadata.directions : [];
+        const routeVariants = metadata.route_variants
+            && typeof metadata.route_variants === 'object'
+            ? Object.entries(metadata.route_variants)
+            : [];
 
         if (directionSelect) {
             directionSelect.replaceChildren();
-            directions.forEach((direction, index) => {
+            const options = routeVariants.length
+                ? routeVariants.map(([name, url]) => ({ name, value: url }))
+                : directions.map((name, index) => ({
+                    name,
+                    value: String(index)
+                }));
+            options.forEach((optionData) => {
                 const option = document.createElement('option');
-                option.value = String(index);
-                option.textContent = direction;
+                option.value = optionData.value;
+                option.textContent = optionData.name;
                 directionSelect.append(option);
             });
+            if (
+                routeVariants.length
+                && Array.from(directionSelect.options).some(
+                    (option) => option.value === state.current.url
+                )
+            ) {
+                directionSelect.value = state.current.url;
+            }
         }
 
         if (directionField) {
-            directionField.hidden = !directions.length;
+            directionField.hidden = !directions.length && !routeVariants.length;
+            const label = directionField.querySelector('span');
+
+            if (label) {
+                label.textContent = metadata.direction_label || 'Kierunek';
+            }
         }
 
         const mapButton = header.querySelector('[data-public-transport-map]');
@@ -236,10 +272,14 @@ document.addEventListener('travel-manager:views-ready', () => {
             && Number.isFinite(latitude)
             && Number.isFinite(longitude)
         );
+        const canSearchStop = Boolean(
+            metadata.show_stop_map && metadata.stop
+        );
 
         if (mapButton) {
-            mapButton.hidden = !hasCoordinates;
+            mapButton.hidden = !hasCoordinates && !canSearchStop;
             mapButton.dataset.name = metadata.stop || 'Przystanek';
+            mapButton.dataset.query = metadata.stop || '';
             mapButton.dataset.latitude = hasCoordinates ? String(latitude) : '';
             mapButton.dataset.longitude = hasCoordinates ? String(longitude) : '';
         }
@@ -264,9 +304,62 @@ document.addEventListener('travel-manager:views-ready', () => {
         header.querySelector('form')?.reset();
     };
 
+    const fitDepartureTiles = () => {
+        const grids = Array.from(
+            content.querySelectorAll('.public-transport-line-stop__departures')
+        );
+        const buttons = grids.flatMap(
+            (grid) => Array.from(grid.querySelectorAll(':scope > button'))
+        );
+
+        if (!grids.length || !buttons.length) {
+            return;
+        }
+
+        const measurement = document.createElement('div');
+        measurement.className = 'public-transport-line-stop__departures';
+        Object.assign(measurement.style, {
+            position: 'absolute',
+            left: '-10000px',
+            top: '0',
+            display: 'flex',
+            width: 'max-content',
+            visibility: 'hidden',
+            pointerEvents: 'none'
+        });
+        buttons.forEach((button) => {
+            const clone = button.cloneNode(true);
+            clone.style.width = 'max-content';
+            clone.style.flex = 'none';
+            measurement.append(clone);
+        });
+        content.append(measurement);
+
+        const intrinsicWidth = Math.ceil(Math.max(
+            74,
+            ...Array.from(measurement.children).map(
+                (button) => button.getBoundingClientRect().width
+            )
+        ));
+        measurement.remove();
+
+        const availableWidth = Math.max(
+            74,
+            Math.min(...grids.map((grid) => grid.clientWidth - 26))
+        );
+        const tileWidth = Math.min(intrinsicWidth, availableWidth);
+        grids.forEach((grid) => grid.style.setProperty(
+            '--public-transport-departure-width',
+            `${tileWidth}px`
+        ));
+    };
+
     const enhanceFragment = (screen) => {
         updateHeader(screen);
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
+        if (screen === 'line-stop') {
+            window.requestAnimationFrame(fitDepartureTiles);
+        }
     };
 
     const loadScreen = async (
@@ -298,9 +391,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             params.set('refresh', '1');
         }
 
-        if (screen === 'stops') {
-            pollStopsProgress();
-        }
+        pollDownloadProgress();
 
         try {
             const response = await fetch(`${endpoint(screen)}${params.size ? `?${params}` : ''}`, {
@@ -408,17 +499,19 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     };
 
-    const showOnMap = (name, latitude, longitude) => {
-        const lat = Number(latitude);
-        const lon = Number(longitude);
+    const showOnMap = async (name, latitude, longitude, query = '') => {
+        let element;
+        const hasCoordinates = (
+            latitude !== ''
+            && longitude !== ''
+            && Number.isFinite(Number(latitude))
+            && Number.isFinite(Number(longitude))
+        );
 
-        if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-            return;
-        }
-
-        window.travelManagerNavigation?.showView('map');
-        window.setTimeout(() => {
-            window.travelManagerMap?.showElement({
+        if (hasCoordinates) {
+            const lat = Number(latitude);
+            const lon = Number(longitude);
+            element = {
                 place_id: `public-transport:${lat}:${lon}`,
                 display_name: name || 'Przystanek',
                 name: { name: name || 'Przystanek' },
@@ -426,7 +519,39 @@ document.addEventListener('travel-manager:views-ready', () => {
                     latitude: lat,
                     longitude: lon
                 }
-            }, name || 'Przystanek');
+            };
+        } else {
+            const suffix = (
+                state.provider === 'czestochowa'
+                && !normalize(query).includes('czestochowa')
+            )
+                ? ', Częstochowa'
+                : '';
+            const searchQuery = `${query || name || 'Przystanek'}${suffix}`;
+            try {
+                const params = new URLSearchParams({ q: searchQuery });
+                const response = await fetch(`/api/map/search?${params}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                const data = await response.json();
+                element = data.place?.selected || data.place?.elements?.[0];
+                if (!response.ok || !element?.coordinates) {
+                    throw new Error(
+                        data.message || 'Nie znaleziono położenia przystanku.'
+                    );
+                }
+            } catch (error) {
+                window.alert(error.message);
+                return;
+            }
+        }
+
+        window.travelManagerNavigation?.showView('map');
+        window.setTimeout(() => {
+            window.travelManagerMap?.showElement(
+                element,
+                name || 'Przystanek'
+            );
         }, 0);
     };
 
@@ -465,6 +590,10 @@ document.addEventListener('travel-manager:views-ready', () => {
         const direction = event.target.closest('[data-public-transport-direction-select]');
 
         if (direction) {
+            if (/^https?:\/\//.test(direction.value)) {
+                loadScreen('line', direction.value, false);
+                return;
+            }
             content.querySelectorAll('[data-public-transport-direction]').forEach((section) => {
                 section.hidden = section.dataset.publicTransportDirection !== direction.value;
             });
@@ -513,7 +642,8 @@ document.addEventListener('travel-manager:views-ready', () => {
             showOnMap(
                 mapAction.dataset.name,
                 mapAction.dataset.latitude,
-                mapAction.dataset.longitude
+                mapAction.dataset.longitude,
+                mapAction.dataset.query
             );
             return;
         }
@@ -568,9 +698,33 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (announcement) {
             try {
-                window.travelManagerPublicTransportAnnouncement?.open(
-                    JSON.parse(announcement.dataset.publicTransportAnnouncement)
+                const summary = JSON.parse(
+                    announcement.dataset.publicTransportAnnouncement
                 );
+                const dialog = window.travelManagerPublicTransportAnnouncement;
+                dialog?.open({
+                    ...summary,
+                    content: summary.content || 'Pobieranie treści komunikatu…'
+                });
+                if (!summary.url || summary.content) {
+                    return;
+                }
+                const params = new URLSearchParams({ url: summary.url });
+                fetch(`${endpoint('announcement')}?${params}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                    .then(async (response) => {
+                        const data = await response.json();
+                        if (!response.ok) {
+                            throw new Error(data.error || 'Nie udało się pobrać komunikatu.');
+                        }
+                        return data;
+                    })
+                    .then((details) => dialog?.update(details))
+                    .catch((error) => dialog?.update({
+                        ...summary,
+                        content: error.message
+                    }));
             } catch (error) {
                 // Invalid announcement metadata is ignored.
             }

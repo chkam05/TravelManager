@@ -3,6 +3,8 @@
         'line': line.line,
         'type': line.type.value,
         'directions': line.directions|map(attribute='name')|list,
+        'route_variants': line.route_variants,
+        'direction_label': capabilities.direction_selector_label,
         'dates': date_options
     }|tojson }}</script>
 

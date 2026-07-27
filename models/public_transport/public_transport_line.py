@@ -25,6 +25,7 @@ class PublicTransportLine(BaseDataModel):
     FIELD_TYPE: ClassVar[str] = 'type'
     FIELD_ANNOUNCEMENTS: ClassVar[str] = 'announcements'
     FIELD_DIRECTIONS: ClassVar[str] = 'directions'
+    FIELD_ROUTE_VARIANTS: ClassVar[str] = 'route_variants'
     FIELD_DATES: ClassVar[str] = 'dates'
 
     # Fields
@@ -32,6 +33,7 @@ class PublicTransportLine(BaseDataModel):
     type: PublicTransportType
     announcements: List[PublicTransportAnnouncement]
     directions: List[PublicTransportDirection]
+    route_variants: Dict[str, str]
     dates: Dict[date, str]
 
     #region Serialization
@@ -41,6 +43,7 @@ class PublicTransportLine(BaseDataModel):
         """Deserializes data from a dictionary in "attribute:value" format to an object."""
         announcements = d.get(cls.FIELD_ANNOUNCEMENTS, [])
         directions = d.get(cls.FIELD_DIRECTIONS, [])
+        route_variants = d.get(cls.FIELD_ROUTE_VARIANTS, {})
         try:
             transport_type = PublicTransportType.from_str(
                 str(d.get(cls.FIELD_TYPE) or cls._DEFAULT_TYPE)
@@ -56,6 +59,10 @@ class PublicTransportLine(BaseDataModel):
             directions=PublicTransportDirection.from_dict_list(
                 directions if isinstance(directions, list) else []
             ),
+            route_variants={
+                str(name): str(url)
+                for name, url in route_variants.items()
+            } if isinstance(route_variants, dict) else {},
             dates=parse_date_url_map(d.get(cls.FIELD_DATES))
         )
 
@@ -66,6 +73,7 @@ class PublicTransportLine(BaseDataModel):
             self.FIELD_TYPE: str(self.type),
             self.FIELD_ANNOUNCEMENTS: self.to_dict_list(self.announcements),
             self.FIELD_DIRECTIONS: self.to_dict_list(self.directions),
+            self.FIELD_ROUTE_VARIANTS: dict(self.route_variants),
             self.FIELD_DATES: serialize_date_url_map(self.dates)
         }
 

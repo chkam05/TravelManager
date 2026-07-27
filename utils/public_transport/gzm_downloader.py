@@ -1,10 +1,9 @@
 from __future__ import annotations
 from datetime import date, datetime, time
-from html.parser import HTMLParser
 import re
 import ssl
 from threading import Lock
-from typing import Any, Callable, ClassVar, Iterator
+from typing import Any, Callable, ClassVar
 from urllib.error import URLError
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
@@ -26,114 +25,12 @@ from models.public_transport.public_transport_stop_all import PublicTransportSto
 from models.public_transport.public_transport_stop_platform import PublicTransportStopPlatform
 from resources.public_transport.public_transport_type import PublicTransportType
 from utils.data.map_data_downloader import MapDataDownloader
-
-
-class _HtmlNode:
-    """Minimal DOM node used by the dependency-free GZM parser."""
-
-    def __init__(
-        self,
-        tag: str,
-        attrs: dict[str, str],
-        parent: _HtmlNode | None = None
-    ) -> None:
-        self.tag = tag
-        self.attrs = attrs
-        self.parent = parent
-        self.children: list[_HtmlNode | str] = []
-
-    def iter_nodes(self) -> Iterator[_HtmlNode]:
-        """Yields this node and all descendant nodes in document order."""
-        yield self
-        for child in self.children:
-            if isinstance(child, _HtmlNode):
-                yield from child.iter_nodes()
-
-    def find_all(
-        self,
-        tag: str | None = None,
-        class_name: str | None = None
-    ) -> list[_HtmlNode]:
-        """Returns descendants matching a tag and CSS class."""
-        return [
-            node for node in self.iter_nodes()
-            if node is not self
-            and (tag is None or node.tag == tag)
-            and (class_name is None or node.has_class(class_name))
-        ]
-
-    def find(
-        self,
-        tag: str | None = None,
-        class_name: str | None = None
-    ) -> _HtmlNode | None:
-        """Returns the first descendant matching a tag and CSS class."""
-        return next(iter(self.find_all(tag, class_name)), None)
-
-    def has_class(self, class_name: str) -> bool:
-        """Checks whether the node contains a CSS class."""
-        return class_name in self.attrs.get('class', '').split()
-
-    def own_text(self) -> str:
-        """Returns normalized text stored directly in this node."""
-        return _normalize_text(' '.join(
-            child for child in self.children if isinstance(child, str)
-        ))
-
-    def text(self) -> str:
-        """Returns normalized text stored in this node and its descendants."""
-        parts: list[str] = []
-        for child in self.children:
-            if isinstance(child, str):
-                parts.append(child)
-            else:
-                parts.append(child.text())
-        return _normalize_text(' '.join(parts))
-
-
-class _HtmlDocumentParser(HTMLParser):
-    """Builds a small DOM tree with Python's standard HTML parser."""
-
-    _VOID_TAGS = {
-        'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
-        'link', 'meta', 'param', 'source', 'track', 'wbr'
-    }
-
-    def __init__(self) -> None:
-        super().__init__(convert_charrefs=True)
-        self.root = _HtmlNode('document', {})
-        self._stack = [self.root]
-
-    def handle_starttag(self, tag: str, attrs) -> None:
-        node = _HtmlNode(
-            tag.lower(),
-            {str(key): str(value or '') for key, value in attrs},
-            self._stack[-1]
-        )
-        self._stack[-1].children.append(node)
-        if tag.lower() not in self._VOID_TAGS:
-            self._stack.append(node)
-
-    def handle_startendtag(self, tag: str, attrs) -> None:
-        self.handle_starttag(tag, attrs)
-        if tag.lower() not in self._VOID_TAGS:
-            self.handle_endtag(tag)
-
-    def handle_endtag(self, tag: str) -> None:
-        tag = tag.lower()
-        for index in range(len(self._stack) - 1, 0, -1):
-            if self._stack[index].tag == tag:
-                del self._stack[index:]
-                return
-
-    def handle_data(self, data: str) -> None:
-        if data:
-            self._stack[-1].children.append(data)
-
-
-def _normalize_text(value: str) -> str:
-    """Collapses whitespace in source text."""
-    return re.sub(r'\s+', ' ', value or '').strip()
+from utils.public_transport.download_progress import PublicTransportDownloadProgress
+from utils.public_transport.html_document import (
+    HtmlNode as _HtmlNode,
+    normalize_text as _normalize_text,
+    parse_html
+)
 
 
 class GzmDownloader:
@@ -144,6 +41,7 @@ class GzmDownloader:
     STOP_LOCATIONS_URL = 'https://rj.transportgzm.pl/api/v2/stops/data/'
     CARRIER = 'Zarząd Transportu Metropolitalnego'
     _USER_AGENT = 'TravelManager/1.0'
+    _REQUEST_TIMEOUT = 15
     _DATE_IN_URL_PATTERN = re.compile(r'/(20\d{6})(?:/|$)')
     _POLISH_DATE_PATTERN = re.compile(r'(\d{1,2})\.(\d{1,2})\.(\d{4})')
     _COLOR_PATTERN = re.compile(r'#[0-9a-fA-F]{6}')
@@ -157,47 +55,80 @@ class GzmDownloader:
     #region HTTP
 
     @classmethod
-    def _download_html(cls, url: str) -> str:
+    def _download_html(
+        cls,
+        url: str,
+        item: str = 'Dane przewoźnika',
+        current: int = 1,
+        total: int = 1
+    ) -> str:
         """Downloads and decodes one GZM HTML page."""
         request = Request(url, headers={
             'Accept': 'text/html,application/xhtml+xml',
             'User-Agent': cls._USER_AGENT
         })
-        try:
-            return cls._read_html(request)
-        except URLError as error:
-            if not isinstance(error.reason, ssl.SSLCertVerificationError):
-                raise
-            return cls._read_html(request, ssl._create_unverified_context())
 
-    @staticmethod
+        ssl_context: list[ssl.SSLContext | None] = [None]
+
+        def download() -> str:
+            try:
+                return cls._read_html(request, ssl_context[0])
+            except URLError as error:
+                if (
+                    ssl_context[0] is None
+                    and isinstance(
+                        error.reason,
+                        ssl.SSLCertVerificationError
+                    )
+                ):
+                    ssl_context[0] = ssl._create_unverified_context()
+                raise
+
+        return PublicTransportDownloadProgress.retry(
+            download,
+            item,
+            current,
+            total
+        )
+
+    @classmethod
     def _read_html(
+        cls,
         request: Request,
         context: ssl.SSLContext | None = None
     ) -> str:
         """Executes an HTTP request and decodes its response body."""
-        with urlopen(request, timeout=30, context=context) as response:
+        with urlopen(
+            request,
+            timeout=cls._REQUEST_TIMEOUT,
+            context=context
+        ) as response:
             charset = response.headers.get_content_charset() or 'utf-8'
             return response.read().decode(charset, errors='replace')
 
     @staticmethod
     def _document(html: str) -> _HtmlNode:
         """Parses HTML into the internal dependency-free DOM."""
-        parser = _HtmlDocumentParser()
-        parser.feed(html)
-        parser.close()
-        return parser.root
+        return parse_html(html)
 
     @classmethod
     def download_stop_locations(
         cls,
-        refresh: bool = False
+        refresh: bool = False,
+        item: str = 'Lokalizacje przystanków',
+        current: int = 1,
+        total: int = 1
     ) -> dict[str, tuple[float, float]]:
         """Downloads platform coordinates indexed by the GZM stop identifier."""
         with cls._STOP_LOCATIONS_LOCK:
             if cls._STOP_LOCATIONS_CACHE is not None and not refresh:
                 return dict(cls._STOP_LOCATIONS_CACHE)
-            data = MapDataDownloader.get_json(cls.STOP_LOCATIONS_URL)
+            data = PublicTransportDownloadProgress.retry(
+                lambda: MapDataDownloader.get_json(cls.STOP_LOCATIONS_URL),
+                item,
+                current,
+                total
+            )
             cls._STOP_LOCATIONS_CACHE = cls.parse_stop_locations(data)
             return dict(cls._STOP_LOCATIONS_CACHE)
 
@@ -387,7 +318,10 @@ class GzmDownloader:
     def download_lines(cls, url: str | None = None) -> list[PublicTransportBaseLine]:
         """Downloads the provider's complete line list."""
         source_url = url or cls.BASE_URL
-        return cls.parse_lines(cls._download_html(source_url), source_url)
+        return cls.parse_lines(
+            cls._download_html(source_url, 'Lista linii'),
+            source_url
+        )
 
     @classmethod
     def parse_lines(
@@ -423,15 +357,27 @@ class GzmDownloader:
     def download_line(
         cls,
         url: str,
-        include_announcement_content: bool = True
+        include_announcement_content: bool = False
     ) -> PublicTransportLine:
         """Downloads detailed directions, stops, dates and announcements for one line."""
-        model = cls.parse_line(cls._download_html(url), url)
+        line = cls._line_from_url(url)
+        model = cls.parse_line(
+            cls._download_html(url, f'Linia {line}'),
+            url
+        )
         if include_announcement_content:
-            model.announcements = [
-                cls.download_announcement(item.url) if item.url else item
-                for item in model.announcements
-            ]
+            announcements = []
+            total = len(model.announcements)
+            for index, item in enumerate(model.announcements, start=1):
+                announcements.append(
+                    cls.download_announcement(
+                        item.url,
+                        item.description,
+                        index,
+                        total
+                    ) if item.url else item
+                )
+            model.announcements = announcements
         return model
 
     @classmethod
@@ -487,6 +433,7 @@ class GzmDownloader:
             type=transport_type,
             announcements=cls._parse_announcements(document, source_url),
             directions=directions,
+            route_variants={},
             dates=cls._dates(document, source_url)
         )
 
@@ -526,6 +473,7 @@ class GzmDownloader:
                 for day, month, year in dates[:2]
             ]
             result.append(PublicTransportAnnouncement(
+                lines=[],
                 city=city_link.text(),
                 content='',
                 description=description_link.text(),
@@ -537,9 +485,23 @@ class GzmDownloader:
         return result
 
     @classmethod
-    def download_announcement(cls, url: str) -> PublicTransportAnnouncement:
+    def download_announcement(
+        cls,
+        url: str,
+        description: str = '',
+        current: int = 1,
+        total: int = 1
+    ) -> PublicTransportAnnouncement:
         """Downloads the full content and validity data of an announcement."""
-        return cls.parse_announcement(cls._download_html(url), url)
+        return cls.parse_announcement(
+            cls._download_html(
+                url,
+                f'Komunikat „{description}”' if description else 'Komunikat',
+                current,
+                total
+            ),
+            url
+        )
 
     @classmethod
     def parse_announcement(
@@ -577,6 +539,7 @@ class GzmDownloader:
         lead = panel.find(class_name='list_lead')
         content_body = bodies[-1] if bodies else panel
         return PublicTransportAnnouncement(
+            lines=[],
             city=city.strip(),
             content=content_body.text(),
             description=(description.strip() or (lead.text() if lead else title)),
@@ -594,19 +557,27 @@ class GzmDownloader:
     def download_line_stop_timetable(
         cls,
         url: str,
-        include_announcement_content: bool = True
+        include_announcement_content: bool = False
     ) -> PublicTransportLineStopTimetable:
         """Downloads all dates and departures shown for one line and platform."""
         model = cls.parse_line_stop_timetable(
-            cls._download_html(url),
+            cls._download_html(url, 'Rozkład przystankowy'),
             url,
             cls._safe_stop_locations()
         )
         if include_announcement_content:
-            model.announcements = [
-                cls.download_announcement(item.url) if item.url else item
-                for item in model.announcements
-            ]
+            announcements = []
+            total = len(model.announcements)
+            for index, item in enumerate(model.announcements, start=1):
+                announcements.append(
+                    cls.download_announcement(
+                        item.url,
+                        item.description,
+                        index,
+                        total
+                    ) if item.url else item
+                )
+            model.announcements = announcements
         return model
 
     @classmethod
@@ -740,7 +711,7 @@ class GzmDownloader:
         from_first_stop: bool = True
     ) -> PublicTransportRide:
         """Downloads one ride, optionally reloading it from its first stop."""
-        html = cls._download_html(url)
+        html = cls._download_html(url, 'Szczegóły przejazdu')
         first_url = cls._first_ride_stop_url(html, url)
         if from_first_stop and first_url and cls._without_fragment(first_url) != cls._without_fragment(url):
             return cls.download_ride(first_url, from_first_stop=False)
@@ -884,17 +855,29 @@ class GzmDownloader:
     ) -> list[PublicTransportStop]:
         """Downloads the city index and all city stop pages."""
         source_url = url or cls.STOPS_URL
-        cities = cls.parse_stop_cities(cls._download_html(source_url), source_url)
-        stop_locations = cls._safe_stop_locations(refresh=True)
+        cities = cls.parse_stop_cities(
+            cls._download_html(source_url, 'Lista miast'),
+            source_url
+        )
+        total = len(cities) + 1
+        try:
+            stop_locations = cls.download_stop_locations(
+                refresh=True,
+                current=1,
+                total=total
+            )
+        except Exception:
+            stop_locations = {}
         result: list[PublicTransportStop] = []
-        total = len(cities)
         for index, (city_name, city_url) in enumerate(cities, start=1):
             if progress_callback:
-                progress_callback(index, total, city_name)
+                progress_callback(index, len(cities), city_name)
             result.extend(cls.download_city_stops(
                 city_url,
                 city_name,
-                stop_locations
+                stop_locations,
+                index + 1,
+                total
             ))
         return result
 
@@ -919,11 +902,18 @@ class GzmDownloader:
         cls,
         url: str,
         city_name: str = '',
-        stop_locations: dict[str, tuple[float, float]] | None = None
+        stop_locations: dict[str, tuple[float, float]] | None = None,
+        current: int = 1,
+        total: int = 1
     ) -> list[PublicTransportStop]:
         """Downloads all stops and platforms for one city."""
         return cls.parse_city_stops(
-            cls._download_html(url),
+            cls._download_html(
+                url,
+                f'Przystanki: {city_name}' if city_name else 'Przystanki miasta',
+                current,
+                total
+            ),
             url,
             city_name,
             stop_locations
@@ -1018,7 +1008,7 @@ class GzmDownloader:
     def download_stop_all(cls, url: str) -> PublicTransportStopAll:
         """Downloads every line-direction timetable shown for one platform."""
         return cls.parse_stop_all(
-            cls._download_html(url),
+            cls._download_html(url, 'Linie i odjazdy przystanku'),
             url,
             cls._safe_stop_locations()
         )

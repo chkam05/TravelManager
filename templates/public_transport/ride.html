@@ -5,12 +5,15 @@
         'stop': ride.stop_name,
         'platform': ride.platform,
         'departure': ride.departure_time.strftime('%H:%M') if ride.departure_time else '',
+        'show_platforms': capabilities.show_platforms,
         'route': route_points
     }|tojson }}</script>
 
     <section class="public-transport-ride__summary">
         <div><span>Przewoźnik</span><strong>{{ ride.carrier or 'Brak danych' }}</strong></div>
-        <div><span>Typ pojazdu</span><strong>{{ ride.vehicle_type or 'Brak danych' }}</strong></div>
+        {% if capabilities.show_vehicle_details %}
+            <div><span>Typ pojazdu</span><strong>{{ ride.vehicle_type or 'Brak danych' }}</strong></div>
+        {% endif %}
         <div><span>Liczba kolejnych przystanków</span><strong>{{ ride.next_stops|length }}</strong></div>
     </section>
 
@@ -22,9 +25,11 @@
                     <th>Odjazd</th>
                     <th>Czas odcinka</th>
                     <th>Czas łącznie</th>
-                    <th>Odległość odcinka</th>
-                    <th>Odległość łącznie</th>
-                    <th>Mapa</th>
+                    {% if capabilities.show_ride_distances %}
+                        <th>Odległość odcinka</th>
+                        <th>Odległość łącznie</th>
+                    {% endif %}
+                    {% if capabilities.show_ride_map %}<th>Mapa</th>{% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -37,20 +42,20 @@
                         <td>{{ stop.departure_time.strftime('%H:%M') if stop.departure_time else '—' }}</td>
                         <td>{{ stop.travel_time }} min</td>
                         <td>{{ stop.travel_time_sum }} min</td>
-                        <td>{{ '%.2f'|format(stop.distance) }} km</td>
-                        <td>{{ '%.2f'|format(stop.distance_sum) }} km</td>
-                        <td>
-                            {% if stop.latitude is not none and stop.longitude is not none %}
-                                <button class="public-transport-table__map-button" type="button" data-public-transport-map data-name="{{ stop.stop }}" data-latitude="{{ stop.latitude }}" data-longitude="{{ stop.longitude }}" aria-label="Pokaż {{ stop.stop }} na mapie">
+                        {% if capabilities.show_ride_distances %}
+                            <td>{{ '%.2f'|format(stop.distance) }} km</td>
+                            <td>{{ '%.2f'|format(stop.distance_sum) }} km</td>
+                        {% endif %}
+                        {% if capabilities.show_ride_map %}
+                            <td>
+                                <button class="public-transport-table__map-button" type="button" data-public-transport-map data-name="{{ stop.stop }}" data-query="{{ stop.stop }}" data-latitude="{{ stop.latitude if stop.latitude is not none else '' }}" data-longitude="{{ stop.longitude if stop.longitude is not none else '' }}" aria-label="Pokaż {{ stop.stop }} na mapie">
                                     <i data-lucide="map-pin" aria-hidden="true"></i>
                                 </button>
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% else %}
-                    <tr><td colspan="7" class="public-transport-empty">Brak kolejnych przystanków.</td></tr>
+                    <tr><td colspan="{{ 4 + (2 if capabilities.show_ride_distances else 0) + (1 if capabilities.show_ride_map else 0) }}" class="public-transport-empty">Brak kolejnych przystanków.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

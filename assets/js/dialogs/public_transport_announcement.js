@@ -35,7 +35,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         layer.setAttribute('aria-hidden', 'true');
     };
 
-    const open = (announcement) => {
+    const render = (announcement) => {
         title.textContent = announcement.description || 'Komunikat';
         city.textContent = announcement.city || 'Komunikacja miejska';
         content.textContent = announcement.content || 'Brak pełnej treści komunikatu.';
@@ -46,11 +46,21 @@ document.addEventListener('travel-manager:views-ready', () => {
             : '';
         effectiveDate.textContent = dateTo ? `${dateFrom} – ${dateTo}` : dateFrom;
         updated.textContent = formatDate(announcement.last_updated_datetime, true);
+    };
+
+    const open = (announcement) => {
+        render(announcement);
 
         dialog.setAttribute('aria-hidden', 'false');
         layer.classList.add('dialog-layer--open');
         layer.setAttribute('aria-hidden', 'false');
         window.requestAnimationFrame(() => closeButtons[0].focus());
+    };
+
+    const update = (announcement) => {
+        if (dialog.getAttribute('aria-hidden') === 'false') {
+            render(announcement);
+        }
     };
 
     closeButtons.forEach((button) => button.addEventListener('click', close));
@@ -65,5 +75,5 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     });
 
-    window.travelManagerPublicTransportAnnouncement = { open };
+    window.travelManagerPublicTransportAnnouncement = { open, update };
 });

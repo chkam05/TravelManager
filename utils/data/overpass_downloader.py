@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any
+from typing import Any, Callable
 
 from models.map.map_element_data_model import MapElementDataModel
 from resources.map_search import MapSearchConfig
@@ -28,7 +28,7 @@ class OverpassDownloader:
             return []
 
         query = cls.query(filters, bbox)
-        data = cls._download(query)
+        data = cls.download_query(query)
         results: list[MapElementDataModel] = []
         seen: set[tuple[str, Any]] = set()
 
@@ -114,13 +114,28 @@ class OverpassDownloader:
         )
 
     @classmethod
-    def _download(cls, query: str) -> dict[str, Any]:
+    def download_query(
+        cls,
+        query: str,
+        attempt_callback: Callable[[int, int], None] | None = None
+    ) -> dict[str, Any]:
+        """Executes an arbitrary Overpass query with configured fallbacks."""
         last_error: Exception | None = None
-        for index, url in enumerate((MapSources.OVERPASS_URL, *MapSources.OVERPASS_FALLBACK_URLS)):
-            for _ in range(2 if index == 0 else 1):
-                try:
-                    data = MapDataDownloader.post_form_json(url, {'data': query})
-                    return data if isinstance(data, dict) else {}
-                except Exception as error:
-                    last_error = error
+        urls = (
+            MapSources.OVERPASS_URL,
+            *MapSources.OVERPASS_FALLBACK_URLS
+        )[:3]
+        for attempt, url in enumerate(urls, start=1):
+            if attempt_callback:
+                attempt_callback(attempt, len(urls))
+            try:
+                data = MapDataDownloader.post_form_json(url, {'data': query})
+                return data if isinstance(data, dict) else {}
+            except Exception as error:
+                last_error = error
         raise last_error or RuntimeError('Overpass request failed.')
+
+    @classmethod
+    def _download(cls, query: str) -> dict[str, Any]:
+        """Keeps compatibility with the original internal query method."""
+        return cls.download_query(query)

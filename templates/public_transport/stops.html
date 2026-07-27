@@ -16,7 +16,13 @@
                         <button class="public-transport-stops__toggle" type="button" aria-expanded="false" aria-controls="public-transport-stop-{{ city_index }}-{{ loop.index0 }}">
                             <span>
                                 <strong>{{ stop.name }}</strong>
-                                <small>{{ stop.platforms|length }} stanowisk</small>
+                                <small>
+                                    {% if capabilities.show_platforms %}
+                                        {{ stop.platforms|length }} stanowisk
+                                    {% else %}
+                                        Rozkład przystanku
+                                    {% endif %}
+                                </small>
                             </span>
                             <i data-lucide="chevron-down" aria-hidden="true"></i>
                         </button>
@@ -25,36 +31,42 @@
                                 <section class="public-transport-stops__platform">
                                     <header>
                                         <strong>
-                                            <span class="public-transport-stops__platform-label">Stanowisko:</span>
-                                            {{ platform.name or '—' }}
+                                            {% if capabilities.show_platforms %}
+                                                <span class="public-transport-stops__platform-label">Stanowisko:</span>
+                                                {{ platform.name or '—' }}
+                                            {% else %}
+                                                Rozkład przystanku
+                                            {% endif %}
                                         </strong>
                                         <div class="public-transport-stops__platform-actions">
                                             <button type="button" data-public-transport-action="stop-lines" data-url="{{ platform.url_all }}">
-                                                <span>Pokaż stanowisko</span>
+                                                <span>{% if capabilities.show_platforms %}Pokaż stanowisko{% else %}Pokaż odjazdy{% endif %}</span>
                                                 <i data-lucide="chevron-right" aria-hidden="true"></i>
                                             </button>
-                                            {% if platform.latitude is not none and platform.longitude is not none %}
-                                                <button type="button" data-public-transport-map data-name="{{ stop.city.name }} {{ stop.name }}, stanowisko {{ platform.name }}" data-latitude="{{ platform.latitude }}" data-longitude="{{ platform.longitude }}">
+                                            {% if capabilities.show_stop_map %}
+                                                <button type="button" data-public-transport-map data-name="{{ stop.city.name }} {{ stop.name }}, stanowisko {{ platform.name }}" data-query="{{ stop.name }}, {{ stop.city.name }}" data-latitude="{{ platform.latitude if platform.latitude is not none else '' }}" data-longitude="{{ platform.longitude if platform.longitude is not none else '' }}">
                                                     <span>Pokaż na mapie</span>
                                                     <i data-lucide="map-pin" aria-hidden="true"></i>
                                                 </button>
                                             {% endif %}
                                         </div>
                                     </header>
-                                    <div class="public-transport-stops__lines">
-                                        {% for line in platform.lines %}
-                                            <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}" title="Pokaż linię {{ line.line }}">
-                                                {% if line.type.value == 'tram' %}
-                                                    <i data-lucide="tram-front" aria-hidden="true"></i>
-                                                {% else %}
-                                                    <i data-lucide="bus" aria-hidden="true"></i>
-                                                {% endif %}
-                                                <span>{{ line.line }}</span>
-                                            </button>
-                                        {% else %}
-                                            <span class="public-transport-stops__no-lines">Brak linii.</span>
-                                        {% endfor %}
-                                    </div>
+                                    {% if capabilities.show_platforms or platform.lines %}
+                                        <div class="public-transport-stops__lines">
+                                            {% for line in platform.lines %}
+                                                <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}" title="Pokaż linię {{ line.line }}">
+                                                    {% if line.type.value == 'tram' %}
+                                                        <i data-lucide="tram-front" aria-hidden="true"></i>
+                                                    {% else %}
+                                                        <i data-lucide="bus" aria-hidden="true"></i>
+                                                    {% endif %}
+                                                    <span>{{ line.line }}</span>
+                                                </button>
+                                            {% else %}
+                                                <span class="public-transport-stops__no-lines">Brak linii.</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
                                 </section>
                             {% endfor %}
                         </div>

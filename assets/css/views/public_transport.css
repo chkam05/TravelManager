@@ -583,7 +583,10 @@ button.public-transport-line-pill {
 
 .public-transport-line-stop__departures {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(var(--public-transport-departure-width, 74px), 1fr)
+    );
     gap: 7px;
     padding: 13px;
 }
@@ -601,6 +604,7 @@ button.public-transport-line-pill {
     color: #20242a;
     font: inherit;
     font-weight: 900;
+    white-space: nowrap;
     cursor: pointer;
 }
 

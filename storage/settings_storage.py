@@ -10,6 +10,7 @@ from models.settings_transfer.fuel_costs_transfer_data_model import FuelCostsTra
 from models.settings_transfer.routes_transfer_data_model import RoutesTransferDataModel
 from models.settings_data_model import SettingsDataModel
 from models.settings.public_transport_cache import PublicTransportCache
+from models.public_transport.public_transport_announcement import PublicTransportAnnouncement
 from models.public_transport.public_transport_base_line import PublicTransportBaseLine
 from models.public_transport.public_transport_stop import PublicTransportStop
 from core.data.base_json_storage import BaseJsonStorage
@@ -37,7 +38,7 @@ class SettingsStorage(BaseJsonStorage):
         self,
         carrier: str
     ) -> PublicTransportCache | None:
-        """Loads persistent line and stop lists for one carrier."""
+        """Loads persistent public transport data for one carrier."""
         return self.load().public_transport_cache.get(carrier)
 
     def save_public_transport_cache(
@@ -61,15 +62,20 @@ class SettingsStorage(BaseJsonStorage):
             cache = settings.public_transport_cache.get(carrier)
             settings.public_transport_cache[carrier] = PublicTransportCache(
                 carrier=carrier,
+                announcements=list(cache.announcements) if cache else [],
                 lines=list(lines),
-                stops=list(cache.stops) if cache else []
+                stops=list(cache.stops) if cache else [],
+                stop_locations_initialized=(
+                    cache.stop_locations_initialized if cache else False
+                )
             )
             self.save(settings)
 
     def save_public_transport_stops(
         self,
         carrier: str,
-        stops: List[PublicTransportStop]
+        stops: List[PublicTransportStop],
+        stop_locations_initialized: bool = True
     ) -> None:
         """Updates only the persistent stop list for one carrier."""
         with self._lock:
@@ -77,8 +83,30 @@ class SettingsStorage(BaseJsonStorage):
             cache = settings.public_transport_cache.get(carrier)
             settings.public_transport_cache[carrier] = PublicTransportCache(
                 carrier=carrier,
+                announcements=list(cache.announcements) if cache else [],
                 lines=list(cache.lines) if cache else [],
-                stops=list(stops)
+                stops=list(stops),
+                stop_locations_initialized=stop_locations_initialized
+            )
+            self.save(settings)
+
+    def save_public_transport_announcements(
+        self,
+        carrier: str,
+        announcements: List[PublicTransportAnnouncement]
+    ) -> None:
+        """Updates only the persistent announcement list for one carrier."""
+        with self._lock:
+            settings = self.load()
+            cache = settings.public_transport_cache.get(carrier)
+            settings.public_transport_cache[carrier] = PublicTransportCache(
+                carrier=carrier,
+                announcements=list(announcements),
+                lines=list(cache.lines) if cache else [],
+                stops=list(cache.stops) if cache else [],
+                stop_locations_initialized=(
+                    cache.stop_locations_initialized if cache else False
+                )
             )
             self.save(settings)
 
