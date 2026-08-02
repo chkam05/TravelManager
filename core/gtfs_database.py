@@ -695,6 +695,26 @@ class GtfsDatabase:
             return False
 
     @staticmethod
+    def is_valid_cache(path: Path) -> bool:
+        """Checks whether a local cache can be reused without refreshing it."""
+        if not path.exists():
+            return False
+        try:
+            connection = sqlite3.connect(path)
+            try:
+                row = connection.execute(
+                    "SELECT value FROM metadata WHERE key = 'schema_version'"
+                ).fetchone()
+            finally:
+                connection.close()
+            return bool(
+                row
+                and str(row[0]) == GtfsDatabase._SCHEMA_VERSION
+            )
+        except (OSError, sqlite3.Error):
+            return False
+
+    @staticmethod
     def active_service_ids(
         connection: sqlite3.Connection,
         feed_id: str,

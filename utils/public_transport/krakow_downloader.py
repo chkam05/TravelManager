@@ -153,16 +153,8 @@ class KrakowDownloader:
                 cls._LEGACY_DATABASE_PATH,
                 cls._DATABASE_PATH
             )
-            required_date = (
-                date.today()
-                + timedelta(days=cls._DATE_RANGE_DAYS - 1)
-            )
-            if (
-                not refresh
-                and GtfsDatabase.covers(
-                    cls._DATABASE_PATH,
-                    required_date
-                )
+            if not refresh and GtfsDatabase.is_valid_cache(
+                cls._DATABASE_PATH
             ):
                 return cls._DATABASE_PATH
             total = len(cls._FEEDS) * 2
@@ -199,6 +191,12 @@ class KrakowDownloader:
     def _connection(cls, refresh: bool = False):
         """Opens the current GTFS cache."""
         return GtfsDatabase.connect(cls._ensure_database(refresh))
+
+    @classmethod
+    def has_local_data(cls) -> bool:
+        """Returns whether a reusable local GTFS database is available."""
+        GtfsDatabase.migrate_cache(cls._LEGACY_DATABASE_PATH, cls._DATABASE_PATH)
+        return GtfsDatabase.is_valid_cache(cls._DATABASE_PATH)
 
     @classmethod
     def enrich_stop_locations(
@@ -1237,11 +1235,17 @@ class KrakowDownloader:
     ) -> list[PublicTransportVehiclePosition]:
         """Downloads current vehicle positions from all Kraków GTFS-RT feeds."""
         with cls._connection() as connection:
-            route_rows = connection.execute(
-                """
+            route_query = """
                     SELECT feed_id, route_id, short_name, route_type
                     FROM routes
-                """
+            """
+            route_parameters: tuple[str, ...] = ()
+            if line:
+                route_query += " WHERE short_name = ?"
+                route_parameters = (line,)
+            route_rows = connection.execute(
+                route_query,
+                route_parameters
             ).fetchall()
             route_names = {
                 (str(row['feed_id']), str(row['route_id'])): str(
@@ -1261,22 +1265,36 @@ class KrakowDownloader:
                     or transport_type == PublicTransportType.TRAM
                 ):
                     line_types[line_name] = transport_type
+            trip_query = """
+                SELECT t.feed_id, t.trip_id, r.short_name
+                FROM trips t
+                JOIN routes r
+                  ON r.feed_id = t.feed_id
+                 AND r.route_id = t.route_id
+            """
+            trip_parameters: tuple[str, ...] = ()
+            if line:
+                trip_query += " WHERE r.short_name = ?"
+                trip_parameters = (line,)
             trip_names = {
                 (str(row['feed_id']), str(row['trip_id'])): str(
                     row['short_name']
                 )
-                for row in connection.execute("""
-                    SELECT t.feed_id, t.trip_id, r.short_name
-                    FROM trips t
-                    JOIN routes r
-                      ON r.feed_id = t.feed_id
-                     AND r.route_id = t.route_id
-                """)
+                for row in connection.execute(
+                    trip_query,
+                    trip_parameters
+                )
             }
+        selected_feed_ids = {str(row['feed_id']) for row in route_rows}
+        feeds = [
+            (feed_id, feed)
+            for feed_id, feed in cls._FEEDS.items()
+            if not line or feed_id in selected_feed_ids
+        ]
         positions: list[PublicTransportVehiclePosition] = []
-        total = len(cls._FEEDS)
+        total = len(feeds)
         for index, (feed_id, feed) in enumerate(
-            cls._FEEDS.items(),
+            feeds,
             start=1
         ):
             payload = cls._download_bytes(
@@ -1344,6 +1362,9 @@ class KrakowDownloader:
                 vehicle_id=str(
                     descriptor.id or descriptor.label or entity.id
                 ),
+                vehicle_label=str(descriptor.label or ''),
+                license_plate=str(descriptor.license_plate or ''),
+                source_code=feed_id,
                 line=line_name,
                 trip_id=trip_id,
                 type=(line_types or {}).get(

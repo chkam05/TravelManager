@@ -1,0 +1,67 @@
+.public-transport-panel {
+    --public-transport-panel-width: min(380px, calc(100vw - 36px));
+    position: fixed;
+    z-index: 1095;
+    top: calc(var(--header-height) + 18px);
+    right: 18px;
+    bottom: 18px;
+    width: var(--public-transport-panel-width);
+    min-width: var(--app-side-panel-min-width);
+    max-width: var(--app-side-panel-max-width);
+    border: 1px solid rgba(32, 36, 42, .12);
+    border-radius: 16px;
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 24px 64px rgba(32,36,42,.22);
+    backdrop-filter: blur(18px);
+    transform: translateX(calc(100% + 28px));
+    transition: transform 180ms ease;
+}
+.public-transport-panel--open { transform: translateX(0); }
+.public-transport-panel--resizing { transition: none; user-select: none; }
+.public-transport-panel__grabber { position:absolute; top:50%; left:-10px; width:36px; height:76px; cursor:ew-resize; touch-action:none; transform:translateY(-50%); }
+.public-transport-panel__grabber::before { content:""; position:absolute; inset:16px 15px; border-radius:99px; background:rgba(32,36,42,.34); }
+.public-transport-panel__body { display:grid; grid-template-rows:auto auto minmax(0,1fr); height:100%; overflow:hidden; }
+.public-transport-panel__header { display:grid; grid-template-columns:auto minmax(0,1fr) auto auto auto auto; align-items:center; gap:8px; min-height:56px; padding:8px 12px; border-bottom:1px solid rgba(32,36,42,.1); }
+.public-transport-panel__header h2 { overflow:hidden; margin:0; font-size:1.05rem; text-overflow:ellipsis; white-space:nowrap; }
+.public-transport-panel__icon-button { display:grid; place-items:center; width:34px; height:34px; border:1px solid rgba(31,111,174,.25); border-radius:8px; background:#eef7fc; color:#155f98; cursor:pointer; }
+.public-transport-panel__icon-button[hidden] { display:none; }
+.public-transport-panel__icon-button svg { width:18px; }
+.public-transport-panel__icon-button--active { border-color:#155f98; background:#155f98; color:#fff; }
+.public-transport-panel__live-status { display:flex; align-items:center; gap:8px; min-height:32px; padding:0 14px; border-bottom:1px solid rgba(32,36,42,.1); background:#eef7fc; color:#155f98; font-size:.78rem; font-weight:800; }
+.public-transport-panel__live-status[hidden] { display:none; }
+.public-transport-panel__live-status svg { width:15px; height:15px; }
+.public-transport-panel__close { position:relative; width:30px; height:30px; border:1px solid rgba(32,36,42,.12); border-radius:8px; background:#fff; cursor:pointer; }
+.public-transport-panel__close::before,.public-transport-panel__close::after { content:""; position:absolute; top:50%; left:50%; width:14px; height:2px; background:#3f4852; }
+.public-transport-panel__close::before { transform:translate(-50%,-50%) rotate(45deg); }
+.public-transport-panel__close::after { transform:translate(-50%,-50%) rotate(-45deg); }
+.public-transport-panel__provider { display:grid; gap:10px; margin:-12px -12px 12px; padding:12px; border-bottom:1px solid rgba(32,36,42,.1); }
+.public-transport-panel__provider label,.public-transport-panel__controls label { display:grid; gap:5px; color:#52606d; font-size:.75rem; font-weight:800; }
+.public-transport-panel select { min-width:0; width:100%; height:38px; padding:0 9px; border:1px solid rgba(32,36,42,.16); border-radius:8px; background:#fff; }
+.public-transport-panel__content { overflow:auto; padding:12px; }
+.public-transport-panel__view[hidden] { display:none; }
+.public-transport-panel__search { position:relative; display:block; }
+.public-transport-panel__search svg { position:absolute; top:50%; left:10px; width:17px; height:17px; transform:translateY(-50%); color:#697682; pointer-events:none; }
+.public-transport-panel__search input { box-sizing:border-box; width:100%; height:38px; padding:0 10px 0 34px; border:1px solid rgba(32,36,42,.16); border-radius:8px; background:#fff; font:inherit; }
+.public-transport-panel__controls { display:grid; gap:10px; margin-bottom:14px; }
+.public-transport-panel .public-transport-lines__grid { grid-template-columns:repeat(auto-fill,minmax(52px,1fr)); gap:6px; }
+.public-transport-panel .public-transport-lines__tile { min-width:0; min-height:42px; padding:5px 7px; overflow:hidden; }
+.public-transport-panel .public-transport-lines__number { font-size:.9rem; }
+.public-transport-panel .public-transport-lines__badges { min-width:0; max-width:100%; flex-wrap:nowrap; overflow:hidden; }
+.public-transport-panel .public-transport-badge { display:block; min-width:0; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.public-transport-panel .public-transport-lines__group { margin-bottom:12px; }
+.public-transport-panel .public-transport-line-view__stops { width:100%; }
+.public-transport-panel .public-transport-line-stop__departures { grid-template-columns:repeat(auto-fill,minmax(62px,1fr)); padding:8px; }
+.public-transport-panel__status { padding:20px 8px; color:#697682; text-align:center; }
+.public-transport-panel__empty { display:grid; justify-items:center; gap:10px; padding:42px 18px; color:#52606d; text-align:center; }
+.public-transport-panel__empty[hidden] { display:none; }
+.public-transport-panel__empty svg { width:38px; height:38px; color:#697682; }
+.public-transport-panel__empty strong { color:#20242a; font-size:1rem; }
+.public-transport-panel__empty span { max-width:280px; font-size:.86rem; line-height:1.45; }
+.public-transport-panel__empty button { min-height:40px; margin-top:6px; padding:0 18px; border:1px solid #1f6fae; border-radius:8px; background:#1f6fae; color:#fff; font-weight:850; cursor:pointer; }
+.public-transport-panel__all-lines { width:100%; min-height:42px; margin-top:14px; border:1px solid rgba(31,111,174,.28); border-radius:9px; background:#e8f2f9; color:#155f98; font-weight:800; cursor:pointer; }
+.public-transport-panel .public-transport-stop-lines__list { display:grid; gap:10px; }
+.public-transport-panel .public-transport-stop-lines__list article { border:1px solid rgba(32,36,42,.12); border-radius:9px; overflow:hidden; }
+.public-transport-panel .public-transport-stop-lines__content { grid-template-columns:1fr; }
+.public-transport-panel .public-transport-stop-lines__departures { grid-template-columns:repeat(auto-fill,minmax(58px,1fr)); gap:6px; }
+.public-transport-panel .public-transport-stop-lines__departures button { min-height:46px; border:1px solid rgba(32,36,42,.12); border-radius:8px; background:#fff; }
+.public-transport-panel .public-transport-stop-lines__content .public-transport-line-stop__variant-list { width:auto; min-width:0; max-width:none; resize:none; }

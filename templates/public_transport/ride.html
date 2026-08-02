@@ -5,6 +5,9 @@
         'stop': ride.stop_name,
         'platform': ride.platform,
         'departure': ride.departure_time.strftime('%H:%M') if ride.departure_time else '',
+        'latitude': ride.latitude,
+        'longitude': ride.longitude,
+        'show_stop_map': capabilities.show_ride_map,
         'show_platforms': capabilities.show_platforms,
         'show_route_map': capabilities.show_ride_map,
         'route': route_points

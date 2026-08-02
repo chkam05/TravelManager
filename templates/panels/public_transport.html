@@ -1,0 +1,31 @@
+<aside class="public-transport-panel" id="public-transport-panel" aria-live="polite" aria-hidden="true">
+    <div class="public-transport-panel__grabber" data-public-transport-panel-grabber aria-hidden="true"></div>
+    <div class="public-transport-panel__body">
+        <header class="public-transport-panel__header">
+            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-back aria-label="Wstecz" hidden>
+                <i data-lucide="arrow-left" aria-hidden="true"></i>
+            </button>
+            <h2 data-public-transport-panel-title>Komunikacja miejska</h2>
+            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-map aria-label="Pokaż na mapie" title="Pokaż na mapie" hidden>
+                <i data-lucide="route" aria-hidden="true"></i>
+            </button>
+            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-vehicles aria-label="Pokaż pojazdy na mapie" title="Pokaż pojazdy na mapie" hidden>
+                <i data-lucide="navigation" aria-hidden="true"></i>
+            </button>
+            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-stop-map aria-label="Pokaż przystanek na mapie" title="Pokaż przystanek na mapie" hidden>
+                <i data-lucide="map-pin" aria-hidden="true"></i>
+            </button>
+            <button class="public-transport-panel__close" type="button" data-public-transport-panel-close aria-label="Zamknij panel"></button>
+        </header>
+        <div class="public-transport-panel__live-status" data-public-transport-panel-live-status hidden>
+            <i data-lucide="radio" aria-hidden="true"></i>
+            <span data-public-transport-panel-live-status-text></span>
+        </div>
+        <div class="public-transport-panel__content" data-public-transport-panel-content>
+            {% include 'panels/public_transport/lines.html' %}
+            {% include 'panels/public_transport/line.html' %}
+            {% include 'panels/public_transport/line_stop.html' %}
+            {% include 'panels/public_transport/stop_lines.html' %}
+        </div>
+    </div>
+</aside>

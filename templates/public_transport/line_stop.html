@@ -45,7 +45,17 @@
                 </section>
             {% endfor %}
         </div>
-        <aside class="public-transport-line-stop__variant-list">
+        <div class="public-transport-detail__sidebar-shell" data-public-transport-detail-sidebar>
+        <div class="public-transport-detail__sidebar-grabber" data-public-transport-detail-sidebar-grabber aria-hidden="true"></div>
+        <aside class="public-transport-detail__sidebar public-transport-line-stop__variant-list">
+            <label class="public-transport-header__field">
+                <span>Data</span>
+                <select data-public-transport-date></select>
+            </label>
+            <button class="public-transport-header__button" type="button" data-public-transport-map hidden>
+                <i data-lucide="map-pin" aria-hidden="true"></i>
+                <span>Pokaż na mapie</span>
+            </button>
             <h3>Warianty</h3>
             {% for timetable_date, day in timetable_days %}
                 {% if day.variants %}
@@ -63,6 +73,7 @@
                 <p class="public-transport-empty">Brak wariantów.</p>
             {% endfor %}
         </aside>
+        </div>
     </div>
 
     {% include 'public_transport/announcements.html' with context %}

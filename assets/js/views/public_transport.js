@@ -146,8 +146,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         pill.className = `public-transport-line-pill public-transport-line-pill--${metadata.type || 'bus'}`;
     };
 
-    const fillDateSelect = (header, metadata, screen) => {
-        const select = header.querySelector('[data-public-transport-date]');
+    const fillDateSelect = (scope, metadata, screen) => {
+        const select = scope.querySelector('[data-public-transport-date]');
         const field = select?.closest('label');
         const dates = Array.isArray(metadata.dates) ? metadata.dates : [];
 
@@ -218,7 +218,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             }
         }
 
-        const directionSelect = header.querySelector('[data-public-transport-direction-select]');
+        const controlScope = content.querySelector('.public-transport-detail') || header;
+        const control = (selector) => controlScope.querySelector(selector) || header.querySelector(selector);
+        const directionSelect = control('[data-public-transport-direction-select]');
         const directionField = directionSelect?.closest('label');
         const directions = Array.isArray(metadata.directions) ? metadata.directions : [];
         const routeVariants = metadata.route_variants
@@ -259,7 +261,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             }
         }
 
-        const mapButton = header.querySelector('[data-public-transport-map]');
+        const mapButton = control('[data-public-transport-map]');
         const latitude = Number(metadata.latitude);
         const longitude = Number(metadata.longitude);
         const hasCoordinates = (
@@ -284,7 +286,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             mapButton.dataset.longitude = hasCoordinates ? String(longitude) : '';
         }
 
-        const routeButton = header.querySelector('[data-public-transport-route]');
+        const routeButton = control('[data-public-transport-route]');
         const route = Array.isArray(metadata.route)
             ? metadata.route.filter((point) => (
                 Number.isFinite(Number(point.latitude))
@@ -300,7 +302,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 : 'Przebieg przejazdu';
         }
 
-        const vehiclesButton = header.querySelector(
+        const vehiclesButton = control(
             '[data-public-transport-vehicles]'
         );
 
@@ -312,7 +314,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             vehiclesButton.dataset.line = metadata.line || '';
         }
 
-        fillDateSelect(header, metadata, screen);
+        fillDateSelect(controlScope.querySelector('[data-public-transport-date]') ? controlScope : header, metadata, screen);
         header.querySelector('form')?.reset();
     };
 
@@ -368,10 +370,38 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const enhanceFragment = (screen) => {
         updateHeader(screen);
+        initializeDetailSidebar();
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
         if (screen === 'line-stop') {
             window.requestAnimationFrame(fitDepartureTiles);
         }
+    };
+
+    const initializeDetailSidebar = () => {
+        const shell = content.querySelector('[data-public-transport-detail-sidebar]');
+        const grabber = shell?.querySelector('[data-public-transport-detail-sidebar-grabber]');
+        if (!shell || !grabber) return;
+        const resize = { x: 0, width: 0 };
+        const move = (event) => {
+            const computed = getComputedStyle(shell);
+            const min = parseFloat(computed.minWidth) || 260;
+            const max = parseFloat(computed.maxWidth) || 620;
+            const width = Math.min(Math.max(resize.width + resize.x - event.clientX, min), max);
+            shell.style.setProperty('--public-transport-detail-sidebar-width', `${width}px`);
+        };
+        const stop = () => {
+            shell.classList.remove('public-transport-detail__sidebar-shell--resizing');
+            document.removeEventListener('pointermove', move);
+            document.removeEventListener('pointerup', stop);
+        };
+        grabber.addEventListener('pointerdown', (event) => {
+            event.preventDefault();
+            resize.x = event.clientX;
+            resize.width = shell.getBoundingClientRect().width;
+            shell.classList.add('public-transport-detail__sidebar-shell--resizing');
+            document.addEventListener('pointermove', move);
+            document.addEventListener('pointerup', stop);
+        });
     };
 
     const loadScreen = async (
@@ -560,10 +590,23 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         window.travelManagerNavigation?.showView('map');
         window.setTimeout(() => {
-            window.travelManagerMap?.showElement(
-                element,
-                name || 'Przystanek'
-            );
+            const opensStopView = state.current.screen === 'line-stop';
+            const lineHistory = [...state.history].reverse().find((item) => item?.screen === 'line');
+            window.travelManagerPublicTransportPanel?.open({
+                provider: state.provider,
+                screen: opensStopView ? 'line-stop' : 'lines',
+                url: opensStopView ? state.current.url : '',
+                showStop: opensStopView,
+                stopCoordinates: element.coordinates,
+                lineUrl: lineHistory?.url || ''
+            });
+            if (!opensStopView) {
+                window.travelManagerMap?.showPublicTransportStop(
+                    element.coordinates.latitude,
+                    element.coordinates.longitude,
+                    name || 'Przystanek'
+                );
+            }
         }, 0);
     };
 
@@ -577,10 +620,12 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             window.travelManagerNavigation?.showView('map');
             window.setTimeout(() => {
-                window.travelManagerMap?.showPublicTransportRoute(
-                    points,
-                    name || 'Przebieg przejazdu'
-                );
+                window.travelManagerPublicTransportPanel?.open({
+                    provider: state.provider,
+                    screen: state.current.screen === 'line' ? 'line' : 'lines',
+                    url: state.current.screen === 'line' ? state.current.url : '',
+                    showRoute: state.current.screen === 'line'
+                });
             }, 0);
         } catch (error) {
             // Invalid route metadata is ignored.
@@ -606,10 +651,12 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             window.travelManagerNavigation?.showView('map');
             window.setTimeout(() => {
-                window.travelManagerMap?.showPublicTransportVehicles(
-                    data.positions,
-                    `Pojazdy linii ${line}`
-                );
+                window.travelManagerPublicTransportPanel?.open({
+                    provider: state.provider,
+                    screen: state.current.screen === 'line' ? 'line' : 'lines',
+                    url: state.current.screen === 'line' ? state.current.url : '',
+                    vehicles: state.current.screen === 'line' ? data.positions : []
+                });
             }, 0);
         } catch (error) {
             window.alert(error.message);
@@ -638,6 +685,15 @@ document.addEventListener('travel-manager:views-ready', () => {
             content.querySelectorAll('[data-public-transport-direction]').forEach((section) => {
                 section.hidden = section.dataset.publicTransportDirection !== direction.value;
             });
+            const metadata = fragmentMetadata();
+            const route = Array.isArray(metadata.routes?.[Number(direction.value)])
+                ? metadata.routes[Number(direction.value)]
+                : metadata.route;
+            const routeButton = content.querySelector('[data-public-transport-route]');
+            if (routeButton && Array.isArray(route)) {
+                routeButton.dataset.route = JSON.stringify(route);
+                routeButton.hidden = !metadata.show_route_map || route.length < 2;
+            }
             return;
         }
 

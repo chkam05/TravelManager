@@ -5,8 +5,9 @@ document.addEventListener('travel-manager:views-ready', () => {
     const travelCostsGroup = document.querySelector('[data-settings-group="travel-costs"]');
     const routeFuelGroup = document.querySelector('[data-settings-group="route-fuel"]');
     const routeTollsGroup = document.querySelector('[data-settings-group="route-tolls"]');
+    const publicTransportGroup = document.querySelector('[data-settings-group="public-transport"]');
 
-    if (!mapGroup || !panelsGroup || !layersGroup || !travelCostsGroup || !routeFuelGroup || !routeTollsGroup) {
+    if (!mapGroup || !panelsGroup || !layersGroup || !travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup) {
         return;
     }
 
@@ -269,11 +270,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         const input = document.createElement('input');
         input.className = 'settings-view__input';
         input.type = 'number';
-        input.min = '0';
+        input.min = String(options.min ?? 0);
         if (options.max !== undefined) {
             input.max = String(options.max);
         }
-        input.step = '0.01';
+        input.step = String(options.step ?? 0.01);
         input.value = String(numberValue(value));
         input.dataset.settingsField = field;
 
@@ -364,21 +365,24 @@ document.addEventListener('travel-manager:views-ready', () => {
         const input = document.createElement('input');
         input.className = 'settings-view__slider';
         input.type = 'range';
-        input.min = '0';
-        input.max = '100';
-        input.step = '1';
-        input.value = String(Math.min(100, Math.max(0, Math.round(numberValue(value)))));
+        const minimum = Number(options.min ?? 0);
+        const maximum = Number(options.max ?? 100);
+        const unit = options.unit ?? '%';
+        input.min = String(minimum);
+        input.max = String(maximum);
+        input.step = String(options.step ?? 1);
+        input.value = String(Math.min(maximum, Math.max(minimum, Math.round(numberValue(value)))));
         input.dataset.settingsField = field;
         input.disabled = Boolean(options.disabled);
 
         const labelElement = document.createElement('span');
         labelElement.className = 'settings-view__slider-value';
-        labelElement.textContent = `${input.value}%`;
+        labelElement.textContent = `${input.value}${unit}`;
 
         input.addEventListener('input', () => {
-            const percent = numberValue(input.value);
-            const payload = { [field]: percent };
-            labelElement.textContent = `${Math.round(percent)}%`;
+            const sliderValue = numberValue(input.value);
+            const payload = { [field]: sliderValue };
+            labelElement.textContent = `${Math.round(sliderValue)}${unit}`;
             schedulePatch(payload);
             document.dispatchEvent(new CustomEvent('travel-manager:ui-settings-changed', {
                 detail: payload
@@ -492,6 +496,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         travelCostsGroup.replaceChildren();
         routeFuelGroup.replaceChildren();
         routeTollsGroup.replaceChildren();
+        publicTransportGroup.replaceChildren();
         routeFuelMainInput = null;
         routeFuelDependentRows = [];
 
@@ -527,6 +532,25 @@ document.addEventListener('travel-manager:views-ready', () => {
                 Array.isArray(settings.layer_favourite_visible_tag_ids)
                     ? settings.layer_favourite_visible_tag_ids.join(', ') || 'Brak'
                     : 'Wszystkie'
+            );
+
+            addBooleanSetting(
+                publicTransportGroup,
+                'Aktualizacja pojazdów w tle',
+                'public_transport_vehicle_background_updates',
+                settings.public_transport_vehicle_background_updates === true
+            );
+            addPercentSliderSetting(
+                publicTransportGroup,
+                'Częstotliwość aktualizacji',
+                'public_transport_vehicle_update_interval',
+                settings.public_transport_vehicle_update_interval || 15,
+                {
+                    min: 5,
+                    max: 120,
+                    step: 1,
+                    unit: ' s'
+                }
             );
 
             await addTravelCostCurrencySetting(travelCostsGroup, settings);

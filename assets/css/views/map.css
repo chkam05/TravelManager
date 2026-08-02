@@ -90,6 +90,17 @@
     transform: translate(-50%, -35%) rotate(45deg);
 }
 
+.map-toolbar__button--public-transport {
+    display: grid;
+    place-items: center;
+    color: #b34b20;
+}
+
+.map-toolbar__button--public-transport svg {
+    width: 21px;
+    height: 21px;
+}
+
 .map-toolbar__button:hover {
     border-color: rgba(31, 111, 174, 0.36);
     background: #eef7fc;

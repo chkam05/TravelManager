@@ -6,6 +6,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     const legendButton = document.querySelector('[data-map-tool="legend"]');
     const layersButton = document.querySelector('[data-map-tool="layers"]');
     const locationButton = document.querySelector('[data-map-tool="location"]');
+    const publicTransportButton = document.querySelector('[data-map-tool="public-transport"]');
     const placeDetailsPanel = window.travelManagerPlaceDetailsPanel;
     const routeDetailsPanel = window.travelManagerRouteDetailsPanel;
     let selectedMarker = null;
@@ -1080,6 +1081,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         window.travelManagerLayerDetailsPanel?.open();
     });
 
+    publicTransportButton?.addEventListener('click', () => {
+        placeDetailsPanel?.close(false);
+        window.travelManagerPublicTransportPanel?.open();
+    });
+
     locationButton?.addEventListener('click', showCurrentLocation);
     advancedSearchButton?.addEventListener('click', () => {
         window.travelManagerAdvancedSearch?.open(getSearchContext());
@@ -1206,6 +1212,40 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     let publicTransportRouteLayer = null;
     let publicTransportVehicleLayer = null;
+    let publicTransportStopLayer = null;
+
+    const clearPublicTransportLayers = () => {
+        [publicTransportRouteLayer, publicTransportVehicleLayer, publicTransportStopLayer]
+            .filter(Boolean)
+            .forEach((layer) => map.removeLayer(layer));
+        publicTransportRouteLayer = null;
+        publicTransportVehicleLayer = null;
+        publicTransportStopLayer = null;
+    };
+
+    const clearPublicTransportRoute = () => {
+        if (publicTransportRouteLayer) map.removeLayer(publicTransportRouteLayer);
+        publicTransportRouteLayer = null;
+    };
+
+    const clearPublicTransportStop = () => {
+        if (publicTransportStopLayer) map.removeLayer(publicTransportStopLayer);
+        publicTransportStopLayer = null;
+    };
+
+    const clearPublicTransportVehicles = () => {
+        if (publicTransportVehicleLayer) map.removeLayer(publicTransportVehicleLayer);
+        publicTransportVehicleLayer = null;
+    };
+
+    const showPublicTransportStop = (latitude, longitude, title = 'Przystanek') => {
+        const lat = Number(latitude);
+        const lon = Number(longitude);
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+        if (publicTransportStopLayer) map.removeLayer(publicTransportStopLayer);
+        publicTransportStopLayer = L.marker([lat, lon]).addTo(map).bindPopup(title);
+        map.setView([lat, lon], Math.max(map.getZoom(), 16));
+    };
 
     const showPublicTransportRoute = (points, title = 'Przebieg przejazdu') => {
         const coordinates = (Array.isArray(points) ? points : [])
@@ -1238,7 +1278,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const showPublicTransportVehicles = (
         positions,
-        title = 'Pojazdy komunikacji miejskiej'
+        title = 'Pojazdy komunikacji miejskiej',
+        fitToVehicles = true
     ) => {
         const vehicles = (Array.isArray(positions) ? positions : [])
             .filter((position) => (
@@ -1270,11 +1311,20 @@ document.addEventListener('travel-manager:views-ready', () => {
             heading.textContent = vehicle.line
                 ? `Linia ${vehicle.line}`
                 : 'Pojazd';
-            const identifier = document.createElement('div');
-            identifier.textContent = vehicle.vehicle_id
-                ? `Pojazd: ${vehicle.vehicle_id}`
-                : 'Brak numeru pojazdu';
-            popup.append(heading, identifier);
+            popup.append(heading);
+            const appendDetail = (label, value) => {
+                if (!value) return;
+                const detail = document.createElement('div');
+                detail.textContent = `${label}: ${value}`;
+                popup.append(detail);
+            };
+            appendDetail(
+                'Numer boczny',
+                vehicle.vehicle_label || (!vehicle.source_code ? vehicle.vehicle_id : '')
+            );
+            appendDetail('Numer rejestracyjny / oznaczenie', vehicle.license_plate);
+            appendDetail('Kod źródłowy', vehicle.source_code);
+            appendDetail('Id kursu GTFS', vehicle.trip_id);
 
             if (vehicle.recorded_at) {
                 const timestamp = document.createElement('small');
@@ -1290,7 +1340,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
 
         publicTransportVehicleLayer.bindPopup?.(title);
-        map.fitBounds(bounds, { padding: [42, 42], maxZoom: 15 });
+        if (fitToVehicles) map.fitBounds(bounds, { padding: [42, 42], maxZoom: 15 });
     };
 
     window.travelManagerMap = {
@@ -1302,7 +1352,12 @@ document.addEventListener('travel-manager:views-ready', () => {
         searchAdvanced,
         showElement,
         showFavourite,
+        clearPublicTransportLayers,
+        clearPublicTransportRoute,
+        clearPublicTransportStop,
+        clearPublicTransportVehicles,
         showPublicTransportRoute,
+        showPublicTransportStop,
         showPublicTransportVehicles
     };
 

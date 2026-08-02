@@ -415,6 +415,71 @@ button.public-transport-line-pill {
     margin-bottom: 10px;
 }
 
+.public-transport-detail__sidebar-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 18px;
+}
+
+.public-transport-detail__sidebar-shell {
+    --public-transport-detail-sidebar-width: 320px;
+    position: relative;
+    width: var(--public-transport-detail-sidebar-width);
+    min-width: 260px;
+    max-width: min(620px, 48vw);
+}
+
+.public-transport-detail__sidebar-grabber {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: -10px;
+    width: 36px;
+    height: 76px;
+    border-radius: 999px;
+    cursor: ew-resize;
+    touch-action: none;
+    transform: translateY(-50%);
+}
+
+.public-transport-detail__sidebar-grabber::before {
+    content: "";
+    position: absolute;
+    inset: 16px 15px;
+    border-radius: 999px;
+    background: rgba(32, 36, 42, 0.34);
+}
+
+.public-transport-detail__sidebar-shell--resizing {
+    user-select: none;
+}
+
+.public-transport-detail__sidebar {
+    box-sizing: border-box;
+    display: grid;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    overflow: auto;
+    border: 1px solid var(--public-transport-border);
+    border-radius: 12px;
+    background: #f8fafb;
+}
+
+.public-transport-detail__sidebar h3 {
+    margin: 0;
+}
+
+.public-transport-detail__sidebar .public-transport-header__field,
+.public-transport-detail__sidebar .public-transport-header__button {
+    width: 100%;
+}
+
+.public-transport-detail__sidebar .public-transport-header__field select {
+    width: 100%;
+}
+
 .public-transport-line-view__cities span {
     padding: 5px 9px;
     border-left: 5px solid var(--public-transport-city-color, #647782);
@@ -1138,7 +1203,7 @@ button.public-transport-line-pill {
 
 .public-transport-line-stop__layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(180px, 250px);
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
     gap: 16px;
 }
@@ -1232,6 +1297,21 @@ button.public-transport-line-pill {
     .public-transport-header__right {
         justify-content: flex-start;
         flex-wrap: wrap;
+    }
+
+    .public-transport-detail__sidebar-layout,
+    .public-transport-line-stop__layout {
+        grid-template-columns: 1fr;
+    }
+
+    .public-transport-detail__sidebar-shell {
+        width: auto;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .public-transport-detail__sidebar-grabber {
+        display: none;
     }
 
     .public-transport-header__field {

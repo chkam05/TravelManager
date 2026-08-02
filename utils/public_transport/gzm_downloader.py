@@ -246,14 +246,13 @@ class GzmDownloader:
                 cls._LEGACY_DATABASE_PATH,
                 cls._DATABASE_PATH
             )
+            if not refresh and GtfsDatabase.is_valid_cache(
+                cls._DATABASE_PATH
+            ):
+                return cls._DATABASE_PATH
             required_date = date.today() + timedelta(
                 days=GzmGtfsRepository.DATE_RANGE_DAYS - 1
             )
-            if (
-                not refresh
-                and GtfsDatabase.covers(cls._DATABASE_PATH, required_date)
-            ):
-                return cls._DATABASE_PATH
             metadata = PublicTransportDownloadProgress.retry(
                 lambda: MapDataDownloader.get_json(
                     cls.GTFS_DATASET_API,
@@ -316,6 +315,12 @@ class GzmDownloader:
             cls._ensure_database(refresh),
             cls.BASE_URL
         )
+
+    @classmethod
+    def has_local_data(cls) -> bool:
+        """Returns whether a reusable local GTFS database is available."""
+        GtfsDatabase.migrate_cache(cls._LEGACY_DATABASE_PATH, cls._DATABASE_PATH)
+        return GtfsDatabase.is_valid_cache(cls._DATABASE_PATH)
 
     @staticmethod
     def _document(html: str) -> _HtmlNode:
@@ -1364,9 +1369,24 @@ class GzmDownloader:
             if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
                 continue
             descriptor = vehicle.vehicle
+            raw_vehicle_id = str(
+                descriptor.id or descriptor.label or entity.id
+            )
+            identifier_match = re.fullmatch(
+                r'(?P<source>\d+)_(?P=source)(?P<fleet>\d+)(?:_trip_.+)?',
+                raw_vehicle_id
+            )
+            fleet_number = (
+                str(int(identifier_match.group('fleet')))
+                if identifier_match else ''
+            )
             result.append(PublicTransportVehiclePosition(
-                vehicle_id=str(
-                    descriptor.id or descriptor.label or entity.id
+                vehicle_id=raw_vehicle_id,
+                vehicle_label=str(descriptor.label or fleet_number),
+                license_plate=str(descriptor.license_plate or ''),
+                source_code=(
+                    identifier_match.group('source')
+                    if identifier_match else ''
                 ),
                 line=line_name,
                 trip_id=trip_id,

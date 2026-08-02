@@ -20,6 +20,9 @@ class PublicTransportVehiclePosition(BaseDataModel):
 
     # Field name declarations
     FIELD_VEHICLE_ID: ClassVar[str] = 'vehicle_id'
+    FIELD_VEHICLE_LABEL: ClassVar[str] = 'vehicle_label'
+    FIELD_LICENSE_PLATE: ClassVar[str] = 'license_plate'
+    FIELD_SOURCE_CODE: ClassVar[str] = 'source_code'
     FIELD_LINE: ClassVar[str] = 'line'
     FIELD_TRIP_ID: ClassVar[str] = 'trip_id'
     FIELD_TYPE: ClassVar[str] = 'type'
@@ -31,6 +34,9 @@ class PublicTransportVehiclePosition(BaseDataModel):
 
     # Fields
     vehicle_id: str
+    vehicle_label: str
+    license_plate: str
+    source_code: str
     line: str
     trip_id: str
     type: PublicTransportType
@@ -56,6 +62,9 @@ class PublicTransportVehiclePosition(BaseDataModel):
             transport_type = cls._DEFAULT_TYPE
         return cls(
             vehicle_id=str(d.get(cls.FIELD_VEHICLE_ID) or ''),
+            vehicle_label=str(d.get(cls.FIELD_VEHICLE_LABEL) or ''),
+            license_plate=str(d.get(cls.FIELD_LICENSE_PLATE) or ''),
+            source_code=str(d.get(cls.FIELD_SOURCE_CODE) or ''),
             line=str(d.get(cls.FIELD_LINE) or ''),
             trip_id=str(d.get(cls.FIELD_TRIP_ID) or ''),
             type=transport_type,
@@ -78,6 +87,9 @@ class PublicTransportVehiclePosition(BaseDataModel):
         """Serializes one GTFS-Realtime vehicle position."""
         return {
             self.FIELD_VEHICLE_ID: self.vehicle_id,
+            self.FIELD_VEHICLE_LABEL: self.vehicle_label,
+            self.FIELD_LICENSE_PLATE: self.license_plate,
+            self.FIELD_SOURCE_CODE: self.source_code,
             self.FIELD_LINE: self.line,
             self.FIELD_TRIP_ID: self.trip_id,
             self.FIELD_TYPE: str(self.type),

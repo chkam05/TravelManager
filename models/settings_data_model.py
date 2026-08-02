@@ -32,6 +32,7 @@ class SettingsDataModel(BaseDataModel):
     FIELD_SELECTED_EXCHANGE_RATE: ClassVar[str] = 'selected_exchange_rate'
     FIELD_ROUTES: ClassVar[str] = 'routes'
     FIELD_PUBLIC_TRANSPORT_CACHE: ClassVar[str] = 'public_transport_cache'
+    FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDER: ClassVar[str] = 'selected_public_transport_provider'
     FIELD_UI: ClassVar[str] = 'ui'
     FIELD_WINDOW: ClassVar[str] = 'window'
 
@@ -45,6 +46,7 @@ class SettingsDataModel(BaseDataModel):
     selected_exchange_rate: str
     routes: List[SavedRoute]
     public_transport_cache: Dict[str, PublicTransportCache]
+    selected_public_transport_provider: str
     ui: UiSettings | None
     window: WindowSettings | None
 
@@ -88,6 +90,9 @@ class SettingsDataModel(BaseDataModel):
                 exchange_rates = legacy_rates
         routes = d.get(cls.FIELD_ROUTES, [])
         public_transport_cache = d.get(cls.FIELD_PUBLIC_TRANSPORT_CACHE, {})
+        selected_public_transport_provider = str(
+            d.get(cls.FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDER) or ''
+        ).strip()
         ui = d.get(cls.FIELD_UI, {})
         window = d.get(cls.FIELD_WINDOW, {})
         tags = FavouriteTag.from_dict_list(favourite_tags if isinstance(favourite_tags, list) else [])
@@ -127,6 +132,7 @@ class SettingsDataModel(BaseDataModel):
                 for carrier, value in public_transport_cache.items()
                 if isinstance(value, dict)
             } if isinstance(public_transport_cache, dict) else {},
+            selected_public_transport_provider=selected_public_transport_provider,
             ui=UiSettings.from_dict(ui),
             window=WindowSettings.from_dict(window)
         )
@@ -146,6 +152,7 @@ class SettingsDataModel(BaseDataModel):
                 carrier: cache.to_dict()
                 for carrier, cache in self.public_transport_cache.items()
             },
+            self.FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDER: self.selected_public_transport_provider,
             self.FIELD_UI: self.ui.to_dict() if self.ui else UiSettings.from_dict({}).to_dict(),
             self.FIELD_WINDOW: self.window.to_dict() if self.window else WindowSettings.from_dict({}).to_dict()
         }

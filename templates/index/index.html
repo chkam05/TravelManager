@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/route_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/car_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/search_results.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/public_transport.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/yesno_dialog.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/favourites_editor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/favourites_tag_editor.css') }}">
@@ -30,6 +31,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/fuel_cost_editor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/fuel_update.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/public_transport_announcement.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/download_status.css') }}">
 </head>
 <body>
     <div class="app-shell" data-current-view="map">
@@ -106,6 +108,7 @@
         <div id="route-details-panel-container" data-panel-url="{{ url_for('ViewController.route_details_panel') }}"></div>
         <div id="car-details-panel-container" data-panel-url="{{ url_for('ViewController.car_details_panel') }}"></div>
         <div id="search-results-panel-container" data-panel-url="{{ url_for('ViewController.search_results_panel') }}"></div>
+        <div id="public-transport-panel-container" data-panel-url="{{ url_for('ViewController.public_transport_panel') }}"></div>
         <div class="dialog-layer" id="dialog-layer" data-dialog-url="{{ url_for('ViewController.dialogs') }}" aria-hidden="true"></div>
 
         <main class="content" id="content">
@@ -133,6 +136,7 @@
     <script src="{{ url_for('static', filename='js/dialogs/fuel_cost_editor.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/fuel_update.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/public_transport_announcement.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dialogs/download_status.js') }}"></script>
     <script src="{{ url_for('static', filename='js/favourites.js') }}"></script>
     <script src="{{ url_for('static', filename='js/car_profiles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/routes.js') }}"></script>
@@ -142,6 +146,7 @@
     <script src="{{ url_for('static', filename='js/panels/car_details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/search_results.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/place_details.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/panels/public_transport.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/favourites.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/favourites_tags.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/car_profiles.js') }}"></script>

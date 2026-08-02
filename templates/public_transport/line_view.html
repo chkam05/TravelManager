@@ -6,11 +6,13 @@
         'route_variants': line.route_variants,
         'direction_label': capabilities.direction_selector_label,
         'route': route_points,
+        'routes': routes_by_direction,
         'show_route_map': capabilities.show_route_map,
         'show_vehicle_positions': capabilities.show_vehicle_positions,
         'dates': date_options
     }|tojson }}</script>
 
+    <div class="public-transport-detail__sidebar-layout">
     <div class="public-transport-line-view__directions">
         {% for direction in line.directions %}
             <section class="public-transport-line-view__direction" data-public-transport-direction="{{ loop.index0 }}"{% if not loop.first %} hidden{% endif %}>
@@ -37,6 +39,30 @@
                 </aside>
             </section>
         {% endfor %}
+    </div>
+
+    <div class="public-transport-detail__sidebar-shell" data-public-transport-detail-sidebar>
+    <div class="public-transport-detail__sidebar-grabber" data-public-transport-detail-sidebar-grabber aria-hidden="true"></div>
+    <aside class="public-transport-detail__sidebar" aria-label="Opcje linii">
+        <h3>Opcje linii</h3>
+        <label class="public-transport-header__field">
+            <span>Kierunek</span>
+            <select data-public-transport-direction-select></select>
+        </label>
+        <label class="public-transport-header__field">
+            <span>Data</span>
+            <select data-public-transport-date></select>
+        </label>
+        <button class="public-transport-header__button" type="button" data-public-transport-route hidden>
+            <i data-lucide="map" aria-hidden="true"></i>
+            <span>Pokaż trasę</span>
+        </button>
+        <button class="public-transport-header__button" type="button" data-public-transport-vehicles hidden>
+            <i data-lucide="navigation" aria-hidden="true"></i>
+            <span>Pojazdy na żywo</span>
+        </button>
+    </aside>
+    </div>
     </div>
 
     {% include 'public_transport/announcements.html' with context %}

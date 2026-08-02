@@ -13,6 +13,7 @@ from models.settings.favourite_place import FavouritePlace
 from models.settings.favourite_tag import FavouriteTag
 from models.settings.saved_route import SavedRoute
 from resources.settings_transfer import SettingsTransferTypes
+from resources.public_transport.public_transport_providers import PublicTransportProviders
 from storage.settings_storage import SettingsStorage
 
 
@@ -28,6 +29,8 @@ class SettingsController(BaseController):
     def register_routes(self):
         self.add_url_rule('/api/settings/ui', view_func=self.get_ui_settings, methods=['GET'])
         self.add_url_rule('/api/settings/ui', view_func=self.update_ui_settings, methods=['PATCH'])
+        self.add_url_rule('/api/settings/public-transport', view_func=self.get_public_transport_settings, methods=['GET'])
+        self.add_url_rule('/api/settings/public-transport', view_func=self.update_public_transport_settings, methods=['PATCH'])
         self.add_url_rule('/api/settings/export/<data_type>', view_func=self.export_data, methods=['GET'])
         self.add_url_rule('/api/settings/import/<data_type>', view_func=self.import_data, methods=['POST'])
         self.add_url_rule('/api/favourites', view_func=self.get_favourites, methods=['GET'])
@@ -71,6 +74,22 @@ class SettingsController(BaseController):
             'status': 'ok',
             'ui': settings.ui.to_dict()
         })
+
+    def get_public_transport_settings(self):
+        settings = self._settings_storage.load()
+        return jsonify({
+            'status': 'ok',
+            'provider': settings.selected_public_transport_provider
+        })
+
+    def update_public_transport_settings(self):
+        provider = str((request.get_json(silent=True) or {}).get('provider') or '')
+        if provider not in PublicTransportProviders.VALUES:
+            return jsonify({'status': 'error', 'message': 'Unsupported provider.'}), 400
+        settings = self._settings_storage.load()
+        settings.selected_public_transport_provider = provider
+        self._settings_storage.save(settings)
+        return jsonify({'status': 'ok', 'provider': provider})
 
     def export_data(self, data_type: str):
         if not SettingsTransferTypes.is_supported(data_type):

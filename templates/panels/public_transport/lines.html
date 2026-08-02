@@ -1,0 +1,26 @@
+<section class="public-transport-panel__view" data-public-transport-panel-view="lines">
+    <div class="public-transport-panel__provider">
+        <label>
+            <span>Przewoźnik</span>
+            <select data-public-transport-panel-provider>
+                {% for provider in providers %}
+                    <option value="{{ provider.id }}">{{ provider.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Szukaj linii</span>
+            <span class="public-transport-panel__search">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <input type="search" data-public-transport-panel-search placeholder="Wpisz numer linii" autocomplete="off">
+            </span>
+        </label>
+    </div>
+    <div class="public-transport-panel__empty" data-public-transport-panel-empty hidden>
+        <i data-lucide="database" aria-hidden="true"></i>
+        <strong>Brak pobranych danych</strong>
+        <span>Pobierz dane przewoźnika, aby wyświetlić linie i rozkłady.</span>
+        <button type="button" data-public-transport-panel-update>Aktualizuj</button>
+    </div>
+    <div data-public-transport-panel-lines></div>
+</section>

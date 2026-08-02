@@ -48,6 +48,11 @@ class PublicTransportController(BaseController):
             methods=['GET']
         )
         self.add_url_rule(
+            '/api/public-transport/<provider_id>/availability',
+            view_func=self.availability,
+            methods=['GET']
+        )
+        self.add_url_rule(
             '/api/public-transport/<provider_id>/stops-progress',
             view_func=self.stops_progress,
             methods=['GET']
@@ -118,6 +123,19 @@ class PublicTransportController(BaseController):
             }))
         return jsonify(progress)
 
+    def availability(self, provider_id: str):
+        """Returns whether the provider already has persistent local data."""
+        try:
+            downloader = PublicTransportProviders.downloader(provider_id)
+            if PublicTransportProviders.uses_settings_cache(provider_id):
+                cache = self._settings_storage.load_public_transport_cache(provider_id)
+                available = bool(cache and cache.lines)
+            else:
+                available = bool(getattr(downloader, 'has_local_data', lambda: False)())
+            return jsonify({'available': available})
+        except ValueError as error:
+            return jsonify({'error': str(error)}), 400
+
     def stops_progress(self, provider_id: str):
         """Keeps compatibility with the original stop progress endpoint."""
         return self.download_progress(provider_id)
@@ -129,6 +147,7 @@ class PublicTransportController(BaseController):
                 'public_transport/line_view.html',
                 line=model,
                 route_points=self._line_route_points(model),
+                routes_by_direction=self._line_routes_by_direction(model),
                 date_options=self._date_options(model.dates),
                 capabilities=PublicTransportProviders.capabilities(provider_id)
             )
@@ -561,6 +580,17 @@ class PublicTransportController(BaseController):
             }
             for point in line.directions[0].route
         ]
+
+    @staticmethod
+    def _line_routes_by_direction(line) -> list[list[dict[str, float]]]:
+        """Returns map geometry separately for every displayed direction."""
+        return [[
+            {
+                'latitude': point.latitude,
+                'longitude': point.longitude
+            }
+            for point in direction.route
+        ] for direction in line.directions]
 
     @staticmethod
     def _variant_codes(timetables) -> dict[str, str]:

@@ -70,6 +70,24 @@
 
     <div class="settings-view__group">
         <header class="settings-view__group-header">
+            <h3>Komunikacja miejska</h3>
+            <p>Opcje danych czasu rzeczywistego wyświetlanych na mapie.</p>
+        </header>
+        <section class="settings-view__section" aria-labelledby="settings-view-public-transport-title" data-settings-section>
+            <div class="settings-view__titlebar">
+                <i class="settings-view__section-icon" data-lucide="bus-front" aria-hidden="true"></i>
+                <div class="settings-view__title-text"><h4 id="settings-view-public-transport-title">Pojazdy na mapie</h4></div>
+                <button class="settings-view__collapse-button" type="button" aria-label="Zwiń grupę" aria-expanded="true" data-settings-collapse><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+                <div class="settings-view__description"><p>Automatyczne pobieranie nowych pozycji w wybranym odstępie, wyłącznie gdy warstwa pojazdów jest widoczna.</p></div>
+            </div>
+            <div class="settings-view__section-content" data-settings-section-content>
+                <dl class="settings-view__values" data-settings-group="public-transport"></dl>
+            </div>
+        </section>
+    </div>
+
+    <div class="settings-view__group">
+        <header class="settings-view__group-header">
             <h3>Eksport i Import danych</h3>
             <p>Kopie wybranych danych aplikacji zapisywane i odtwarzane z plików JSON.</p>
         </header>

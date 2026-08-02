@@ -19,6 +19,9 @@ class UiSettings(BaseDataModel):
     _DEFAULT_ROUTE_DETAILS_PANEL_WIDTH: ClassVar[int] = 360
     _DEFAULT_CAR_DETAILS_PANEL_WIDTH: ClassVar[int] = 360
     _DEFAULT_SEARCH_RESULTS_PANEL_WIDTH: ClassVar[int] = 360
+    _DEFAULT_PUBLIC_TRANSPORT_PANEL_WIDTH: ClassVar[int] = 380
+    _DEFAULT_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES: ClassVar[bool] = False
+    _DEFAULT_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL: ClassVar[int] = 15
     _DEFAULT_LAYER_MAP_NOTES_ENABLED: ClassVar[bool] = False
     _DEFAULT_LAYER_MAP_DATA_ENABLED: ClassVar[bool] = False
     _DEFAULT_LAYER_PUBLIC_GPS_TRACES_ENABLED: ClassVar[bool] = False
@@ -53,6 +56,9 @@ class UiSettings(BaseDataModel):
     FIELD_ROUTE_DETAILS_PANEL_WIDTH: ClassVar[str] = 'route_details_panel_width'
     FIELD_CAR_DETAILS_PANEL_WIDTH: ClassVar[str] = 'car_details_panel_width'
     FIELD_SEARCH_RESULTS_PANEL_WIDTH: ClassVar[str] = 'search_results_panel_width'
+    FIELD_PUBLIC_TRANSPORT_PANEL_WIDTH: ClassVar[str] = 'public_transport_panel_width'
+    FIELD_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES: ClassVar[str] = 'public_transport_vehicle_background_updates'
+    FIELD_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL: ClassVar[str] = 'public_transport_vehicle_update_interval'
     FIELD_TRAVEL_FUEL_PRICE: ClassVar[str] = 'travel_fuel_price'
     FIELD_TRAVEL_FUEL_PRICES: ClassVar[str] = 'travel_fuel_prices'
     FIELD_TRAVEL_FUEL_TYPE: ClassVar[str] = 'travel_fuel_type'
@@ -76,6 +82,9 @@ class UiSettings(BaseDataModel):
     route_details_panel_width: int
     car_details_panel_width: int
     search_results_panel_width: int
+    public_transport_panel_width: int
+    public_transport_vehicle_background_updates: bool
+    public_transport_vehicle_update_interval: int
     layer_favourites_enabled: bool
     layer_favourite_visible_tag_ids: List[str] | None
     layer_map_data_enabled: bool
@@ -200,6 +209,24 @@ class UiSettings(BaseDataModel):
                 d.get(cls.FIELD_SEARCH_RESULTS_PANEL_WIDTH, cls._DEFAULT_SEARCH_RESULTS_PANEL_WIDTH),
                 cls._DEFAULT_SEARCH_RESULTS_PANEL_WIDTH
             ),
+            public_transport_panel_width=cls._to_int(
+                d.get(cls.FIELD_PUBLIC_TRANSPORT_PANEL_WIDTH, cls._DEFAULT_PUBLIC_TRANSPORT_PANEL_WIDTH),
+                cls._DEFAULT_PUBLIC_TRANSPORT_PANEL_WIDTH
+            ),
+            public_transport_vehicle_background_updates=cls._to_bool(
+                d.get(
+                    cls.FIELD_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES,
+                    cls._DEFAULT_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES
+                ),
+                cls._DEFAULT_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES
+            ),
+            public_transport_vehicle_update_interval=min(120, max(5, cls._to_int(
+                d.get(
+                    cls.FIELD_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL,
+                    cls._DEFAULT_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL
+                ),
+                cls._DEFAULT_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL
+            ))),
             layer_map_data_enabled=cls._to_bool(
                 d.get(cls.FIELD_LAYER_MAP_DATA_ENABLED, cls._DEFAULT_LAYER_MAP_DATA_ENABLED),
                 cls._DEFAULT_LAYER_MAP_DATA_ENABLED
@@ -294,6 +321,9 @@ class UiSettings(BaseDataModel):
             self.FIELD_ROUTE_DETAILS_PANEL_WIDTH: self.route_details_panel_width,
             self.FIELD_CAR_DETAILS_PANEL_WIDTH: self.car_details_panel_width,
             self.FIELD_SEARCH_RESULTS_PANEL_WIDTH: self.search_results_panel_width,
+            self.FIELD_PUBLIC_TRANSPORT_PANEL_WIDTH: self.public_transport_panel_width,
+            self.FIELD_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES: self.public_transport_vehicle_background_updates,
+            self.FIELD_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL: self.public_transport_vehicle_update_interval,
             self.FIELD_LAYER_MAP_DATA_ENABLED: self.layer_map_data_enabled,
             self.FIELD_LAYER_MAP_NOTES_ENABLED: self.layer_map_notes_enabled,
             self.FIELD_LAYER_PUBLIC_GPS_TRACES_ENABLED: self.layer_public_gps_traces_enabled,
