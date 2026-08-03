@@ -7,3 +7,5 @@ class PublicTransportType(EnumStr):
     BUS = 'bus'
     TRAM = 'tram'
     TROLLEY = 'trolley'
+    METRO = 'metro'
+    TRAIN = 'train'

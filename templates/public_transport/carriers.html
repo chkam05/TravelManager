@@ -17,4 +17,17 @@
             </button>
         {% endfor %}
     </div>
+    <section class="public-transport-carriers__sources" aria-labelledby="public-transport-sources-title">
+        <h3 id="public-transport-sources-title">Źródła danych</h3>
+        <div class="public-transport-carriers__sources-list">
+            {% for provider in providers if provider.attributions %}
+                <p class="public-transport-carriers__attribution">
+                    <strong>{{ provider.name }}:</strong>
+                    {% for attribution in provider.attributions %}
+                        <a href="{{ attribution.url }}" data-external-url>{{ attribution.name }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% endfor %}
+        </div>
+    </section>
 </div>

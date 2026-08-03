@@ -57,6 +57,10 @@
                                                 <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}" title="Pokaż linię {{ line.line }}">
                                                     {% if line.type.value == 'tram' %}
                                                         <i data-lucide="tram-front" aria-hidden="true"></i>
+                                                    {% elif line.type.value == 'metro' %}
+                                                        <i data-lucide="train-front" aria-hidden="true"></i>
+                                                    {% elif line.type.value == 'train' %}
+                                                        <i data-lucide="train-front" aria-hidden="true"></i>
                                                     {% else %}
                                                         <i data-lucide="bus" aria-hidden="true"></i>
                                                     {% endif %}

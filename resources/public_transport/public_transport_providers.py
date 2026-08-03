@@ -5,6 +5,11 @@ from urllib.parse import urlparse
 from utils.public_transport.czestochowa_downloader import CzestochowaDownloader
 from utils.public_transport.gzm_downloader import GzmDownloader
 from utils.public_transport.krakow_downloader import KrakowDownloader
+from utils.public_transport.warsaw_downloader import WarsawDownloader
+from utils.public_transport.tricity_downloader import (
+    GdanskDownloader,
+    GdyniaDownloader
+)
 
 
 class PublicTransportProviders:
@@ -13,6 +18,9 @@ class PublicTransportProviders:
     GZM: ClassVar[str] = 'gzm'
     CZESTOCHOWA: ClassVar[str] = 'czestochowa'
     KRAKOW: ClassVar[str] = 'krakow'
+    WARSAW: ClassVar[str] = 'warsaw'
+    GDANSK: ClassVar[str] = 'gdansk'
+    GDYNIA: ClassVar[str] = 'gdynia'
 
     FIELD_NAME: ClassVar[str] = 'name'
     FIELD_DESCRIPTION: ClassVar[str] = 'description'
@@ -20,6 +28,7 @@ class PublicTransportProviders:
     FIELD_DOWNLOADER: ClassVar[str] = 'downloader'
     FIELD_CAPABILITIES: ClassVar[str] = 'capabilities'
     FIELD_SETTINGS_CACHE: ClassVar[str] = 'settings_cache'
+    FIELD_ATTRIBUTIONS: ClassVar[str] = 'attributions'
 
     CAPABILITY_SHOW_PLATFORMS: ClassVar[str] = 'show_platforms'
     CAPABILITY_SHOW_STOP_MAP: ClassVar[str] = 'show_stop_map'
@@ -80,6 +89,28 @@ class PublicTransportProviders:
         CAPABILITY_CACHE_ANNOUNCEMENTS: True,
         CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Wariant trasy'
     }
+    WARSAW_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        CAPABILITY_SHOW_PLATFORMS: True,
+        CAPABILITY_SHOW_STOP_MAP: True,
+        CAPABILITY_SHOW_RIDE_MAP: True,
+        CAPABILITY_SHOW_RIDE_DISTANCES: False,
+        CAPABILITY_SHOW_VEHICLE_DETAILS: False,
+        CAPABILITY_SHOW_HIGH_FLOOR: False,
+        CAPABILITY_SHOW_STOP_DEPARTURES: True,
+        CAPABILITY_SHOW_RIDE: True,
+        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True,
+        CAPABILITY_CACHE_ANNOUNCEMENTS: False,
+        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Wariant trasy'
+    }
+    GDANSK_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    GDYNIA_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
 
     VALUES: ClassVar[Dict[str, Dict[str, object]]] = {
         GZM: {
@@ -88,7 +119,15 @@ class PublicTransportProviders:
             FIELD_ICON: 'bus-front',
             FIELD_DOWNLOADER: GzmDownloader,
             FIELD_CAPABILITIES: GZM_CAPABILITIES,
-            FIELD_SETTINGS_CACHE: False
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Zarząd Transportu Metropolitalnego / Otwarte Dane GZM',
+                'url': (
+                    'https://otwartedane.metropoliagzm.pl/dataset/'
+                    'rozklady-jazdy-i-lokalizacja-przystankow-gtfs-'
+                    'wersja-rozszerzona'
+                )
+            }]
         },
         CZESTOCHOWA: {
             FIELD_NAME: 'Częstochowa',
@@ -96,7 +135,11 @@ class PublicTransportProviders:
             FIELD_ICON: 'tram-front',
             FIELD_DOWNLOADER: CzestochowaDownloader,
             FIELD_CAPABILITIES: CZESTOCHOWA_CAPABILITIES,
-            FIELD_SETTINGS_CACHE: True
+            FIELD_SETTINGS_CACHE: True,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Miasto Częstochowa / MPK w Częstochowie',
+                'url': 'https://www.czestochowa.pl/rozklady-jazdy'
+            }]
         },
         KRAKOW: {
             FIELD_NAME: 'Kraków',
@@ -104,7 +147,60 @@ class PublicTransportProviders:
             FIELD_ICON: 'tram-front',
             FIELD_DOWNLOADER: KrakowDownloader,
             FIELD_CAPABILITIES: KRAKOW_CAPABILITIES,
-            FIELD_SETTINGS_CACHE: False
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Zarząd Transportu Publicznego w Krakowie',
+                'url': 'https://gtfs.ztp.krakow.pl/'
+            }]
+        },
+        WARSAW: {
+            FIELD_NAME: 'Warszawa',
+            FIELD_DESCRIPTION: 'Warszawski Transport Publiczny (GTFS)',
+            FIELD_ICON: 'train-front',
+            FIELD_DOWNLOADER: WarsawDownloader,
+            FIELD_CAPABILITIES: WARSAW_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [
+                {
+                    'name': 'Zarząd Transportu Miejskiego w Warszawie',
+                    'url': 'https://ztm.waw.pl/'
+                },
+                {
+                    'name': 'GTFS: Mikołaj Kuranowski',
+                    'url': 'https://mkuran.pl/gtfs/'
+                },
+                {
+                    'name': 'Geometrie autobusów: © OpenStreetMap',
+                    'url': 'https://www.openstreetmap.org/copyright'
+                }
+            ]
+        },
+        GDANSK: {
+            FIELD_NAME: 'Gdańsk',
+            FIELD_DESCRIPTION: 'ZTM Gdańsk (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: GdanskDownloader,
+            FIELD_CAPABILITIES: GDANSK_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Zarząd Transportu Miejskiego w Gdańsku',
+                'url': 'https://ckan.multimediagdansk.pl/tl/dataset/tristar'
+            }]
+        },
+        GDYNIA: {
+            FIELD_NAME: 'Gdynia',
+            FIELD_DESCRIPTION: 'ZKM Gdynia (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: GdyniaDownloader,
+            FIELD_CAPABILITIES: GDYNIA_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'ZKM Gdynia / Otwarte Dane Gdynia',
+                'url': (
+                    'https://otwartedane.gdynia.pl/dataset/'
+                    'informacje-o-rozkladach-jazdy-i-lokalizacji-przystankow'
+                )
+            }]
         }
     }
 
@@ -147,14 +243,15 @@ class PublicTransportProviders:
         ]
 
     @classmethod
-    def options(cls) -> list[dict[str, str]]:
+    def options(cls) -> list[dict[str, Any]]:
         """Returns provider identifiers and labels for selection controls."""
         return [
             {
                 'id': provider_id,
                 'name': str(provider[cls.FIELD_NAME]),
                 'description': str(provider[cls.FIELD_DESCRIPTION]),
-                'icon': str(provider[cls.FIELD_ICON])
+                'icon': str(provider[cls.FIELD_ICON]),
+                'attributions': list(provider.get(cls.FIELD_ATTRIBUTIONS, []))
             }
             for provider_id, provider in cls.VALUES.items()
         ]

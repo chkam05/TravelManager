@@ -317,6 +317,11 @@ class KrakowDownloader:
         return ''
 
     @staticmethod
+    def _stop_name(row) -> str:
+        """Returns the passenger-facing stop name from a GTFS row."""
+        return str(row['name']).strip()
+
+    @staticmethod
     def _service_ids(connection, feed_id: str, service_date: date) -> list[str]:
         """Returns sorted service identifiers active on a date."""
         return sorted(
@@ -562,7 +567,7 @@ class KrakowDownloader:
                 type=transport_type,
                 city=cls._city(),
                 is_variant=False,
-                name=str(row['name']),
+                name=cls._stop_name(row),
                 platform=cls._platform_name(row),
                 url=cls._url(
                     'line-stop',
@@ -698,7 +703,7 @@ class KrakowDownloader:
                 feed_id
             ),
             announcements=[],
-            stop_name=str(stop['name']),
+            stop_name=cls._stop_name(stop),
             direction_name=direction_name,
             platform=cls._platform_name(stop),
             timetable={service_date: day},
@@ -863,7 +868,7 @@ class KrakowDownloader:
             dict[str, Any]
         ] = {}
         for row in stop_rows:
-            name = str(row['name']).strip()
+            name = cls._stop_name(row)
             platform_name = cls._platform_name(row)
             key = (name.casefold(), platform_name.casefold())
             item = grouped.setdefault(key, {
@@ -944,7 +949,7 @@ class KrakowDownloader:
                 ).fetchone()
                 if stop is None:
                     continue
-                stop_name = stop_name or str(stop['name'])
+                stop_name = stop_name or cls._stop_name(stop)
                 platform = platform or cls._platform_name(stop)
                 if latitude is None and stop['latitude'] is not None:
                     latitude = float(stop['latitude'])
@@ -1440,7 +1445,7 @@ class KrakowDownloader:
                 str(row['departure_time'])
             )
             ride_stops.append(PublicTransportRideStop(
-                stop=str(row['name']),
+                stop=cls._stop_name(row),
                 departure_time=cls._clock(str(row['departure_time'])),
                 travel_time=max(
                     0,

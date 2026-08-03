@@ -17,7 +17,7 @@
             <article data-public-transport-filter-item data-search="{{ line.line }} {{ timetable.direction_name }}">
                 <header>
                     <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}">
-                        {% if line.type.value == 'tram' %}<i data-lucide="tram-front" aria-hidden="true"></i>{% else %}<i data-lucide="bus" aria-hidden="true"></i>{% endif %}
+                        {% if line.type.value == 'tram' %}<i data-lucide="tram-front" aria-hidden="true"></i>{% elif line.type.value in ['metro', 'train'] %}<i data-lucide="train-front" aria-hidden="true"></i>{% else %}<i data-lucide="bus" aria-hidden="true"></i>{% endif %}
                         <strong>{{ line.line }}</strong>
                     </button>
                     <div>

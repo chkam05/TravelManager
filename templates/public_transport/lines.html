@@ -7,6 +7,10 @@
                         <i data-lucide="tram-front" aria-hidden="true"></i>
                     {% elif group.type.value == 'trolley' %}
                         <i data-lucide="bus-front" aria-hidden="true"></i>
+                    {% elif group.type.value == 'metro' %}
+                        <i data-lucide="train-front" aria-hidden="true"></i>
+                    {% elif group.type.value == 'train' %}
+                        <i data-lucide="train-front" aria-hidden="true"></i>
                     {% else %}
                         <i data-lucide="bus" aria-hidden="true"></i>
                     {% endif %}

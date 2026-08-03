@@ -637,6 +637,8 @@ class PublicTransportController(BaseController):
             }
             for transport_type in (
                 PublicTransportType.TRAM,
+                PublicTransportType.METRO,
+                PublicTransportType.TRAIN,
                 PublicTransportType.TROLLEY,
                 PublicTransportType.BUS
             )

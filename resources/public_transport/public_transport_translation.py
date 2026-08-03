@@ -9,7 +9,9 @@ class PublicTransportTranslation:
     VALUES: ClassVar[Dict[PublicTransportType, str]] = {
         PublicTransportType.BUS: 'Autobus',
         PublicTransportType.TRAM: 'Tramwaj',
-        PublicTransportType.TROLLEY: 'Trolejbus'
+        PublicTransportType.TROLLEY: 'Trolejbus',
+        PublicTransportType.METRO: 'Metro',
+        PublicTransportType.TRAIN: 'Pociąg'
     }
 
     def __new__(cls):

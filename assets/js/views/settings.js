@@ -1,13 +1,10 @@
 document.addEventListener('travel-manager:views-ready', () => {
-    const mapGroup = document.querySelector('[data-settings-group="map"]');
-    const panelsGroup = document.querySelector('[data-settings-group="panels"]');
-    const layersGroup = document.querySelector('[data-settings-group="layers"]');
     const travelCostsGroup = document.querySelector('[data-settings-group="travel-costs"]');
     const routeFuelGroup = document.querySelector('[data-settings-group="route-fuel"]');
     const routeTollsGroup = document.querySelector('[data-settings-group="route-tolls"]');
     const publicTransportGroup = document.querySelector('[data-settings-group="public-transport"]');
 
-    if (!mapGroup || !panelsGroup || !layersGroup || !travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup) {
+    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup) {
         return;
     }
 
@@ -49,8 +46,6 @@ document.addEventListener('travel-manager:views-ready', () => {
         row.append(term, description);
         group.append(row);
     };
-
-    const yesNo = (value) => value ? 'Włączona' : 'Wyłączona';
 
     const numberValue = (value) => {
         const number = Number(value);
@@ -490,9 +485,6 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     const loadSettings = async () => {
-        mapGroup.replaceChildren();
-        panelsGroup.replaceChildren();
-        layersGroup.replaceChildren();
         travelCostsGroup.replaceChildren();
         routeFuelGroup.replaceChildren();
         routeTollsGroup.replaceChildren();
@@ -510,29 +502,6 @@ document.addEventListener('travel-manager:views-ready', () => {
             }
 
             const settings = (await response.json()).ui || {};
-
-            addValue(mapGroup, 'Szerokość geograficzna', settings.map_latitude);
-            addValue(mapGroup, 'Długość geograficzna', settings.map_longitude);
-            addValue(mapGroup, 'Powiększenie', settings.map_zoom);
-            addValue(mapGroup, 'Warstwa bazowa', settings.map_base_layer);
-
-            addValue(panelsGroup, 'Szczegóły miejsca', `${settings.place_details_panel_width} px`);
-            addValue(panelsGroup, 'Szczegóły trasy', `${settings.route_details_panel_width} px`);
-            addValue(panelsGroup, 'Szczegóły samochodu', `${settings.car_details_panel_width} px`);
-            addValue(panelsGroup, 'Legenda', `${settings.legend_details_panel_width} px`);
-            addValue(panelsGroup, 'Warstwy', `${settings.layer_details_panel_width} px`);
-
-            addValue(layersGroup, 'Notatki mapy', yesNo(settings.layer_map_notes_enabled));
-            addValue(layersGroup, 'Dane mapy', yesNo(settings.layer_map_data_enabled));
-            addValue(layersGroup, 'Publiczne ślady GPS', yesNo(settings.layer_public_gps_traces_enabled));
-            addValue(layersGroup, 'Ulubione miejsca', yesNo(settings.layer_favourites_enabled));
-            addValue(
-                layersGroup,
-                'Widoczne tagi ulubionych',
-                Array.isArray(settings.layer_favourite_visible_tag_ids)
-                    ? settings.layer_favourite_visible_tag_ids.join(', ') || 'Brak'
-                    : 'Wszystkie'
-            );
 
             addBooleanSetting(
                 publicTransportGroup,
@@ -607,9 +576,41 @@ document.addEventListener('travel-manager:views-ready', () => {
                 settings.route_toll_roads_enabled !== false
             );
         } catch (error) {
-            addValue(mapGroup, 'Stan', 'Nie udało się wczytać ustawień.');
+            addValue(travelCostsGroup, 'Stan', 'Nie udało się wczytać ustawień.');
         }
     };
+
+    const tabs = Array.from(document.querySelectorAll('[data-settings-tab]'));
+    const tabPanels = Array.from(document.querySelectorAll('[data-settings-tab-panel]'));
+    const activateTab = (tabName, { focus = false } = {}) => {
+        tabs.forEach((tab) => {
+            const active = tab.dataset.settingsTab === tabName;
+            tab.classList.toggle('settings-view__tab--active', active);
+            tab.setAttribute('aria-selected', String(active));
+            tab.tabIndex = active ? 0 : -1;
+            if (active && focus) tab.focus();
+        });
+        tabPanels.forEach((panel) => {
+            panel.hidden = panel.dataset.settingsTabPanel !== tabName;
+        });
+        window.sessionStorage?.setItem('travel-manager-settings-tab', tabName);
+    };
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => activateTab(tab.dataset.settingsTab));
+        tab.addEventListener('keydown', (event) => {
+            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            let nextIndex = index;
+            if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+            if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+            if (event.key === 'Home') nextIndex = 0;
+            if (event.key === 'End') nextIndex = tabs.length - 1;
+            activateTab(tabs[nextIndex].dataset.settingsTab, { focus: true });
+        });
+    });
+    const savedTab = window.sessionStorage?.getItem('travel-manager-settings-tab');
+    if (tabs.some((tab) => tab.dataset.settingsTab === savedTab)) activateTab(savedTab);
 
     document.addEventListener('travel-manager:app-view-changed', (event) => {
         if (event.detail?.view === 'settings') {

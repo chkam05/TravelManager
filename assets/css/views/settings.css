@@ -24,6 +24,59 @@
     line-height: 1.5;
 }
 
+.settings-view__tabs {
+    display: flex;
+    gap: 6px;
+    margin: 0 0 24px;
+    padding: 5px;
+    overflow-x: auto;
+    border: 1px solid rgba(32, 36, 42, 0.12);
+    border-radius: 10px;
+    background: #eef3f5;
+}
+
+.settings-view__tab {
+    display: inline-flex;
+    flex: 1 0 max-content;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #56616d;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.settings-view__tab:hover {
+    background: rgba(255, 255, 255, 0.6);
+    color: #20242a;
+}
+
+.settings-view__tab:focus-visible {
+    outline: 2px solid #1f6fae;
+    outline-offset: 1px;
+}
+
+.settings-view__tab--active {
+    background: #ffffff;
+    color: #1f6fae;
+    box-shadow: 0 2px 8px rgba(32, 36, 42, 0.1);
+}
+
+.settings-view__tab svg {
+    width: 18px;
+    height: 18px;
+}
+
+.settings-view__tab-panel[hidden] {
+    display: none;
+}
+
 .settings-view__group {
     display: grid;
     gap: 12px;
@@ -260,6 +313,11 @@
     flex-wrap: wrap;
 }
 
+.settings-view__control--fuel-type .settings-view__select {
+    width: 280px;
+    max-width: 100%;
+}
+
 .settings-view__control--slider {
     align-items: center;
     display: grid;
@@ -413,6 +471,14 @@
         padding: 12px;
     }
 
+    .settings-view__tabs {
+        justify-content: flex-start;
+    }
+
+    .settings-view__tab {
+        flex-grow: 0;
+    }
+
     .settings-view__value,
     .information-view__row {
         grid-template-columns: 1fr;
@@ -427,6 +493,10 @@
     .settings-view__input,
     .settings-view__select,
     .settings-view__fetch-button {
+        width: 100%;
+    }
+
+    .settings-view__control--fuel-type .settings-view__select {
         width: 100%;
     }
 
