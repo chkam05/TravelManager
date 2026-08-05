@@ -8,6 +8,7 @@ from flask import jsonify, request
 
 from core.api.base_controller import BaseController
 from models.settings.ui_settings import UiSettings
+from models.settings.appearance import Appearance
 from models.settings.car_profile import CarProfile
 from models.settings.favourite_place import FavouritePlace
 from models.settings.favourite_tag import FavouriteTag
@@ -29,6 +30,8 @@ class SettingsController(BaseController):
     def register_routes(self):
         self.add_url_rule('/api/settings/ui', view_func=self.get_ui_settings, methods=['GET'])
         self.add_url_rule('/api/settings/ui', view_func=self.update_ui_settings, methods=['PATCH'])
+        self.add_url_rule('/api/settings/appearance', view_func=self.get_appearance, methods=['GET'])
+        self.add_url_rule('/api/settings/appearance', view_func=self.update_appearance, methods=['PATCH'])
         self.add_url_rule('/api/settings/public-transport', view_func=self.get_public_transport_settings, methods=['GET'])
         self.add_url_rule('/api/settings/public-transport', view_func=self.update_public_transport_settings, methods=['PATCH'])
         self.add_url_rule('/api/settings/export/<data_type>', view_func=self.export_data, methods=['GET'])
@@ -73,6 +76,31 @@ class SettingsController(BaseController):
         return jsonify({
             'status': 'ok',
             'ui': settings.ui.to_dict()
+        })
+
+    def get_appearance(self):
+        """Returns persisted application appearance settings."""
+        settings = self._settings_storage.load()
+        return jsonify({
+            'status': 'ok',
+            'appearance': settings.appearance.to_dict()
+        })
+
+    def update_appearance(self):
+        """Updates selected appearance fields and persists recent colors."""
+        data = request.get_json(silent=True) or {}
+        if not isinstance(data, dict):
+            return jsonify({'status': 'error', 'message': 'Invalid JSON body.'}), 400
+        settings = self._settings_storage.load()
+        merged = settings.appearance.to_dict()
+        for key in Appearance.field_names():
+            if key in data:
+                merged[key] = data[key]
+        settings.appearance = Appearance.from_dict(merged)
+        self._settings_storage.save(settings)
+        return jsonify({
+            'status': 'ok',
+            'appearance': settings.appearance.to_dict()
         })
 
     def get_public_transport_settings(self):

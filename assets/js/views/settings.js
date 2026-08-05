@@ -3,8 +3,9 @@ document.addEventListener('travel-manager:views-ready', () => {
     const routeFuelGroup = document.querySelector('[data-settings-group="route-fuel"]');
     const routeTollsGroup = document.querySelector('[data-settings-group="route-tolls"]');
     const publicTransportGroup = document.querySelector('[data-settings-group="public-transport"]');
+    const applicationGroup = document.querySelector('[data-settings-group="application"]');
 
-    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup) {
+    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationGroup) {
         return;
     }
 
@@ -59,7 +60,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).catch(() => {});
+    }).then((response) => response.ok).catch(() => false);
 
     const schedulePatch = (data) => {
         pendingSettings = {
@@ -306,7 +307,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         description.className = 'settings-view__control';
 
         const labelElement = document.createElement('label');
-        labelElement.className = 'settings-view__checkbox';
+        labelElement.className = 'component-checkbox component-checkbox--strong';
 
         const input = document.createElement('input');
         input.type = 'checkbox';
@@ -319,7 +320,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (input.disabled) {
             row.classList.add('settings-view__value--disabled');
-            labelElement.classList.add('settings-view__checkbox--disabled');
+            labelElement.classList.add('component-checkbox--disabled');
         }
 
         input.addEventListener('change', () => {
@@ -489,6 +490,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         routeFuelGroup.replaceChildren();
         routeTollsGroup.replaceChildren();
         publicTransportGroup.replaceChildren();
+        applicationGroup.replaceChildren();
         routeFuelMainInput = null;
         routeFuelDependentRows = [];
 
@@ -502,6 +504,19 @@ document.addEventListener('travel-manager:views-ready', () => {
             }
 
             const settings = (await response.json()).ui || {};
+
+            addBooleanSetting(
+                applicationGroup,
+                'Przenieś do sieci',
+                'move_to_network',
+                settings.move_to_network === true
+            );
+            addBooleanSetting(
+                applicationGroup,
+                'Po uruchomieniu otwórz Stronę Startową',
+                'open_home_on_startup',
+                settings.open_home_on_startup === true
+            );
 
             addBooleanSetting(
                 publicTransportGroup,
@@ -528,7 +543,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 routeFuelDependentRows.forEach(({ row, input, label }) => {
                     input.disabled = !enabled;
                     row.classList.toggle('settings-view__value--disabled', !enabled);
-                    label?.classList?.toggle('settings-view__checkbox--disabled', !enabled);
+                    label?.classList?.toggle('component-checkbox--disabled', !enabled);
                 });
             };
 

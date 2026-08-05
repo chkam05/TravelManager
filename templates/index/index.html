@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ app_name }}</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/favicon.png') }}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/checkbox.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/inputbox.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/color_tile.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/views/home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/map.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/favourites.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/favourites_tags.css') }}">
@@ -15,6 +20,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/fuel_cost.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/public_transport.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/settings.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/views/appearance.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/legend_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/layer_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/place_details.css') }}">
@@ -32,9 +38,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/fuel_update.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/public_transport_announcement.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/download_status.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/color_picker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common_dark.css') }}" data-theme-stylesheet="dark"{% if appearance.theme != 'dark' %} disabled{% endif %}>
 </head>
-<body>
-    <div class="app-shell" data-current-view="map">
+<body data-theme="{{ appearance.theme }}" style="--accent-color: {{ appearance.primary_color }}">
+    <div class="app-shell" data-current-view="{{ initial_view }}">
         <div class="header">
             <div class="header__left">
                 <button class="header__menu-button" type="button" aria-label="Otwórz menu" aria-controls="side-menu" aria-expanded="false">
@@ -45,6 +54,7 @@
             </div>
 
             <div class="header__view-wrapper">
+                {% include 'headers/home.html' %}
                 {% include 'headers/map.html' %}
                 {% include 'headers/car_profiles.html' %}
                 {% include 'headers/favourites_tags.html' %}
@@ -59,47 +69,16 @@
 
         <aside class="side-menu" id="side-menu" aria-label="Menu główne" aria-hidden="true">
             <nav class="side-menu__navigation">
-                <button class="side-menu__item side-menu__item--map side-menu__item--active" data-navigation-view="map" type="button">
-                    <i class="side-menu__icon" data-lucide="map" aria-hidden="true"></i>
-                    <span>Mapa</span>
-                </button>
-                <button class="side-menu__item side-menu__item--route" data-navigation-action="new-route" type="button">
-                    <i class="side-menu__icon" data-lucide="navigation" aria-hidden="true"></i>
-                    <span>Tworzenie trasy</span>
-                </button>
-                <button class="side-menu__item side-menu__item--favourites" data-navigation-view="favourites" type="button">
-                    <i class="side-menu__icon" data-lucide="star" aria-hidden="true"></i>
-                    <span>Ulubione</span>
-                </button>
-                <button class="side-menu__item side-menu__item--favourite-tags" data-navigation-view="favourites-tags" type="button">
-                    <i class="side-menu__icon" data-lucide="tags" aria-hidden="true"></i>
-                    <span>Tagi ulubionych</span>
-                </button>
-                <button class="side-menu__item side-menu__item--car-profiles" data-navigation-view="car-profiles" type="button">
-                    <i class="side-menu__icon" data-lucide="car" aria-hidden="true"></i>
-                    <span>Samochody</span>
-                </button>
-                <button class="side-menu__item side-menu__item--my-routes" data-navigation-view="my-routes" type="button">
-                    <i class="side-menu__icon" data-lucide="route" aria-hidden="true"></i>
-                    <span>Moje Trasy</span>
-                </button>
-                <button class="side-menu__item side-menu__item--fuel-cost" data-navigation-view="fuel-cost" type="button">
-                    <i class="side-menu__icon" data-lucide="fuel" aria-hidden="true"></i>
-                    <span>Ceny paliw</span>
-                </button>
-                <button class="side-menu__item side-menu__item--public-transport" data-navigation-view="public-transport" type="button">
-                    <i class="side-menu__icon" data-lucide="bus-front" aria-hidden="true"></i>
-                    <span>Komunikacja miejska</span>
-                </button>
-                <div class="side-menu__separator" role="separator"></div>
-                <button class="side-menu__item side-menu__item--settings" data-navigation-view="settings" type="button">
-                    <i class="side-menu__icon" data-lucide="settings" aria-hidden="true"></i>
-                    <span>Ustawienia</span>
-                </button>
-                <button class="side-menu__item side-menu__item--information" data-navigation-view="information" type="button">
-                    <i class="side-menu__icon" data-lucide="info" aria-hidden="true"></i>
-                    <span>Informacje</span>
-                </button>
+                {% for section in menu_sections %}
+                    {% if not loop.first %}<div class="side-menu__separator" role="separator"></div>{% endif %}
+                    {% for item in section['items'] %}
+                        {% set navigation_type, navigation_target = item.url.split(':', 1) %}
+                        <button class="side-menu__item{% if item.url == 'view:' ~ initial_view %} side-menu__item--active{% endif %}" {% if navigation_type == 'view' %}data-navigation-view="{{ navigation_target }}"{% else %}data-navigation-action="{{ navigation_target }}"{% endif %} type="button">
+                            <i class="side-menu__icon" data-lucide="{{ item.icon }}" aria-hidden="true"></i>
+                            <span>{{ item.name }}</span>
+                        </button>
+                    {% endfor %}
+                {% endfor %}
             </nav>
         </aside>
         <div id="place-details-panel-container" data-panel-url="{{ url_for('ViewController.place_details_panel') }}"></div>
@@ -112,7 +91,8 @@
         <div class="dialog-layer" id="dialog-layer" data-dialog-url="{{ url_for('ViewController.dialogs') }}" aria-hidden="true"></div>
 
         <main class="content" id="content">
-            <section class="app-view app-view--active" data-app-view="map" data-view-url="{{ url_for('ViewController.map_view') }}"></section>
+            <section class="app-view{% if initial_view == 'home' %} app-view--active{% endif %}" data-app-view="home" data-view-url="{{ url_for('ViewController.home_view') }}"{% if initial_view != 'home' %} hidden{% endif %}></section>
+            <section class="app-view{% if initial_view == 'map' %} app-view--active{% endif %}" data-app-view="map" data-view-url="{{ url_for('ViewController.map_view') }}"{% if initial_view != 'map' %} hidden{% endif %}></section>
             <section class="app-view" data-app-view="favourites" data-view-url="{{ url_for('ViewController.favourites_view') }}" hidden></section>
             <section class="app-view" data-app-view="favourites-tags" data-view-url="{{ url_for('ViewController.favourites_tags_view') }}" hidden></section>
             <section class="app-view" data-app-view="car-profiles" data-view-url="{{ url_for('ViewController.car_profiles_view') }}" hidden></section>
@@ -124,8 +104,8 @@
         </main>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/lucide@0.468.0"></script>
+    <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/lucide/lucide.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/yesno_dialog.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/favourites_editor.js') }}"></script>
@@ -137,6 +117,7 @@
     <script src="{{ url_for('static', filename='js/dialogs/fuel_update.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/public_transport_announcement.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/download_status.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dialogs/color_picker.js') }}"></script>
     <script src="{{ url_for('static', filename='js/favourites.js') }}"></script>
     <script src="{{ url_for('static', filename='js/car_profiles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/routes.js') }}"></script>
@@ -153,7 +134,9 @@
     <script src="{{ url_for('static', filename='js/views/my_routes.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/fuel_cost.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/public_transport.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/views/home.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/settings.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/views/appearance.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/map.js') }}"></script>
 </body>
 </html>

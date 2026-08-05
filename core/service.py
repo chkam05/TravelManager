@@ -12,6 +12,7 @@ class Service:
     def __init__(self, host: str, port: int, settings_storage: SettingsStorage, **args: Any):
         self._host = host
         self._port = port
+        self._app_url = f'http://{host}:{port}'
 
         self._service = Flask(__name__, **args)
         self._server: Any | None = None
@@ -41,8 +42,8 @@ class Service:
         from controllers.window_controller import WindowController
 
         self._register_controller(FuelController())
-        self._register_controller(WindowController())
-        self._register_controller(ViewController())
+        self._register_controller(WindowController(self._app_url, self._settings_storage))
+        self._register_controller(ViewController(self._app_url))
         self._register_controller(MapController())
         self._register_controller(PublicTransportController(self._settings_storage))
         self._register_controller(SettingsController(self._settings_storage))

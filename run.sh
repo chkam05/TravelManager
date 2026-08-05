@@ -10,4 +10,4 @@ else
     PYTHON="python3"
 fi
 
-"$PYTHON" app.py
+"$PYTHON" app.py "$@"

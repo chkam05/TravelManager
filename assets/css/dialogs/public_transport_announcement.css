@@ -122,9 +122,9 @@
 .public-transport-announcement-dialog__footer button {
     min-width: 90px;
     height: 38px;
-    border: 1px solid #1f6fae;
+    border: 1px solid var(--accent-color);
     border-radius: 8px;
-    background: #1f6fae;
+    background: var(--accent-color);
     color: #ffffff;
     font: inherit;
     font-weight: 800;

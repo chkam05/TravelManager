@@ -1309,7 +1309,8 @@ class GzmGtfsRepository:
     def realtime_maps(self) -> tuple[
         dict[tuple[str, str], str],
         dict[tuple[str, str], str],
-        dict[str, PublicTransportType]
+        dict[tuple[str, str], PublicTransportType],
+        dict[tuple[str, str], PublicTransportType]
     ]:
         """Returns identifiers required to map GTFS-RT entities."""
         with self._connection() as connection:
@@ -1346,13 +1347,18 @@ class GzmGtfsRepository:
             )
             for row in trip_rows
         }
-        line_types = {
-            self._public_line_name(
-                str(row['short_name']),
+        route_types = {
+            (self.FEED_ID, str(row['route_id'])): self._transport_type(
                 int(row['route_type'])
-            ): self._transport_type(int(row['route_type']))
+            )
             for row in route_rows
         }
-        return route_names, trip_names, line_types
+        trip_types = {
+            (self.FEED_ID, str(row['trip_id'])): self._transport_type(
+                int(row['route_type'])
+            )
+            for row in trip_rows
+        }
+        return route_names, trip_names, route_types, trip_types
 
     #endregion Realtime lookup maps

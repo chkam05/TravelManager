@@ -1,16 +1,23 @@
 from typing import ClassVar
 from flask import render_template
 
-from config import APP_AUTHOR, APP_DESCRIPTION, APP_NAME, APP_VERSION, HOST, PORT
+from config import APP_AUTHOR, APP_DESCRIPTION, APP_NAME, APP_VERSION
 from core.api.base_controller import BaseController
 from resources.emojis import Emojis
+from resources.menu import Menu
+from resources.color_presets import ColorPresets
 from resources.public_transport.public_transport_providers import PublicTransportProviders
 
 
 class ViewController(BaseController):
     CONTROLLER_NAME: ClassVar[str] = 'ViewController'
 
+    def __init__(self, app_url: str):
+        self._app_url = app_url
+        super().__init__()
+
     def register_routes(self):
+        self.add_url_rule('/api/views/home', view_func=self.home_view, methods=['GET'])
         self.add_url_rule('/api/views/map', view_func=self.map_view, methods=['GET'])
         self.add_url_rule('/api/views/favourites', view_func=self.favourites_view, methods=['GET'])
         self.add_url_rule('/api/views/favourites-tags', view_func=self.favourites_tags_view, methods=['GET'])
@@ -33,6 +40,15 @@ class ViewController(BaseController):
         self.add_url_rule('/api/emojis', view_func=Emojis.emojis, methods=['GET'])
 
     # --- ENDPOINTS ---
+
+    def home_view(self):
+        return render_template(
+            'views/home.html',
+            home_sections=Menu.home_sections(),
+            app_name=APP_NAME,
+            app_author=APP_AUTHOR,
+            app_version=APP_VERSION
+        )
 
     def map_view(self):
         return render_template('views/map.html')
@@ -59,7 +75,10 @@ class ViewController(BaseController):
         )
 
     def settings_view(self):
-        return render_template('views/settings.html')
+        return render_template(
+            'views/settings.html',
+            color_presets=ColorPresets.VALUES
+        )
 
     def information_view(self):
         return render_template(
@@ -68,7 +87,7 @@ class ViewController(BaseController):
             app_author=f'Copyright (C) {APP_AUTHOR}',
             app_description=APP_DESCRIPTION,
             app_version=APP_VERSION,
-            app_url=f'http://{HOST}:{PORT}'
+            app_url=self._app_url
         )
 
     def legend_details_panel(self):

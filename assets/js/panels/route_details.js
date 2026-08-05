@@ -1479,6 +1479,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             drag.className = 'route-details-panel__drag';
             drag.type = 'button';
             drag.setAttribute('aria-label', `Przenieś punkt ${index + 1}`);
+            drag.innerHTML = '<i data-lucide="grip-vertical" aria-hidden="true"></i>';
 
             const number = document.createElement('span');
             number.className = 'route-details-panel__point-number';
@@ -1494,6 +1495,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             more.className = 'route-details-panel__more';
             more.type = 'button';
             more.setAttribute('aria-label', `Opcje punktu ${point.title}`);
+            more.innerHTML = '<i data-lucide="ellipsis" aria-hidden="true"></i>';
             more.addEventListener('click', (event) => {
                 event.stopPropagation();
                 showMenu(point.id, more);
@@ -1556,6 +1558,8 @@ document.addEventListener('travel-manager:views-ready', () => {
                 pointsList.append(item);
             });
         });
+
+        window.lucide?.createIcons({ attrs: { 'stroke-width': 2 } });
     }
 
     const consumeElement = (title, element) => {

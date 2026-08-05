@@ -1314,11 +1314,12 @@ class GzmDownloader:
     @classmethod
     def download_vehicle_positions(
         cls,
-        line: str = ''
+        line: str = '',
+        transport_type: str = ''
     ) -> list[PublicTransportVehiclePosition]:
         """Downloads current GZM vehicle positions from GTFS-Realtime."""
         repository = cls._repository()
-        route_names, trip_names, line_types = repository.realtime_maps()
+        route_names, trip_names, route_types, trip_types = repository.realtime_maps()
         payload = cls._download_bytes(
             cls.GTFS_RT_VEHICLES_URL,
             'Pojazdy GZM na żywo'
@@ -1327,8 +1328,10 @@ class GzmDownloader:
             payload,
             route_names,
             trip_names,
-            line_types,
-            line
+            route_types,
+            trip_types,
+            line,
+            transport_type
         )
 
     @classmethod
@@ -1337,8 +1340,10 @@ class GzmDownloader:
         payload: bytes,
         route_names: dict[tuple[str, str], str],
         trip_names: dict[tuple[str, str], str],
-        line_types: dict[str, PublicTransportType],
-        line: str = ''
+        route_types: dict[tuple[str, str], PublicTransportType],
+        trip_types: dict[tuple[str, str], PublicTransportType],
+        line: str = '',
+        transport_type: str = ''
     ) -> list[PublicTransportVehiclePosition]:
         """Deserializes the official GZM VehiclePositions protobuf feed."""
         try:
@@ -1362,7 +1367,14 @@ class GzmDownloader:
                 or route_names.get((feed_id, route_id))
                 or route_id
             )
+            vehicle_type = (
+                trip_types.get((feed_id, trip_id))
+                or route_types.get((feed_id, route_id))
+                or PublicTransportType.BUS
+            )
             if line and line_name != line:
+                continue
+            if transport_type and str(vehicle_type) != transport_type:
                 continue
             latitude = float(vehicle.position.latitude)
             longitude = float(vehicle.position.longitude)
@@ -1390,10 +1402,7 @@ class GzmDownloader:
                 ),
                 line=line_name,
                 trip_id=trip_id,
-                type=line_types.get(
-                    line_name,
-                    PublicTransportType.BUS
-                ),
+                type=vehicle_type,
                 latitude=latitude,
                 longitude=longitude,
                 bearing=(

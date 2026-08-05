@@ -246,7 +246,11 @@ class PublicTransportController(BaseController):
                 )
             downloader = PublicTransportProviders.downloader(provider_id)
             line = str(request.args.get('line') or '').strip()
-            positions = downloader.download_vehicle_positions(line=line)
+            transport_type = str(request.args.get('type') or '').strip()
+            positions = downloader.download_vehicle_positions(
+                line=line,
+                transport_type=transport_type
+            )
             return jsonify({
                 'positions': [
                     position.to_dict()

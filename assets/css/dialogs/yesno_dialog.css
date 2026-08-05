@@ -96,7 +96,7 @@
 }
 
 .yesno-dialog__button--primary {
-    border-color: #1f6fae;
-    background: #1f6fae;
+    border-color: var(--accent-color);
+    background: var(--accent-color);
     color: #ffffff;
 }

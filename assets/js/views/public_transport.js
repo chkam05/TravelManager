@@ -312,6 +312,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 || !metadata.line
             );
             vehiclesButton.dataset.line = metadata.line || '';
+            vehiclesButton.dataset.type = metadata.type || '';
         }
 
         fillDateSelect(controlScope.querySelector('[data-public-transport-date]') ? controlScope : header, metadata, screen);
@@ -632,9 +633,10 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     };
 
-    const showVehiclesOnMap = async (line) => {
+    const showVehiclesOnMap = async (line, transportType = '') => {
         try {
             const params = new URLSearchParams({ line });
+            if (transportType) params.set('type', transportType);
             const response = await fetch(`${endpoint('vehicles')}?${params}`, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
@@ -760,7 +762,10 @@ document.addEventListener('travel-manager:views-ready', () => {
         );
 
         if (vehiclesAction?.dataset.line) {
-            showVehiclesOnMap(vehiclesAction.dataset.line);
+            showVehiclesOnMap(
+                vehiclesAction.dataset.line,
+                vehiclesAction.dataset.type || ''
+            );
             return;
         }
 

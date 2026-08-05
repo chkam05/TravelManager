@@ -83,7 +83,36 @@ Aplikację można też uruchomić bezpośrednio:
 python app.py
 ```
 
-Usługa Flask nasłuchuje lokalnie pod adresem `http://127.0.0.1:5000` i jest automatycznie otwierana w oknie aplikacji. Host i port można zmienić w pliku `config.py`.
+Usługa Flask domyślnie nasłuchuje lokalnie pod adresem `http://127.0.0.1:5000` i jest automatycznie otwierana w oknie aplikacji.
+
+Adres aktywnej karty sieciowej może być wybierany automatycznie po włączeniu opcji **Ustawienia → Aplikacja → Przenieś do sieci**. Zmiana zaczyna obowiązywać po ponownym uruchomieniu aplikacji. Jawnie podany parametr `--ip` lub `/ip` ma pierwszeństwo przed tym ustawieniem.
+
+Adres i port można zmienić podczas uruchamiania. Aby udostępnić aplikację innym urządzeniom w sieci lokalnej, podaj adres IPv4 komputera i uruchom ją bez okna:
+
+```bash
+python app.py --ip 192.168.1.20 --port 8080 --no-window
+```
+
+Skrypty platformowe również przekazują parametry do aplikacji:
+
+```bash
+./run.sh --ip 192.168.1.20 --port 8080 --no-window
+```
+
+W systemie Windows można używać zarówno składni `--opcja`, jak i `/opcja`:
+
+```bat
+run.bat /ip 192.168.1.20 /port 8080 /no-window
+```
+
+| Parametr | Wariant Windows | Znaczenie |
+|---|---|---|
+| `--ip ADRES` | `/ip ADRES` | Adres IPv4, pod którym serwer ma nasłuchiwać. |
+| `--port PORT` | `/port PORT` | Port z zakresu 1–65535. |
+| `--no-window` | `/no-window` | Uruchamia sam serwer, bez okna WebView. |
+| `--help`, `-h` | `/help`, `/h` | Wyświetla pomoc i kończy działanie. |
+
+W trybie `--no-window` terminal wyświetla adres aplikacji. Interfejs należy otworzyć w przeglądarce, a serwer zatrzymać kombinacją `Ctrl+C`. Udostępnienie usługi poza localhostem umożliwia dostęp do danych aplikacji innym urządzeniom w tej samej sieci, dlatego należy korzystać wyłącznie z zaufanej sieci.
 
 ## Dane i prywatność
 

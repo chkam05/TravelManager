@@ -1,11 +1,18 @@
 <div class="information-view">
-    <header class="information-view__header">
-        <div class="information-view__app-icon" aria-hidden="true"></div>
-        <div>
-            <h2>{{ app_name }}</h2>
-            <p>{{ app_description or 'Aplikacja do przeglądania map i planowania tras.' }}</p>
-        </div>
+    <header class="information-view__toolbar">
+        <button class="app-view__back-button" type="button" data-app-back-to-map aria-label="Wstecz">
+            <i data-lucide="arrow-left" aria-hidden="true"></i>
+        </button>
     </header>
+
+    <div class="information-view__body">
+        <header class="information-view__header">
+            <div class="information-view__app-icon" aria-hidden="true"></div>
+            <div>
+                <h2>{{ app_name }}</h2>
+                <p>{{ app_description or 'Aplikacja do przeglądania map i planowania tras.' }}</p>
+            </div>
+        </header>
 
     <dl class="information-view__details">
         <div class="information-view__row">
@@ -31,4 +38,5 @@
             </dd>
         </div>
     </dl>
+    </div>
 </div>

@@ -163,10 +163,10 @@
     gap: 6px;
     min-height: 34px;
     padding: 0 10px;
-    border: 1px solid rgba(31, 111, 174, 0.28);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 28%, transparent);
     border-radius: 8px;
-    background: #edf6ff;
-    color: #1f6fae;
+    background: var(--accent-soft);
+    color: var(--accent-color);
     font: inherit;
     font-size: 0.82rem;
     font-weight: 850;
@@ -206,7 +206,7 @@
 
 .search-results-panel__item:hover,
 .search-results-panel__item:focus-visible {
-    border-color: rgba(31, 111, 174, 0.45);
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
     background: #f5faff;
     outline: none;
 }
@@ -218,7 +218,7 @@
     height: 36px;
     border-radius: 8px;
     background: #eef6f7;
-    color: #1f6fae;
+    color: var(--accent-color);
     font-size: 1.2rem;
 }
 
@@ -272,8 +272,8 @@
 }
 
 .search-results-panel__action:hover {
-    border-color: rgba(31, 111, 174, 0.45);
-    color: #1f6fae;
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    color: var(--accent-color);
 }
 
 .search-results-panel__action svg {

@@ -1,0 +1,22 @@
+.component-inputbox {
+    display: grid;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+
+.component-inputbox input {
+    width: 100%;
+    height: 40px;
+    min-width: 0;
+    padding: 0 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface-background);
+    color: var(--text-primary);
+    font: inherit;
+    font-weight: 750;
+    text-transform: none;
+}

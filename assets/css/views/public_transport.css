@@ -1,5 +1,5 @@
 .public-transport-view {
-    --public-transport-blue: #1f6fae;
+    --public-transport-blue: var(--accent-color);
     --public-transport-border: rgba(32, 36, 42, 0.11);
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
@@ -53,9 +53,9 @@
 }
 
 .public-transport-view__navigation-button--active {
-    border-color: #1f6fae;
-    background: #e8f2f9;
-    color: #155f98;
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
 }
 
 .public-transport-view__spacer {
@@ -239,7 +239,7 @@
 .public-transport-stops__toggle:hover,
 .public-transport-line-view__stops button:hover,
 .public-transport-line-stop__departures button:hover {
-    border-color: rgba(31, 111, 174, 0.45);
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
     background: #f4f9fc;
 }
 
@@ -654,8 +654,8 @@ button.public-transport-line-pill {
     min-width: 26px;
     height: 26px;
     border-radius: 6px;
-    background: #e8f2f9;
-    color: #155f98;
+    background: var(--accent-soft);
+    color: var(--accent-hover);
 }
 
 .public-transport-line-stop__departures {
@@ -689,7 +689,7 @@ button.public-transport-line-pill {
 }
 
 .public-transport-line-stop__departures small {
-    color: #155f98;
+    color: var(--accent-hover);
     font-size: 0.7rem;
     line-height: 1;
 }
@@ -697,6 +697,14 @@ button.public-transport-line-pill {
 .public-transport-line-stop__departures svg {
     width: 14px;
     color: #b56b00;
+}
+
+.public-transport-line-stop__departure-meta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 0;
 }
 
 .public-transport-ride__summary {
@@ -771,10 +779,10 @@ button.public-transport-line-pill {
     width: 34px;
     height: 34px;
     margin: 0 auto;
-    border: 1px solid rgba(31, 111, 174, 0.3);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
     border-radius: 7px;
-    background: #e8f2f9;
-    color: #155f98;
+    background: var(--accent-soft);
+    color: var(--accent-hover);
     cursor: pointer;
 }
 
@@ -948,9 +956,14 @@ button.public-transport-line-pill {
 }
 
 .public-transport-header__button--primary {
-    border-color: #1f6fae;
-    background: #1f6fae;
+    border-color: var(--accent-color);
+    background: var(--accent-color);
     color: #ffffff;
+}
+
+.public-transport-header__button[aria-label="Wstecz"] {
+    width: 38px;
+    padding: 0;
 }
 
 .public-transport-header__button svg,
@@ -1082,7 +1095,7 @@ button.public-transport-line-pill {
 }
 
 .public-transport-carriers__attribution a {
-    color: #1f6fae;
+    color: var(--accent-color);
 }
 
 .public-transport-carriers__tile {
@@ -1103,7 +1116,7 @@ button.public-transport-line-pill {
 }
 
 .public-transport-carriers__tile:hover {
-    border-color: rgba(31, 111, 174, 0.5);
+    border-color: color-mix(in srgb, var(--accent-color) 50%, transparent);
     background: #f6fafc;
 }
 
@@ -1113,8 +1126,8 @@ button.public-transport-line-pill {
     width: 50px;
     height: 50px;
     border-radius: 9px;
-    background: #e8f2f9;
-    color: #155f98;
+    background: var(--accent-soft);
+    color: var(--accent-hover);
 }
 
 .public-transport-carriers__icon svg {
@@ -1141,7 +1154,7 @@ button.public-transport-line-pill {
 .public-transport-view__progress progress {
     width: 100%;
     height: 10px;
-    accent-color: #1f6fae;
+    accent-color: var(--accent-color);
 }
 
 .public-transport-collapse-button {
@@ -1291,8 +1304,8 @@ button.public-transport-line-pill {
     min-height: 28px;
     padding: 3px 6px;
     border-radius: 6px;
-    background: #e8f2f9;
-    color: #155f98;
+    background: var(--accent-soft);
+    color: var(--accent-hover);
     font-size: 0.82rem;
 }
 
@@ -1506,12 +1519,12 @@ button.public-transport-line-pill {
 }
 
 .public-transport-stop-lines__departures > button:hover {
-    border-color: rgba(31, 111, 174, 0.45);
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
     background: #f4f9fc;
 }
 
 .public-transport-stop-lines__departures small {
-    color: #155f98;
+    color: var(--accent-hover);
     font-size: 0.7rem;
     line-height: 1;
 }
@@ -1534,8 +1547,8 @@ button.public-transport-line-pill {
 .public-transport-stop-lines__list article > footer strong {
     padding: 4px 7px;
     border-radius: 5px;
-    background: #e8f2f9;
-    color: #155f98;
+    background: var(--accent-soft);
+    color: var(--accent-hover);
 }
 
 @media (max-width: 600px) {

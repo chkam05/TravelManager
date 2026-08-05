@@ -1,0 +1,26 @@
+.component-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface-background);
+    color: var(--text-primary);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.component-button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: #ffffff;
+}
+
+.component-button svg {
+    width: 17px;
+    height: 17px;
+}

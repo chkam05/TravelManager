@@ -1,11 +1,26 @@
 <div class="settings-view">
-    <header class="settings-view__header">
-        <h2>Ustawienia</h2>
-        <p>Parametry używane podczas planowania podróży i działania aplikacji.</p>
+    <header class="settings-view__toolbar">
+        <button class="app-view__back-button" type="button" data-app-back-to-map aria-label="Wstecz">
+            <i data-lucide="arrow-left" aria-hidden="true"></i>
+        </button>
+        <button class="app-view__save-button" type="button" data-settings-save>
+            <i data-lucide="save" aria-hidden="true"></i>
+            <span>Zapisz</span>
+        </button>
     </header>
 
+    <div class="settings-view__body">
+        <header class="settings-view__header">
+            <h2>Ustawienia</h2>
+            <p>Parametry używane podczas planowania podróży i działania aplikacji.</p>
+        </header>
+
     <nav class="settings-view__tabs" role="tablist" aria-label="Kategorie ustawień">
-        <button class="settings-view__tab settings-view__tab--active" id="settings-tab-routes" type="button" role="tab" aria-selected="true" aria-controls="settings-panel-routes" tabindex="0" data-settings-tab="routes">
+        <button class="settings-view__tab settings-view__tab--active" id="settings-tab-appearance" type="button" role="tab" aria-selected="true" aria-controls="settings-panel-appearance" tabindex="0" data-settings-tab="appearance">
+            <i data-lucide="palette" aria-hidden="true"></i>
+            <span>Wygląd</span>
+        </button>
+        <button class="settings-view__tab" id="settings-tab-routes" type="button" role="tab" aria-selected="false" aria-controls="settings-panel-routes" tabindex="-1" data-settings-tab="routes">
             <i data-lucide="route" aria-hidden="true"></i>
             <span>Trasy</span>
         </button>
@@ -17,9 +32,16 @@
             <i data-lucide="database-backup" aria-hidden="true"></i>
             <span>Kopia zapasowa</span>
         </button>
+        <button class="settings-view__tab" id="settings-tab-application" type="button" role="tab" aria-selected="false" aria-controls="settings-panel-application" tabindex="-1" data-settings-tab="application">
+            <i data-lucide="settings-2" aria-hidden="true"></i>
+            <span>Aplikacja</span>
+        </button>
     </nav>
 
-    <div class="settings-view__tab-panel" id="settings-panel-routes" role="tabpanel" aria-labelledby="settings-tab-routes" data-settings-tab-panel="routes">
+    <div class="settings-view__tab-panel" id="settings-panel-appearance" role="tabpanel" aria-labelledby="settings-tab-appearance" data-settings-tab-panel="appearance">
+        {% include 'views/settings/appearance.html' %}
+    </div>
+    <div class="settings-view__tab-panel" id="settings-panel-routes" role="tabpanel" aria-labelledby="settings-tab-routes" data-settings-tab-panel="routes" hidden>
         {% include 'views/settings/routes.html' %}
     </div>
     <div class="settings-view__tab-panel" id="settings-panel-public-transport" role="tabpanel" aria-labelledby="settings-tab-public-transport" data-settings-tab-panel="public-transport" hidden>
@@ -27,5 +49,9 @@
     </div>
     <div class="settings-view__tab-panel" id="settings-panel-backup" role="tabpanel" aria-labelledby="settings-tab-backup" data-settings-tab-panel="backup" hidden>
         {% include 'views/settings/backup.html' %}
+    </div>
+    <div class="settings-view__tab-panel" id="settings-panel-application" role="tabpanel" aria-labelledby="settings-tab-application" data-settings-tab-panel="application" hidden>
+        {% include 'views/settings/application.html' %}
+    </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="header__view header__view--active" data-header-view="map">
+<div class="header__view{% if initial_view == 'map' %} header__view--active{% endif %}" data-header-view="map"{% if initial_view != 'map' %} hidden{% endif %}>
     <div class="header__view-left">
         <h1 class="header__title">{{ app_name }}</h1>
     </div>

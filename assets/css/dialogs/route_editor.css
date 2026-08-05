@@ -198,9 +198,9 @@
 }
 
 .route-editor__tab--active {
-    border-color: rgba(31, 111, 174, 0.42);
-    background: #eef7fc;
-    color: #1f6fae;
+    border-color: color-mix(in srgb, var(--accent-color) 42%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .route-editor__separator {
@@ -226,7 +226,7 @@
 }
 
 .route-editor__preset:hover {
-    background: #eef7fc;
+    background: var(--accent-soft);
 }
 
 .route-editor__empty {
@@ -253,8 +253,8 @@
 }
 
 .route-editor__button--primary {
-    border-color: #1f6fae;
-    background: #1f6fae;
+    border-color: var(--accent-color);
+    background: var(--accent-color);
     color: #ffffff;
 }
 

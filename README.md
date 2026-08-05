@@ -83,7 +83,36 @@ You can also start the application directly:
 python app.py
 ```
 
-The Flask service listens locally at `http://127.0.0.1:5000` and is opened automatically in a desktop window. The host and port can be changed in `config.py`.
+By default, the Flask service listens locally at `http://127.0.0.1:5000` and opens automatically in a desktop window.
+
+The active network interface can be selected automatically by enabling **Settings → Application → Move to network**. The change takes effect after restarting the application. An explicit `--ip` or `/ip` argument takes precedence over this setting.
+
+The address and port can be selected at startup. To share the application with other devices on the local network, pass the computer's IPv4 address and run without a native window:
+
+```bash
+python app.py --ip 192.168.1.20 --port 8080 --no-window
+```
+
+The platform scripts forward options to the application as well:
+
+```bash
+./run.sh --ip 192.168.1.20 --port 8080 --no-window
+```
+
+Windows accepts both `--option` and `/option` syntax:
+
+```bat
+run.bat /ip 192.168.1.20 /port 8080 /no-window
+```
+
+| Option | Windows form | Meaning |
+|---|---|---|
+| `--ip ADDRESS` | `/ip ADDRESS` | IPv4 address on which the server listens. |
+| `--port PORT` | `/port PORT` | Server port in the 1–65535 range. |
+| `--no-window` | `/no-window` | Runs only the server, without a WebView window. |
+| `--help`, `-h` | `/help`, `/h` | Displays help and exits. |
+
+In `--no-window` mode the terminal prints the application URL. Open it in a browser and stop the server with `Ctrl+C`. Binding outside localhost allows other devices on the same network to access application data, so use this mode only on a trusted network.
 
 ## Data and privacy
 

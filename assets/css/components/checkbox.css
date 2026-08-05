@@ -1,0 +1,31 @@
+.component-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.component-checkbox input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--accent-color);
+}
+
+.component-checkbox--strong {
+    min-height: 38px;
+    color: var(--text-primary);
+    font-weight: 800;
+}
+
+.component-checkbox--disabled {
+    color: #98a3ad;
+    cursor: default;
+}
+
+.component-checkbox input:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}

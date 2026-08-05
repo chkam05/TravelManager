@@ -1,0 +1,1513 @@
+body[data-theme="dark"] {
+    --app-background: #12171d;
+    --surface-background: #1b222a;
+    --surface-muted: #161d24;
+    --text-primary: #edf2f6;
+    --text-secondary: #aab6c2;
+    --border-color: rgba(224, 233, 240, 0.14);
+    --control-background: #242d36;
+    --control-hover: #2b3742;
+    --accent-hover: color-mix(in srgb, var(--accent-color) 78%, #ffffff);
+    color-scheme: dark;
+}
+
+body[data-theme="dark"],
+body[data-theme="dark"] .content,
+body[data-theme="dark"] .settings-view,
+body[data-theme="dark"] .information-view,
+body[data-theme="dark"] .home-view,
+body[data-theme="dark"] [class$="-view"] {
+    color: var(--text-primary);
+    background-color: var(--surface-muted);
+}
+
+body[data-theme="dark"] .header,
+body[data-theme="dark"] [class$="__header"],
+body[data-theme="dark"] [class$="__toolbar"],
+body[data-theme="dark"] [class$="__card"],
+body[data-theme="dark"] [class$="__section"],
+body[data-theme="dark"] [class$="__tile"],
+body[data-theme="dark"] [class$="__panel"],
+body[data-theme="dark"] [role="dialog"] {
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    background-color: var(--surface-background);
+}
+
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] strong,
+body[data-theme="dark"] dt {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] p,
+body[data-theme="dark"] small,
+body[data-theme="dark"] dd {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] button,
+body[data-theme="dark"] input,
+body[data-theme="dark"] select,
+body[data-theme="dark"] textarea {
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    background-color: var(--control-background);
+}
+
+body[data-theme="dark"] button:hover {
+    background-color: var(--control-hover);
+}
+
+body[data-theme="dark"] input::placeholder,
+body[data-theme="dark"] textarea::placeholder {
+    color: #8493a1;
+}
+
+body[data-theme="dark"] input:focus,
+body[data-theme="dark"] select:focus,
+body[data-theme="dark"] textarea:focus {
+    border-color: var(--accent-color);
+    outline: 2px solid var(--accent-soft);
+    outline-offset: 1px;
+}
+
+body[data-theme="dark"] .header {
+    border-color: var(--border-color);
+    background: rgba(27, 34, 42, 0.94);
+}
+
+body[data-theme="dark"] .header__menu-button,
+body[data-theme="dark"] .header__map-button,
+body[data-theme="dark"] .header__car-button,
+body[data-theme="dark"] .header__save-button,
+body[data-theme="dark"] .header__search-actions,
+body[data-theme="dark"] .app-view__back-button {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
+}
+
+body[data-theme="dark"] .header__menu-button span {
+    background: var(--text-primary);
+}
+
+body[data-theme="dark"] .side-menu {
+    border-color: var(--border-color);
+    background: rgba(27, 34, 42, 0.97);
+    color: var(--text-primary);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.48);
+}
+
+body[data-theme="dark"] .side-menu__item:not(:hover):not(:focus-visible):not(.side-menu__item--active) {
+    background: transparent;
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .side-menu__item:is(:hover, :focus-visible),
+body[data-theme="dark"] .side-menu__item--active {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body[data-theme="dark"] .side-menu__item:is(:hover, :focus-visible, .side-menu__item--active) svg {
+    color: var(--accent-color);
+}
+
+body[data-theme="dark"] .header__menu-button:is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+}
+
+body[data-theme="dark"] .header__menu-button:is(:hover, :focus-visible) span {
+    background: var(--accent-hover);
+}
+
+body[data-theme="dark"] .side-menu__separator {
+    background: var(--border-color);
+}
+
+body .side-menu__item svg,
+body .settings-view__tab svg,
+body :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) [class$="__header"] > svg {
+    color: var(--accent-color);
+}
+
+body[data-theme="dark"] .settings-view__toolbar,
+body[data-theme="dark"] .information-view__toolbar,
+body[data-theme="dark"] .settings-view__tabs {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+}
+
+body[data-theme="dark"] .settings-view__tab {
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] .settings-view__tab:hover {
+    background: var(--control-hover);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .settings-view__body,
+body[data-theme="dark"] .settings-view__tab-panel,
+body[data-theme="dark"] .appearance-settings {
+    background: var(--surface-muted);
+}
+
+body[data-theme="dark"] .appearance-settings__section,
+body[data-theme="dark"] .settings-view__section,
+body[data-theme="dark"] .settings-view__card,
+body[data-theme="dark"] .settings-view__titlebar,
+body[data-theme="dark"] .settings-view__card-titlebar,
+body[data-theme="dark"] .settings-view__section-content,
+body[data-theme="dark"] .settings-view__card-content {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+}
+
+body[data-theme="dark"] .settings-view__value {
+    border-color: var(--border-color);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) {
+    overflow: hidden;
+    border-color: var(--border-color);
+    border-radius: 16px;
+    background: rgba(27, 34, 42, 0.97);
+    color: var(--text-primary);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.48);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) :is([class$="__header"], [class$="__footer"], [class$="__toolbar"], [class$="__controls"]) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) :is([class$="__body"], [class$="__content"], [class$="__view"], [class$="__list"]) {
+    background: var(--surface-muted);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) :is([class$="__section"], [class$="__item"], [class$="__group"], [class$="__row"], [class$="__option"]) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) :is(button, input, select, textarea) {
+    border-color: var(--border-color);
+    background-color: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .public-transport-view,
+body[data-theme="dark"] .public-transport-view__content {
+    background: var(--surface-muted);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .public-transport-view__header,
+body[data-theme="dark"] .public-transport-header,
+body[data-theme="dark"] .public-transport-detail__sidebar {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-carriers__tile,
+    .public-transport-lines__group,
+    .public-transport-lines__tile,
+    .public-transport-stops__city,
+    .public-transport-stops__item,
+    .public-transport-stops__platform,
+    .public-transport-line-view__direction,
+    .public-transport-line-stop__day,
+    .public-transport-line-stop__variant,
+    .public-transport-stop-lines__list article,
+    .public-transport-ride__summary,
+    .public-transport-announcements,
+    .public-transport-table-wrap
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-lines__group-header,
+    .public-transport-stops__city-header,
+    .public-transport-table thead,
+    .public-transport-table tr:nth-child(even)
+) {
+    background: var(--control-background);
+}
+
+body[data-theme="dark"] .public-transport-view :is(button, input, select),
+body[data-theme="dark"] .public-transport-panel :is(button, input, select) {
+    border-color: var(--border-color);
+    background-color: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .public-transport-view :is(h2, h3, h4, strong, th, td),
+body[data-theme="dark"] .public-transport-panel :is(h2, h3, h4, strong) {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .public-transport-view :is(p, small, .public-transport-header__description, .public-transport-lines__count, .public-transport-line-view__platform),
+body[data-theme="dark"] .public-transport-panel :is(p, small, .public-transport-panel__status, .public-transport-panel__live-status) {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] [class$="__close"]::before,
+body[data-theme="dark"] [class$="__close"]::after {
+    background: var(--text-primary);
+}
+
+body[data-theme="dark"] .leaflet-popup-content-wrapper,
+body[data-theme="dark"] .leaflet-popup-tip,
+body[data-theme="dark"] .leaflet-control {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .leaflet-control button,
+body[data-theme="dark"] .leaflet-control a {
+    border-color: var(--border-color);
+    background-color: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .car-profiles-view__item,
+    .favourites-view__item,
+    .favourites-tags-view__item,
+    .my-routes-view__item,
+    .fuel-cost-view__item,
+    .fuel-cost-view__table,
+    .fuel-cost-view__table-wrap,
+    .home-view__tile
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .car-profiles-view__sort-menu,
+    .favourites-view__sort-menu,
+    .favourites-view__tag-filter-menu,
+    .favourites-tags-view__sort-menu,
+    .my-routes-view__sort-menu,
+    .my-routes-view__menu,
+    .fuel-cost-view__sort-menu
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.36);
+}
+
+body[data-theme="dark"] :is(
+    .car-profiles-view__name,
+    .favourites-view__name,
+    .favourites-tags-view__name,
+    .my-routes-view__title,
+    .fuel-cost-view__name
+) {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .car-profiles-view__meta,
+    .car-profiles-view__spec,
+    .favourites-view__address,
+    .favourites-view__coordinates,
+    .favourites-tags-view__meta,
+    .my-routes-view__distance,
+    .my-routes-view__duration,
+    .fuel-cost-view__meta
+) {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] :is(
+    .car-profiles-view__image,
+    .favourites-view__icon,
+    .favourites-tags-view__icon,
+    .my-routes-view__icon
+) {
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] [role="dialog"] :is(
+    [class$="__header"],
+    [class$="__content"],
+    [class$="__footer"],
+    [class$="__selected"],
+    [class$="__selected-icon"],
+    [class$="__presets"]
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] [role="dialog"] :is(label, strong, span) {
+    color: inherit;
+}
+
+body[data-theme="dark"] table {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(th, td) {
+    border-color: var(--border-color);
+}
+/*
+ * Dark-theme color layer.
+ * Layout and component geometry remain in their view/component stylesheets.
+ */
+
+body[data-theme="dark"] {
+    --app-background: #12171d;
+    --surface-background: #1b222a;
+    --surface-muted: #161d24;
+    --text-primary: #edf2f6;
+    --text-secondary: #aab6c2;
+    --border-color: rgba(224, 233, 240, 0.14);
+    --control-background: #242d36;
+    --control-hover: #2b3742;
+    --accent-hover: color-mix(in srgb, var(--accent-color) 78%, #ffffff);
+    color-scheme: dark;
+}
+
+body[data-theme="dark"] :is(
+    .settings-view__transfer,
+    .settings-view__context-menu,
+    .information-view__header,
+    .fuel-cost-view__meta,
+    .fuel-cost-view__table-wrap,
+    .route-details-panel__summary,
+    .route-details-panel__transport,
+    .route-details-panel__menu,
+    .route-details-panel__config,
+    .route-details-panel__configuration,
+    .car-details-panel__group,
+    .place-details-panel__group,
+    .place-details-panel__group-title,
+    .place-details-panel__section,
+    .place-details-panel__section-title,
+    .route-details-panel__group,
+    .route-details-panel__group-title,
+    .route-details-panel__fuel,
+    .route-details-panel__settings,
+    .route-details-panel__separator,
+    .car-details-panel__group-title
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .map-toolbar {
+    border-color: var(--border-color);
+    background: rgba(27, 34, 42, 0.94);
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.38);
+}
+
+body[data-theme="dark"] :is(
+    .settings-view__context-menu,
+    .my-routes-view__menu,
+    .my-routes-view__sort-menu,
+    .favourites-view__sort-menu,
+    .favourites-view__tag-filter-menu,
+    .favourites-tags-view__sort-menu,
+    .car-profiles-view__sort-menu,
+    .fuel-cost-view__sort-menu,
+    .route-details-panel__menu
+) {
+    gap: 5px;
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--surface-background);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
+}
+
+body[data-theme="dark"] :is(
+    .settings-view__context-menu-button,
+    .my-routes-view__menu button,
+    .my-routes-view__sort-menu button,
+    .favourites-view__sort-menu button,
+    .favourites-tags-view__sort-menu button,
+    .car-profiles-view__sort-menu button,
+    .fuel-cost-view__sort-menu button
+) {
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .settings-view__transfer svg,
+body[data-theme="dark"] .settings-view__transfer button svg {
+    color: var(--accent-color);
+}
+
+body[data-theme="dark"] :is(
+    .map-toolbar__button,
+    .header__map-button,
+    .header__car-button,
+    .header__save-button
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .map-toolbar__button,
+    .header__map-button,
+    .header__car-button,
+    .header__save-button
+):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-panel__live-status {
+    border-color: var(--border-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-panel__status,
+    .public-transport-panel__empty,
+    .public-transport-panel__provider label,
+    .public-transport-panel__controls label
+) {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-line-stop__day > header,
+    .public-transport-stop-lines__list article > header,
+    .public-transport-lines__group-header,
+    .public-transport-stops__city-header,
+    .public-transport-announcements > header
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-line-stop__departures button,
+    .public-transport-stop-lines__departures > button,
+    .public-transport-panel .public-transport-stop-lines__departures button,
+    .public-transport-line-view__stops button,
+    .public-transport-collapse-button
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-stops__city,
+    .public-transport-stops__item,
+    .public-transport-stops__platform,
+    .public-transport-stops__platforms,
+    .public-transport-line-view__direction,
+    .public-transport-line-view__stops li,
+    .public-transport-line-stop__day,
+    .public-transport-line-stop__variant,
+    .public-transport-stop-lines__list article,
+    .public-transport-stop-lines__content,
+    .public-transport-carriers__tile
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-line-stop__variant-list,
+    .public-transport-line-stop__variant-list section,
+    .public-transport-line-stop__variant strong,
+    .public-transport-announcements__list button,
+    .public-transport-carriers__sources
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-line-stop__variant span,
+    .public-transport-line-stop__variant-date,
+    .public-transport-carriers__attribution,
+    .public-transport-carriers__tile small
+) {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] .public-transport-carriers__icon,
+body[data-theme="dark"] .public-transport-line-stop__variant strong {
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-carriers__tile svg,
+body[data-theme="dark"] .public-transport-header__button svg,
+body[data-theme="dark"] .public-transport-collapse-button svg {
+    color: var(--accent-color);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-view,
+    .public-transport-view__content,
+    .public-transport-lines,
+    .public-transport-stops,
+    .public-transport-detail
+) :is(button, input, select):not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .fuel-cost-view__table th,
+    .fuel-cost-view__table td,
+    .fuel-cost-view__meta,
+    .fuel-cost-view__meta strong,
+    .fuel-cost-view__meta span
+) {
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .fuel-cost-view__table tbody tr {
+    background: var(--surface-background);
+}
+
+body[data-theme="dark"] .fuel-cost-view__table th {
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .fuel-cost-view__table td {
+    background: transparent;
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .fuel-cost-view__table tbody tr:is(:hover, :focus-within) {
+    background: var(--accent-soft);
+}
+
+body[data-theme="dark"] .fuel-cost-view__table tbody tr:is(:hover, :focus-within) td {
+    background: transparent;
+}
+
+body[data-theme="dark"] :is(
+    .fuel-update__content,
+    .fuel-update__header,
+    .fuel-update__footer,
+    .fuel-update__item,
+    .fuel-update__status,
+    .fuel-cost-editor__content,
+    .fuel-cost-editor__header,
+    .fuel-cost-editor__footer
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .fuel-update input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+body[data-theme="dark"] :is(
+    .fuel-update__country,
+    .fuel-update__checkbox
+) {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .fuel-update label {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .route-details-panel__point,
+    .route-details-panel__instruction,
+    .route-details-panel__separator,
+    .route-details-panel__fuel,
+    .route-details-panel__settings,
+    .route-details-panel__tab,
+    .route-details-panel__summary,
+    .route-details-panel__transport,
+    .route-details-panel__transport-button,
+    .route-details-panel__config-row,
+    .route-details-panel__configuration-row,
+    .car-details-panel__row,
+    .car-details-panel__group,
+    .place-details-panel__row,
+    .place-details-panel__group
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .route-details-panel__fuel-header strong,
+    .route-details-panel__settings legend,
+    .route-details-panel__checkbox,
+    .route-details-panel__point-name,
+    .route-details-panel__separator-content strong,
+    .route-details-panel__instruction-content strong,
+    .route-details-panel__summary-grid strong,
+    .car-details-panel__group-title,
+    .car-details-panel__row strong,
+    .place-details-panel__section-title,
+    .place-details-panel__item dd,
+    .place-details-panel__title
+) {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .route-details-panel__fuel-header,
+    .route-details-panel__separator-content small,
+    .route-details-panel__instruction-content small,
+    .route-details-panel__instruction-meta,
+    .route-details-panel__summary-grid span,
+    .car-details-panel__row span,
+    .place-details-panel__item dt,
+    .place-details-panel__status
+) {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] .route-details-panel__separator--economic {
+    background: color-mix(in srgb, #2f9b62 12%, var(--surface-background));
+}
+
+body[data-theme="dark"] .route-details-panel__separator--average {
+    background: color-mix(in srgb, #d99a24 12%, var(--surface-background));
+}
+
+body[data-theme="dark"] .route-details-panel__separator--dynamic {
+    background: color-mix(in srgb, #c23b3b 12%, var(--surface-background));
+}
+
+body[data-theme="dark"] :is(
+    .legend-details-panel__section,
+    .legend-details-panel__item,
+    .layer-details-panel__section,
+    .layer-details-panel__item,
+    .place-details-panel__section,
+    .car-details-panel__group
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .legend-details-panel__section-title,
+    .legend-details-panel__title,
+    .legend-details-panel__item strong,
+    .layer-details-panel__section-title,
+    .layer-details-panel__title,
+    .layer-details-panel__option strong
+) {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .legend-details-panel__description,
+    .legend-details-panel__status,
+    .layer-details-panel__empty,
+    .place-details-panel__tag
+) {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] :is(
+    .route-details-panel__point small,
+    .route-details-panel__instruction small,
+    .route-details-panel__summary span,
+    .route-details-panel__config-row span,
+    .route-details-panel__configuration-row span,
+    .car-details-panel__row span,
+    .place-details-panel__row span
+) {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] :is(
+    .route-details-panel__content,
+    .route-details-panel__configuration,
+    .route-details-panel__config,
+    .car-details-panel__content,
+    .place-details-panel__content
+) {
+    min-width: 0;
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .route-details-panel__config-row,
+    .route-details-panel__configuration-row,
+    .car-details-panel__row,
+    .place-details-panel__row
+) > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+body[data-theme="dark"] :is(
+    .route-details-panel__checkbox span,
+    .route-details-panel__fuel-header span,
+    .route-details-panel__fuel-header strong
+) {
+    max-width: 100%;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+body[data-theme="dark"] :is(
+    .advanced-search__groupbox,
+    .car-profile-editor__group,
+    .route-editor__selected,
+    .favourites-editor__selected,
+    .favourites-tag-editor__selected
+) {
+    border-color: var(--border-color);
+    background: var(--surface-muted);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] [role="dialog"] :is(
+    [class$="__tab"],
+    [class$="__preset"],
+    [class$="__small-button"],
+    [class$="__button"]
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] [role="dialog"] :is(
+    [class$="__tab"],
+    [class$="__preset"],
+    [class$="__small-button"],
+    [class$="__button"]
+):not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .information-view__header,
+    .information-view__content,
+    .information-view__section
+) {
+    border-color: var(--border-color);
+    background: var(--surface-muted);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] select {
+    color-scheme: dark;
+}
+
+body[data-theme="dark"] :is(
+    .home-view,
+    .home-view__header,
+    .home-view__section,
+    .home-view__section-header
+) {
+    background: var(--surface-muted);
+}
+
+/* Shared side-panel interactions */
+body[data-theme="dark"] :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) button:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) button:not(:disabled):focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--accent-color) 72%, transparent);
+    outline-offset: 2px;
+}
+
+body[data-theme="dark"] [class$="__close"]:is(:hover, :focus-visible)::before,
+body[data-theme="dark"] [class$="__close"]:is(:hover, :focus-visible)::after {
+    background: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-panel,
+    .place-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .advanced-search,
+    .search-results-panel
+) :is(input, select, textarea):focus-visible {
+    border-color: var(--accent-color);
+    outline: 2px solid color-mix(in srgb, var(--accent-color) 72%, transparent);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+body[data-theme="dark"] .public-transport-panel__header {
+    grid-template-columns: auto auto minmax(0, 1fr) auto auto auto;
+}
+
+body[data-theme="dark"] .public-transport-panel__close {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+body[data-theme="dark"] .public-transport-panel__header [data-public-transport-panel-back] {
+    grid-column: 2;
+}
+
+body[data-theme="dark"] .public-transport-panel__header h2 {
+    grid-column: 3;
+}
+
+body[data-theme="dark"] .public-transport-collapse-button,
+body[data-theme="dark"] .public-transport-collapse-button svg {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] .public-transport-collapse-button:is(:hover, :focus-visible),
+body[data-theme="dark"] .public-transport-collapse-button:is(:hover, :focus-visible) svg {
+    color: var(--accent-hover);
+}
+
+/* Place, legend and layer panel surfaces */
+body[data-theme="dark"] :is(
+    .place-details-panel__section-title,
+    .legend-details-panel__section-title,
+    .layer-details-panel__section-title,
+    .car-details-panel__group-title
+) {
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel__section,
+    .legend-details-panel__section,
+    .layer-details-panel__section,
+    .car-details-panel__group
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+}
+
+body[data-theme="dark"] :is(
+    .legend-details-panel__list,
+    .layer-details-panel__content,
+    .car-details-panel__content
+) {
+    background: var(--surface-muted);
+}
+
+body[data-theme="dark"] .place-details-panel__list {
+    background: var(--surface-background);
+}
+
+body[data-theme="dark"] :is(
+    .layer-details-panel__option,
+    .layer-details-panel__tag-option
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .layer-details-panel__option small {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] .layer-details-panel__option--disabled {
+    background: var(--surface-muted);
+    color: var(--text-secondary);
+    opacity: 0.72;
+    pointer-events: none;
+}
+
+body[data-theme="dark"] :is(
+    .layer-details-panel__option,
+    .layer-details-panel__tag-option,
+    .place-details-panel__toggle
+):not(.layer-details-panel__option--disabled):not([aria-disabled="true"]):is(:hover, :focus-within) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel__toggle input,
+    .layer-details-panel__option input,
+    .layer-details-panel__tag-option input
+):focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Public transport contrast and interactions */
+body[data-theme="dark"] .public-transport-carriers__sources {
+    background: transparent;
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-carriers__sources-list,
+    .public-transport-carriers__attribution
+) {
+    background: transparent;
+}
+
+body[data-theme="dark"] .public-transport-line-view__cities span {
+    background: var(--surface-muted);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-line-pill,
+    [data-public-transport-header-line-pill]
+) {
+    border-color: color-mix(in srgb, var(--accent-color) 50%, var(--border-color));
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-line-pill strong,
+    [data-public-transport-header-line]
+) {
+    color: currentColor;
+}
+
+body[data-theme="dark"] .public-transport-table thead,
+body[data-theme="dark"] .public-transport-table th {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .public-transport-panel__all-lines,
+    .public-transport-panel__empty button,
+    .public-transport-panel [data-public-transport-panel-update],
+    .public-transport-panel .public-transport-stops__toggle,
+    .public-transport-panel .public-transport-line-stop__departures button,
+    .public-transport-panel .public-transport-stop-lines__departures button
+):not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-line-stop__departure-meta {
+    color: var(--accent-hover);
+}
+
+/* Menus and dialogs */
+body[data-theme="dark"] :is(
+    .my-routes-view__menu button,
+    .my-routes-view__sort-menu button,
+    .route-details-panel__menu-button
+) {
+    border: 1px solid transparent;
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .my-routes-view__menu button,
+    .my-routes-view__sort-menu button,
+    .route-details-panel__menu-button
+):not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] [role="dialog"] button[class*="__button--primary"] {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: #ffffff;
+}
+
+body[data-theme="dark"] [role="dialog"] button[class*="__button--primary"]:is(:hover, :focus-visible) {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+    color: #ffffff;
+}
+
+body[data-theme="dark"] :is(
+    .yesno-dialog__header,
+    .yesno-dialog__content,
+    .yesno-dialog__footer
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+/* Advanced search and search results */
+body[data-theme="dark"] :is(
+    .advanced-search,
+    .advanced-search__header,
+    .advanced-search__content,
+    .advanced-search__footer,
+    .advanced-search__groupbox
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .advanced-search__group-title {
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .advanced-search__choice {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .advanced-search__choice-icon {
+    border-color: var(--border-color);
+    background: var(--surface-muted);
+    color: var(--text-secondary);
+    box-shadow: none;
+}
+
+body[data-theme="dark"] .advanced-search__choice:is(:hover, :focus-visible),
+body[data-theme="dark"] .advanced-search__choice:is(:hover, :focus-visible) .advanced-search__choice-icon {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .advanced-search__choice--active,
+body[data-theme="dark"] .advanced-search__choice--active .advanced-search__choice-icon {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .search-results-panel__item,
+    .search-results-panel__action,
+    .search-results-panel__retry
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .search-results-panel__item,
+    .search-results-panel__action,
+    .search-results-panel__retry
+):is(:hover, :focus-visible, :focus-within) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .search-results-panel__item-title,
+    .search-results-panel__title
+) {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .search-results-panel__item-subtitle,
+    .search-results-panel__item-coordinates,
+    .search-results-panel__subtitle,
+    .search-results-panel__status
+) {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] .header__search-button,
+body[data-theme="dark"] .header__advanced-search-button {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .header__search-button:is(:hover, :focus-visible),
+body[data-theme="dark"] .header__advanced-search-button:is(:hover, :focus-visible) {
+    color: var(--accent-hover);
+}
+
+/* Final panel alignment and compact group spacing */
+body[data-theme="dark"] .public-transport-panel__header {
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto auto;
+}
+
+body[data-theme="dark"] .public-transport-panel__header [data-public-transport-panel-back] {
+    grid-column: 1;
+}
+
+body[data-theme="dark"] .public-transport-panel__header h2 {
+    grid-column: 2;
+}
+
+body[data-theme="dark"] .public-transport-panel__header [data-public-transport-panel-map] {
+    grid-column: 3;
+}
+
+body[data-theme="dark"] .public-transport-panel__header [data-public-transport-panel-vehicles] {
+    grid-column: 4;
+}
+
+body[data-theme="dark"] .public-transport-panel__header [data-public-transport-panel-stop-map] {
+    grid-column: 5;
+}
+
+body[data-theme="dark"] .public-transport-panel__close {
+    grid-column: 6;
+    grid-row: 1;
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel__list,
+    .legend-details-panel__list
+) {
+    gap: 8px;
+    background: var(--surface-background);
+}
+
+body[data-theme="dark"] :is(
+    .place-details-panel__item,
+    .legend-details-panel__item
+) {
+    border: 0;
+    background: transparent;
+}
+
+body[data-theme="dark"] .place-details-panel__section + .place-details-panel__section {
+    margin-top: 14px;
+}
+
+body[data-theme="dark"] .route-details-panel__drag {
+    border-color: transparent;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: var(--text-secondary);
+    box-shadow: none;
+}
+
+body[data-theme="dark"] .route-details-panel__drag:is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft) !important;
+    background-color: var(--accent-soft) !important;
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .route-details-panel__more {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] .route-details-panel__more:is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] :is(
+    .settings-view__header,
+    .settings-view__group,
+    .settings-view__group-header,
+    .settings-view__tab-panel
+) {
+    background: var(--surface-muted);
+}
+
+body[data-theme="dark"] #settings-panel-application :is(
+    .settings-view__group,
+    .settings-view__group-header
+) {
+    color: var(--text-primary);
+    background: var(--surface-muted);
+}
+
+body[data-theme="dark"] #settings-panel-application .settings-view__card {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+}
+
+/* Leaflet text, controls and speech bubbles */
+body[data-theme="dark"] :is(
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip,
+    .leaflet-tooltip,
+    .leaflet-bar,
+    .leaflet-control-layers,
+    .leaflet-control-attribution
+) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .leaflet-popup-content,
+    .leaflet-popup-content p,
+    .leaflet-tooltip,
+    .leaflet-control-attribution
+) {
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] :is(
+    .leaflet-popup-content a,
+    .leaflet-control-attribution a
+) {
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .leaflet-popup-close-button {
+    color: var(--text-secondary);
+}
+
+body[data-theme="dark"] .leaflet-popup-close-button:is(:hover, :focus-visible) {
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .leaflet-tooltip-top::before {
+    border-top-color: var(--surface-background);
+}
+
+body[data-theme="dark"] .leaflet-tooltip-bottom::before {
+    border-bottom-color: var(--surface-background);
+}
+
+body[data-theme="dark"] .leaflet-tooltip-left::before {
+    border-left-color: var(--surface-background);
+}
+
+body[data-theme="dark"] .leaflet-tooltip-right::before {
+    border-right-color: var(--surface-background);
+}
+
+/* Unified public-transport panel groups and items */
+body[data-theme="dark"] .public-transport-panel :is(
+    .public-transport-lines__group,
+    .public-transport-line-stop__day,
+    .public-transport-stop-lines__list article
+) {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    background: var(--surface-background);
+    box-shadow: none;
+}
+
+body[data-theme="dark"] .public-transport-panel :is(
+    .public-transport-lines__group-header,
+    .public-transport-line-stop__day > header,
+    .public-transport-stop-lines__list article > header
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .public-transport-panel :is(
+    .public-transport-lines__tile,
+    .public-transport-line-view__stops button,
+    .public-transport-line-stop__departures button,
+    .public-transport-stop-lines__departures > button
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .public-transport-panel :is(
+    .public-transport-lines__tile,
+    .public-transport-line-view__stops button,
+    .public-transport-line-stop__departures button,
+    .public-transport-stop-lines__departures > button
+):not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-panel .public-transport-stop-lines__list article > header > button:last-child {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body[data-theme="dark"] .public-transport-panel .public-transport-stop-lines__list article > header > button:last-child:is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-panel .public-transport-line-view__stops li > button:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+body[data-theme="dark"] .public-transport-panel .public-transport-line-view__stops li > button:not(:disabled):is(:hover, :focus-visible) :is(
+    strong,
+    small,
+    .public-transport-line-view__platform,
+    svg
+) {
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-panel :is(
+    .public-transport-line-stop__departures,
+    .public-transport-stop-lines__departures
+) > button:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+body[data-theme="dark"] .public-transport-panel :is(
+    .public-transport-line-stop__departures,
+    .public-transport-stop-lines__departures
+) > button:not(:disabled):is(:hover, :focus-visible) :is(span, small, svg) {
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-view .public-transport-stops__toggle:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+body[data-theme="dark"] .public-transport-view .public-transport-stops__toggle:not(:disabled):is(:hover, :focus-visible) :is(
+    strong,
+    small,
+    svg
+) {
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+body[data-theme="dark"] .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) :is(
+    strong,
+    span,
+    svg
+) {
+    color: var(--accent-hover);
+}
+
+body[data-theme="dark"] .public-transport-view .public-transport-stop-lines__list article > header button:is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}

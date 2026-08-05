@@ -181,9 +181,9 @@
 }
 
 .place-details-panel__tab--active {
-    border-color: rgba(31, 111, 174, 0.42);
-    background: #eaf4fc;
-    color: #1f6fae;
+    border-color: color-mix(in srgb, var(--accent-color) 42%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .place-details-panel__title {
@@ -274,7 +274,7 @@
 }
 
 .place-details-panel__link {
-    color: #1f6fae;
+    color: var(--accent-color);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
@@ -373,7 +373,7 @@
 }
 
 .place-details-panel__favourite-edit {
-    color: #1f6fae;
+    color: var(--accent-color);
 }
 
 .place-details-panel__favourite-remove {
@@ -385,9 +385,9 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    border-color: rgba(31, 111, 174, 0.34);
-    background: #eef7fc;
-    color: #1f6fae;
+    border-color: color-mix(in srgb, var(--accent-color) 34%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .place-details-panel__route-icon {

@@ -1,0 +1,97 @@
+.appearance-settings {
+    display: grid;
+    gap: 30px;
+}
+
+.appearance-settings__section {
+    display: grid;
+    gap: 16px;
+    padding: 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--surface-background);
+}
+
+.appearance-settings__section > header h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.16rem;
+}
+
+.appearance-settings__section > header p {
+    margin: 5px 0 0;
+    color: var(--text-secondary);
+    line-height: 1.45;
+}
+
+.appearance-settings__theme-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 220px));
+    gap: 14px;
+}
+
+.appearance-settings__theme {
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 11px;
+    background: var(--surface-background);
+    color: var(--text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.appearance-settings__theme[aria-checked="true"] {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.appearance-settings__theme-preview {
+    display: grid;
+    place-items: center;
+    height: 82px;
+    border: 1px solid rgba(127, 138, 148, 0.24);
+    border-radius: 8px;
+}
+
+.appearance-settings__theme-preview svg {
+    width: 26px;
+    height: 26px;
+}
+
+.appearance-settings__theme-preview--light {
+    background: #f4f7f8;
+    color: #20242a;
+}
+
+.appearance-settings__theme-preview--dark {
+    background: #161d24;
+    color: #edf2f6;
+}
+
+.appearance-settings__preset-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.appearance-settings__recent-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    min-height: 56px;
+}
+
+.appearance-settings__empty {
+    align-self: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+    .appearance-settings__theme-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

@@ -9,6 +9,6 @@ if exist ".venv\Scripts\python.exe" (
     set "PYTHON=python"
 )
 
-"%PYTHON%" app.py
+"%PYTHON%" app.py %*
 
 endlocal

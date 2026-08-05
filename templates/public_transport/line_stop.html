@@ -35,8 +35,12 @@
                         {% for departure in day.departures %}
                             <button type="button"{% if capabilities.show_ride and departure.url %} data-public-transport-action="ride" data-url="{{ departure.url }}" title="Pokaż kurs"{% endif %}{% if not capabilities.show_ride or not departure.url %} disabled{% endif %}>
                                 <span>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</span>
-                                {% if departure.variant %}<small title="{{ departure.variant }}">{{ variant_codes.get(departure.variant, departure.variant) }}</small>{% endif %}
-                                {% if capabilities.show_high_floor and departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
+                                {% if departure.variant or (capabilities.show_high_floor and departure.is_high_floor) %}
+                                    <span class="public-transport-line-stop__departure-meta">
+                                        {% if departure.variant %}<small title="{{ departure.variant }}">{{ variant_codes.get(departure.variant, departure.variant) }}</small>{% endif %}
+                                        {% if capabilities.show_high_floor and departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
+                                    </span>
+                                {% endif %}
                             </button>
                         {% else %}
                             <span class="public-transport-empty">Brak odjazdów.</span>

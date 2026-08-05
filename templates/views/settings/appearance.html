@@ -1,0 +1,44 @@
+<div class="appearance-settings" data-appearance-settings>
+    <section class="appearance-settings__section">
+        <header>
+            <h3>Motyw</h3>
+            <p>Wybierz jasny albo ciemny wariant interfejsu.</p>
+        </header>
+        <div class="appearance-settings__theme-grid" role="radiogroup" aria-label="Motyw aplikacji">
+            <button class="appearance-settings__theme" type="button" data-appearance-theme="light" role="radio" aria-checked="false">
+                <span class="appearance-settings__theme-preview appearance-settings__theme-preview--light"><i data-lucide="sun" aria-hidden="true"></i></span>
+                <strong>Jasny</strong>
+            </button>
+            <button class="appearance-settings__theme" type="button" data-appearance-theme="dark" role="radio" aria-checked="false">
+                <span class="appearance-settings__theme-preview appearance-settings__theme-preview--dark"><i data-lucide="moon" aria-hidden="true"></i></span>
+                <strong>Ciemny</strong>
+            </button>
+        </div>
+    </section>
+
+    <section class="appearance-settings__section">
+        <header>
+            <h3>Kolor wiodący</h3>
+            <p>Kolor aktywnych elementów, przycisków i wyróżnień.</p>
+        </header>
+        <div class="appearance-settings__preset-grid" role="radiogroup" aria-label="Kolor wiodący">
+            {% for preset in color_presets %}
+                <button class="color-tile" type="button" data-appearance-color="{{ preset.code }}" role="radio" aria-checked="false" title="{{ preset.name_pl }} ({{ preset.code }})">
+                    <span class="color-tile__swatch" style="--color-tile-value: {{ preset.code }}"></span>
+                </button>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="appearance-settings__section">
+        <header>
+            <h3>Ostatnio używane</h3>
+            <p>Ostatnich pięć własnych kolorów.</p>
+        </header>
+        <div class="appearance-settings__recent-row" data-appearance-recent-colors></div>
+        <button class="component-button" type="button" data-appearance-add-color>
+            <i data-lucide="plus" aria-hidden="true"></i>
+            <span>Dodaj kolor</span>
+        </button>
+    </section>
+</div>

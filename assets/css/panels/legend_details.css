@@ -150,9 +150,9 @@
 }
 
 .legend-details-panel__tab--active {
-    border-color: rgba(31, 111, 174, 0.42);
-    background: #eaf4fc;
-    color: #1f6fae;
+    border-color: color-mix(in srgb, var(--accent-color) 42%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .legend-details-panel__content {

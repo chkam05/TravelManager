@@ -194,7 +194,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             const more = document.createElement('button');
             more.className = 'my-routes-view__more';
             more.type = 'button';
-            more.textContent = '...';
+            more.innerHTML = '<i data-lucide="ellipsis" aria-hidden="true"></i>';
             more.setAttribute('aria-label', `Opcje trasy ${routeName(route)}`);
             more.addEventListener('click', (event) => {
                 event.stopPropagation();
@@ -203,6 +203,12 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             item.append(icon, title, distance, duration, more);
             list.append(item);
+        });
+
+        window.lucide?.createIcons({
+            attrs: {
+                'stroke-width': 2
+            }
         });
     };
 

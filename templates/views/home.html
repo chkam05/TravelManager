@@ -1,0 +1,37 @@
+<div class="home-view">
+    <header class="home-view__header">
+        <h2>{{ app_name }}</h2>
+    </header>
+
+    {% for section in home_sections %}
+        <section class="home-view__section" aria-labelledby="home-group-{{ section.group.id }}">
+            <header class="home-view__section-header">
+                <h3 id="home-group-{{ section.group.id }}">{{ section.group.name }}</h3>
+                {% if section.group.description %}<p>{{ section.group.description }}</p>{% endif %}
+            </header>
+            <div class="home-view__tiles">
+                {% for item in section['items'] %}
+                    {% set navigation_type, navigation_target = item.url.split(':', 1) %}
+                    <button class="home-view__tile" {% if navigation_type == 'view' %}data-navigation-view="{{ navigation_target }}"{% else %}data-navigation-action="{{ navigation_target }}"{% endif %} type="button">
+                        <span class="home-view__tile-icon"><i data-lucide="{{ item.icon }}" aria-hidden="true"></i></span>
+                        <span class="home-view__tile-copy">
+                            <strong>{{ item.name }}</strong>
+                            <small>{{ item.description }}</small>
+                        </span>
+                        <i class="home-view__tile-arrow" data-lucide="chevron-right" aria-hidden="true"></i>
+                    </button>
+                {% endfor %}
+            </div>
+        </section>
+    {% endfor %}
+
+    <label class="home-view__startup-option component-checkbox">
+        <input type="checkbox" data-home-open-on-startup>
+        <span>Po uruchomieniu otwórz Stronę Startową</span>
+    </label>
+
+    <footer class="home-view__footer">
+        <span>Versja: {{ app_version }}</span>
+        <span>Copyright (c) {{ app_author }}</span>
+    </footer>
+</div>

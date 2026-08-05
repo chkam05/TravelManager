@@ -146,9 +146,9 @@ body {
 }
 
 .header__search-input:focus {
-    border-color: rgba(31, 111, 174, 0.65);
+    border-color: color-mix(in srgb, var(--accent-color) 65%, transparent);
     box-shadow:
-        0 0 0 3px rgba(31, 111, 174, 0.14),
+        0 0 0 3px color-mix(in srgb, var(--accent-color) 14%, transparent),
         0 10px 22px rgba(32, 36, 42, 0.08);
 }
 
@@ -208,7 +208,7 @@ body {
 .header__search-button::before {
     width: 15px;
     height: 15px;
-    border: 2px solid #20242a;
+    border: 2px solid currentColor;
     border-radius: 999px;
     transform: translate(-2px, -2px);
 }
@@ -217,7 +217,7 @@ body {
     width: 9px;
     height: 2px;
     border-radius: 999px;
-    background: #20242a;
+    background: currentColor;
     transform: translate(8px, 8px) rotate(45deg);
 }
 
@@ -263,6 +263,101 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.app-view__back-button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    width: 38px;
+    padding: 0;
+    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-radius: 8px;
+    background: #ffffff;
+    color: #20242a;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.app-view__back-button:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    color: var(--accent-hover);
+}
+
+.app-view__back-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.app-view__back-button svg {
+    width: 17px;
+    height: 17px;
+}
+
+.app-view__save-button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    background: var(--accent-color);
+    color: #ffffff;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.app-view__save-button:hover {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+}
+
+.app-view__save-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.app-view__save-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.app-view__save-button svg {
+    width: 17px;
+    height: 17px;
+}
+
+.app-notification {
+    position: fixed;
+    z-index: 2500;
+    right: 24px;
+    bottom: 24px;
+    max-width: min(420px, calc(100vw - 48px));
+    padding: 12px 16px;
+    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-radius: 10px;
+    background: #ffffff;
+    color: #20242a;
+    font-weight: 750;
+    box-shadow: 0 18px 46px rgba(32, 36, 42, 0.22);
+}
+
+.app-notification--success {
+    border-color: rgba(32, 126, 75, 0.35);
+    color: #17633a;
+}
+
+.app-notification--error {
+    border-color: rgba(180, 45, 45, 0.35);
+    color: #a12626;
 }
 
 .side-menu {
@@ -312,13 +407,14 @@ body {
     cursor: pointer;
 }
 
-.side-menu__item:hover {
-    background: rgba(31, 111, 174, 0.08);
+.side-menu__item:is(:hover, :focus-visible) {
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .side-menu__item--active {
-    background: #e5f1f8;
-    color: #155f98;
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .side-menu__icon {

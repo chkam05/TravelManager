@@ -27,11 +27,11 @@
 .public-transport-panel__header [data-public-transport-panel-map] { grid-column:4; }
 .public-transport-panel__header [data-public-transport-panel-vehicles] { grid-column:5; }
 .public-transport-panel__header [data-public-transport-panel-stop-map] { grid-column:6; }
-.public-transport-panel__icon-button { display:grid; place-items:center; width:34px; height:34px; border:1px solid rgba(31,111,174,.25); border-radius:8px; background:#eef7fc; color:#155f98; cursor:pointer; }
+.public-transport-panel__icon-button { display:grid; place-items:center; width:34px; height:34px; border:1px solid color-mix(in srgb, var(--accent-color) 25%, transparent); border-radius:8px; background:var(--accent-soft); color:var(--accent-hover); cursor:pointer; }
 .public-transport-panel__icon-button[hidden] { display:none; }
 .public-transport-panel__icon-button svg { width:18px; }
-.public-transport-panel__icon-button--active { border-color:#155f98; background:#155f98; color:#fff; }
-.public-transport-panel__live-status { display:flex; align-items:center; gap:8px; min-height:32px; padding:0 14px; border-bottom:1px solid rgba(32,36,42,.1); background:#eef7fc; color:#155f98; font-size:.78rem; font-weight:800; }
+.public-transport-panel__icon-button--active { border-color:var(--accent-hover); background:var(--accent-hover); color:#fff; }
+.public-transport-panel__live-status { display:flex; align-items:center; gap:8px; min-height:32px; padding:0 14px; border-bottom:1px solid rgba(32,36,42,.1); background:var(--accent-soft); color:var(--accent-hover); font-size:.78rem; font-weight:800; }
 .public-transport-panel__live-status[hidden] { display:none; }
 .public-transport-panel__live-status svg { width:15px; height:15px; }
 .public-transport-panel__close { position:relative; grid-column:1; grid-row:1; width:30px; height:30px; border:1px solid rgba(32,36,42,.12); border-radius:8px; background:#fff; cursor:pointer; }
@@ -52,8 +52,10 @@
 .public-transport-panel .public-transport-lines__number { font-size:.9rem; }
 .public-transport-panel .public-transport-lines__badges { min-width:0; max-width:100%; flex-wrap:nowrap; overflow:hidden; }
 .public-transport-panel .public-transport-badge { display:block; min-width:0; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.public-transport-panel .public-transport-lines__group { margin-bottom:12px; }
+.public-transport-panel .public-transport-lines { gap:10px; padding:0; }
+.public-transport-panel .public-transport-lines__group { margin:0; }
 .public-transport-panel .public-transport-line-view__stops { width:100%; }
+.public-transport-panel .public-transport-line-stop__days { gap:10px; }
 .public-transport-panel .public-transport-line-stop__departures { grid-template-columns:repeat(auto-fill,minmax(62px,1fr)); padding:8px; }
 .public-transport-panel__status { padding:20px 8px; color:#697682; text-align:center; }
 .public-transport-panel__empty { display:grid; justify-items:center; gap:10px; padding:42px 18px; color:#52606d; text-align:center; }
@@ -61,8 +63,8 @@
 .public-transport-panel__empty svg { width:38px; height:38px; color:#697682; }
 .public-transport-panel__empty strong { color:#20242a; font-size:1rem; }
 .public-transport-panel__empty span { max-width:280px; font-size:.86rem; line-height:1.45; }
-.public-transport-panel__empty button { min-height:40px; margin-top:6px; padding:0 18px; border:1px solid #1f6fae; border-radius:8px; background:#1f6fae; color:#fff; font-weight:850; cursor:pointer; }
-.public-transport-panel__all-lines { width:100%; min-height:42px; margin-top:14px; border:1px solid rgba(31,111,174,.28); border-radius:9px; background:#e8f2f9; color:#155f98; font-weight:800; cursor:pointer; }
+.public-transport-panel__empty button { min-height:40px; margin-top:6px; padding:0 18px; border:1px solid var(--accent-color); border-radius:8px; background:var(--accent-color); color:#fff; font-weight:850; cursor:pointer; }
+.public-transport-panel__all-lines { width:100%; min-height:42px; margin-top:14px; border:1px solid color-mix(in srgb, var(--accent-color) 28%, transparent); border-radius:9px; background:var(--accent-soft); color:var(--accent-hover); font-weight:800; cursor:pointer; }
 .public-transport-panel .public-transport-stop-lines__list { display:grid; gap:10px; }
 .public-transport-panel .public-transport-stop-lines__list article { border:1px solid rgba(32,36,42,.12); border-radius:9px; overflow:hidden; }
 .public-transport-panel .public-transport-stop-lines__content { grid-template-columns:1fr; }

@@ -181,9 +181,9 @@
 }
 
 .favourites-editor__tab--active {
-    border-color: rgba(31, 111, 174, 0.45);
-    background: #edf6ff;
-    color: #1f6fae;
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .favourites-editor__separator {
@@ -211,8 +211,8 @@
 
 .favourites-editor__preset:hover,
 .favourites-editor__preset:focus-visible {
-    border-color: rgba(31, 111, 174, 0.45);
-    background: #edf6ff;
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    background: var(--accent-soft);
     outline: none;
 }
 
@@ -246,7 +246,7 @@
 }
 
 .favourites-editor__button--primary {
-    border-color: #1f6fae;
-    background: #1f6fae;
+    border-color: var(--accent-color);
+    background: var(--accent-color);
     color: #ffffff;
 }

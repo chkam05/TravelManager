@@ -39,6 +39,8 @@ class UiSettings(BaseDataModel):
     _DEFAULT_ROUTE_FUEL_SEPARATOR_DYNAMIC_ENABLED: ClassVar[bool] = True
     _DEFAULT_ROUTE_FUEL_SEPARATOR_THRESHOLD_PERCENT: ClassVar[float] = 20.0
     _DEFAULT_ROUTE_TOLL_ROADS_ENABLED: ClassVar[bool] = True
+    _DEFAULT_MOVE_TO_NETWORK: ClassVar[bool] = False
+    _DEFAULT_OPEN_HOME_ON_STARTUP: ClassVar[bool] = False
 
     # Field name declarations
     FIELD_LAYER_FAVOURITE_VISIBLE_TAG_IDS: ClassVar[str] = 'layer_favourite_visible_tag_ids'
@@ -71,6 +73,8 @@ class UiSettings(BaseDataModel):
     FIELD_ROUTE_FUEL_SEPARATOR_DYNAMIC_ENABLED: ClassVar[str] = 'route_fuel_separator_dynamic_enabled'
     FIELD_ROUTE_FUEL_SEPARATOR_THRESHOLD_PERCENT: ClassVar[str] = 'route_fuel_separator_threshold_percent'
     FIELD_ROUTE_TOLL_ROADS_ENABLED: ClassVar[str] = 'route_toll_roads_enabled'
+    FIELD_MOVE_TO_NETWORK: ClassVar[str] = 'move_to_network'
+    FIELD_OPEN_HOME_ON_STARTUP: ClassVar[str] = 'open_home_on_startup'
 
     # Fields
     map_latitude: float
@@ -103,6 +107,8 @@ class UiSettings(BaseDataModel):
     route_fuel_separator_dynamic_enabled: bool
     route_fuel_separator_threshold_percent: float
     route_toll_roads_enabled: bool
+    move_to_network: bool
+    open_home_on_startup: bool
 
     #region Serialization
 
@@ -306,6 +312,14 @@ class UiSettings(BaseDataModel):
             route_toll_roads_enabled=cls._to_bool(
                 d.get(cls.FIELD_ROUTE_TOLL_ROADS_ENABLED, cls._DEFAULT_ROUTE_TOLL_ROADS_ENABLED),
                 cls._DEFAULT_ROUTE_TOLL_ROADS_ENABLED
+            ),
+            move_to_network=cls._to_bool(
+                d.get(cls.FIELD_MOVE_TO_NETWORK, cls._DEFAULT_MOVE_TO_NETWORK),
+                cls._DEFAULT_MOVE_TO_NETWORK
+            ),
+            open_home_on_startup=cls._to_bool(
+                d.get(cls.FIELD_OPEN_HOME_ON_STARTUP, cls._DEFAULT_OPEN_HOME_ON_STARTUP),
+                cls._DEFAULT_OPEN_HOME_ON_STARTUP
             )
         )
 
@@ -341,7 +355,9 @@ class UiSettings(BaseDataModel):
             self.FIELD_ROUTE_FUEL_SEPARATOR_AVERAGE_ENABLED: self.route_fuel_separator_average_enabled,
             self.FIELD_ROUTE_FUEL_SEPARATOR_DYNAMIC_ENABLED: self.route_fuel_separator_dynamic_enabled,
             self.FIELD_ROUTE_FUEL_SEPARATOR_THRESHOLD_PERCENT: self.route_fuel_separator_threshold_percent,
-            self.FIELD_ROUTE_TOLL_ROADS_ENABLED: self.route_toll_roads_enabled
+            self.FIELD_ROUTE_TOLL_ROADS_ENABLED: self.route_toll_roads_enabled,
+            self.FIELD_MOVE_TO_NETWORK: self.move_to_network,
+            self.FIELD_OPEN_HOME_ON_STARTUP: self.open_home_on_startup
         }
 
     #endregion Serialization

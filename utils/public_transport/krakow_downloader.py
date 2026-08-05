@@ -1236,7 +1236,8 @@ class KrakowDownloader:
     @classmethod
     def download_vehicle_positions(
         cls,
-        line: str = ''
+        line: str = '',
+        transport_type: str = ''
     ) -> list[PublicTransportVehiclePosition]:
         """Downloads current vehicle positions from all Kraków GTFS-RT feeds."""
         with cls._connection() as connection:
@@ -1314,7 +1315,8 @@ class KrakowDownloader:
                 route_names,
                 trip_names,
                 line_types,
-                line
+                line,
+                transport_type
             ))
         return positions
 
@@ -1326,7 +1328,8 @@ class KrakowDownloader:
         route_names: dict[tuple[str, str], str],
         trip_names: dict[tuple[str, str], str] | None = None,
         line_types: dict[str, PublicTransportType] | None = None,
-        line: str = ''
+        line: str = '',
+        transport_type: str = ''
     ) -> list[PublicTransportVehiclePosition]:
         """Deserializes one GTFS-Realtime VehiclePositions protobuf feed."""
         try:
@@ -1351,6 +1354,12 @@ class KrakowDownloader:
             )
             if line and line_name != line:
                 continue
+            vehicle_type = cls._type_from_route(
+                0 if feed_id == 'T' else 3,
+                feed_id
+            )
+            if transport_type and str(vehicle_type) != transport_type:
+                continue
             latitude = float(vehicle.position.latitude)
             longitude = float(vehicle.position.longitude)
             if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
@@ -1372,13 +1381,7 @@ class KrakowDownloader:
                 source_code=feed_id,
                 line=line_name,
                 trip_id=trip_id,
-                type=(line_types or {}).get(
-                    line_name,
-                    cls._type_from_route(
-                        0 if feed_id == 'T' else 3,
-                        feed_id
-                    )
-                ),
+                type=vehicle_type,
                 latitude=latitude,
                 longitude=longitude,
                 bearing=(

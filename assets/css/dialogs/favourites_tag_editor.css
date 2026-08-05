@@ -108,9 +108,9 @@
 
 .favourites-tag-editor__preset:hover,
 .favourites-tag-editor__preset:focus-visible {
-    border-color: #1f6fae;
+    border-color: var(--accent-color);
     background: #e9f4fa;
-    box-shadow: 0 0 0 2px rgba(31, 111, 174, 0.15);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 15%, transparent);
 }
 
 .favourites-tag-editor__emoji-picker {
@@ -228,9 +228,9 @@
 }
 
 .favourites-tag-editor__tab--active {
-    border-color: rgba(31, 111, 174, 0.42);
-    background: #eaf4fc;
-    color: #1f6fae;
+    border-color: color-mix(in srgb, var(--accent-color) 42%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .favourites-tag-editor__separator {
@@ -267,7 +267,7 @@
 }
 
 .favourites-tag-editor__button--primary {
-    border-color: #1f6fae;
-    background: #1f6fae;
+    border-color: var(--accent-color);
+    background: var(--accent-color);
     color: #ffffff;
 }

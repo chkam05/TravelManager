@@ -133,6 +133,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         setLiveStatus('Pobieranie danych o pojazdach…');
         try {
             const params = new URLSearchParams({ line });
+            if (state.lineMetadata?.type) {
+                params.set('type', state.lineMetadata.type);
+            }
             const response = await fetch(`${endpoint('vehicles')}?${params}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
             setLiveStatus('Przetwarzanie pozycji pojazdów…');
             const data = await response.json();
