@@ -352,13 +352,13 @@
 .settings-view__value--disabled dd,
 .settings-view__value--disabled .settings-view__unit,
 .settings-view__value--disabled .settings-view__hint {
-    color: #98a3ad;
+    color: var(--disabled-color);
 }
 
 .settings-view__value--disabled .settings-view__slider,
 .settings-view__value--disabled .settings-view__input,
 .settings-view__value--disabled .settings-view__select {
-    opacity: 0.55;
+    opacity: var(--disabled-opacity);
 }
 
 .settings-view__input,

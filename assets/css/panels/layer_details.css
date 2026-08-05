@@ -180,7 +180,7 @@
 
 .layer-details-panel__option--disabled {
     cursor: default;
-    opacity: 0.56;
+    opacity: var(--disabled-opacity);
 }
 
 .layer-details-panel__option--disabled input {

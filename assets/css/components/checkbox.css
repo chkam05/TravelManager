@@ -21,11 +21,11 @@
 }
 
 .component-checkbox--disabled {
-    color: #98a3ad;
+    color: var(--disabled-color);
     cursor: default;
 }
 
 .component-checkbox input:disabled {
     cursor: not-allowed;
-    opacity: 0.45;
+    opacity: var(--disabled-opacity);
 }

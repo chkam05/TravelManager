@@ -208,7 +208,7 @@
 }
 
 .fuel-cost-view__price-empty {
-    color: #98a3ad;
+    color: var(--disabled-color);
 }
 
 .fuel-cost-view__row-actions {

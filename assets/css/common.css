@@ -10,6 +10,9 @@
     --border-color: rgba(32, 36, 42, 0.12);
     --control-background: #ffffff;
     --control-hover: #f3f7fa;
+    --disabled-background: #f1f3f5;
+    --disabled-color: #8a949e;
+    --disabled-opacity: 0.72;
     color-scheme: light;
 }
 
@@ -342,6 +345,82 @@ body .public-transport-view .public-transport-stop-lines__list article > header:
 
 body .layer-details-panel__option--disabled {
     pointer-events: none;
+}
+
+/* Shared selected-state contract. */
+body :is(
+    [aria-selected="true"],
+    [aria-pressed="true"],
+    [aria-current="page"],
+    button[aria-checked="true"],
+    [class$="__tab--active"],
+    [class$="__button--active"],
+    [class$="__option--active"],
+    [class$="__item--active"]
+) {
+    border-color: var(--accent-color);
+    background-color: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body :is(
+    [aria-selected="true"],
+    [aria-pressed="true"],
+    [aria-current="page"],
+    button[aria-checked="true"],
+    [class$="__tab--active"],
+    [class$="__button--active"],
+    [class$="__option--active"],
+    [class$="__item--active"]
+) :is(span, strong, small, svg, i) {
+    color: var(--accent-color);
+}
+
+/* Shared disabled-state contract. */
+body :is(button, input, select, textarea):disabled,
+body [aria-disabled="true"],
+body :is([class$="__item--disabled"], [class$="__option--disabled"], [class$="__value--disabled"]) {
+    border-color: var(--border-color);
+    background-color: var(--disabled-background);
+    color: var(--disabled-color);
+    opacity: var(--disabled-opacity);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+body :is(button, input, select, textarea):disabled :is(span, strong, small, svg, i),
+body [aria-disabled="true"] :is(span, strong, small, svg, i),
+body :is([class$="__item--disabled"], [class$="__option--disabled"], [class$="__value--disabled"]) :is(span, strong, small, svg, i, dt, dd) {
+    color: var(--disabled-color);
+}
+
+/* Cards and list rows use the same accent contract as real buttons. */
+body :is(
+    .car-profiles-view__item,
+    .favourites-view__item,
+    .favourites-tags-view__item,
+    .my-routes-view__item,
+    .fuel-cost-view__item,
+    .home-view__tile,
+    .public-transport-stops__item,
+    .public-transport-stop-lines__list article
+):is(:hover, :focus-visible, :focus-within) {
+    border-color: var(--accent-color);
+    background-color: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body :is(
+    .car-profiles-view__item,
+    .favourites-view__item,
+    .favourites-tags-view__item,
+    .my-routes-view__item,
+    .fuel-cost-view__item,
+    .home-view__tile,
+    .public-transport-stops__item,
+    .public-transport-stop-lines__list article
+):is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p) {
+    color: var(--accent-color);
 }
 
 /* Light-theme button content must use the configured accent. Filled primary

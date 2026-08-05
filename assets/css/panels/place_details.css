@@ -442,5 +442,5 @@
 .place-details-panel__route:disabled,
 .place-details-panel__favourite:disabled {
     cursor: default;
-    opacity: 0.52;
+    opacity: var(--disabled-opacity);
 }
