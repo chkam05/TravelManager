@@ -5,7 +5,6 @@
     grid-template-rows: auto auto minmax(0, 1fr);
     height: 100%;
     min-height: 0;
-    background: #f4f7f8;
 }
 
 .fuel-cost-view__header {
@@ -13,8 +12,8 @@
     align-items: flex-end;
     gap: 12px;
     padding: 14px 18px;
-    border-bottom: 1px solid rgba(32, 36, 42, 0.1);
-    background: #ffffff;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .fuel-cost-view__search {
@@ -29,9 +28,9 @@
     width: min(320px, 44vw);
     height: 40px;
     padding: 0 12px;
-    border: 1px solid rgba(32, 36, 42, 0.16);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    color: #20242a;
     font: inherit;
 }
 
@@ -44,10 +43,9 @@
     gap: 7px;
     min-height: 38px;
     padding: 0 13px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
@@ -77,7 +75,6 @@
 .fuel-cost-view__select-label {
     display: grid;
     gap: 3px;
-    color: #67727e;
     font-size: 0.76rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -87,10 +84,9 @@
     height: 38px;
     min-width: 150px;
     padding: 0 10px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-size: 0.92rem;
     font-weight: 750;
@@ -108,10 +104,9 @@
     display: none;
     min-width: 150px;
     padding: 6px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 18px 44px rgba(32, 36, 42, 0.18);
 }
 
 .fuel-cost-view__sort-menu[aria-hidden="false"] {
@@ -122,24 +117,17 @@
     height: 34px;
     border: 0;
     border-radius: 6px;
-    background: transparent;
-    color: #20242a;
     font: inherit;
     font-weight: 700;
     text-align: left;
     cursor: pointer;
 }
 
-.fuel-cost-view__sort-menu button:hover {
-    background: #edf4f7;
-}
-
 .fuel-cost-view__meta {
     min-height: 38px;
     padding: 10px 18px;
-    border-bottom: 1px solid rgba(32, 36, 42, 0.08);
-    color: #52606d;
-    background: #fbfcfd;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     font-size: 0.9rem;
     font-weight: 750;
 }
@@ -157,16 +145,16 @@
     border-collapse: separate;
     border-spacing: 0;
     overflow: hidden;
-    border: 1px solid rgba(32, 36, 42, 0.1);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 8px 22px rgba(32, 36, 42, 0.06);
 }
 
 .fuel-cost-view__table th,
 .fuel-cost-view__table td {
     padding: 12px 14px;
-    border-bottom: 1px solid rgba(32, 36, 42, 0.08);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     text-align: right;
     white-space: nowrap;
 }
@@ -180,15 +168,12 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    background: #edf4f7;
-    color: #20242a;
     font-size: 0.8rem;
     font-weight: 900;
     text-transform: uppercase;
 }
 
 .fuel-cost-view__table td {
-    color: #20242a;
     font-weight: 750;
 }
 
@@ -196,19 +181,10 @@
     border-bottom: 0;
 }
 
-.fuel-cost-view__table tr:hover td {
-    background: #f7fbfc;
-}
-
 .fuel-cost-view__empty {
     padding: 24px;
-    color: #52606d;
     font-weight: 800;
     text-align: center;
-}
-
-.fuel-cost-view__price-empty {
-    color: var(--disabled-color);
 }
 
 .fuel-cost-view__row-actions {
@@ -223,10 +199,9 @@
     gap: 7px;
     min-height: 34px;
     padding: 0 11px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 850;
     cursor: pointer;
@@ -238,7 +213,6 @@
 }
 
 .fuel-cost-view__manual-date {
-    color: #52606d;
     font-weight: 800;
 }
 
@@ -253,9 +227,6 @@
     height: 56px;
     border: 0;
     border-radius: 50%;
-    background: var(--accent-color);
-    color: #ffffff;
-    box-shadow: 0 18px 44px color-mix(in srgb, var(--accent-color) 32%, transparent);
     cursor: pointer;
 }
 
@@ -265,21 +236,22 @@
 }
 
 @media (max-width: 980px) {
-    .fuel-cost-view__header {
-        flex-wrap: wrap;
-    }
+.fuel-cost-view__header {
+    flex-wrap: wrap;
+}
 
-    .fuel-cost-view__search {
-        flex: 1 1 100%;
-        min-width: 0;
-    }
+.fuel-cost-view__search {
+    flex: 1 1 100%;
+    min-width: 0;
+}
 
-    .fuel-cost-view__search-input {
-        flex: 1 1 auto;
-        width: auto;
-    }
+.fuel-cost-view__search-input {
+    flex: 1 1 auto;
+    width: auto;
+}
 
-    .fuel-cost-view__spacer {
-        display: none;
-    }
+.fuel-cost-view__spacer {
+    display: none;
+}
+
 }

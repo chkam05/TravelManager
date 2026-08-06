@@ -5,11 +5,9 @@
     width: min(470px, calc(100vw - 32px));
     max-height: calc(100vh - 32px);
     overflow: hidden;
-    border: 1px solid var(--border-color);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 12px;
-    background: var(--surface-background);
-    color: var(--text-primary);
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
 }
 
 .color-picker-dialog[aria-hidden="true"] {
@@ -22,16 +20,17 @@
     align-items: center;
     gap: 10px;
     padding: 14px 16px;
-    background: var(--surface-muted);
 }
 
 .color-picker-dialog__header {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .color-picker-dialog__footer {
     justify-content: flex-end;
-    border-top: 1px solid var(--border-color);
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .color-picker-dialog__header h2 {
@@ -44,9 +43,9 @@
     position: relative;
     width: 34px;
     height: 34px;
-    border: 1px solid var(--border-color);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: var(--surface-background);
     cursor: pointer;
 }
 
@@ -58,11 +57,15 @@
     left: 50%;
     width: 14px;
     height: 2px;
-    background: var(--text-primary);
 }
 
-.color-picker-dialog__close::before { transform: translate(-50%, -50%) rotate(45deg); }
-.color-picker-dialog__close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+.color-picker-dialog__close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.color-picker-dialog__close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
 
 .color-picker-dialog__content {
     display: grid;
@@ -88,7 +91,6 @@
 .color-picker-dialog__hue {
     display: grid;
     gap: 6px;
-    color: var(--text-secondary);
     font-size: 0.78rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -101,23 +103,22 @@
     appearance: none;
     border: 0;
     border-radius: 999px;
-    background: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
 }
 
 .color-picker-dialog__hue input::-webkit-slider-thumb {
     width: 20px;
     height: 20px;
     appearance: none;
-    border: 2px solid #ffffff;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 50%;
-    background: #20242a;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
 }
 
 .color-picker-dialog__preview {
     width: 72px;
     min-height: 64px;
-    border: 1px solid var(--border-color);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
 }
 

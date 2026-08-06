@@ -3,10 +3,9 @@
     grid-template-rows: auto minmax(0, 1fr) auto;
     width: min(760px, calc(100vw - 48px));
     max-height: min(820px, calc(100vh - 48px));
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 28px 80px rgba(20, 26, 32, 0.3);
     overflow: hidden;
 }
 
@@ -20,8 +19,8 @@
     align-items: center;
     gap: 12px;
     padding: 16px 18px;
-    border-bottom: 1px solid rgba(32, 36, 42, 0.1);
-    background: #f7f9fb;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .car-profile-editor__header h2 {
@@ -33,9 +32,9 @@
     position: relative;
     width: 32px;
     height: 32px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
     cursor: pointer;
 }
 
@@ -47,7 +46,6 @@
     left: 50%;
     width: 14px;
     height: 2px;
-    background: #46515c;
 }
 
 .car-profile-editor__close::before {
@@ -72,7 +70,8 @@
     gap: 14px;
     margin: 0;
     padding: 18px 14px 14px;
-    border: 1px solid rgba(32, 36, 42, 0.18);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
 }
 
@@ -85,7 +84,6 @@
     display: grid;
     gap: 7px;
     min-width: 0;
-    color: #20242a;
     font-weight: 700;
 }
 
@@ -95,9 +93,9 @@
     height: 40px;
     min-width: 0;
     padding: 0 10px;
-    border: 1px solid rgba(32, 36, 42, 0.18);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    color: #20242a;
     font: inherit;
 }
 
@@ -117,7 +115,6 @@
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border-radius: 8px;
-    background: #eef6f7;
 }
 
 .car-profile-editor__image-preview[hidden] {
@@ -140,10 +137,9 @@
 .car-profile-editor__small-button,
 .car-profile-editor__odometer-remove {
     min-height: 38px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
@@ -160,7 +156,6 @@
 
 .car-profile-editor__image-actions span {
     overflow: hidden;
-    color: #64707c;
     font-weight: 700;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -171,33 +166,27 @@
     justify-content: flex-end;
     gap: 10px;
     padding: 14px 18px;
-    border-top: 1px solid rgba(32, 36, 42, 0.1);
-    background: #ffffff;
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .car-profile-editor__button {
     min-width: 90px;
     height: 40px;
     padding: 0 16px;
-    border: 1px solid rgba(32, 36, 42, 0.16);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 700;
     cursor: pointer;
 }
 
-.car-profile-editor__button--primary {
-    border-color: var(--accent-color);
-    background: var(--accent-color);
-    color: #ffffff;
-}
-
 @media (max-width: 700px) {
-    .car-profile-editor__group,
+.car-profile-editor__group,
     .car-profile-editor__odometer-row,
     .car-profile-editor__image-actions {
-        grid-template-columns: 1fr;
-    }
+    grid-template-columns: 1fr;
+}
+
 }

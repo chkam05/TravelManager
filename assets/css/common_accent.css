@@ -1,0 +1,989 @@
+:root {
+    --accent-color: #1f6fae;
+    --accent-hover: color-mix(in srgb, var(--accent-color) 82%, #000000);
+    --accent-soft: color-mix(in srgb, var(--accent-color) 12%, transparent);
+}
+
+body[data-theme="dark"] {
+    --accent-hover: color-mix(in srgb, var(--accent-color) 78%, #ffffff);
+}
+
+.is-accent,
+.is-interactive:not(:disabled):is(:hover, :focus-visible),
+.is-selected:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]) {
+    border-color: var(--accent-color);
+    background-color: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.is-accent-filled {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+.is-accent-filled:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-hover);
+    background-color: var(--accent-hover);
+    color: var(--on-accent-color);
+}
+
+.component-button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+.component-button--primary:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+    color: var(--on-accent-color);
+}
+
+.component-checkbox input { accent-color: var(--accent-color); }
+
+/* Migrated component accent rules */
+/* Source: common.css */
+body .side-menu__item svg,
+body .settings-view__tab svg,
+body[data-theme] :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) [class$="__header"] > svg {
+    color: var(--accent-color);
+}
+
+body button:not(:disabled):is(:hover, :focus-visible),
+body [role="button"]:not([aria-disabled="true"]):is(:hover, :focus-visible) {
+    border-color: color-mix(in srgb, var(--accent-color) 58%, var(--border-color));
+    background-color: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body button:not(:disabled):focus-visible,
+body [role="button"]:not([aria-disabled="true"]):focus-visible,
+body input:focus-visible,
+body select:focus-visible,
+body textarea:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--accent-color) 72%, transparent);
+}
+
+body .side-menu__item--active,
+body .settings-view__tab--active {
+    color: var(--accent-color);
+    background-color: var(--accent-soft);
+}
+
+body .side-menu__item:is(:hover, :focus-visible),
+body .side-menu__item--active {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body .header__menu-button:is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+}
+
+body .header__menu-button:is(:hover, :focus-visible) span {
+    background: var(--accent-color);
+}
+
+body[data-theme] :is(
+    .side-menu__item--active,
+    .settings-view__tab--active,
+    .legend-details-panel__tab--active,
+    .place-details-panel__tab--active,
+    .route-details-panel__tab--active,
+    .route-details-panel__transport-button--active,
+    .public-transport-panel__icon-button--active,
+    .public-transport-view__navigation-button--active
+) {
+    border-color: var(--accent-color);
+    background-color: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+/* Keep the menu label and its icon on the exact selected accent in both
+   pointer and keyboard interaction states. */
+body .side-menu__item:is(:hover, :focus-visible, .side-menu__item--active),
+body .side-menu__item:is(:hover, :focus-visible, .side-menu__item--active) svg {
+    color: var(--accent-color);
+}
+
+body :is(
+    .side-menu__item,
+    .settings-view__tab,
+    .legend-details-panel__tab,
+    .place-details-panel__tab,
+    .route-details-panel__tab,
+    .route-details-panel__transport-button,
+    .public-transport-panel__icon-button,
+    .public-transport-view__navigation-button,
+    .public-transport-lines__tile,
+    .public-transport-carriers__tile,
+    .search-results-panel__item
+):hover {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, var(--border-color));
+    background-color: var(--accent-soft);
+}
+
+body :is(
+    .car-profiles-view__item,
+    .favourites-view__item,
+    .favourites-tags-view__item,
+    .my-routes-view__item,
+    .fuel-cost-view__item,
+    .home-view__tile,
+    .public-transport-stops__item,
+    .public-transport-stop-lines__list article
+):hover {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, var(--border-color));
+    background-color: var(--accent-soft);
+}
+
+body :is(
+    [class$="__tab--active"],
+    [class$="__button--active"],
+    [class$="__option--active"],
+    [class$="__item--active"],
+    [aria-selected="true"]
+) {
+    border-color: var(--accent-color);
+    background-color: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body .app-view__save-button,
+body .component-button--primary,
+body .public-transport-header__button--primary,
+body .car-details-panel__button--primary,
+body .route-details-panel__save-changes,
+body .search-results-panel__retry {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+}
+
+body .app-view__save-button:hover,
+body .component-button--primary:hover,
+body button[class*="__button--primary"]:is(:hover, :focus-visible) {
+    border-color: var(--accent-hover);
+    background-color: var(--accent-hover);
+    color: var(--on-accent-color);
+}
+
+body button[class*="__button--primary"] {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+body :is(
+    .car-profiles-view__add,
+    .favourites-tags-view__add,
+    .fuel-cost-view__add,
+    .my-routes-view__add
+) {
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+body :is(
+    .car-profiles-view__add,
+    .favourites-tags-view__add,
+    .fuel-cost-view__add,
+    .my-routes-view__add
+):hover {
+    background: var(--accent-hover);
+}
+
+body .home-view__tile-icon,
+body .settings-view__section-icon,
+body .settings-view__card-titlebar > svg,
+body .place-details-panel__title-icon,
+body .route-details-panel__title-icon,
+body .search-results-panel__item-icon,
+body .route-details-panel__instruction-icon {
+    color: var(--accent-color);
+    background-color: var(--accent-soft);
+}
+
+body .app-view__back-button:hover,
+body .settings-view__link,
+body .information-view__link {
+    color: var(--accent-color);
+}
+
+body :focus-visible {
+    outline-color: var(--accent-color);
+}
+
+body input[type="checkbox"],
+body input[type="radio"],
+body input[type="range"] {
+    accent-color: var(--accent-color);
+}
+
+body [class*="-panel__grabber"]::before,
+body .public-transport-detail__sidebar-grabber::before {
+    background: color-mix(in srgb, var(--accent-color) 48%, var(--border-color));
+}
+
+body [class*="-panel__grabber"]:hover::before,
+body .public-transport-detail__sidebar-grabber:hover::before {
+    background: var(--accent-color);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+body [class$="__menu-separator"] {
+    background: color-mix(in srgb, var(--accent-color) 34%, var(--border-color));
+}
+
+/* Shared panel interaction mechanics for every theme */
+body :is(
+    .place-details-panel,
+    .legend-details-panel,
+    .layer-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .search-results-panel,
+    .public-transport-panel
+) button:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body [class$="__close"]:is(:hover, :focus-visible)::before,
+body [class$="__close"]:is(:hover, :focus-visible)::after {
+    background: var(--accent-hover);
+}
+
+body :is(
+    .place-details-panel,
+    .route-details-panel,
+    .car-details-panel,
+    .public-transport-panel,
+    .advanced-search,
+    .search-results-panel
+) :is(input, select, textarea):focus-visible {
+    border-color: var(--accent-color);
+    outline: 2px solid color-mix(in srgb, var(--accent-color) 72%, transparent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+body .public-transport-panel :is(
+    .public-transport-lines__tile,
+    .public-transport-line-view__stops button,
+    .public-transport-line-stop__departures button,
+    .public-transport-stop-lines__departures > button,
+    .public-transport-stop-lines__list article > header > button:last-child
+):not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+body .public-transport-panel :is(
+    .public-transport-line-view__stops button,
+    .public-transport-line-stop__departures button,
+    .public-transport-stop-lines__departures > button
+):not(:disabled):is(:hover, :focus-visible) :is(strong, span, small, svg) {
+    color: var(--accent-color);
+}
+
+/* Full public transport views */
+body .public-transport-view .public-transport-stops__toggle:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+body .public-transport-view .public-transport-stops__toggle:not(:disabled):is(:hover, :focus-visible) :is(strong, small, svg) {
+    color: var(--accent-color);
+}
+
+body .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+body .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) :is(strong, span, svg) {
+    color: var(--accent-color);
+}
+
+/* Shared selected-state contract. */
+body :is(
+    [aria-selected="true"],
+    [aria-pressed="true"],
+    [aria-current="page"],
+    button[aria-checked="true"],
+    [class$="__tab--active"],
+    [class$="__button--active"],
+    [class$="__option--active"],
+    [class$="__item--active"]
+) {
+    border-color: var(--accent-color);
+    background-color: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body :is(
+    [aria-selected="true"],
+    [aria-pressed="true"],
+    [aria-current="page"],
+    button[aria-checked="true"],
+    [class$="__tab--active"],
+    [class$="__button--active"],
+    [class$="__option--active"],
+    [class$="__item--active"]
+) :is(span, strong, small, svg, i) {
+    color: var(--accent-color);
+}
+
+/* Cards and list rows use the same accent contract as real buttons. */
+body :is(
+    .car-profiles-view__item,
+    .favourites-view__item,
+    .favourites-tags-view__item,
+    .my-routes-view__item,
+    .fuel-cost-view__item,
+    .home-view__tile,
+    .public-transport-stops__item,
+    .public-transport-stop-lines__list article
+):is(:hover, :focus-visible, :focus-within) {
+    border-color: var(--accent-color);
+    background-color: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body :is(
+    .car-profiles-view__item,
+    .favourites-view__item,
+    .favourites-tags-view__item,
+    .my-routes-view__item,
+    .fuel-cost-view__item,
+    .home-view__tile,
+    .public-transport-stops__item,
+    .public-transport-stop-lines__list article
+):is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p) {
+    color: var(--accent-color);
+}
+
+/* Light-theme button content must use the configured accent. Filled primary
+   actions are excluded because their text and icons need to stay white. */
+body:not([data-theme="dark"]) button:not(:disabled):is(:hover, :focus-visible):not(.app-view__save-button):not(.component-button--primary):not([class*="__button--primary"]):not(.public-transport-header__button--primary):not(.car-details-panel__button--primary):not(.route-details-panel__save-changes):not(.search-results-panel__retry),
+body:not([data-theme="dark"]) [role="button"]:not([aria-disabled="true"]):is(:hover, :focus-visible) {
+    color: var(--accent-color);
+}
+
+body:not([data-theme="dark"]) button:not(:disabled):is(:hover, :focus-visible):not(.app-view__save-button):not(.component-button--primary):not([class*="__button--primary"]):not(.public-transport-header__button--primary):not(.car-details-panel__button--primary):not(.route-details-panel__save-changes):not(.search-results-panel__retry) :is(span, strong, small, svg, i),
+body:not([data-theme="dark"]) [role="button"]:not([aria-disabled="true"]):is(:hover, :focus-visible)
+    :is(span, strong, small, svg, i) {
+    color: var(--accent-color);
+}
+
+/* Final light-theme component contracts. */
+body:not([data-theme="dark"]) .layer-details-panel__option:not(.layer-details-panel__option--disabled):is(:hover, :focus-within) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+}
+
+body:not([data-theme="dark"]) .public-transport-stops__lines .public-transport-line-pill:is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body:not([data-theme="dark"]) :is(
+    .public-transport-carriers__icon,
+    [data-public-transport-header-line-pill],
+    [data-public-transport-header-line]
+) {
+    color: var(--accent-color);
+}
+
+body:not([data-theme="dark"]) .public-transport-carriers__icon {
+    background: var(--accent-soft);
+}
+
+body:not([data-theme="dark"]) .settings-view .app-view__save-button {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+body:not([data-theme="dark"]) .settings-view .app-view__save-button :is(span, svg, i) {
+    color: var(--on-accent-color);
+}
+
+body:not([data-theme="dark"]) .settings-view .app-view__save-button:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+    color: var(--on-accent-color);
+}
+
+/* Source: components/color_tile.css */
+.color-tile[aria-checked="true"] {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+/* Source: dialogs/advanced_search.css */
+.advanced-search__input:focus {
+    border-color: color-mix(in srgb, var(--accent-color) 65%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 14%, transparent);
+}
+
+.advanced-search__button--primary {
+    border-color: color-mix(in srgb, var(--accent-color) 38%, transparent);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+.advanced-search__choice:hover,
+.advanced-search__choice:focus-visible {
+    border-color: color-mix(in srgb, var(--accent-color) 28%, transparent);
+}
+
+.advanced-search__choice--active {
+    border-color: color-mix(in srgb, var(--accent-color) 55%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.advanced-search__choice:hover .advanced-search__choice-icon,
+.advanced-search__choice:focus-visible .advanced-search__choice-icon {
+    border-color: color-mix(in srgb, var(--accent-color) 32%, transparent);
+    color: var(--accent-color);
+}
+
+.advanced-search__choice--active .advanced-search__choice-icon {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/car_profile_editor.css */
+.car-profile-editor__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/download_status.css */
+.download-status__spinner {
+    color: var(--accent-color);
+}
+
+.download-status__content progress {
+    accent-color: var(--accent-color);
+}
+
+.download-status__footer button {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/favourites_editor.css */
+.favourites-editor__tab--active {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.favourites-editor__preset:hover,
+.favourites-editor__preset:focus-visible {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    background: var(--accent-soft);
+}
+
+.favourites-editor__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/favourites_tag_editor.css */
+.favourites-tag-editor__preset:hover,
+.favourites-tag-editor__preset:focus-visible {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 15%, transparent);
+}
+
+.favourites-tag-editor__tab--active {
+    border-color: color-mix(in srgb, var(--accent-color) 42%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.favourites-tag-editor__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/fuel_cost_editor.css */
+.fuel-cost-editor__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/fuel_update.css */
+.fuel-update__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/public_transport_announcement.css */
+.public-transport-announcement-dialog__footer button {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/route_editor.css */
+.route-editor__tab--active {
+    border-color: color-mix(in srgb, var(--accent-color) 42%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.route-editor__preset:hover {
+    background: var(--accent-soft);
+}
+
+.route-editor__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: dialogs/yesno_dialog.css */
+.yesno-dialog__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: index.css */
+.header__search-input:focus {
+    border-color: color-mix(in srgb, var(--accent-color) 65%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 14%, transparent),
+        0 10px 22px var(--shadow-color);
+}
+
+.app-view__back-button:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    color: var(--accent-hover);
+}
+
+.app-view__back-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+}
+
+.app-view__save-button {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+.app-view__save-button:hover {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+}
+
+.app-view__save-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+}
+
+.side-menu__item:is(:hover, :focus-visible) {
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.side-menu__item--active {
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+/* Source: panels/car_details.css */
+.car-details-panel__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: panels/legend_details.css */
+.legend-details-panel__tab--active {
+    border-color: color-mix(in srgb, var(--accent-color) 42%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+/* Source: panels/place_details.css */
+.place-details-panel__tab--active {
+    border-color: color-mix(in srgb, var(--accent-color) 42%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.place-details-panel__link {
+    color: var(--accent-color);
+}
+
+.place-details-panel__favourite-edit {
+    color: var(--accent-color);
+}
+
+.place-details-panel__route {
+    border-color: color-mix(in srgb, var(--accent-color) 34%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+/* Source: panels/public_transport.css */
+.public-transport-panel__icon-button {
+    border-color: color-mix(in srgb, var(--accent-color) 25%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+.public-transport-panel__icon-button--active {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+    color: var(--on-accent-color);
+}
+
+.public-transport-panel__live-status {
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+.public-transport-panel__empty button {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+.public-transport-panel__all-lines {
+    border-color: color-mix(in srgb, var(--accent-color) 28%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+/* Source: panels/route_details.css */
+.route-details-panel__header-actions .route-details-panel__save {
+    border-color: color-mix(in srgb, var(--accent-color) 34%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.route-details-panel__tab--active {
+    border-color: color-mix(in srgb, var(--accent-color) 34%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.route-details-panel__transport-button--active {
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.route-details-panel__fuel-slider {
+    accent-color: var(--accent-color);
+}
+
+.route-details-panel__settings-options {
+    border-left-color: color-mix(in srgb, var(--accent-color) 18%, transparent);
+}
+
+.route-details-panel__checkbox input {
+    accent-color: var(--accent-color);
+}
+
+.route-details-panel__status--selecting {
+    color: var(--accent-color);
+}
+
+.route-details-panel__instruction-icon {
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.route-details-panel__point-number {
+    border-color: color-mix(in srgb, var(--accent-color) 24%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.route-details-panel__point--drag-over {
+    border-color: var(--accent-color);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+.route-details-panel__add,
+.route-details-panel__reverse,
+.route-details-panel__save-changes {
+    border-color: color-mix(in srgb, var(--accent-color) 34%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.route-details-panel__save-changes {
+    border-color: color-mix(in srgb, var(--accent-color) 36%, transparent);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: panels/search_results.css */
+.search-results-panel__retry {
+    border-color: color-mix(in srgb, var(--accent-color) 28%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.search-results-panel__item:hover,
+.search-results-panel__item:focus-visible {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+}
+
+.search-results-panel__item-icon {
+    color: var(--accent-color);
+}
+
+.search-results-panel__action:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+    color: var(--accent-color);
+}
+
+/* Source: views/appearance.css */
+.appearance-settings__theme[aria-checked="true"] {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+/* Source: views/car_profiles.css */
+.car-profiles-view__add {
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+    box-shadow: 0 18px 44px color-mix(in srgb, var(--accent-color) 32%, transparent);
+}
+
+/* Source: views/favourites_tags.css */
+.favourites-tags-view__add {
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+    box-shadow: 0 18px 44px color-mix(in srgb, var(--accent-color) 32%, transparent);
+}
+
+/* Source: views/fuel_cost.css */
+.fuel-cost-view__add {
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+    box-shadow: 0 18px 44px color-mix(in srgb, var(--accent-color) 32%, transparent);
+}
+
+/* Source: views/home.css */
+.home-view__tile:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 38%, transparent);
+}
+
+.home-view__tile:focus-visible {
+    outline: 2px solid var(--accent-color);
+}
+
+.home-view__tile-icon {
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+/* Source: views/map.css */
+.map-toolbar__button:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 36%, transparent);
+    background: var(--accent-soft);
+}
+
+.map-toolbar__tooltip {
+    color: var(--on-accent-color);
+}
+
+.route-point-marker {
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* Source: views/public_transport.css */
+.public-transport-view {
+    --public-transport-blue: var(--accent-color);
+}
+
+.public-transport-view__navigation-button--active {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+.public-transport-lines__tile:hover,
+.public-transport-stops__toggle:hover,
+.public-transport-line-view__stops button:hover,
+.public-transport-line-stop__departures button:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+}
+
+.public-transport-line-stop__variants strong {
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+.public-transport-line-stop__departures small {
+    color: var(--accent-hover);
+}
+
+.public-transport-table__map-button {
+    border-color: color-mix(in srgb, var(--accent-color) 30%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+.public-transport-header__button--primary {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+.public-transport-carriers__attribution a {
+    color: var(--accent-color);
+}
+
+.public-transport-carriers__tile:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 50%, transparent);
+}
+
+.public-transport-carriers__icon {
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+.public-transport-view__progress progress {
+    accent-color: var(--accent-color);
+}
+
+.public-transport-line-stop__variant strong {
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+.public-transport-stop-lines__departures > button:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+}
+
+.public-transport-stop-lines__departures small {
+    color: var(--accent-hover);
+}
+
+.public-transport-stop-lines__list article > footer strong {
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+}
+
+/* Source: views/settings.css */
+.settings-view__tab:hover {
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.settings-view__tab:focus-visible {
+    outline: 2px solid var(--accent-color);
+}
+
+.settings-view__tab--active {
+    color: var(--accent-color);
+}
+
+.settings-view__section-icon {
+    color: var(--accent-color);
+}
+
+.settings-view__action-button svg {
+    color: var(--accent-color);
+}
+
+.settings-view__slider {
+    accent-color: var(--accent-color);
+}
+
+.settings-view__link {
+    color: var(--accent-color);
+}
+
+.settings-view__link:hover {
+    color: var(--accent-hover);
+}
+
+.information-view__link {
+    color: var(--accent-color);
+}
+
+.information-view__link:hover {
+    color: var(--accent-hover);
+}
+
+/* Interaction is a later responsibility than a resting special variant. */
+body[data-theme] :is(
+    .is-danger,
+    [data-danger],
+    [class*="--danger"],
+    [class$="__favourite-remove"]
+):not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body[data-theme] :is(
+    .is-danger,
+    [data-danger],
+    [class*="--danger"],
+    [class$="__favourite-remove"]
+):not(:disabled):is(:hover, :focus-visible) :is(span, strong, svg, i) {
+    color: inherit;
+}
+
+/* Component-specific interaction contracts evaluated after generic accents. */
+body .layer-details-panel__option:not(.layer-details-panel__option--disabled):is(:hover, :focus-within) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body .public-transport-stop-lines__list article:is(:hover, :focus-visible, :focus-within) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body .public-transport-stop-lines__list article:is(:hover, :focus-visible, :focus-within)
+    :is(span, strong, small, svg, i, h2, h3, p) {
+    color: inherit;
+}
+
+body .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+    box-shadow: none;
+}

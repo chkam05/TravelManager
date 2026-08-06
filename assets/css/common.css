@@ -1,210 +1,9 @@
-:root {
-    --accent-color: #1f6fae;
-    --accent-hover: color-mix(in srgb, var(--accent-color) 82%, #000000);
-    --accent-soft: color-mix(in srgb, var(--accent-color) 12%, transparent);
-    --app-background: #eef2f6;
-    --surface-background: #ffffff;
-    --surface-muted: #f4f7f8;
-    --text-primary: #20242a;
-    --text-secondary: #64707c;
-    --border-color: rgba(32, 36, 42, 0.12);
-    --control-background: #ffffff;
-    --control-hover: #f3f7fa;
-    --disabled-background: #f1f3f5;
-    --disabled-color: #8a949e;
-    --disabled-opacity: 0.72;
-    color-scheme: light;
-}
-
-body .side-menu__item svg,
-body .settings-view__tab svg,
-body :is(
-    .place-details-panel,
-    .legend-details-panel,
-    .layer-details-panel,
-    .route-details-panel,
-    .car-details-panel,
-    .search-results-panel,
-    .public-transport-panel
-) [class$="__header"] > svg {
-    color: var(--accent-color);
-}
-
-body button:not(:disabled):is(:hover, :focus-visible),
-body [role="button"]:not([aria-disabled="true"]):is(:hover, :focus-visible) {
-    border-color: color-mix(in srgb, var(--accent-color) 58%, var(--border-color));
-    background-color: var(--accent-soft);
-    color: var(--accent-color);
-}
-
 body button:not(:disabled):focus-visible,
 body [role="button"]:not([aria-disabled="true"]):focus-visible,
 body input:focus-visible,
 body select:focus-visible,
 body textarea:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--accent-color) 72%, transparent);
     outline-offset: 2px;
-}
-
-body button:not(:disabled):is(:hover, :focus-visible) svg {
-    color: currentColor;
-}
-
-body .side-menu__item--active,
-body .settings-view__tab--active {
-    color: var(--accent-color);
-    background-color: var(--accent-soft);
-}
-
-body .side-menu__item:is(:hover, :focus-visible),
-body .side-menu__item--active {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-    color: var(--accent-color);
-}
-
-body .header__menu-button:is(:hover, :focus-visible) {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-}
-
-body .header__menu-button:is(:hover, :focus-visible) span {
-    background: var(--accent-color);
-}
-
-body :is(
-    .side-menu__item--active,
-    .settings-view__tab--active,
-    .legend-details-panel__tab--active,
-    .place-details-panel__tab--active,
-    .route-details-panel__tab--active,
-    .route-details-panel__transport-button--active,
-    .public-transport-panel__icon-button--active,
-    .public-transport-view__navigation-button--active
-) {
-    border-color: var(--accent-color);
-    background-color: var(--accent-soft);
-    color: var(--accent-color);
-}
-
-/* Keep the menu label and its icon on the exact selected accent in both
-   pointer and keyboard interaction states. */
-body .side-menu__item:is(:hover, :focus-visible, .side-menu__item--active),
-body .side-menu__item:is(:hover, :focus-visible, .side-menu__item--active) svg {
-    color: var(--accent-color);
-}
-
-body :is(
-    .side-menu__item,
-    .settings-view__tab,
-    .legend-details-panel__tab,
-    .place-details-panel__tab,
-    .route-details-panel__tab,
-    .route-details-panel__transport-button,
-    .public-transport-panel__icon-button,
-    .public-transport-view__navigation-button,
-    .public-transport-lines__tile,
-    .public-transport-carriers__tile,
-    .search-results-panel__item
-):hover {
-    border-color: color-mix(in srgb, var(--accent-color) 45%, var(--border-color));
-    background-color: var(--accent-soft);
-}
-
-body :is(
-    .car-profiles-view__item,
-    .favourites-view__item,
-    .favourites-tags-view__item,
-    .my-routes-view__item,
-    .fuel-cost-view__item,
-    .home-view__tile,
-    .public-transport-stops__item,
-    .public-transport-stop-lines__list article
-):hover {
-    border-color: color-mix(in srgb, var(--accent-color) 45%, var(--border-color));
-    background-color: var(--accent-soft);
-}
-
-body :is(
-    [class$="__tab--active"],
-    [class$="__button--active"],
-    [class$="__option--active"],
-    [class$="__item--active"],
-    [aria-selected="true"]
-) {
-    border-color: var(--accent-color);
-    background-color: var(--accent-soft);
-    color: var(--accent-color);
-}
-
-body .app-view__save-button,
-body .component-button--primary,
-body .public-transport-header__button--primary,
-body .car-details-panel__button--primary,
-body .route-details-panel__save-changes,
-body .search-results-panel__retry {
-    border-color: var(--accent-color);
-    background-color: var(--accent-color);
-}
-
-body .app-view__save-button:hover,
-body .component-button--primary:hover,
-body button[class*="__button--primary"]:is(:hover, :focus-visible) {
-    border-color: var(--accent-hover);
-    background-color: var(--accent-hover);
-    color: #ffffff;
-}
-
-body button[class*="__button--primary"] {
-    border-color: var(--accent-color);
-    background-color: var(--accent-color);
-    color: #ffffff;
-}
-
-body :is(
-    .car-profiles-view__add,
-    .favourites-tags-view__add,
-    .fuel-cost-view__add,
-    .my-routes-view__add
-) {
-    background: var(--accent-color);
-    color: #ffffff;
-}
-
-body :is(
-    .car-profiles-view__add,
-    .favourites-tags-view__add,
-    .fuel-cost-view__add,
-    .my-routes-view__add
-):hover {
-    background: var(--accent-hover);
-}
-
-body .home-view__tile-icon,
-body .settings-view__section-icon,
-body .settings-view__card-titlebar > svg,
-body .place-details-panel__title-icon,
-body .route-details-panel__title-icon,
-body .search-results-panel__item-icon,
-body .route-details-panel__instruction-icon {
-    color: var(--accent-color);
-    background-color: var(--accent-soft);
-}
-
-body .app-view__back-button:hover,
-body .settings-view__link,
-body .information-view__link {
-    color: var(--accent-color);
-}
-
-body :focus-visible {
-    outline-color: var(--accent-color);
-}
-
-body input[type="checkbox"],
-body input[type="radio"],
-body input[type="range"] {
-    accent-color: var(--accent-color);
 }
 
 body input[type="checkbox"],
@@ -217,38 +16,7 @@ body input[type="radio"] {
 
 body [class*="-panel__grabber"]::before,
 body .public-transport-detail__sidebar-grabber::before {
-    background: color-mix(in srgb, var(--accent-color) 48%, var(--border-color));
     transition: background-color 140ms ease, box-shadow 140ms ease;
-}
-
-body [class*="-panel__grabber"]:hover::before,
-body .public-transport-detail__sidebar-grabber:hover::before {
-    background: var(--accent-color);
-    box-shadow: 0 0 0 4px var(--accent-soft);
-}
-
-body [class$="__menu-separator"] {
-    background: color-mix(in srgb, var(--accent-color) 34%, var(--border-color));
-}
-
-/* Shared panel interaction mechanics for every theme */
-body :is(
-    .place-details-panel,
-    .legend-details-panel,
-    .layer-details-panel,
-    .route-details-panel,
-    .car-details-panel,
-    .search-results-panel,
-    .public-transport-panel
-) button:not(:disabled):is(:hover, :focus-visible) {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-    color: var(--accent-color);
-}
-
-body [class$="__close"]:is(:hover, :focus-visible)::before,
-body [class$="__close"]:is(:hover, :focus-visible)::after {
-    background: var(--accent-hover);
 }
 
 body :is(
@@ -259,10 +27,7 @@ body :is(
     .advanced-search,
     .search-results-panel
 ) :is(input, select, textarea):focus-visible {
-    border-color: var(--accent-color);
-    outline: 2px solid color-mix(in srgb, var(--accent-color) 72%, transparent);
     outline-offset: 2px;
-    box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 /* Public transport group contrast */
@@ -272,338 +37,35 @@ body .public-transport-panel :is(
     .public-transport-stop-lines__list article
 ) {
     overflow: hidden;
-    border: 1px solid var(--border-color);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 9px;
-    background: var(--surface-background);
-}
-
-body .public-transport-panel :is(
-    .public-transport-lines__group-header,
-    .public-transport-line-stop__day > header,
-    .public-transport-stop-lines__list article > header
-) {
-    border-color: var(--border-color);
-    background: var(--surface-muted);
-    color: var(--text-primary);
-}
-
-body .public-transport-panel :is(
-    .public-transport-lines__tile,
-    .public-transport-line-view__stops button,
-    .public-transport-line-stop__departures button,
-    .public-transport-stop-lines__departures > button,
-    .public-transport-stop-lines__list article > header > button:last-child
-) {
-    border-color: var(--border-color);
-    background: var(--control-background);
-    color: var(--text-primary);
-}
-
-body .public-transport-panel :is(
-    .public-transport-lines__tile,
-    .public-transport-line-view__stops button,
-    .public-transport-line-stop__departures button,
-    .public-transport-stop-lines__departures > button,
-    .public-transport-stop-lines__list article > header > button:last-child
-):not(:disabled):is(:hover, :focus-visible) {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-    color: var(--accent-color);
-    box-shadow: inset 0 0 0 1px var(--accent-color);
-}
-
-body .public-transport-panel :is(
-    .public-transport-line-view__stops button,
-    .public-transport-line-stop__departures button,
-    .public-transport-stop-lines__departures > button
-):not(:disabled):is(:hover, :focus-visible) :is(strong, span, small, svg) {
-    color: var(--accent-color);
-}
-
-/* Full public transport views */
-body .public-transport-view .public-transport-stops__toggle:not(:disabled):is(:hover, :focus-visible) {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-    color: var(--accent-color);
-    box-shadow: inset 0 0 0 1px var(--accent-color);
-}
-
-body .public-transport-view .public-transport-stops__toggle:not(:disabled):is(:hover, :focus-visible) :is(strong, small, svg) {
-    color: var(--accent-color);
-}
-
-body .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-    color: var(--accent-color);
-    box-shadow: inset 0 0 0 1px var(--accent-color);
-}
-
-body .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) :is(strong, span, svg) {
-    color: var(--accent-color);
 }
 
 body .layer-details-panel__option--disabled {
     pointer-events: none;
 }
 
-/* Shared selected-state contract. */
-body :is(
-    [aria-selected="true"],
-    [aria-pressed="true"],
-    [aria-current="page"],
-    button[aria-checked="true"],
-    [class$="__tab--active"],
-    [class$="__button--active"],
-    [class$="__option--active"],
-    [class$="__item--active"]
-) {
-    border-color: var(--accent-color);
-    background-color: var(--accent-soft);
-    color: var(--accent-color);
-}
-
-body :is(
-    [aria-selected="true"],
-    [aria-pressed="true"],
-    [aria-current="page"],
-    button[aria-checked="true"],
-    [class$="__tab--active"],
-    [class$="__button--active"],
-    [class$="__option--active"],
-    [class$="__item--active"]
-) :is(span, strong, small, svg, i) {
-    color: var(--accent-color);
-}
-
 /* Shared disabled-state contract. */
 body :is(button, input, select, textarea):disabled,
 body [aria-disabled="true"],
 body :is([class$="__item--disabled"], [class$="__option--disabled"], [class$="__value--disabled"]) {
-    border-color: var(--border-color);
-    background-color: var(--disabled-background);
-    color: var(--disabled-color);
     opacity: var(--disabled-opacity);
     cursor: not-allowed;
     pointer-events: none;
 }
 
-body :is(button, input, select, textarea):disabled :is(span, strong, small, svg, i),
-body [aria-disabled="true"] :is(span, strong, small, svg, i),
-body :is([class$="__item--disabled"], [class$="__option--disabled"], [class$="__value--disabled"]) :is(span, strong, small, svg, i, dt, dd) {
-    color: var(--disabled-color);
-}
-
-/* Cards and list rows use the same accent contract as real buttons. */
 body :is(
-    .car-profiles-view__item,
-    .favourites-view__item,
-    .favourites-tags-view__item,
-    .my-routes-view__item,
-    .fuel-cost-view__item,
-    .home-view__tile,
-    .public-transport-stops__item,
-    .public-transport-stop-lines__list article
-):is(:hover, :focus-visible, :focus-within) {
-    border-color: var(--accent-color);
-    background-color: var(--accent-soft);
-    color: var(--accent-color);
-}
-
-body :is(
-    .car-profiles-view__item,
-    .favourites-view__item,
-    .favourites-tags-view__item,
-    .my-routes-view__item,
-    .fuel-cost-view__item,
-    .home-view__tile,
-    .public-transport-stops__item,
-    .public-transport-stop-lines__list article
-):is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p) {
-    color: var(--accent-color);
-}
-
-/* Light-theme button content must use the configured accent. Filled primary
-   actions are excluded because their text and icons need to stay white. */
-body:not([data-theme="dark"]) button:not(:disabled):is(:hover, :focus-visible):not(.app-view__save-button):not(.component-button--primary):not([class*="__button--primary"]):not(.public-transport-header__button--primary):not(.car-details-panel__button--primary):not(.route-details-panel__save-changes):not(.search-results-panel__retry),
-body:not([data-theme="dark"]) [role="button"]:not([aria-disabled="true"]):is(:hover, :focus-visible) {
-    color: var(--accent-color);
-}
-
-body:not([data-theme="dark"]) button:not(:disabled):is(:hover, :focus-visible):not(.app-view__save-button):not(.component-button--primary):not([class*="__button--primary"]):not(.public-transport-header__button--primary):not(.car-details-panel__button--primary):not(.route-details-panel__save-changes):not(.search-results-panel__retry) :is(span, strong, small, svg, i),
-body:not([data-theme="dark"]) [role="button"]:not([aria-disabled="true"]):is(:hover, :focus-visible)
-    :is(span, strong, small, svg, i) {
-    color: var(--accent-color);
-}
-
-/* Final light-theme component contracts. */
-body:not([data-theme="dark"]) .layer-details-panel__option:not(.layer-details-panel__option--disabled):is(:hover, :focus-within) {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-}
-
-body:not([data-theme="dark"]) :is(
-    .place-details-panel__favourite,
-    .place-details-panel__route,
-    .route-details-panel__add,
-    .route-details-panel__header-actions .route-details-panel__save,
-    .public-transport-panel__all-lines,
-    .public-transport-table__map-button
-) {
-    border-color: var(--border-color);
-    background: var(--control-background);
-    color: var(--text-primary);
-}
-
-body:not([data-theme="dark"]) :is(
-    .public-transport-panel .public-transport-line-stop__departures button,
-    .public-transport-panel .public-transport-stop-lines__departures button,
-    .public-transport-panel .public-transport-line-view__stops button,
-    .public-transport-panel .public-transport-stops__toggle,
-    .public-transport-stop-lines__header-actions > button,
-    .public-transport-stops__lines .public-transport-line-pill
-) {
-    border-color: var(--border-color);
-    background: color-mix(in srgb, var(--text-primary) 7%, var(--surface-background));
-    color: var(--text-primary);
-}
-
-body:not([data-theme="dark"]) .public-transport-stops__lines .public-transport-line-pill:is(:hover, :focus-visible) {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-    color: var(--accent-color);
-}
-
-body:not([data-theme="dark"]) :is(
-    .public-transport-carriers__icon,
-    [data-public-transport-header-line-pill],
-    [data-public-transport-header-line]
-) {
-    color: var(--accent-color);
-}
-
-body:not([data-theme="dark"]) .public-transport-carriers__icon {
-    background: var(--accent-soft);
-}
-
-body:not([data-theme="dark"]) :is(
     .my-routes-view__menu button,
     .route-details-panel__menu-button
 ) {
-    border: 1px solid transparent;
-    background: color-mix(in srgb, var(--text-primary) 7%, var(--surface-background));
-    color: var(--text-primary);
+    border-width: 1px;
+    border-style: solid;
 }
 
 body :is(
-    .my-routes-view__menu button[data-danger],
-    .route-details-panel__menu-button--danger,
-    .favourites-view__item-button--danger,
-    .favourites-tags-view__button--danger,
-    .car-profiles-view__button--danger,
-    .place-details-panel__favourite-remove
-),
-body :is(
-    .my-routes-view__menu button[data-danger],
-    .route-details-panel__menu-button--danger,
-    .favourites-view__item-button--danger,
-    .favourites-tags-view__button--danger,
-    .car-profiles-view__button--danger,
-    .place-details-panel__favourite-remove
-) :is(span, strong, svg, i) {
-    color: #b42318;
-}
-
-body:not([data-theme="dark"]) :is(
-    .my-routes-view__menu button[data-danger],
-    .route-details-panel__menu-button--danger,
-    .favourites-view__item-button--danger,
-    .favourites-tags-view__button--danger,
-    .car-profiles-view__button--danger,
-    .place-details-panel__favourite-remove
-):is(:hover, :focus-visible),
-body:not([data-theme="dark"]) :is(
-    .my-routes-view__menu button[data-danger],
-    .route-details-panel__menu-button--danger,
-    .favourites-view__item-button--danger,
-    .favourites-tags-view__button--danger,
-    .car-profiles-view__button--danger,
-    .place-details-panel__favourite-remove
-):is(:hover, :focus-visible) :is(span, strong, svg, i) {
-    border-color: #b42318;
-    background: color-mix(in srgb, #b42318 9%, var(--surface-background));
-    color: #b42318;
-}
-
-/* Expanding a public-transport card must not select or recolour the card. */
-body .public-transport-stops__item:is(:hover, :focus-visible, :focus-within),
-body .public-transport-stop-lines__list article:is(:hover, :focus-visible, :focus-within) {
-    border-color: var(--border-color);
-    background: var(--surface-background);
-    color: var(--text-primary);
-}
-
-body .public-transport-stops__item:is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p),
-body .public-transport-stop-lines__list article:is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p) {
-    color: inherit;
-}
-
-body .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) {
-    border-color: var(--border-color);
-    background: var(--surface-muted);
-    color: var(--text-primary);
-    box-shadow: none;
-}
-
-body .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) :is(strong, span, svg) {
-    color: inherit;
-}
-
-body:not([data-theme="dark"]) .settings-view .app-view__save-button {
-    border-color: var(--accent-color);
-    background: var(--accent-color);
-    color: #ffffff;
-}
-
-body:not([data-theme="dark"]) .settings-view .app-view__save-button :is(span, svg, i) {
-    color: #ffffff;
-}
-
-body:not([data-theme="dark"]) .settings-view .app-view__save-button:not(:disabled):is(:hover, :focus-visible) {
-    border-color: var(--accent-hover);
-    background: var(--accent-hover);
-    color: #ffffff;
-}
-
-body:not([data-theme="dark"]) :is(
     .my-routes-view__menu,
     .route-details-panel__menu
 ) {
     gap: 5px;
-}
-
-body:not([data-theme="dark"]) :is(
-    .my-routes-view__menu button[data-danger],
-    .route-details-panel__menu-button--danger,
-    .favourites-view__item-button--danger,
-    .favourites-tags-view__button--danger,
-    .car-profiles-view__button--danger,
-    .car-details-panel__button--danger,
-    .place-details-panel__favourite-remove
-):not(:disabled):is(:hover, :focus-visible) {
-    border-color: #b42318;
-    background: color-mix(in srgb, #b42318 10%, var(--surface-background));
-    color: #b42318;
-}
-
-body:not([data-theme="dark"]) :is(
-    .my-routes-view__menu button[data-danger],
-    .route-details-panel__menu-button--danger,
-    .favourites-view__item-button--danger,
-    .favourites-tags-view__button--danger,
-    .car-profiles-view__button--danger,
-    .car-details-panel__button--danger,
-    .place-details-panel__favourite-remove
-):not(:disabled):is(:hover, :focus-visible) :is(span, strong, svg, i) {
-    color: #b42318;
 }

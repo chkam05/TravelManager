@@ -2,7 +2,6 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: var(--text-secondary);
     font-weight: 700;
     cursor: pointer;
 }
@@ -11,21 +10,17 @@
     width: 18px;
     height: 18px;
     margin: 0;
-    accent-color: var(--accent-color);
 }
 
 .component-checkbox--strong {
     min-height: 38px;
-    color: var(--text-primary);
     font-weight: 800;
 }
 
 .component-checkbox--disabled {
-    color: var(--disabled-color);
     cursor: default;
 }
 
 .component-checkbox input:disabled {
     cursor: not-allowed;
-    opacity: var(--disabled-opacity);
 }
