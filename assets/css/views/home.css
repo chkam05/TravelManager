@@ -10,13 +10,11 @@
 
 .home-view__header h2 {
     margin: 0;
-    color: #20242a;
     font-size: 1.9rem;
 }
 
 .home-view__section-header p {
     margin: 8px 0 0;
-    color: #64707c;
     line-height: 1.5;
 }
 
@@ -27,7 +25,8 @@
 .home-view__section + .home-view__section {
     margin-top: 38px;
     padding-top: 32px;
-    border-top: 1px solid rgba(32, 36, 42, 0.11);
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .home-view__section-header {
@@ -36,7 +35,6 @@
 
 .home-view__section-header h3 {
     margin: 0;
-    color: #20242a;
     font-size: 1.2rem;
 }
 
@@ -57,25 +55,20 @@
     gap: 14px;
     min-height: 112px;
     padding: 18px;
-    border: 1px solid rgba(32, 36, 42, 0.12);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 12px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     text-align: left;
-    box-shadow: 0 8px 24px rgba(32, 36, 42, 0.06);
     cursor: pointer;
     transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
 }
 
 .home-view__tile:hover {
-    border-color: color-mix(in srgb, var(--accent-color) 38%, transparent);
-    box-shadow: 0 14px 30px rgba(32, 36, 42, 0.1);
     transform: translateY(-2px);
 }
 
 .home-view__tile:focus-visible {
-    outline: 2px solid var(--accent-color);
     outline-offset: 2px;
 }
 
@@ -85,8 +78,6 @@
     width: 48px;
     height: 48px;
     border-radius: 11px;
-    background: var(--accent-soft);
-    color: var(--accent-color);
 }
 
 .home-view__tile-icon svg {
@@ -105,7 +96,6 @@
 }
 
 .home-view__tile-copy small {
-    color: #64707c;
     font-size: 0.84rem;
     line-height: 1.4;
 }
@@ -113,7 +103,6 @@
 .home-view__tile-arrow {
     width: 19px;
     height: 19px;
-    color: #87919b;
 }
 
 .home-view__footer {
@@ -121,24 +110,26 @@
     gap: 5px;
     margin-top: 42px;
     padding-top: 20px;
-    border-top: 1px solid rgba(32, 36, 42, 0.11);
-    color: #64707c;
+    border-top-width: 1px;
+    border-top-style: solid;
     font-size: 0.86rem;
 }
 
 @media (max-width: 980px) {
-    .home-view__tiles {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+.home-view__tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 }
 
 @media (max-width: 640px) {
-    .home-view {
-        width: calc(100% - 32px);
-        padding-top: 28px;
-    }
+.home-view {
+    width: calc(100% - 32px);
+    padding-top: 28px;
+}
 
-    .home-view__tiles {
-        grid-template-columns: 1fr;
-    }
+.home-view__tiles {
+    grid-template-columns: 1fr;
+}
+
 }

@@ -40,7 +40,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/download_status.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/color_picker.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common_light.css') }}" data-theme-stylesheet="light"{% if appearance.theme != 'light' %} disabled{% endif %}>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common_dark.css') }}" data-theme-stylesheet="dark"{% if appearance.theme != 'dark' %} disabled{% endif %}>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common_special.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common_accent.css') }}">
 </head>
 <body data-theme="{{ appearance.theme }}" style="--accent-color: {{ appearance.primary_color }}">
     <div class="app-shell" data-current-view="{{ initial_view }}">

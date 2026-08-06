@@ -8,10 +8,9 @@
     width: min(720px, calc(100vw - 48px));
     max-height: min(760px, calc(100vh - 48px));
     overflow: hidden;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 28px 80px rgba(20, 26, 32, 0.3);
 }
 
 .public-transport-announcement-dialog__header {
@@ -19,8 +18,8 @@
     align-items: flex-start;
     gap: 16px;
     padding: 18px 20px;
-    border-bottom: 1px solid rgba(32, 36, 42, 0.1);
-    background: #f7f9fb;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .public-transport-announcement-dialog__header > div {
@@ -29,7 +28,6 @@
 }
 
 .public-transport-announcement-dialog__header span {
-    color: #8a5b00;
     font-size: 0.78rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -47,7 +45,6 @@
     margin-left: auto;
     border: 0;
     border-radius: 7px;
-    background: transparent;
     cursor: pointer;
 }
 
@@ -58,7 +55,6 @@
     left: 8px;
     width: 18px;
     height: 2px;
-    background: #52606d;
     content: "";
 }
 
@@ -89,11 +85,9 @@
     gap: 3px;
     padding: 10px 12px;
     border-radius: 8px;
-    background: #f3f6f8;
 }
 
 .public-transport-announcement-dialog__content dt {
-    color: #697682;
     font-size: 0.72rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -105,7 +99,6 @@
 }
 
 .public-transport-announcement-dialog__content p {
-    color: #384550;
     line-height: 1.55;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
@@ -116,23 +109,24 @@
     display: flex;
     justify-content: flex-end;
     padding: 14px 20px;
-    border-top: 1px solid rgba(32, 36, 42, 0.1);
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .public-transport-announcement-dialog__footer button {
     min-width: 90px;
     height: 38px;
-    border: 1px solid var(--accent-color);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: var(--accent-color);
-    color: #ffffff;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
 }
 
 @media (max-width: 600px) {
-    .public-transport-announcement-dialog__content dl {
-        grid-template-columns: 1fr;
-    }
+.public-transport-announcement-dialog__content dl {
+    grid-template-columns: 1fr;
+}
+
 }

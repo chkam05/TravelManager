@@ -1,0 +1,267 @@
+:root {
+    --danger-color: #b42318;
+    --danger-soft: color-mix(in srgb, var(--danger-color) 10%, var(--surface-background));
+    --warning-color: #895d05;
+    --warning-soft: #fff2d9;
+    --success-color: #17633a;
+    --success-soft: #e5f5ed;
+    --information-color: #155f98;
+    --information-soft: #e8f2f9;
+    --transport-tram-color: #a3273f;
+    --transport-bus-color: #155f98;
+    --transport-trolley-color: #67429b;
+    --transport-metro-color: #6b3fa0;
+    --transport-train-color: #1f8a70;
+    --theme-preview-dark: #161d24;
+    --color-picker-spectrum: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+
+body[data-theme="dark"] {
+    --danger-color: #ff7b72;
+    --danger-soft: color-mix(in srgb, var(--danger-color) 13%, var(--surface-background));
+    --warning-color: #f0bd5b;
+    --warning-soft: color-mix(in srgb, var(--warning-color) 14%, var(--surface-background));
+    --success-color: #62c98f;
+    --success-soft: color-mix(in srgb, var(--success-color) 14%, var(--surface-background));
+    --information-color: #74b8ed;
+    --information-soft: color-mix(in srgb, var(--information-color) 14%, var(--surface-background));
+    --transport-tram-color: #ff8296;
+    --transport-bus-color: #74b8ed;
+    --transport-trolley-color: #c39aef;
+    --transport-metro-color: #c69cf2;
+    --transport-train-color: #62c9aa;
+}
+
+/* A special variant changes only the resting appearance. Interaction remains
+   the responsibility of is-interactive/common_accent.css. */
+.is-danger:not(:hover):not(:focus-visible) {
+    color: var(--danger-color);
+}
+
+.is-danger:not(:hover):not(:focus-visible) :is(span, strong, svg, i) {
+    color: inherit;
+}
+
+/* Migrated component special rules */
+/* Source: common.css */
+body :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .place-details-panel__favourite-remove
+),
+body :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .place-details-panel__favourite-remove
+) :is(span, strong, svg, i) {
+    color: var(--danger-color);
+}
+
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .place-details-panel__favourite-remove
+):is(:hover, :focus-visible),
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .place-details-panel__favourite-remove
+):is(:hover, :focus-visible) :is(span, strong, svg, i) {
+    border-color: var(--danger-color);
+    background: color-mix(in srgb, var(--danger-color) 9%, var(--surface-background));
+    color: var(--danger-color);
+}
+
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .car-details-panel__button--danger,
+    .place-details-panel__favourite-remove
+):not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--danger-color);
+    background: color-mix(in srgb, var(--danger-color) 10%, var(--surface-background));
+    color: var(--danger-color);
+}
+
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .car-details-panel__button--danger,
+    .place-details-panel__favourite-remove
+):not(:disabled):is(:hover, :focus-visible) :is(span, strong, svg, i) {
+    color: var(--danger-color);
+}
+
+/* Source: dialogs/color_picker.css */
+.color-picker-dialog__hue input {
+    background: var(--color-picker-spectrum);
+}
+
+/* Source: dialogs/fuel_update.css */
+.fuel-update__warning {
+    color: var(--warning-color);
+}
+
+/* Source: dialogs/public_transport_announcement.css */
+.public-transport-announcement-dialog__header span {
+    color: var(--warning-color);
+}
+
+/* Source: dialogs/route_editor.css */
+.route-editor__button--danger {
+    border-color: color-mix(in srgb, var(--danger-color) 28%, transparent);
+    color: var(--danger-color);
+}
+
+/* Source: dialogs/yesno_dialog.css */
+.yesno-dialog__icon--warning::before {
+    color: var(--warning-color);
+}
+
+/* Source: index.css */
+.app-notification--success {
+    border-color: color-mix(in srgb, var(--success-color) 35%, transparent);
+    color: var(--success-color);
+}
+
+.app-notification--error {
+    border-color: color-mix(in srgb, var(--danger-color) 35%, transparent);
+    color: var(--danger-color);
+}
+
+/* Source: panels/car_details.css */
+.car-details-panel__button--danger {
+    color: var(--danger-color);
+}
+
+/* Source: panels/place_details.css */
+.place-details-panel__favourite {
+    border-color: color-mix(in srgb, var(--warning-color) 32%, transparent);
+    color: var(--warning-color);
+}
+
+.place-details-panel__favourite-remove {
+    color: var(--danger-color);
+}
+
+/* Source: panels/route_details.css */
+.route-details-panel__separator-marker {
+    background: var(--success-color);
+}
+
+.route-details-panel__separator--economic {
+    border-color: color-mix(in srgb, var(--success-color) 28%, transparent);
+}
+
+.route-details-panel__separator--economic .route-details-panel__separator-marker {
+    background: var(--success-color);
+}
+
+.route-details-panel__separator--average {
+    border-color: color-mix(in srgb, var(--warning-color) 32%, transparent);
+}
+
+.route-details-panel__separator--average .route-details-panel__separator-marker {
+    background: var(--warning-color);
+}
+
+.route-details-panel__separator--dynamic {
+    border-color: color-mix(in srgb, var(--danger-color) 32%, transparent);
+}
+
+.route-details-panel__separator--dynamic .route-details-panel__separator-marker {
+    background: var(--danger-color);
+}
+
+.route-details-panel__menu-button--danger {
+    color: var(--danger-color);
+}
+
+/* Source: views/appearance.css */
+.appearance-settings__theme-preview--dark {
+    background: var(--theme-preview-dark);
+}
+
+/* Source: views/my_routes.css */
+.my-routes-view__menu button[data-danger] {
+    color: var(--danger-color);
+}
+
+/* Source: views/public_transport.css */
+.public-transport-type--tram,
+.public-transport-line-pill--tram,
+.public-transport-line-pill--trolley {
+    color: var(--transport-tram-color);
+}
+
+.public-transport-type--metro,
+.public-transport-line-pill--metro {
+    color: var(--danger-color);
+}
+
+.public-transport-type--train,
+.public-transport-line-pill--train {
+    color: var(--transport-metro-color);
+}
+
+.public-transport-type--bus,
+.public-transport-line-pill--bus {
+    background: var(--information-soft);
+    color: var(--transport-bus-color);
+}
+
+.public-transport-lines__tile--updated {
+    box-shadow: inset 0 3px 0 var(--transport-train-color);
+}
+
+.public-transport-badge--free {
+    background: var(--success-soft);
+    color: var(--success-color);
+}
+
+.public-transport-badge--updated {
+    background: var(--warning-soft);
+    color: var(--warning-color);
+}
+
+.public-transport-line-pill--trolley {
+    color: var(--transport-trolley-color);
+}
+
+.public-transport-line-view__stops small {
+    color: var(--warning-color);
+}
+
+.public-transport-announcements > header svg {
+    color: var(--warning-color);
+}
+
+.public-transport-line-stop__departures svg {
+    color: var(--warning-color);
+}
+
+.public-transport-error svg {
+    color: var(--danger-color);
+}
+
+.public-transport-stop-lines__departures svg {
+    color: var(--warning-color);
+}

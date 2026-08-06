@@ -1,12 +1,8 @@
 .public-transport-view {
-    --public-transport-blue: var(--accent-color);
-    --public-transport-border: rgba(32, 36, 42, 0.11);
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
     height: 100%;
     min-height: 0;
-    background: #f4f7f8;
-    color: #20242a;
 }
 
 .public-transport-view__header {
@@ -14,8 +10,8 @@
     align-items: flex-end;
     gap: 12px;
     padding: 14px 18px;
-    border-bottom: 1px solid var(--public-transport-border);
-    background: #ffffff;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .public-transport-view__navigation {
@@ -34,10 +30,9 @@
     gap: 7px;
     min-height: 38px;
     padding: 0 13px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
@@ -52,12 +47,6 @@
     height: 17px;
 }
 
-.public-transport-view__navigation-button--active {
-    border-color: var(--accent-color);
-    background: var(--accent-soft);
-    color: var(--accent-hover);
-}
-
 .public-transport-view__spacer {
     flex: 1 1 auto;
 }
@@ -66,7 +55,6 @@
 .public-transport-detail__field {
     display: grid;
     gap: 3px;
-    color: #67727e;
     font-size: 0.76rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -77,10 +65,9 @@
     height: 38px;
     min-width: 190px;
     padding: 0 10px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-size: 0.92rem;
     font-weight: 750;
@@ -100,7 +87,6 @@
     gap: 12px;
     min-height: 280px;
     padding: 32px;
-    color: #52606d;
     text-align: center;
     font-weight: 800;
 }
@@ -110,6 +96,8 @@
     height: 28px;
     animation: public-transport-spin 0.9s linear infinite;
 }
+
+
 
 @keyframes public-transport-spin {
     to { transform: rotate(360deg); }
@@ -132,10 +120,9 @@
 .public-transport-table-wrap,
 .public-transport-stop-lines__list article {
     overflow: hidden;
-    border: 1px solid var(--public-transport-border);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 8px 22px rgba(32, 36, 42, 0.05);
 }
 
 .public-transport-lines__group-header,
@@ -145,8 +132,8 @@
     align-items: center;
     gap: 10px;
     padding: 12px 14px;
-    border-bottom: 1px solid var(--public-transport-border);
-    background: #f9fbfc;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .public-transport-lines__group-header h2,
@@ -160,7 +147,6 @@
 .public-transport-stops__city-header span,
 .public-transport-announcements > header span {
     margin-left: auto;
-    color: #697682;
     font-size: 0.84rem;
     font-weight: 800;
 }
@@ -175,8 +161,6 @@
     min-height: 34px;
     padding: 4px 9px;
     border-radius: 8px;
-    background: #edf2f5;
-    color: #34424f;
     font-weight: 900;
 }
 
@@ -189,29 +173,6 @@
 .public-transport-line-pill--train svg {
     width: 18px;
     height: 18px;
-}
-
-.public-transport-type--tram,
-.public-transport-line-pill--tram,
-.public-transport-line-pill--trolley {
-    background: #fce9ec;
-    color: #a3273f;
-}
-
-.public-transport-type--metro,
-.public-transport-line-pill--metro {
-    color: #e52329;
-}
-
-.public-transport-type--train,
-.public-transport-line-pill--train {
-    color: #6b3fa0;
-}
-
-.public-transport-type--bus,
-.public-transport-line-pill--bus {
-    background: #e8f2f9;
-    color: #155f98;
 }
 
 .public-transport-lines__grid {
@@ -227,24 +188,11 @@
     gap: 6px;
     min-height: 78px;
     padding: 9px;
-    border: 1px solid rgba(32, 36, 42, 0.12);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 9px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     cursor: pointer;
-}
-
-.public-transport-lines__tile:hover,
-.public-transport-stops__toggle:hover,
-.public-transport-line-view__stops button:hover,
-.public-transport-line-stop__departures button:hover {
-    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
-    background: #f4f9fc;
-}
-
-.public-transport-lines__tile--updated {
-    box-shadow: inset 0 3px 0 #1f8a70;
 }
 
 .public-transport-lines__number {
@@ -266,22 +214,13 @@
     font-weight: 900;
 }
 
-.public-transport-badge--free {
-    background: #e5f5ed;
-    color: #176b51;
-}
-
-.public-transport-badge--updated {
-    background: #fff2d9;
-    color: #895d05;
-}
-
 .public-transport-stops__list {
     display: grid;
 }
 
 .public-transport-stops__item + .public-transport-stops__item {
-    border-top: 1px solid var(--public-transport-border);
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .public-transport-stops__toggle {
@@ -291,8 +230,6 @@
     min-height: 58px;
     padding: 10px 14px;
     border: 0;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     text-align: left;
     cursor: pointer;
@@ -301,10 +238,6 @@
 .public-transport-stops__toggle > span {
     display: grid;
     gap: 2px;
-}
-
-.public-transport-stops__toggle small {
-    color: #697682;
 }
 
 .public-transport-stops__toggle svg {
@@ -321,8 +254,8 @@
     display: grid;
     gap: 9px;
     padding: 10px 14px 14px 28px;
-    border-top: 1px solid var(--public-transport-border);
-    background: #f8fafb;
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .public-transport-stops__platforms[hidden] {
@@ -331,9 +264,9 @@
 
 .public-transport-stops__platform {
     padding: 11px;
-    border: 1px solid var(--public-transport-border);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
 }
 
 .public-transport-stops__platform header {
@@ -363,7 +296,6 @@
 }
 
 .public-transport-stops__platform-label {
-    color: #697682;
     font-size: 0.7rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -385,11 +317,6 @@ button.public-transport-line-pill {
     cursor: pointer;
 }
 
-.public-transport-line-pill--trolley {
-    background: #eee8fa;
-    color: #67429b;
-}
-
 .public-transport-detail__title {
     display: flex;
     align-items: center;
@@ -407,7 +334,6 @@ button.public-transport-line-pill {
 }
 
 .public-transport-detail__title p {
-    color: #697682;
     font-size: 0.88rem;
     font-weight: 700;
 }
@@ -460,7 +386,6 @@ button.public-transport-line-pill {
     position: absolute;
     inset: 16px 15px;
     border-radius: 999px;
-    background: rgba(32, 36, 42, 0.34);
 }
 
 .public-transport-detail__sidebar-shell--resizing {
@@ -474,9 +399,9 @@ button.public-transport-line-pill {
     width: 100%;
     padding: 16px;
     overflow: auto;
-    border: 1px solid var(--public-transport-border);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 12px;
-    background: #f8fafb;
 }
 
 .public-transport-detail__sidebar h3 {
@@ -494,9 +419,9 @@ button.public-transport-line-pill {
 
 .public-transport-line-view__cities span {
     padding: 5px 9px;
-    border-left: 5px solid var(--public-transport-city-color, #647782);
+    border-left-width: 5px;
+    border-left-style: solid;
     border-radius: 5px;
-    background: #ffffff;
     font-size: 0.78rem;
     font-weight: 850;
 }
@@ -522,7 +447,6 @@ button.public-transport-line-pill {
     bottom: 0;
     left: 8px;
     width: 2px;
-    background: #cbd5dc;
     content: "";
 }
 
@@ -531,9 +455,9 @@ button.public-transport-line-pill {
     width: 14px;
     height: 14px;
     margin-top: 16px;
-    border: 3px solid var(--public-transport-city-color, #647782);
+    border-width: 3px;
+    border-style: solid;
     border-radius: 50%;
-    background: #ffffff;
 }
 
 .public-transport-line-view__stops button {
@@ -544,10 +468,9 @@ button.public-transport-line-pill {
     min-height: 48px;
     margin-bottom: 7px;
     padding: 8px 11px;
-    border: 1px solid var(--public-transport-border);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     text-align: left;
     cursor: pointer;
@@ -558,12 +481,7 @@ button.public-transport-line-pill {
     gap: 2px;
 }
 
-.public-transport-line-view__stops small {
-    color: #895d05;
-}
-
 .public-transport-line-view__platform {
-    color: #52606d;
     font-weight: 850;
 }
 
@@ -573,7 +491,6 @@ button.public-transport-line-pill {
 
 .public-transport-announcements > header svg {
     width: 18px;
-    color: #b56b00;
 }
 
 .public-transport-announcements__list {
@@ -587,13 +504,13 @@ button.public-transport-line-pill {
 }
 
 .public-transport-announcements__list article + article {
-    border-top: 1px solid var(--public-transport-border);
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .public-transport-announcements__list article > div {
     display: flex;
     gap: 10px;
-    color: #697682;
     font-size: 0.8rem;
 }
 
@@ -609,7 +526,6 @@ button.public-transport-line-pill {
 .public-transport-announcements p {
     max-height: 8.4em;
     overflow: auto;
-    color: #52606d;
     font-size: 0.88rem;
     line-height: 1.4;
 }
@@ -624,8 +540,8 @@ button.public-transport-line-pill {
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
-    border-bottom: 1px solid var(--public-transport-border);
-    background: #f9fbfc;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .public-transport-line-stop__day h3,
@@ -635,7 +551,6 @@ button.public-transport-line-pill {
 
 .public-transport-line-stop__day p {
     margin-top: 2px;
-    color: #697682;
     font-size: 0.8rem;
 }
 
@@ -644,7 +559,6 @@ button.public-transport-line-pill {
     align-items: center;
     gap: 5px;
     margin-left: auto;
-    color: #697682;
     font-size: 0.8rem;
 }
 
@@ -654,8 +568,6 @@ button.public-transport-line-pill {
     min-width: 26px;
     height: 26px;
     border-radius: 6px;
-    background: var(--accent-soft);
-    color: var(--accent-hover);
 }
 
 .public-transport-line-stop__departures {
@@ -678,10 +590,9 @@ button.public-transport-line-pill {
     min-width: 0;
     min-height: 50px;
     padding: 5px 7px;
-    border: 1px solid var(--public-transport-border);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 900;
     white-space: nowrap;
@@ -689,14 +600,12 @@ button.public-transport-line-pill {
 }
 
 .public-transport-line-stop__departures small {
-    color: var(--accent-hover);
     font-size: 0.7rem;
     line-height: 1;
 }
 
 .public-transport-line-stop__departures svg {
     width: 14px;
-    color: #b56b00;
 }
 
 .public-transport-line-stop__departure-meta {
@@ -719,11 +628,11 @@ button.public-transport-line-pill {
 }
 
 .public-transport-ride__summary > div + div {
-    border-left: 1px solid var(--public-transport-border);
+    border-left-width: 1px;
+    border-left-style: solid;
 }
 
 .public-transport-ride__summary span {
-    color: #697682;
     font-size: 0.73rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -742,7 +651,8 @@ button.public-transport-line-pill {
 .public-transport-table th,
 .public-transport-table td {
     padding: 11px 13px;
-    border-bottom: 1px solid var(--public-transport-border);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     text-align: right;
     white-space: nowrap;
 }
@@ -753,7 +663,6 @@ button.public-transport-line-pill {
 }
 
 .public-transport-table th {
-    background: #edf4f7;
     font-size: 0.76rem;
     font-weight: 900;
     text-transform: uppercase;
@@ -769,7 +678,6 @@ button.public-transport-line-pill {
     height: 22px;
     margin-right: 8px;
     border-radius: 3px;
-    background: var(--public-transport-city-color, #647782);
     vertical-align: middle;
 }
 
@@ -779,10 +687,9 @@ button.public-transport-line-pill {
     width: 34px;
     height: 34px;
     margin: 0 auto;
-    border: 1px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 7px;
-    background: var(--accent-soft);
-    color: var(--accent-hover);
     cursor: pointer;
 }
 
@@ -810,7 +717,6 @@ button.public-transport-line-pill {
 }
 
 .public-transport-stop-lines__list article > div span {
-    color: #697682;
     font-size: 0.72rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -819,14 +725,12 @@ button.public-transport-line-pill {
 .public-transport-empty {
     margin: 0;
     padding: 18px;
-    color: #697682;
     font-weight: 750;
 }
 
 .public-transport-error svg {
     width: 32px;
     height: 32px;
-    color: #b33b42;
 }
 
 .public-transport-error h2,
@@ -835,74 +739,76 @@ button.public-transport-line-pill {
 }
 
 @media (max-width: 760px) {
-    .public-transport-view__header {
-        align-items: stretch;
-        flex-wrap: wrap;
-    }
+.public-transport-view__header {
+    align-items: stretch;
+    flex-wrap: wrap;
+}
 
-    .public-transport-view__navigation {
-        flex: 1 1 100%;
-    }
+.public-transport-view__navigation {
+    flex: 1 1 100%;
+}
 
-    .public-transport-view__navigation-button {
-        flex: 1 1 0;
-    }
+.public-transport-view__navigation-button {
+    flex: 1 1 0;
+}
 
-    .public-transport-view__select-label {
-        flex: 1 1 180px;
-    }
+.public-transport-view__select-label {
+    flex: 1 1 180px;
+}
 
-    .public-transport-view__select {
-        width: 100%;
-        min-width: 0;
-    }
+.public-transport-view__select {
+    width: 100%;
+    min-width: 0;
+}
 
-    .public-transport-lines,
+.public-transport-lines,
     .public-transport-stops,
     .public-transport-detail {
-        padding: 12px;
-    }
+    padding: 12px;
+}
 
-    .public-transport-detail__title {
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
+.public-transport-detail__title {
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
 
-    .public-transport-detail__title > div {
-        flex: 1 1 180px;
-    }
+.public-transport-detail__title > div {
+    flex: 1 1 180px;
+}
 
-    .public-transport-stops__platforms {
-        padding-left: 14px;
-    }
+.public-transport-stops__platforms {
+    padding-left: 14px;
+}
 
-    .public-transport-stops__platform header {
-        align-items: stretch;
-        flex-direction: column;
-    }
+.public-transport-stops__platform header {
+    align-items: stretch;
+    flex-direction: column;
+}
 
-    .public-transport-stops__platform header button {
-        align-self: flex-start;
-        margin-left: 0;
-    }
+.public-transport-stops__platform header button {
+    align-self: flex-start;
+    margin-left: 0;
+}
 
-    .public-transport-ride__summary {
-        grid-template-columns: 1fr;
-    }
+.public-transport-ride__summary {
+    grid-template-columns: 1fr;
+}
 
-    .public-transport-ride__summary > div + div {
-        border-top: 1px solid var(--public-transport-border);
-        border-left: 0;
-    }
+.public-transport-ride__summary > div + div {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-left: 0;
+}
 
-    .public-transport-stop-lines__list article {
-        grid-template-columns: auto minmax(0, 1fr);
-    }
+.public-transport-stop-lines__list article {
+    grid-template-columns: auto minmax(0, 1fr);
+}
 
-    .public-transport-stop-lines__list article > button {
-        grid-column: 2;
-        justify-self: start;
-    }
+.public-transport-stop-lines__list article > button {
+    grid-column: 2;
+    justify-self: start;
+}
+
 }
 
 .public-transport-header[hidden],
@@ -946,19 +852,12 @@ button.public-transport-line-pill {
     gap: 7px;
     min-height: 38px;
     padding: 0 13px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
-}
-
-.public-transport-header__button--primary {
-    border-color: var(--accent-color);
-    background: var(--accent-color);
-    color: #ffffff;
 }
 
 .public-transport-header__button[aria-label="Wstecz"] {
@@ -982,11 +881,10 @@ button.public-transport-line-pill {
     min-width: 0;
     height: 38px;
     padding: 0 12px;
-    border: 1px solid rgba(32, 36, 42, 0.16);
+    border-width: 1px;
+    border-style: solid;
     border-right: 0;
     border-radius: 8px 0 0 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
 }
 
@@ -994,13 +892,11 @@ button.public-transport-line-pill {
     min-width: 40px;
     padding: 0;
     border-radius: 0 8px 8px 0;
-    background: #edf4f8;
 }
 
 .public-transport-header__field {
     display: grid;
     gap: 3px;
-    color: #67727e;
     font-size: 0.7rem;
     font-weight: 850;
     text-transform: uppercase;
@@ -1010,10 +906,9 @@ button.public-transport-line-pill {
     width: min(300px, 28vw);
     height: 38px;
     padding: 0 9px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-size: 0.86rem;
     font-weight: 750;
@@ -1034,7 +929,6 @@ button.public-transport-line-pill {
 }
 
 .public-transport-header__description span {
-    color: #697682;
     font-size: 0.78rem;
     font-weight: 700;
 }
@@ -1057,10 +951,6 @@ button.public-transport-line-pill {
     margin: 0;
 }
 
-.public-transport-carriers > header p {
-    color: #697682;
-}
-
 .public-transport-carriers__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1073,12 +963,12 @@ button.public-transport-line-pill {
     width: min(980px, 100%);
     margin: 22px auto 0;
     padding-top: 18px;
-    border-top: 1px solid rgba(32, 36, 42, 0.12);
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .public-transport-carriers__sources h3 {
     margin: 0 0 8px;
-    color: #34424f;
     font-size: 0.92rem;
 }
 
@@ -1089,13 +979,8 @@ button.public-transport-line-pill {
 
 .public-transport-carriers__attribution {
     margin: 0;
-    color: #64707c;
     font-size: 0.82rem;
     line-height: 1.2;
-}
-
-.public-transport-carriers__attribution a {
-    color: var(--accent-color);
 }
 
 .public-transport-carriers__tile {
@@ -1105,19 +990,12 @@ button.public-transport-line-pill {
     gap: 13px;
     min-height: 88px;
     padding: 15px;
-    border: 1px solid var(--public-transport-border);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 10px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     text-align: left;
-    box-shadow: 0 8px 22px rgba(32, 36, 42, 0.05);
     cursor: pointer;
-}
-
-.public-transport-carriers__tile:hover {
-    border-color: color-mix(in srgb, var(--accent-color) 50%, transparent);
-    background: #f6fafc;
 }
 
 .public-transport-carriers__icon {
@@ -1126,8 +1004,6 @@ button.public-transport-line-pill {
     width: 50px;
     height: 50px;
     border-radius: 9px;
-    background: var(--accent-soft);
-    color: var(--accent-hover);
 }
 
 .public-transport-carriers__icon svg {
@@ -1140,10 +1016,6 @@ button.public-transport-line-pill {
     gap: 4px;
 }
 
-.public-transport-carriers__tile small {
-    color: #697682;
-}
-
 .public-transport-view__progress {
     display: grid;
     gap: 6px;
@@ -1154,7 +1026,6 @@ button.public-transport-line-pill {
 .public-transport-view__progress progress {
     width: 100%;
     height: 10px;
-    accent-color: var(--accent-color);
 }
 
 .public-transport-collapse-button {
@@ -1163,10 +1034,9 @@ button.public-transport-line-pill {
     width: 32px;
     height: 32px;
     margin-left: 2px;
-    border: 1px solid rgba(32, 36, 42, 0.12);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 7px;
-    background: #ffffff;
-    color: #52606d;
     cursor: pointer;
 }
 
@@ -1233,9 +1103,8 @@ button.public-transport-line-pill {
     min-height: 48px;
     padding: 11px 14px;
     border: 0;
-    border-top: 1px solid var(--public-transport-border);
-    background: #ffffff;
-    color: #20242a;
+    border-top-width: 1px;
+    border-top-style: solid;
     font: inherit;
     font-weight: 750;
     text-align: left;
@@ -1244,10 +1113,6 @@ button.public-transport-line-pill {
 
 .public-transport-announcements__list button:first-child {
     border-top: 0;
-}
-
-.public-transport-announcements__list button:hover {
-    background: #f6fafc;
 }
 
 .public-transport-announcements__list button svg {
@@ -1266,10 +1131,9 @@ button.public-transport-line-pill {
     display: grid;
     gap: 9px;
     padding: 13px;
-    border: 1px solid var(--public-transport-border);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 8px 22px rgba(32, 36, 42, 0.05);
 }
 
 .public-transport-line-stop__variant-list h3 {
@@ -1281,11 +1145,11 @@ button.public-transport-line-pill {
     display: grid;
     gap: 5px;
     padding-top: 9px;
-    border-top: 1px solid var(--public-transport-border);
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .public-transport-line-stop__variant-date {
-    color: #697682;
     font-size: 0.74rem;
     font-weight: 800;
 }
@@ -1304,14 +1168,11 @@ button.public-transport-line-pill {
     min-height: 28px;
     padding: 3px 6px;
     border-radius: 6px;
-    background: var(--accent-soft);
-    color: var(--accent-hover);
     font-size: 0.82rem;
 }
 
 .public-transport-line-stop__variant span {
     min-width: 0;
-    color: #33414d;
     font-size: 0.8rem;
     font-weight: 750;
     overflow-wrap: anywhere;
@@ -1322,68 +1183,70 @@ button.public-transport-line-pill {
 }
 
 @media (max-width: 980px) {
-    .public-transport-header {
-        grid-template-columns: auto minmax(180px, 1fr) auto;
-    }
+.public-transport-header {
+    grid-template-columns: auto minmax(180px, 1fr) auto;
+}
 
-    .public-transport-header__button span {
-        display: none;
-    }
+.public-transport-header__button span {
+    display: none;
+}
 
-    .public-transport-header__field select {
-        width: min(230px, 28vw);
-    }
+.public-transport-header__field select {
+    width: min(230px, 28vw);
+}
+
 }
 
 @media (max-width: 760px) {
-    .public-transport-view__header {
-        align-items: stretch;
-    }
+.public-transport-view__header {
+    align-items: stretch;
+}
 
-    .public-transport-header {
-        grid-template-columns: 1fr;
-    }
+.public-transport-header {
+    grid-template-columns: 1fr;
+}
 
-    .public-transport-header__center {
-        grid-row: 2;
-    }
+.public-transport-header__center {
+    grid-row: 2;
+}
 
-    .public-transport-header__right {
-        justify-content: flex-start;
-        flex-wrap: wrap;
-    }
+.public-transport-header__right {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
 
-    .public-transport-detail__sidebar-layout,
+.public-transport-detail__sidebar-layout,
     .public-transport-line-stop__layout {
-        grid-template-columns: 1fr;
-    }
+    grid-template-columns: 1fr;
+}
 
-    .public-transport-detail__sidebar-shell {
-        width: auto;
-        min-width: 0;
-        max-width: none;
-    }
+.public-transport-detail__sidebar-shell {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+}
 
-    .public-transport-detail__sidebar-grabber {
-        display: none;
-    }
+.public-transport-detail__sidebar-grabber {
+    display: none;
+}
 
-    .public-transport-header__field {
-        flex: 1 1 180px;
-    }
+.public-transport-header__field {
+    flex: 1 1 180px;
+}
 
-    .public-transport-header__field select {
-        width: 100%;
-    }
+.public-transport-header__field select {
+    width: 100%;
+}
 
-    .public-transport-line-view__direction,
+.public-transport-line-view__direction,
     .public-transport-line-stop__layout {
-        grid-template-columns: 1fr;
-    }
+    grid-template-columns: 1fr;
+}
 
-    .public-transport-line-view__cities {
-        grid-row: 1;
-    }
+.public-transport-line-view__cities {
+    grid-row: 1;
+}
+
 }
 
 .public-transport-lines__grid[hidden],
@@ -1401,11 +1264,11 @@ button.public-transport-line-pill {
     padding: 14px 0;
     border: 0;
     border-radius: 0;
-    background: transparent;
 }
 
 .public-transport-stops__platform + .public-transport-stops__platform {
-    border-top: 1px solid var(--public-transport-border);
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .public-transport-stops__platform header > strong {
@@ -1443,8 +1306,8 @@ button.public-transport-line-pill {
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
-    border-bottom: 1px solid var(--public-transport-border);
-    background: #f9fbfc;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .public-transport-stop-lines__list article > header > .public-transport-stop-lines__header-actions {
@@ -1461,7 +1324,6 @@ button.public-transport-line-pill {
 }
 
 .public-transport-stop-lines__list article > header > div span {
-    color: #697682;
     font-size: 0.76rem;
     font-weight: 750;
 }
@@ -1472,10 +1334,9 @@ button.public-transport-line-pill {
     gap: 7px;
     min-height: 36px;
     padding: 0 11px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     white-space: nowrap;
@@ -1516,10 +1377,6 @@ button.public-transport-line-pill {
     padding: 0;
 }
 
-.public-transport-stop-lines__content .public-transport-line-stop__variant-list {
-    box-shadow: none;
-}
-
 .public-transport-stop-lines__departures > button {
     display: flex;
     flex-direction: column;
@@ -1529,28 +1386,20 @@ button.public-transport-line-pill {
     min-width: 0;
     min-height: 50px;
     padding: 5px 7px;
-    border: 1px solid var(--public-transport-border);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     cursor: pointer;
 }
 
-.public-transport-stop-lines__departures > button:hover {
-    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
-    background: #f4f9fc;
-}
-
 .public-transport-stop-lines__departures small {
-    color: var(--accent-hover);
     font-size: 0.7rem;
     line-height: 1;
 }
 
 .public-transport-stop-lines__departures svg {
     width: 14px;
-    color: #b56b00;
 }
 
 .public-transport-stop-lines__list article > footer {
@@ -1559,28 +1408,26 @@ button.public-transport-line-pill {
     flex-wrap: wrap;
     gap: 6px;
     padding: 0 14px 13px;
-    color: #697682;
     font-size: 0.78rem;
 }
 
 .public-transport-stop-lines__list article > footer strong {
     padding: 4px 7px;
     border-radius: 5px;
-    background: var(--accent-soft);
-    color: var(--accent-hover);
 }
 
 @media (max-width: 600px) {
-    .public-transport-stop-lines__list article > header {
-        grid-template-columns: auto minmax(0, 1fr);
-    }
+.public-transport-stop-lines__list article > header {
+    grid-template-columns: auto minmax(0, 1fr);
+}
 
-    .public-transport-stop-lines__list article > header > .public-transport-stop-lines__header-actions {
-        grid-column: 2;
-        justify-self: end;
-    }
+.public-transport-stop-lines__list article > header > .public-transport-stop-lines__header-actions {
+    grid-column: 2;
+    justify-self: end;
+}
 
-    .public-transport-stop-lines__content {
-        grid-template-columns: 1fr;
-    }
+.public-transport-stop-lines__content {
+    grid-template-columns: 1fr;
+}
+
 }

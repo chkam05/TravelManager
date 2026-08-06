@@ -3,10 +3,9 @@
     grid-template-rows: auto minmax(0, 1fr) auto;
     width: min(520px, calc(100vw - 48px));
     max-height: min(720px, calc(100vh - 48px));
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 28px 80px rgba(20, 26, 32, 0.3);
     overflow: hidden;
 }
 
@@ -20,8 +19,8 @@
     align-items: center;
     gap: 12px;
     padding: 16px 18px;
-    border-bottom: 1px solid rgba(32, 36, 42, 0.1);
-    background: #f7f9fb;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .favourites-editor__header h2 {
@@ -33,9 +32,9 @@
     position: relative;
     width: 32px;
     height: 32px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
     cursor: pointer;
 }
 
@@ -47,7 +46,6 @@
     left: 50%;
     width: 14px;
     height: 2px;
-    background: #46515c;
 }
 
 .favourites-editor__close::before {
@@ -69,9 +67,9 @@
     width: 100%;
     height: 42px;
     padding: 0 12px;
-    border: 1px solid rgba(32, 36, 42, 0.18);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    color: #20242a;
     font: inherit;
 }
 
@@ -94,9 +92,9 @@
     align-items: center;
     gap: 12px;
     padding: 12px;
-    border: 1px solid rgba(32, 36, 42, 0.12);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #f7f9fb;
 }
 
 .favourites-editor__selected-icon {
@@ -105,8 +103,6 @@
     width: 52px;
     height: 52px;
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: inset 0 0 0 1px rgba(32, 36, 42, 0.1);
     font-size: 1.7rem;
 }
 
@@ -117,7 +113,6 @@
 }
 
 .favourites-editor__selected-text span {
-    color: #66727e;
     font-size: 0.78rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -125,7 +120,6 @@
 
 .favourites-editor__selected-text strong {
     overflow: hidden;
-    color: #20242a;
     font-size: 0.96rem;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -140,10 +134,9 @@
 .favourites-editor__small-button {
     min-height: 38px;
     padding: 0 12px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
@@ -171,24 +164,16 @@
     flex: 0 0 auto;
     min-height: 36px;
     padding: 0 12px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
 }
 
-.favourites-editor__tab--active {
-    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
-    background: var(--accent-soft);
-    color: var(--accent-color);
-}
-
 .favourites-editor__separator {
     height: 1px;
-    background: rgba(32, 36, 42, 0.12);
 }
 
 .favourites-editor__presets {
@@ -201,25 +186,17 @@
     display: grid;
     place-items: center;
     min-height: 42px;
-    border: 1px solid rgba(32, 36, 42, 0.12);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
     font: inherit;
     font-size: 1.35rem;
     cursor: pointer;
 }
 
-.favourites-editor__preset:hover,
-.favourites-editor__preset:focus-visible {
-    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
-    background: var(--accent-soft);
-    outline: none;
-}
-
 .favourites-editor__empty {
     grid-column: 1 / -1;
     margin: 0;
-    color: #66727e;
     font-weight: 700;
 }
 
@@ -228,25 +205,18 @@
     justify-content: flex-end;
     gap: 10px;
     padding: 14px 18px;
-    border-top: 1px solid rgba(32, 36, 42, 0.1);
-    background: #ffffff;
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .favourites-editor__button {
     min-width: 90px;
     height: 40px;
     padding: 0 16px;
-    border: 1px solid rgba(32, 36, 42, 0.16);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 700;
     cursor: pointer;
-}
-
-.favourites-editor__button--primary {
-    border-color: var(--accent-color);
-    background: var(--accent-color);
-    color: #ffffff;
 }

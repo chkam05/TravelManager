@@ -5,7 +5,6 @@
     grid-template-rows: auto minmax(0, 1fr);
     height: 100%;
     min-height: 0;
-    background: #f4f7f8;
 }
 
 .favourites-tags-view__header {
@@ -13,8 +12,8 @@
     align-items: center;
     gap: 12px;
     padding: 14px 18px;
-    border-bottom: 1px solid rgba(32, 36, 42, 0.1);
-    background: #ffffff;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 .favourites-tags-view__search {
@@ -28,9 +27,9 @@
     width: min(360px, 52vw);
     height: 40px;
     padding: 0 12px;
-    border: 1px solid rgba(32, 36, 42, 0.16);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    color: #20242a;
     font: inherit;
 }
 
@@ -42,10 +41,9 @@
     gap: 7px;
     min-height: 38px;
     padding: 0 13px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
@@ -73,10 +71,9 @@
     display: none;
     min-width: 150px;
     padding: 6px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 18px 44px rgba(32, 36, 42, 0.18);
 }
 
 .favourites-tags-view__sort-menu[aria-hidden="false"] {
@@ -87,16 +84,10 @@
     height: 34px;
     border: 0;
     border-radius: 6px;
-    background: transparent;
-    color: #20242a;
     font: inherit;
     font-weight: 700;
     text-align: left;
     cursor: pointer;
-}
-
-.favourites-tags-view__sort-menu button:hover {
-    background: #edf4f7;
 }
 
 .favourites-tags-view__list {
@@ -116,10 +107,9 @@
     gap: 12px;
     min-height: 68px;
     padding: 12px;
-    border: 1px solid rgba(32, 36, 42, 0.1);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 8px 22px rgba(32, 36, 42, 0.06);
 }
 
 .favourites-tags-view__icon {
@@ -128,14 +118,12 @@
     width: 44px;
     height: 44px;
     border-radius: 8px;
-    background: #eef6f7;
     font-size: 1.35rem;
 }
 
 .favourites-tags-view__name {
     min-width: 0;
     overflow: hidden;
-    color: #20242a;
     font-weight: 900;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -148,10 +136,9 @@
     gap: 7px;
     min-height: 38px;
     padding: 0 13px;
-    border: 1px solid rgba(32, 36, 42, 0.14);
+    border-width: 1px;
+    border-style: solid;
     border-radius: 8px;
-    background: #ffffff;
-    color: #20242a;
     font: inherit;
     font-weight: 800;
     cursor: pointer;
@@ -173,9 +160,6 @@
     height: 56px;
     border: 0;
     border-radius: 50%;
-    background: var(--accent-color);
-    color: #ffffff;
-    box-shadow: 0 18px 44px color-mix(in srgb, var(--accent-color) 32%, transparent);
     cursor: pointer;
 }
 
@@ -187,40 +171,40 @@
 .favourites-tags-view__empty {
     margin: 0;
     padding: 20px;
-    color: #52606d;
     font-weight: 700;
 }
 
 @media (max-width: 640px) {
-    .favourites-tags-view {
-        --favourites-tags-fab-space: 112px;
-    }
+.favourites-tags-view {
+    --favourites-tags-fab-space: 112px;
+}
 
-    .favourites-tags-view__header {
-        flex-wrap: wrap;
-    }
+.favourites-tags-view__header {
+    flex-wrap: wrap;
+}
 
-    .favourites-tags-view__search {
-        flex: 1 1 100%;
-        min-width: 0;
-    }
+.favourites-tags-view__search {
+    flex: 1 1 100%;
+    min-width: 0;
+}
 
-    .favourites-tags-view__search-input {
-        flex: 1 1 auto;
-        width: auto;
-    }
+.favourites-tags-view__search-input {
+    flex: 1 1 auto;
+    width: auto;
+}
 
-    .favourites-tags-view__item {
-        grid-template-columns: 40px minmax(0, 1fr);
-    }
+.favourites-tags-view__item {
+    grid-template-columns: 40px minmax(0, 1fr);
+}
 
-    .favourites-tags-view__button {
-        grid-column: 2;
-        justify-self: start;
-    }
+.favourites-tags-view__button {
+    grid-column: 2;
+    justify-self: start;
+}
 
-    .favourites-tags-view__add {
-        right: 18px;
-        bottom: 18px;
-    }
+.favourites-tags-view__add {
+    right: 18px;
+    bottom: 18px;
+}
+
 }
