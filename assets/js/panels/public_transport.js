@@ -349,6 +349,14 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
     });
     content.addEventListener('click', async (event) => {
+        const collapse = event.target.closest('[data-public-transport-collapse]');
+        if (collapse) {
+            const target = content.querySelector(`#${CSS.escape(collapse.getAttribute('aria-controls') || '')}`);
+            const expanded = collapse.getAttribute('aria-expanded') === 'true';
+            collapse.setAttribute('aria-expanded', String(!expanded));
+            if (target) target.hidden = expanded;
+            return;
+        }
         const action = event.target.closest('[data-public-transport-action]');
         if (!action) return;
         if (action.dataset.publicTransportAction === 'line') {

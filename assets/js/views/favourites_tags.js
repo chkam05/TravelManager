@@ -67,9 +67,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     };
 
-    const createButton = (label, icon, handler) => {
+    const createButton = (label, icon, handler, danger = false) => {
         const button = document.createElement('button');
-        button.className = 'favourites-tags-view__button';
+        button.className = `favourites-tags-view__button${danger ? ' favourites-tags-view__button--danger' : ''}`;
         button.type = 'button';
         button.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i><span>${label}</span>`;
         button.addEventListener('click', handler);
@@ -108,7 +108,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 );
 
                 if (tag.id !== 'default') {
-                    item.append(createButton('Usuń', 'trash-2', () => removeTag(tag)));
+                    item.append(createButton('Usuń', 'trash-2', () => removeTag(tag), true));
                 }
 
                 list.append(item);

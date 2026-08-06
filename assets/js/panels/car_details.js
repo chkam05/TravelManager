@@ -156,6 +156,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     });
     closeButton.addEventListener('click', close);
+    document.addEventListener('travel-manager:app-view-changed', (event) => {
+        if (event.detail?.view !== 'map') {
+            close();
+        }
+    });
 
     const resize = { startX: 0, startWidth: 0 };
     const onPointerMove = (event) => {

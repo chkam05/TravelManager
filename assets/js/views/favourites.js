@@ -182,9 +182,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         window.setTimeout(() => window.travelManagerMap?.showFavourite?.(favourite), 0);
     };
 
-    const createButton = (label, icon, handler) => {
+    const createButton = (label, icon, handler, danger = false) => {
         const button = document.createElement('button');
-        button.className = 'favourites-view__item-button';
+        button.className = `favourites-view__item-button${danger ? ' favourites-view__item-button--danger' : ''}`;
         button.type = 'button';
         button.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i><span>${label}</span>`;
         button.addEventListener('click', handler);
@@ -232,7 +232,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 details,
                 createButton('Pokaż', 'eye', () => showFavourite(favourite)),
                 createButton('Edytuj', 'pencil', () => editFavourite(favourite)),
-                createButton('Usuń', 'trash-2', () => removeFavourite(favourite))
+                createButton('Usuń', 'trash-2', () => removeFavourite(favourite), true)
             );
             list.append(item);
         });

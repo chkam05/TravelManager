@@ -451,7 +451,7 @@ body {
     height: 100%;
 }
 
-.app-shell:not([data-current-view="map"]) [id$="-panel-container"]:not(#car-details-panel-container) {
+.app-shell:not([data-current-view="map"]) [id$="-panel-container"] {
     display: none;
 }
 

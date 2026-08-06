@@ -95,9 +95,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         return image;
     };
 
-    const createButton = (label, icon, handler) => {
+    const createButton = (label, icon, handler, danger = false) => {
         const button = document.createElement('button');
-        button.className = 'car-profiles-view__button';
+        button.className = `car-profiles-view__button${danger ? ' car-profiles-view__button--danger' : ''}`;
         button.type = 'button';
         button.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i><span>${label}</span>`;
         button.addEventListener('click', handler);
@@ -140,7 +140,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             actions.append(
                 createButton('Pokaż', 'eye', () => openDetails(profile)),
                 createButton('Edytuj', 'pencil', () => editProfile(profile)),
-                createButton('Usuń', 'trash-2', () => deleteProfile(profile))
+                createButton('Usuń', 'trash-2', () => deleteProfile(profile), true)
             );
 
             details.append(title, metaLine, specLine);

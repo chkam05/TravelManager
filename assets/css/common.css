@@ -435,3 +435,175 @@ body:not([data-theme="dark"]) [role="button"]:not([aria-disabled="true"]):is(:ho
     :is(span, strong, small, svg, i) {
     color: var(--accent-color);
 }
+
+/* Final light-theme component contracts. */
+body:not([data-theme="dark"]) .layer-details-panel__option:not(.layer-details-panel__option--disabled):is(:hover, :focus-within) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+}
+
+body:not([data-theme="dark"]) :is(
+    .place-details-panel__favourite,
+    .place-details-panel__route,
+    .route-details-panel__add,
+    .route-details-panel__header-actions .route-details-panel__save,
+    .public-transport-panel__all-lines,
+    .public-transport-table__map-button
+) {
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+}
+
+body:not([data-theme="dark"]) :is(
+    .public-transport-panel .public-transport-line-stop__departures button,
+    .public-transport-panel .public-transport-stop-lines__departures button,
+    .public-transport-panel .public-transport-line-view__stops button,
+    .public-transport-panel .public-transport-stops__toggle,
+    .public-transport-stop-lines__header-actions > button,
+    .public-transport-stops__lines .public-transport-line-pill
+) {
+    border-color: var(--border-color);
+    background: color-mix(in srgb, var(--text-primary) 7%, var(--surface-background));
+    color: var(--text-primary);
+}
+
+body:not([data-theme="dark"]) .public-transport-stops__lines .public-transport-line-pill:is(:hover, :focus-visible) {
+    border-color: var(--accent-color);
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+body:not([data-theme="dark"]) :is(
+    .public-transport-carriers__icon,
+    [data-public-transport-header-line-pill],
+    [data-public-transport-header-line]
+) {
+    color: var(--accent-color);
+}
+
+body:not([data-theme="dark"]) .public-transport-carriers__icon {
+    background: var(--accent-soft);
+}
+
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button,
+    .route-details-panel__menu-button
+) {
+    border: 1px solid transparent;
+    background: color-mix(in srgb, var(--text-primary) 7%, var(--surface-background));
+    color: var(--text-primary);
+}
+
+body :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .place-details-panel__favourite-remove
+),
+body :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .place-details-panel__favourite-remove
+) :is(span, strong, svg, i) {
+    color: #b42318;
+}
+
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .place-details-panel__favourite-remove
+):is(:hover, :focus-visible),
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .place-details-panel__favourite-remove
+):is(:hover, :focus-visible) :is(span, strong, svg, i) {
+    border-color: #b42318;
+    background: color-mix(in srgb, #b42318 9%, var(--surface-background));
+    color: #b42318;
+}
+
+/* Expanding a public-transport card must not select or recolour the card. */
+body .public-transport-stops__item:is(:hover, :focus-visible, :focus-within),
+body .public-transport-stop-lines__list article:is(:hover, :focus-visible, :focus-within) {
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+}
+
+body .public-transport-stops__item:is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p),
+body .public-transport-stop-lines__list article:is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p) {
+    color: inherit;
+}
+
+body .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) {
+    border-color: var(--border-color);
+    background: var(--surface-muted);
+    color: var(--text-primary);
+    box-shadow: none;
+}
+
+body .public-transport-view .public-transport-stop-lines__list article > header:has(button:is(:hover, :focus-visible)) :is(strong, span, svg) {
+    color: inherit;
+}
+
+body:not([data-theme="dark"]) .settings-view .app-view__save-button {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: #ffffff;
+}
+
+body:not([data-theme="dark"]) .settings-view .app-view__save-button :is(span, svg, i) {
+    color: #ffffff;
+}
+
+body:not([data-theme="dark"]) .settings-view .app-view__save-button:not(:disabled):is(:hover, :focus-visible) {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+    color: #ffffff;
+}
+
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu,
+    .route-details-panel__menu
+) {
+    gap: 5px;
+}
+
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .car-details-panel__button--danger,
+    .place-details-panel__favourite-remove
+):not(:disabled):is(:hover, :focus-visible) {
+    border-color: #b42318;
+    background: color-mix(in srgb, #b42318 10%, var(--surface-background));
+    color: #b42318;
+}
+
+body:not([data-theme="dark"]) :is(
+    .my-routes-view__menu button[data-danger],
+    .route-details-panel__menu-button--danger,
+    .favourites-view__item-button--danger,
+    .favourites-tags-view__button--danger,
+    .car-profiles-view__button--danger,
+    .car-details-panel__button--danger,
+    .place-details-panel__favourite-remove
+):not(:disabled):is(:hover, :focus-visible) :is(span, strong, svg, i) {
+    color: #b42318;
+}

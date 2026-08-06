@@ -28,13 +28,21 @@
                             <span>Trasa linii</span>
                         {% endif %}
                     </div>
-                    <button type="button" data-public-transport-action="line" data-url="{{ line.url }}">
-                        <span>Pokaż linię</span>
-                        <i data-lucide="chevron-right" aria-hidden="true"></i>
-                    </button>
+                    <div class="public-transport-stop-lines__header-actions">
+                        <button type="button" data-public-transport-action="line" data-url="{{ line.url }}">
+                            <span>Pokaż linię</span>
+                            <i data-lucide="chevron-right" aria-hidden="true"></i>
+                        </button>
+                        {% if capabilities.show_stop_departures %}
+                            <button class="public-transport-collapse-button" type="button" aria-expanded="false" aria-controls="public-transport-stop-line-{{ loop.index0 }}" data-public-transport-collapse>
+                                <i data-lucide="chevron-up" aria-hidden="true"></i>
+                                <span class="sr-only">Rozwiń lub zwiń odjazdy linii</span>
+                            </button>
+                        {% endif %}
+                    </div>
                 </header>
                 {% if capabilities.show_stop_departures %}
-                    <div class="public-transport-stop-lines__content">
+                    <div class="public-transport-stop-lines__content" id="public-transport-stop-line-{{ loop.index0 }}" hidden>
                         <div class="public-transport-stop-lines__departures">
                             {% for departure in timetable.departures %}
                                 <button type="button"{% if capabilities.show_ride and departure.url %} data-public-transport-action="ride" data-url="{{ departure.url }}"{% endif %}{% if not capabilities.show_ride or not departure.url %} disabled{% endif %}>
