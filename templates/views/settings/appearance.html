@@ -41,4 +41,40 @@
             <span>Dodaj kolor</span>
         </button>
     </section>
+
+    <section class="appearance-settings__section">
+        <header>
+            <h3>Elementy mapy</h3>
+            <p>Dostosuj kolory punktów i przebiegów tras wyświetlanych na mapie.</p>
+        </header>
+        <div class="appearance-settings__color-list">
+            <div class="appearance-settings__color-field">
+                <div><strong>Punkt trasy na mapie</strong><small>Kolor numerowanych punktów trasy.</small></div>
+                <div data-appearance-map-color="route_point_color" data-appearance-color-label="Punkt trasy na mapie"></div>
+            </div>
+            <div class="appearance-settings__color-field">
+                <div><strong>Trasa na mapie</strong><small>Kolor linii wyznaczonej trasy.</small></div>
+                <div data-appearance-map-color="route_color" data-appearance-color-label="Trasa na mapie"></div>
+            </div>
+            <div class="appearance-settings__color-field">
+                <div><strong>Trasa komunikacji miejskiej</strong><small>Kolor przebiegu przejazdu komunikacją miejską.</small></div>
+                <div data-appearance-map-color="public_transport_route_color" data-appearance-color-label="Trasa komunikacji miejskiej"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="appearance-settings__section">
+        <header>
+            <h3>Pojazdy na mapie</h3>
+            <p>Wybierz osobny kolor znacznika dla każdego typu pojazdu.</p>
+        </header>
+        <div class="appearance-settings__color-list">
+            {% for vehicle_type, label in [('bus', 'Autobus'), ('tram', 'Tramwaj'), ('trolley', 'Trolejbus'), ('metro', 'Metro'), ('train', 'Pociąg')] %}
+                <div class="appearance-settings__color-field">
+                    <div><strong>{{ label }}</strong><small>Kolor pojazdu typu: {{ label|lower }}.</small></div>
+                    <div data-appearance-vehicle-color="{{ vehicle_type }}" data-appearance-color-label="{{ label }}"></div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 </div>

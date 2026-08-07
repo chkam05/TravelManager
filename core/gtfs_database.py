@@ -26,7 +26,7 @@ class GtfsDatabase:
     """Builds a compact relational cache from one or more static GTFS feeds."""
 
     _BATCH_SIZE: ClassVar[int] = 5000
-    _SCHEMA_VERSION: ClassVar[str] = '2'
+    _SCHEMA_VERSION: ClassVar[str] = '3'
     _SCHEMA: ClassVar[str] = """
         CREATE TABLE routes (
             feed_id TEXT NOT NULL,
@@ -400,6 +400,7 @@ class GtfsDatabase:
                     shape_id,
                     cls._integer(row, 'wheelchair_accessible'),
                     cls._value(row, 'block_id')
+                    or cls._value(row, 'brigade_id')
                 )
 
             cls._insert_rows(

@@ -533,7 +533,8 @@ class GzmGtfsRepository:
             ),
             dates=self._dates('line', {
                 'route': str(route['route_id'])
-            })
+            }),
+            route_variant_groups=self._variant_groups(variants)
         )
 
     def _line_variants(
@@ -608,6 +609,25 @@ class GzmGtfsRepository:
                 trip=str(variant['trip_id']),
                 date=service_date.isoformat()
             )
+        return result
+
+    def _variant_groups(self, variants: Iterable[sqlite3.Row]) -> dict[str, str]:
+        """Maps GZM's explicit base/bypass flags to shared route sections."""
+        result: dict[str, str] = {}
+        for index, variant in enumerate(variants, start=1):
+            name = self._variant_description(variant) or f'Wariant {index}'
+            label = name
+            duplicate = 2
+            while label in result:
+                label = f'{name} ({duplicate})'
+                duplicate += 1
+            if int(variant['is_base'] or 0) == 1:
+                group = 'standard'
+            elif int(variant['is_bypass'] or 0) == 1:
+                group = 'changed'
+            else:
+                group = 'changed'
+            result[label] = group
         return result
 
     def _direction(
@@ -1360,5 +1380,50 @@ class GzmGtfsRepository:
             for row in trip_rows
         }
         return route_names, trip_names, route_types, trip_types
+
+    def realtime_trip_details(
+        self,
+        trip_ids: set[str]
+    ) -> tuple[
+        dict[tuple[str, str], dict[str, str]],
+        dict[tuple[str, str, int], str],
+        dict[tuple[str, str], str]
+    ]:
+        """Returns directions and stops for realtime trip identifiers."""
+        if not trip_ids:
+            return {}, {}, {}
+        with self._connection() as connection:
+            feed_id = self._active_feed(connection, date.today())
+            placeholders = ','.join('?' for _ in trip_ids)
+            rows = connection.execute(
+                f"""
+                    SELECT t.trip_id, t.headsign, st.stop_sequence,
+                           st.stop_id, s.name stop_name
+                    FROM trips t
+                    LEFT JOIN stop_times st
+                      ON st.feed_id = t.feed_id AND st.trip_id = t.trip_id
+                    LEFT JOIN stops s
+                      ON s.feed_id = st.feed_id AND s.stop_id = st.stop_id
+                    WHERE t.feed_id = ? AND t.trip_id IN ({placeholders})
+                    ORDER BY t.trip_id, st.stop_sequence
+                """,
+                (feed_id, *sorted(trip_ids))
+            ).fetchall()
+        details: dict[tuple[str, str], dict[str, str]] = {}
+        trip_stops: dict[tuple[str, str, int], str] = {}
+        stop_names: dict[tuple[str, str], str] = {}
+        for row in rows:
+            trip_id = str(row['trip_id'])
+            key = (self.FEED_ID, trip_id)
+            trip = details.setdefault(key, {
+                'direction': str(row['headsign'] or ''),
+                'destination': ''
+            })
+            stop_name = str(row['stop_name'] or '')
+            if stop_name:
+                trip['destination'] = stop_name
+                trip_stops[(self.FEED_ID, trip_id, int(row['stop_sequence']))] = stop_name
+                stop_names[(self.FEED_ID, str(row['stop_id']))] = stop_name
+        return details, trip_stops, stop_names
 
     #endregion Realtime lookup maps

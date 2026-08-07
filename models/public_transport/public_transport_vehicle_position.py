@@ -25,12 +25,17 @@ class PublicTransportVehiclePosition(BaseDataModel):
     FIELD_SOURCE_CODE: ClassVar[str] = 'source_code'
     FIELD_LINE: ClassVar[str] = 'line'
     FIELD_TRIP_ID: ClassVar[str] = 'trip_id'
+    FIELD_DIRECTION: ClassVar[str] = 'direction'
+    FIELD_NEXT_STOP: ClassVar[str] = 'next_stop'
+    FIELD_DESTINATION: ClassVar[str] = 'destination'
+    FIELD_STATUS: ClassVar[str] = 'status'
     FIELD_TYPE: ClassVar[str] = 'type'
     FIELD_LATITUDE: ClassVar[str] = 'latitude'
     FIELD_LONGITUDE: ClassVar[str] = 'longitude'
     FIELD_BEARING: ClassVar[str] = 'bearing'
     FIELD_SPEED: ClassVar[str] = 'speed'
     FIELD_RECORDED_AT: ClassVar[str] = 'recorded_at'
+    FIELD_BRIGADE: ClassVar[str] = 'brigade'
 
     # Fields
     vehicle_id: str
@@ -39,12 +44,17 @@ class PublicTransportVehiclePosition(BaseDataModel):
     source_code: str
     line: str
     trip_id: str
+    direction: str
+    next_stop: str
+    destination: str
+    status: str
     type: PublicTransportType
     latitude: float
     longitude: float
     bearing: float | None
     speed: float | None
     recorded_at: datetime | None
+    brigade: str = ''
 
     #region Serialization
 
@@ -67,6 +77,10 @@ class PublicTransportVehiclePosition(BaseDataModel):
             source_code=str(d.get(cls.FIELD_SOURCE_CODE) or ''),
             line=str(d.get(cls.FIELD_LINE) or ''),
             trip_id=str(d.get(cls.FIELD_TRIP_ID) or ''),
+            direction=str(d.get(cls.FIELD_DIRECTION) or ''),
+            next_stop=str(d.get(cls.FIELD_NEXT_STOP) or ''),
+            destination=str(d.get(cls.FIELD_DESTINATION) or ''),
+            status=str(d.get(cls.FIELD_STATUS) or ''),
             type=transport_type,
             latitude=parse_coordinate(
                 d.get(cls.FIELD_LATITUDE),
@@ -80,7 +94,8 @@ class PublicTransportVehiclePosition(BaseDataModel):
             ) or 0.0,
             bearing=cls._optional_float(d.get(cls.FIELD_BEARING)),
             speed=cls._optional_float(d.get(cls.FIELD_SPEED)),
-            recorded_at=parse_datetime(d.get(cls.FIELD_RECORDED_AT))
+            recorded_at=parse_datetime(d.get(cls.FIELD_RECORDED_AT)),
+            brigade=str(d.get(cls.FIELD_BRIGADE) or '')
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -92,6 +107,10 @@ class PublicTransportVehiclePosition(BaseDataModel):
             self.FIELD_SOURCE_CODE: self.source_code,
             self.FIELD_LINE: self.line,
             self.FIELD_TRIP_ID: self.trip_id,
+            self.FIELD_DIRECTION: self.direction,
+            self.FIELD_NEXT_STOP: self.next_stop,
+            self.FIELD_DESTINATION: self.destination,
+            self.FIELD_STATUS: self.status,
             self.FIELD_TYPE: str(self.type),
             self.FIELD_LATITUDE: self.latitude,
             self.FIELD_LONGITUDE: self.longitude,
@@ -99,7 +118,8 @@ class PublicTransportVehiclePosition(BaseDataModel):
             self.FIELD_SPEED: self.speed,
             self.FIELD_RECORDED_AT: (
                 self.recorded_at.isoformat() if self.recorded_at else None
-            )
+            ),
+            self.FIELD_BRIGADE: self.brigade
         }
 
     @staticmethod

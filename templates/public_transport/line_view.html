@@ -2,8 +2,10 @@
     <script type="application/json" data-public-transport-metadata>{{ {
         'line': line.line,
         'type': line.type.value,
+        'vehicle_feed': vehicle_feed,
         'directions': line.directions|map(attribute='name')|list,
         'route_variants': line.route_variants,
+        'route_variant_groups': line.route_variant_groups,
         'direction_label': capabilities.direction_selector_label,
         'route': route_points,
         'routes': routes_by_direction,

@@ -20,7 +20,7 @@ APP_DESCRIPTION = (
     'planowania i zapisywania tras oraz szacowania kosztów podróży na podstawie '
     'profili samochodów i aktualnych cen paliw.'
 )
-APP_VERSION = '1.5.0.0'
+APP_VERSION = '1.5.2.0'
 
 # Application settings storage.
 SETTINGS_DIR = PathUtils.get_settings_dir(APP_NAME)

@@ -1540,6 +1540,7 @@ body {
     border-top-color: var(--border-subtle);
 }
 
+.route-details-panel__add,
 .route-details-panel__reverse {
     border-color: var(--border-strong);
     background: var(--surface-background);

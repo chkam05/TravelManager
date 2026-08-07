@@ -1,7 +1,7 @@
 .route-details-panel {
     --route-details-panel-width: min(360px, calc(100vw - 36px));
     position: fixed;
-    z-index: 1080;
+    z-index: 1140;
     top: calc(var(--header-height) + 18px);
     right: 18px;
     bottom: 18px;

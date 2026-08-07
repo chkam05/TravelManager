@@ -1,15 +1,23 @@
 from __future__ import annotations
+import unicodedata
 from typing import Any, ClassVar, Dict, Type
 from urllib.parse import urlparse
 
 from utils.public_transport.czestochowa_downloader import CzestochowaDownloader
+from utils.public_transport.elblag_downloader import ElblagDownloader
+from utils.public_transport.gorzow_downloader import GorzowDownloader
 from utils.public_transport.gzm_downloader import GzmDownloader
 from utils.public_transport.krakow_downloader import KrakowDownloader
+from utils.public_transport.lublin_downloader import LublinDownloader
+from utils.public_transport.olsztyn_downloader import OlsztynDownloader
 from utils.public_transport.warsaw_downloader import WarsawDownloader
-from utils.public_transport.tricity_downloader import (
-    GdanskDownloader,
-    GdyniaDownloader
-)
+from utils.public_transport.gdansk_downloader import GdanskDownloader
+from utils.public_transport.gdynia_downloader import GdyniaDownloader
+from utils.public_transport.poznan_downloader import PoznanDownloader
+from utils.public_transport.szczecin_downloader import SzczecinDownloader
+from utils.public_transport.bydgoszcz_downloader import BydgoszczDownloader
+from utils.public_transport.torun_downloader import TorunDownloader
+from utils.public_transport.wroclaw_downloader import WroclawDownloader
 
 
 class PublicTransportProviders:
@@ -21,6 +29,15 @@ class PublicTransportProviders:
     WARSAW: ClassVar[str] = 'warsaw'
     GDANSK: ClassVar[str] = 'gdansk'
     GDYNIA: ClassVar[str] = 'gdynia'
+    SZCZECIN: ClassVar[str] = 'szczecin'
+    POZNAN: ClassVar[str] = 'poznan'
+    BYDGOSZCZ: ClassVar[str] = 'bydgoszcz'
+    TORUN: ClassVar[str] = 'torun'
+    WROCLAW: ClassVar[str] = 'wroclaw'
+    ELBLAG: ClassVar[str] = 'elblag'
+    GORZOW: ClassVar[str] = 'gorzow'
+    LUBLIN: ClassVar[str] = 'lublin'
+    OLSZTYN: ClassVar[str] = 'olsztyn'
 
     FIELD_NAME: ClassVar[str] = 'name'
     FIELD_DESCRIPTION: ClassVar[str] = 'description'
@@ -108,6 +125,42 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_VEHICLE_POSITIONS: True
     }
     GDYNIA_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    SZCZECIN_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    POZNAN_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    BYDGOSZCZ_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    TORUN_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    WROCLAW_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    ELBLAG_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    GORZOW_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    LUBLIN_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    OLSZTYN_CAPABILITIES: ClassVar[Dict[str, object]] = {
         **WARSAW_CAPABILITIES,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: False
     }
@@ -201,6 +254,129 @@ class PublicTransportProviders:
                     'informacje-o-rozkladach-jazdy-i-lokalizacji-przystankow'
                 )
             }]
+        },
+        SZCZECIN: {
+            FIELD_NAME: 'Szczecin',
+            FIELD_DESCRIPTION: 'ZDiTM Szczecin (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: SzczecinDownloader,
+            FIELD_CAPABILITIES: SZCZECIN_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Zarząd Dróg i Transportu Miejskiego w Szczecinie',
+                'url': (
+                    'https://www.zditm.szczecin.pl/pl/zditm/'
+                    'dla-programistow/gtfs'
+                )
+            }]
+        },
+        POZNAN: {
+            FIELD_NAME: 'Poznań',
+            FIELD_DESCRIPTION: 'ZTM Poznań (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: PoznanDownloader,
+            FIELD_CAPABILITIES: POZNAN_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Zarząd Transportu Miejskiego w Poznaniu',
+                'url': 'https://www.ztm.poznan.pl/otwarte-dane/gtfsfiles/'
+            }]
+        },
+        BYDGOSZCZ: {
+            FIELD_NAME: 'Bydgoszcz',
+            FIELD_DESCRIPTION: 'ZDMiKP Bydgoszcz (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: BydgoszczDownloader,
+            FIELD_CAPABILITIES: BYDGOSZCZ_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'ZDMiKP Bydgoszcz',
+                'url': 'https://zdmikp.bydgoszcz.pl/rozklady/paczka/linie.htm'
+            }]
+        },
+        TORUN: {
+            FIELD_NAME: 'Toruń',
+            FIELD_DESCRIPTION: 'MZK Toruń (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: TorunDownloader,
+            FIELD_CAPABILITIES: TORUN_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [
+                {
+                    'name': 'Miejski Zakład Komunikacji w Toruniu',
+                    'url': 'https://mzk-torun.pl/'
+                },
+                {
+                    'name': 'Konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                    'url': 'https://mkuran.pl/gtfs/'
+                }
+            ]
+        },
+        WROCLAW: {
+            FIELD_NAME: 'Wrocław',
+            FIELD_DESCRIPTION: 'Komunikacja miejska we Wrocławiu (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: WroclawDownloader,
+            FIELD_CAPABILITIES: WROCLAW_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [
+                {
+                    'name': 'Wrocław Open Data – rozkład jazdy GTFS',
+                    'url': 'https://open-data.cui.wroclaw.pl/hdb/ft/6/'
+                },
+                {
+                    'name': 'Wrocław Open Data – pozycje pojazdów',
+                    'url': 'https://open-data.cui.wroclaw.pl/hdb/db/14'
+                }
+            ]
+        },
+        ELBLAG: {
+            FIELD_NAME: 'Elbląg',
+            FIELD_DESCRIPTION: 'ZKM Elbląg (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: ElblagDownloader,
+            FIELD_CAPABILITIES: ELBLAG_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'ZKM Elbląg / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        GORZOW: {
+            FIELD_NAME: 'Gorzów Wielkopolski',
+            FIELD_DESCRIPTION: 'MZK Gorzów Wielkopolski (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: GorzowDownloader,
+            FIELD_CAPABILITIES: GORZOW_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'MZK Gorzów / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        LUBLIN: {
+            FIELD_NAME: 'Lublin',
+            FIELD_DESCRIPTION: 'ZDiTM Lublin (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: LublinDownloader,
+            FIELD_CAPABILITIES: LUBLIN_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'ZDiTM Lublin / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        OLSZTYN: {
+            FIELD_NAME: 'Olsztyn',
+            FIELD_DESCRIPTION: 'ZDZiT Olsztyn (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: OlsztynDownloader,
+            FIELD_CAPABILITIES: OLSZTYN_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Zarząd Dróg, Zieleni i Transportu w Olsztynie',
+                'url': 'https://zdzit.olsztyn.eu/gtfs/'
+            }]
         }
     }
 
@@ -244,8 +420,8 @@ class PublicTransportProviders:
 
     @classmethod
     def options(cls) -> list[dict[str, Any]]:
-        """Returns provider identifiers and labels for selection controls."""
-        return [
+        """Returns providers alphabetically for selectors and data sources."""
+        options = [
             {
                 'id': provider_id,
                 'name': str(provider[cls.FIELD_NAME]),
@@ -255,6 +431,13 @@ class PublicTransportProviders:
             }
             for provider_id, provider in cls.VALUES.items()
         ]
+        return sorted(
+            options,
+            key=lambda option: unicodedata.normalize(
+                'NFKD',
+                str(option['name']).casefold()
+            )
+        )
 
     @classmethod
     def validate_url(cls, provider_id: str, url: str) -> str:

@@ -1,0 +1,53 @@
+.public-transport-vehicle-panel {
+    position: fixed;
+    z-index: 1100;
+    top: calc(var(--header-height, 88px) + 14px);
+    right: var(--public-transport-vehicle-panel-right, 18px);
+    left: 18px;
+    display: grid;
+    gap: 7px;
+    min-height: 72px;
+    overflow: hidden;
+    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 11px;
+    background: var(--surface-translucent);
+    color: var(--text-primary);
+    box-shadow: 0 16px 38px var(--shadow-color);
+    backdrop-filter: blur(18px);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition: right 160ms ease, opacity 140ms ease, transform 140ms ease;
+}
+.public-transport-vehicle-panel--open { visibility: visible; opacity: 1; pointer-events: auto; transform: translateY(0); }
+.public-transport-vehicle-panel__header { display: grid; grid-template-columns: 36px minmax(0, 1fr) 34px; align-items: center; gap: 8px; }
+.public-transport-vehicle-panel__icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-color); }
+.public-transport-vehicle-panel__icon svg { width: 20px; height: 20px; }
+.public-transport-vehicle-panel__heading { display: grid; gap: 3px; }
+.public-transport-vehicle-panel__heading span,
+.public-transport-vehicle-panel__details dt { color: var(--text-secondary); font-size: 0.75rem; }
+.public-transport-vehicle-panel__heading strong { font-size: 1.02rem; }
+.public-transport-vehicle-panel__heading small { color: var(--text-secondary); font-size: 0.66rem; font-weight: 500; }
+.public-transport-vehicle-panel__details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(108px, 100%), 1fr));
+    gap: 6px 10px;
+    min-width: 0;
+    margin: 0;
+    padding-top: 7px;
+    border-top: 1px solid var(--border-subtle);
+}
+.public-transport-vehicle-panel__details > div { display: grid; min-width: 0; gap: 3px; }
+.public-transport-vehicle-panel__details dt,
+.public-transport-vehicle-panel__details dd { margin: 0; }
+.public-transport-vehicle-panel__details dd { overflow-wrap: anywhere; font-size: 0.88rem; font-weight: 750; }
+.public-transport-vehicle-panel__close { position: relative; width: 32px; height: 32px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--control-background); cursor: pointer; }
+.public-transport-vehicle-panel__close::before,
+.public-transport-vehicle-panel__close::after { content: ""; position: absolute; top: 50%; left: 50%; width: 16px; height: 2px; border-radius: 999px; background: currentColor; }
+.public-transport-vehicle-panel__close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.public-transport-vehicle-panel__close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+@media (max-width: 900px) {
+    .public-transport-vehicle-panel--open { transform: translateY(0); }
+}

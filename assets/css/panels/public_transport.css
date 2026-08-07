@@ -1,7 +1,7 @@
 .public-transport-panel {
     --public-transport-panel-width: min(380px, calc(100vw - 36px));
     position: fixed;
-    z-index: 1095;
+    z-index: 1130;
     top: calc(var(--header-height) + 18px);
     right: 18px;
     bottom: 18px;

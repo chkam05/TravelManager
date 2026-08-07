@@ -136,6 +136,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             if (state.lineMetadata?.type) {
                 params.set('type', state.lineMetadata.type);
             }
+            if (state.lineMetadata?.vehicle_feed) {
+                params.set('feed', state.lineMetadata.vehicle_feed);
+            }
             const response = await fetch(`${endpoint('vehicles')}?${params}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
             setLiveStatus('Przetwarzanie pozycji pojazdów…');
             const data = await response.json();
@@ -150,7 +153,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             setVehiclesVisible(true);
             return true;
         } catch (error) {
-            if (!silent) window.alert(error.message);
+            if (!silent) window.travelManagerAlert?.(error.message, 'error');
             return false;
         } finally { state.vehicleRequestActive = false; }
     };
@@ -162,10 +165,25 @@ document.addEventListener('travel-manager:views-ready', () => {
                 ? `Linia ${state.metadata.line || ''}`
                 : state.metadata.stop || `Linia ${state.metadata.line || ''}`;
         const isRoot = state.screen === 'lines';
+        const route = state.lineMetadata?.routes?.[state.directionIndex]
+            || state.lineMetadata?.route
+            || [];
+        const canShowRoute = Boolean(
+            state.lineMetadata?.show_route_map
+            && Array.isArray(route)
+            && route.length >= 2
+        );
         backButton.hidden = isRoot;
-        mapButton.hidden = isRoot;
+        mapButton.hidden = isRoot || !canShowRoute;
+        mapButton.disabled = !canShowRoute;
         if (vehiclesButton) vehiclesButton.hidden = isRoot || !state.lineMetadata?.show_vehicle_positions || !state.lineMetadata?.line;
-        if (stopMapButton) stopMapButton.hidden = !['line-stop', 'stop-lines'].includes(state.screen);
+        if (vehiclesButton) vehiclesButton.disabled = !state.lineMetadata?.show_vehicle_positions || !state.lineMetadata?.line;
+        if (stopMapButton) {
+            const canShowStop = ['line-stop', 'stop-lines'].includes(state.screen)
+                && state.metadata?.show_stop_map !== false;
+            stopMapButton.hidden = !canShowStop;
+            stopMapButton.disabled = !canShowStop;
+        }
         if (isRoot) { setRouteVisible(false); setStopVisible(false); setVehiclesVisible(false); }
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
@@ -206,8 +224,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         const dateSelect = lineView.querySelector('[data-public-transport-panel-line-date]');
         const dateField = lineView.querySelector('[data-public-transport-panel-line-date-field]');
         const variants = Object.entries(state.metadata.route_variants || {});
+        const groups = state.metadata.route_variant_groups || {};
         const directions = variants.length
-            ? variants.map(([label, value]) => ({ label, value }))
+            ? variants.map(([label, value]) => ({ label, value, group: groups[label] || 'standard' }))
             : (state.metadata.directions || []).map((label, index) => ({ label, value: String(index) }));
         const dates = (state.metadata.dates || []).map((item) => ({ label: item.label, value: item.url, date: item.date }));
         state.lineMetadata = state.metadata;
@@ -215,12 +234,22 @@ document.addEventListener('travel-manager:views-ready', () => {
         state.directionIndex = 0;
         directionLabel.textContent = state.metadata.direction_label || 'Kierunek';
         directionField.hidden = !directions.length;
-        fillSelect(directionSelect, directions, variants.length ? state.url : '0', (value) => {
+        const changeDirection = (value) => {
             if (/^https?:\/\//.test(value)) { load('line', value, true); return; }
             state.directionIndex = Number(value) || 0;
             renderStops(state.directionIndex);
             if (state.routeVisible) showCurrentRoute();
-        });
+        };
+        if (variants.length && window.travelManagerRouteVariantDropdown) {
+            window.travelManagerRouteVariantDropdown.enhance(
+                directionSelect,
+                directions,
+                state.url,
+                changeDirection
+            );
+        } else {
+            fillSelect(directionSelect, directions, '0', changeDirection);
+        }
         dateField.hidden = !dates.length;
         const currentDate = selectedDate(state.url);
         fillSelect(dateSelect, dates, dates.find((item) => item.date === currentDate)?.value || dates[0]?.value, (value) => {
@@ -264,6 +293,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     async function load(screen, url = '', push = false, refresh = false) {
         if (push) state.history.push({ screen: state.screen, url: state.url });
         if (screen === 'lines') { clearRoute(); clearVehicles(); clearStop(); state.lineMetadata = null; state.lineUrl = ''; }
+        if (screen === 'stop-lines') clearVehicles();
         state.screen = screen; state.url = url; status('Ładowanie danych…'); updateHeader();
         try {
             const params = new URLSearchParams();

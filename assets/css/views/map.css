@@ -98,6 +98,7 @@
     border-width: 2px;
     border-style: solid;
     border-radius: 50%;
+    transition: filter 120ms ease;
 }
 
 .favourite-marker span {
@@ -107,4 +108,8 @@
     height: 100%;
     font-size: 1.2rem;
     line-height: 1;
+}
+
+.public-transport-vehicle-marker--selected {
+    filter: drop-shadow(0 0 3px var(--accent-color)) drop-shadow(0 0 6px var(--accent-color)) drop-shadow(0 4px 7px var(--shadow-color));
 }

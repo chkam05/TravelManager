@@ -4,6 +4,7 @@ from datetime import date
 from threading import Lock
 from time import monotonic
 from typing import Any, Callable, ClassVar
+from urllib.parse import parse_qs, urlparse
 
 from flask import jsonify, render_template, request
 
@@ -149,6 +150,7 @@ class PublicTransportController(BaseController):
                 route_points=self._line_route_points(model),
                 routes_by_direction=self._line_routes_by_direction(model),
                 date_options=self._date_options(model.dates),
+                vehicle_feed=(parse_qs(urlparse(url).query).get('feed') or [''])[0],
                 capabilities=PublicTransportProviders.capabilities(provider_id)
             )
         )(self._attach_cached_announcements(
@@ -247,10 +249,10 @@ class PublicTransportController(BaseController):
             downloader = PublicTransportProviders.downloader(provider_id)
             line = str(request.args.get('line') or '').strip()
             transport_type = str(request.args.get('type') or '').strip()
-            positions = downloader.download_vehicle_positions(
-                line=line,
-                transport_type=transport_type
-            )
+            arguments = {'line': line, 'transport_type': transport_type}
+            if provider_id == PublicTransportProviders.KRAKOW:
+                arguments['feed_id'] = str(request.args.get('feed') or '').strip()
+            positions = downloader.download_vehicle_positions(**arguments)
             return jsonify({
                 'positions': [
                     position.to_dict()

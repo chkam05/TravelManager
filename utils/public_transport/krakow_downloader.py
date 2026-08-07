@@ -428,6 +428,12 @@ class KrakowDownloader:
                 )
                 for variant in (selected_variants or variants[:1])
             ]
+            route_variant_groups = cls._variant_groups(connection, variants)
+            route_variant_labels = cls._descriptive_variant_labels(
+                connection,
+                variants,
+                route_variant_groups
+            )
 
         line_name = str(route['short_name'])
         route_variants = cls._variant_urls(
@@ -436,6 +442,14 @@ class KrakowDownloader:
             route_id,
             service_date
         )
+        route_variants = {
+            route_variant_labels.get(label, label): variant_url
+            for label, variant_url in route_variants.items()
+        }
+        route_variant_groups = {
+            route_variant_labels.get(label, label): group
+            for label, group in route_variant_groups.items()
+        }
         model = PublicTransportLine(
             line=line_name,
             type=cls._type_from_route(
@@ -449,7 +463,8 @@ class KrakowDownloader:
                 'feed': feed_id,
                 'route': route_id,
                 'trip': selected_trip_id
-            })
+            }),
+            route_variant_groups=route_variant_groups
         )
         if include_announcement_content:
             model.announcements = cls.download_announcements(
@@ -531,6 +546,214 @@ class KrakowDownloader:
                 trip=str(variant['trip_id']),
                 data=service_date.isoformat()
             )
+        return result
+
+    @classmethod
+    def _variant_labels(cls, variants: list) -> list[str]:
+        """Returns stable, unique labels shared by URLs and their groups."""
+        labels: list[str] = []
+        for index, variant in enumerate(variants, start=1):
+            name = str(variant['headsign'] or '').strip() or f'Wariant {index}'
+            label = name
+            suffix = 2
+            while label in labels:
+                label = f'{name} ({suffix})'
+                suffix += 1
+            labels.append(label)
+        return labels
+
+    @classmethod
+    def _variant_groups(cls, connection, variants: list) -> dict[str, str]:
+        """Classifies GTFS trips by depot endpoints and stop-sequence topology."""
+        details: list[dict[str, Any]] = []
+        for variant in variants:
+            trip = connection.execute(
+                """
+                    SELECT feed_id, block_id, service_id,
+                           (SELECT MAX(arrival_time) FROM stop_times
+                            WHERE feed_id = t.feed_id AND trip_id = t.trip_id) end_time
+                    FROM trips t WHERE trip_id = ? LIMIT 1
+                """,
+                (str(variant['trip_id']),)
+            ).fetchone()
+            rows = connection.execute(
+                """
+                    SELECT s.name
+                    FROM stop_times st
+                    JOIN stops s ON s.feed_id = st.feed_id
+                                AND s.stop_id = st.stop_id
+                    WHERE st.feed_id = (
+                        SELECT feed_id FROM trips WHERE trip_id = ? LIMIT 1
+                    ) AND st.trip_id = ?
+                    ORDER BY st.stop_sequence
+                """,
+                (str(variant['trip_id']), str(variant['trip_id']))
+            ).fetchall()
+            stops = [str(row['name'] or '').strip().casefold() for row in rows]
+            continues_to_depot = False
+            if trip and str(trip['block_id'] or ''):
+                following = connection.execute(
+                    """
+                        SELECT t.headsign, MIN(st.departure_time) start_time
+                        FROM trips t
+                        JOIN stop_times st ON st.feed_id = t.feed_id
+                                          AND st.trip_id = t.trip_id
+                        WHERE t.feed_id = ? AND t.block_id = ?
+                          AND t.service_id = ? AND t.trip_id <> ?
+                        GROUP BY t.trip_id
+                        HAVING start_time >= ?
+                        ORDER BY start_time
+                        LIMIT 1
+                    """,
+                    (trip['feed_id'], trip['block_id'], trip['service_id'],
+                     str(variant['trip_id']), trip['end_time'])
+                ).fetchone()
+                if following:
+                    def seconds(value: str) -> int:
+                        hours, minutes, secs = map(int, str(value).split(':'))
+                        return hours * 3600 + minutes * 60 + secs
+                    gap = seconds(following['start_time']) - seconds(trip['end_time'])
+                    continues_to_depot = (
+                        0 <= gap <= 15 * 60
+                        and 'zajezdni' in str(following['headsign'] or '').casefold()
+                    )
+            details.append({
+                'direction': variant['direction_id'],
+                'stops': stops,
+                'from_depot': bool(stops and 'zajezdni' in stops[0]),
+                'to_depot': bool(stops and 'zajezdni' in stops[-1]) or continues_to_depot
+            })
+
+        references: dict[Any, list[str]] = {}
+        for item in details:
+            if item['from_depot'] or item['to_depot']:
+                continue
+            direction = item['direction']
+            if len(item['stops']) > len(references.get(direction, [])):
+                references[direction] = item['stops']
+
+        def is_subsequence(candidate: list[str], reference: list[str]) -> bool:
+            iterator = iter(reference)
+            return all(any(stop == value for value in iterator) for stop in candidate)
+
+        groups: dict[str, str] = {}
+        for label, item in zip(cls._variant_labels(variants), details):
+            reference = references.get(item['direction'], [])
+            if item['from_depot']:
+                group = 'from_depot'
+            elif item['to_depot']:
+                group = 'to_depot'
+            elif item['stops'] == reference:
+                group = 'standard'
+            elif len(item['stops']) < len(reference) and is_subsequence(item['stops'], reference):
+                group = 'short'
+            else:
+                group = 'changed'
+            groups[label] = group
+        return groups
+
+    @classmethod
+    def _descriptive_variant_labels(
+        cls,
+        connection,
+        variants: list,
+        groups: dict[str, str]
+    ) -> dict[str, str]:
+        """Replaces numeric duplicate suffixes with meaningful trip relations."""
+        old_labels = cls._variant_labels(variants)
+        candidates: list[dict[str, Any]] = []
+        for old_label, variant in zip(old_labels, variants):
+            trip_id = str(variant['trip_id'])
+            stops = connection.execute(
+                """
+                    SELECT s.name
+                    FROM stop_times st
+                    JOIN stops s ON s.feed_id = st.feed_id
+                                AND s.stop_id = st.stop_id
+                    WHERE st.feed_id = (
+                        SELECT feed_id FROM trips WHERE trip_id = ? LIMIT 1
+                    ) AND st.trip_id = ?
+                    ORDER BY st.stop_sequence
+                """,
+                (trip_id, trip_id)
+            ).fetchall()
+            stop_names = [str(row['name'] or '').strip() for row in stops]
+            first = stop_names[0] if stop_names else ''
+            last = stop_names[-1] if stop_names else ''
+            group = groups.get(old_label, 'standard')
+            destination = last
+            relation_start = first
+            continuation_origin = ''
+
+            if group == 'to_depot' and 'zajezdni' not in last.casefold():
+                trip = connection.execute(
+                    """
+                        SELECT feed_id, block_id, service_id,
+                               (SELECT MAX(arrival_time) FROM stop_times
+                                WHERE feed_id=t.feed_id AND trip_id=t.trip_id) end_time
+                        FROM trips t WHERE trip_id = ? LIMIT 1
+                    """,
+                    (trip_id,)
+                ).fetchone()
+                if trip and str(trip['block_id'] or ''):
+                    following = connection.execute(
+                        """
+                            SELECT t.headsign, MIN(st.departure_time) start_time
+                            FROM trips t
+                            JOIN stop_times st ON st.feed_id=t.feed_id
+                                              AND st.trip_id=t.trip_id
+                            WHERE t.feed_id=? AND t.block_id=?
+                              AND t.service_id=? AND t.trip_id<>?
+                            GROUP BY t.trip_id
+                            HAVING start_time >= ?
+                            ORDER BY start_time LIMIT 1
+                        """,
+                        (trip['feed_id'], trip['block_id'], trip['service_id'],
+                         trip_id, trip['end_time'])
+                    ).fetchone()
+                    if following and 'zajezdni' in str(following['headsign'] or '').casefold():
+                        destination = str(following['headsign']).strip()
+                        relation_start = last
+                        continuation_origin = first
+
+            headsign = str(variant['headsign'] or '').strip()
+            if group == 'standard':
+                label = headsign or last or old_label
+            elif group == 'to_depot' and continuation_origin and continuation_origin != relation_start:
+                label = f'{continuation_origin} → {relation_start} → {destination}'
+            elif group in {'from_depot', 'to_depot'} and relation_start and destination:
+                label = f'{relation_start} → {destination}'
+            elif first and last and first != last:
+                label = f'{first} → {last}'
+            else:
+                label = headsign or old_label
+            candidates.append({
+                'old': old_label,
+                'label': label,
+                'stops': stop_names
+            })
+
+        counts: dict[str, int] = {}
+        for item in candidates:
+            counts[item['label']] = counts.get(item['label'], 0) + 1
+        result: dict[str, str] = {}
+        used: set[str] = set()
+        for item in candidates:
+            label = item['label']
+            if counts[label] > 1:
+                stops = item['stops']
+                label = (
+                    f'{label} · przez {stops[len(stops) // 2]}'
+                    if len(stops) > 2
+                    else f'{label} · bez przystanków pośrednich'
+                )
+            unique = label
+            suffix = 2
+            while unique in used:
+                unique = f'{label} · wariant {suffix}'
+                suffix += 1
+            used.add(unique)
+            result[item['old']] = unique
         return result
 
     @classmethod
@@ -926,6 +1149,11 @@ class KrakowDownloader:
         """Loads every line and departure serving one grouped platform."""
         values = cls._query(url)
         references = cls._stop_references(values.get('stops', ''))
+        if not references:
+            feed_id = values.get('feed', '')
+            stop_id = values.get('stop', '')
+            if feed_id in cls._FEEDS and stop_id:
+                references = [(feed_id, stop_id)]
         service_date = cls._selected_date(url)
         if not references:
             raise ValueError('Nieprawidłowy identyfikator przystanku GTFS.')
@@ -1234,10 +1462,24 @@ class KrakowDownloader:
     #region GTFS-Realtime
 
     @classmethod
+    def _vehicle_identifiers(
+        cls,
+        descriptor,
+        entity_id: str
+    ) -> tuple[str, str, str]:
+        """Returns internal ID, fleet label and optional brigade."""
+        vehicle_id = str(descriptor.id or descriptor.label or entity_id)
+        vehicle_label = str(
+            descriptor.license_plate or descriptor.label or descriptor.id or ''
+        )
+        return vehicle_id, vehicle_label, ''
+
+    @classmethod
     def download_vehicle_positions(
         cls,
         line: str = '',
-        transport_type: str = ''
+        transport_type: str = '',
+        feed_id: str = ''
     ) -> list[PublicTransportVehiclePosition]:
         """Downloads current vehicle positions from all Kraków GTFS-RT feeds."""
         with cls._connection() as connection:
@@ -1262,15 +1504,15 @@ class KrakowDownloader:
             line_types: dict[str, PublicTransportType] = {}
             for row in route_rows:
                 line_name = str(row['short_name'])
-                transport_type = cls._type_from_route(
+                route_transport_type = cls._type_from_route(
                     int(row['route_type']),
                     str(row['feed_id'])
                 )
                 if (
                     line_name not in line_types
-                    or transport_type == PublicTransportType.TRAM
+                    or route_transport_type == PublicTransportType.TRAM
                 ):
-                    line_types[line_name] = transport_type
+                    line_types[line_name] = route_transport_type
             trip_query = """
                 SELECT t.feed_id, t.trip_id, r.short_name
                 FROM trips t
@@ -1291,11 +1533,45 @@ class KrakowDownloader:
                     trip_parameters
                 )
             }
+            detail_query = """
+                SELECT t.feed_id, t.trip_id, t.headsign,
+                       st.stop_sequence, st.stop_id, s.name stop_name
+                FROM trips t
+                JOIN routes r
+                  ON r.feed_id = t.feed_id AND r.route_id = t.route_id
+                LEFT JOIN stop_times st
+                  ON st.feed_id = t.feed_id AND st.trip_id = t.trip_id
+                LEFT JOIN stops s
+                  ON s.feed_id = st.feed_id AND s.stop_id = st.stop_id
+            """
+            detail_parameters: tuple[str, ...] = ()
+            if line:
+                detail_query += " WHERE r.short_name = ?"
+                detail_parameters = (line,)
+            detail_query += " ORDER BY t.feed_id, t.trip_id, st.stop_sequence"
+            trip_details: dict[tuple[str, str], dict[str, str]] = {}
+            trip_stop_names: dict[tuple[str, str, int], str] = {}
+            stop_names: dict[tuple[str, str], str] = {}
+            for row in connection.execute(detail_query, detail_parameters):
+                key = (str(row['feed_id']), str(row['trip_id']))
+                details = trip_details.setdefault(key, {
+                    'direction': str(row['headsign'] or ''),
+                    'destination': ''
+                })
+                stop_name = str(row['stop_name'] or '')
+                if stop_name:
+                    details['destination'] = stop_name
+                    sequence = int(row['stop_sequence'])
+                    trip_stop_names[(key[0], key[1], sequence)] = stop_name
+                    stop_names[(key[0], str(row['stop_id']))] = stop_name
         selected_feed_ids = {str(row['feed_id']) for row in route_rows}
         feeds = [
-            (feed_id, feed)
-            for feed_id, feed in cls._FEEDS.items()
-            if not line or feed_id in selected_feed_ids
+            (current_feed_id, feed)
+            for current_feed_id, feed in cls._FEEDS.items()
+            if (
+                (not line or current_feed_id in selected_feed_ids)
+                and (not feed_id or current_feed_id == feed_id)
+            )
         ]
         positions: list[PublicTransportVehiclePosition] = []
         total = len(feeds)
@@ -1316,7 +1592,10 @@ class KrakowDownloader:
                 trip_names,
                 line_types,
                 line,
-                transport_type
+                transport_type,
+                trip_details=trip_details,
+                trip_stop_names=trip_stop_names,
+                stop_names=stop_names
             ))
         return positions
 
@@ -1329,7 +1608,10 @@ class KrakowDownloader:
         trip_names: dict[tuple[str, str], str] | None = None,
         line_types: dict[str, PublicTransportType] | None = None,
         line: str = '',
-        transport_type: str = ''
+        transport_type: str = '',
+        trip_details: dict[tuple[str, str], dict[str, str]] | None = None,
+        trip_stop_names: dict[tuple[str, str, int], str] | None = None,
+        stop_names: dict[tuple[str, str], str] | None = None
     ) -> list[PublicTransportVehiclePosition]:
         """Deserializes one GTFS-Realtime VehiclePositions protobuf feed."""
         try:
@@ -1354,7 +1636,7 @@ class KrakowDownloader:
             )
             if line and line_name != line:
                 continue
-            vehicle_type = cls._type_from_route(
+            vehicle_type = (line_types or {}).get(line_name) or cls._type_from_route(
                 0 if feed_id == 'T' else 3,
                 feed_id
             )
@@ -1365,6 +1647,26 @@ class KrakowDownloader:
             if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
                 continue
             descriptor = vehicle.vehicle
+            vehicle_id, vehicle_label, brigade = cls._vehicle_identifiers(
+                descriptor,
+                str(entity.id)
+            )
+            details = (trip_details or {}).get((feed_id, trip_id), {})
+            current_sequence = int(vehicle.current_stop_sequence or 0)
+            realtime_stop_id = str(vehicle.stop_id or '')
+            next_stop = (
+                (stop_names or {}).get((feed_id, realtime_stop_id), '')
+                or (trip_stop_names or {}).get(
+                    (feed_id, trip_id, current_sequence), ''
+                )
+            )
+            status = ''
+            if vehicle.HasField('current_status'):
+                status = {
+                    0: 'Zbliża się do przystanku',
+                    1: 'Na przystanku',
+                    2: 'W drodze do przystanku'
+                }.get(int(vehicle.current_status), '')
             recorded_at = (
                 datetime.fromtimestamp(
                     int(vehicle.timestamp),
@@ -1373,14 +1675,16 @@ class KrakowDownloader:
                 if vehicle.timestamp else None
             )
             result.append(PublicTransportVehiclePosition(
-                vehicle_id=str(
-                    descriptor.id or descriptor.label or entity.id
-                ),
-                vehicle_label=str(descriptor.label or ''),
-                license_plate=str(descriptor.license_plate or ''),
+                vehicle_id=vehicle_id,
+                vehicle_label=vehicle_label,
+                license_plate='',
                 source_code=feed_id,
                 line=line_name,
                 trip_id=trip_id,
+                direction=str(details.get('direction') or details.get('destination') or ''),
+                next_stop=next_stop,
+                destination=str(details.get('destination') or ''),
+                status=status,
                 type=vehicle_type,
                 latitude=latitude,
                 longitude=longitude,
@@ -1392,7 +1696,8 @@ class KrakowDownloader:
                     float(vehicle.position.speed)
                     if vehicle.position.HasField('speed') else None
                 ),
-                recorded_at=recorded_at
+                recorded_at=recorded_at,
+                brigade=brigade
             ))
         return result
 

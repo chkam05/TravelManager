@@ -1324,6 +1324,8 @@ class GzmDownloader:
             cls.GTFS_RT_VEHICLES_URL,
             'Pojazdy GZM na żywo'
         )
+        trip_ids = cls._realtime_trip_ids(payload)
+        trip_details, trip_stop_names, stop_names = repository.realtime_trip_details(trip_ids)
         return cls.parse_vehicle_positions(
             payload,
             route_names,
@@ -1331,7 +1333,10 @@ class GzmDownloader:
             route_types,
             trip_types,
             line,
-            transport_type
+            transport_type,
+            trip_details=trip_details,
+            trip_stop_names=trip_stop_names,
+            stop_names=stop_names
         )
 
     @classmethod
@@ -1343,7 +1348,10 @@ class GzmDownloader:
         route_types: dict[tuple[str, str], PublicTransportType],
         trip_types: dict[tuple[str, str], PublicTransportType],
         line: str = '',
-        transport_type: str = ''
+        transport_type: str = '',
+        trip_details: dict[tuple[str, str], dict[str, str]] | None = None,
+        trip_stop_names: dict[tuple[str, str, int], str] | None = None,
+        stop_names: dict[tuple[str, str], str] | None = None
     ) -> list[PublicTransportVehiclePosition]:
         """Deserializes the official GZM VehiclePositions protobuf feed."""
         try:
@@ -1381,6 +1389,20 @@ class GzmDownloader:
             if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
                 continue
             descriptor = vehicle.vehicle
+            details = (trip_details or {}).get((feed_id, trip_id), {})
+            current_sequence = int(vehicle.current_stop_sequence or 0)
+            realtime_stop_id = str(vehicle.stop_id or '')
+            next_stop = (
+                (stop_names or {}).get((feed_id, realtime_stop_id), '')
+                or (trip_stop_names or {}).get((feed_id, trip_id, current_sequence), '')
+            )
+            status = ''
+            if vehicle.HasField('current_status'):
+                status = {
+                    0: 'Zbliża się do przystanku',
+                    1: 'Na przystanku',
+                    2: 'W drodze do przystanku'
+                }.get(int(vehicle.current_status), '')
             raw_vehicle_id = str(
                 descriptor.id or descriptor.label or entity.id
             )
@@ -1402,6 +1424,10 @@ class GzmDownloader:
                 ),
                 line=line_name,
                 trip_id=trip_id,
+                direction=str(details.get('direction') or details.get('destination') or ''),
+                next_stop=next_stop,
+                destination=str(details.get('destination') or ''),
+                status=status,
                 type=vehicle_type,
                 latitude=latitude,
                 longitude=longitude,
@@ -1422,6 +1448,21 @@ class GzmDownloader:
                 )
             ))
         return result
+
+    @staticmethod
+    def _realtime_trip_ids(payload: bytes) -> set[str]:
+        """Extracts trip identifiers needed for a focused static GTFS lookup."""
+        try:
+            from google.transit import gtfs_realtime_pb2
+        except ImportError as error:
+            raise RuntimeError('Brak biblioteki gtfs-realtime-bindings.') from error
+        message = gtfs_realtime_pb2.FeedMessage()
+        message.ParseFromString(payload)
+        return {
+            str(entity.vehicle.trip.trip_id)
+            for entity in message.entity
+            if entity.HasField('vehicle') and entity.vehicle.trip.trip_id
+        }
 
     #endregion GTFS-Realtime
 

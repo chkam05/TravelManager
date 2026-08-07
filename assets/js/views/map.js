@@ -209,8 +209,13 @@ document.addEventListener('travel-manager:views-ready', () => {
     const routePointsLayer = L.layerGroup().addTo(map);
     let routeGeometryLayer = null;
 
+    const appearanceColor = (property, fallback) => (
+        getComputedStyle(document.body).getPropertyValue(property).trim() || fallback
+    );
+
     const routeLineStyle = (transport) => {
         const baseStyle = {
+            color: appearanceColor('--route-color', '#1F6FAE'),
             opacity: 0.92,
             weight: 6,
             lineJoin: 'round'
@@ -219,7 +224,6 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (transport === 'foot') {
             return {
                 ...baseStyle,
-                color: '#1f6fae',
                 dashArray: '1 11',
                 lineCap: 'round'
             };
@@ -228,7 +232,6 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (transport === 'bicycle') {
             return {
                 ...baseStyle,
-                color: '#1f6fae',
                 dashArray: '12 10',
                 lineCap: 'butt'
             };
@@ -236,7 +239,6 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         return {
             ...baseStyle,
-            color: '#1f6fae',
             lineCap: 'round'
         };
     };
@@ -1213,6 +1215,27 @@ document.addEventListener('travel-manager:views-ready', () => {
     let publicTransportRouteLayer = null;
     let publicTransportVehicleLayer = null;
     let publicTransportStopLayer = null;
+    let selectedPublicTransportVehicleKey = '';
+
+    const publicTransportVehicleKey = (vehicle) => {
+        const source = vehicle?.source_code || '';
+        if (vehicle?.vehicle_id) return `${source}:${vehicle.vehicle_id}`;
+        return `${source}:${vehicle?.vehicle_label || ''}:${vehicle?.trip_id || ''}`;
+    };
+
+    const setPublicTransportVehicleSelected = (selectedKey = '') => {
+        selectedPublicTransportVehicleKey = selectedKey;
+        publicTransportVehicleLayer?.eachLayer((marker) => {
+            const selected = marker.travelManagerVehicleKey === selectedKey && Boolean(selectedKey);
+            marker.setRadius?.(selected ? 11 : 8);
+            marker.setStyle?.({
+                color: '#FFFFFF',
+                weight: selected ? 4 : 2
+            });
+            marker.getElement?.()?.classList.toggle('public-transport-vehicle-marker--selected', selected);
+            if (selected) marker.bringToFront?.();
+        });
+    };
 
     const clearPublicTransportLayers = () => {
         [publicTransportRouteLayer, publicTransportVehicleLayer, publicTransportStopLayer]
@@ -1221,6 +1244,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         publicTransportRouteLayer = null;
         publicTransportVehicleLayer = null;
         publicTransportStopLayer = null;
+        selectedPublicTransportVehicleKey = '';
+        document.dispatchEvent(new CustomEvent('travel-manager:public-transport-vehicles-cleared'));
     };
 
     const clearPublicTransportRoute = () => {
@@ -1236,6 +1261,8 @@ document.addEventListener('travel-manager:views-ready', () => {
     const clearPublicTransportVehicles = () => {
         if (publicTransportVehicleLayer) map.removeLayer(publicTransportVehicleLayer);
         publicTransportVehicleLayer = null;
+        selectedPublicTransportVehicleKey = '';
+        document.dispatchEvent(new CustomEvent('travel-manager:public-transport-vehicles-cleared'));
     };
 
     const showPublicTransportStop = (latitude, longitude, title = 'Przystanek') => {
@@ -1266,7 +1293,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         publicTransportRouteLayer = L.polyline(coordinates, {
-            color: '#1f6fae',
+            color: appearanceColor('--public-transport-route-color', '#1F6FAE'),
             weight: 5,
             opacity: 0.9
         }).addTo(map);
@@ -1300,48 +1327,62 @@ document.addEventListener('travel-manager:views-ready', () => {
             const latitude = Number(vehicle.latitude);
             const longitude = Number(vehicle.longitude);
             const marker = L.circleMarker([latitude, longitude], {
+                bubblingMouseEvents: false,
                 radius: 8,
                 color: '#ffffff',
                 weight: 2,
-                fillColor: vehicle.type === 'tram' ? '#d73535' : '#1f6fae',
+                fillColor: appearanceColor(
+                    `--public-transport-vehicle-${vehicle.type || 'bus'}-color`,
+                    vehicle.type === 'tram' ? '#D73535' : '#1F6FAE'
+                ),
                 fillOpacity: 0.95
             }).addTo(publicTransportVehicleLayer);
-            const popup = document.createElement('div');
-            const heading = document.createElement('strong');
-            heading.textContent = vehicle.line
-                ? `Linia ${vehicle.line}`
-                : 'Pojazd';
-            popup.append(heading);
-            const appendDetail = (label, value) => {
-                if (!value) return;
-                const detail = document.createElement('div');
-                detail.textContent = `${label}: ${value}`;
-                popup.append(detail);
-            };
-            appendDetail(
-                'Numer boczny',
-                vehicle.vehicle_label || (!vehicle.source_code ? vehicle.vehicle_id : '')
-            );
-            appendDetail('Numer rejestracyjny / oznaczenie', vehicle.license_plate);
-            appendDetail('Kod źródłowy', vehicle.source_code);
-            appendDetail('Id kursu GTFS', vehicle.trip_id);
-
-            if (vehicle.recorded_at) {
-                const timestamp = document.createElement('small');
-                const recordedAt = new Date(vehicle.recorded_at);
-                timestamp.textContent = Number.isNaN(recordedAt.getTime())
-                    ? ''
-                    : `Aktualizacja: ${recordedAt.toLocaleTimeString('pl-PL')}`;
-                popup.append(timestamp);
-            }
-
-            marker.bindPopup(popup);
+            marker.travelManagerVehicleType = vehicle.type || 'bus';
+            marker.travelManagerVehicleKey = publicTransportVehicleKey(vehicle);
+            marker.on('click', (event) => {
+                if (event.originalEvent) {
+                    L.DomEvent.stopPropagation(event.originalEvent);
+                    L.DomEvent.preventDefault(event.originalEvent);
+                }
+                setPublicTransportVehicleSelected(marker.travelManagerVehicleKey);
+                document.dispatchEvent(new CustomEvent(
+                    'travel-manager:public-transport-vehicle-selected',
+                    { detail: { vehicle } }
+                ));
+            });
             bounds.push([latitude, longitude]);
         });
 
-        publicTransportVehicleLayer.bindPopup?.(title);
+        setPublicTransportVehicleSelected(selectedPublicTransportVehicleKey);
+
+        document.dispatchEvent(new CustomEvent(
+            'travel-manager:public-transport-vehicles-updated',
+            { detail: { vehicles } }
+        ));
         if (fitToVehicles) map.fitBounds(bounds, { padding: [42, 42], maxZoom: 15 });
     };
+
+    document.addEventListener('travel-manager:appearance-changed', () => {
+        routeGeometryLayer?.setStyle({
+            color: appearanceColor('--route-color', '#1F6FAE')
+        });
+        publicTransportRouteLayer?.setStyle({
+            color: appearanceColor('--public-transport-route-color', '#1F6FAE')
+        });
+        publicTransportVehicleLayer?.eachLayer((marker) => {
+            const type = marker.travelManagerVehicleType || 'bus';
+            marker.setStyle?.({
+                fillColor: appearanceColor(
+                    `--public-transport-vehicle-${type}-color`, '#1F6FAE'
+                )
+            });
+        });
+        setPublicTransportVehicleSelected(selectedPublicTransportVehicleKey);
+    });
+
+    document.addEventListener('travel-manager:public-transport-vehicle-deselected', () => {
+        setPublicTransportVehicleSelected('');
+    });
 
     window.travelManagerMap = {
         map,

@@ -1,0 +1,85 @@
+.route-variant-dropdown__native {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.route-variant-dropdown__button {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+    width: 100%;
+    height: 38px;
+    gap: 8px;
+    padding: 0 9px;
+    overflow: hidden;
+    color: var(--text-primary);
+    background: var(--surface-background);
+    border: 1px solid var(--border-control);
+    border-radius: 8px;
+    font: inherit;
+    font-size: .86rem;
+    font-weight: 750;
+    text-align: left;
+}
+
+.route-variant-dropdown__button span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.route-variant-dropdown__button svg { flex: 0 0 16px; width: 16px; }
+
+.public-transport-header__field > .route-variant-dropdown__button {
+    width: min(300px, 28vw);
+}
+
+.public-transport-detail__sidebar .route-variant-dropdown__button,
+.public-transport-panel .route-variant-dropdown__button {
+    width: 100%;
+}
+
+.route-variant-dropdown__menu {
+    position: fixed;
+    z-index: 10020;
+    box-sizing: border-box;
+    overflow: auto;
+    padding: 5px;
+    color: var(--text-primary);
+    background: var(--surface-background);
+    border: 1px solid var(--border-control);
+    border-radius: 9px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .22);
+}
+
+.route-variant-dropdown__menu[hidden] { display: none; }
+.route-variant-dropdown__group + .route-variant-dropdown__group { border-top: 1px solid var(--border-subtle); }
+.route-variant-dropdown__group { display: grid; padding: 4px 0; }
+.route-variant-dropdown__group strong {
+    padding: 5px 8px 3px;
+    color: var(--text-secondary);
+    font-size: .68rem;
+    letter-spacing: .025em;
+    text-transform: uppercase;
+}
+.route-variant-dropdown__option {
+    width: 100%;
+    padding: 7px 8px;
+    overflow: hidden;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    font: inherit;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.route-variant-dropdown__option:hover,
+.route-variant-dropdown__option:focus-visible { background: var(--surface-muted); outline: none; }

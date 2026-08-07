@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, ClassVar, Dict, List
 
@@ -26,6 +26,7 @@ class PublicTransportLine(BaseDataModel):
     FIELD_ANNOUNCEMENTS: ClassVar[str] = 'announcements'
     FIELD_DIRECTIONS: ClassVar[str] = 'directions'
     FIELD_ROUTE_VARIANTS: ClassVar[str] = 'route_variants'
+    FIELD_ROUTE_VARIANT_GROUPS: ClassVar[str] = 'route_variant_groups'
     FIELD_DATES: ClassVar[str] = 'dates'
 
     # Fields
@@ -35,6 +36,7 @@ class PublicTransportLine(BaseDataModel):
     directions: List[PublicTransportDirection]
     route_variants: Dict[str, str]
     dates: Dict[date, str]
+    route_variant_groups: Dict[str, str] = field(default_factory=dict)
 
     #region Serialization
 
@@ -63,7 +65,11 @@ class PublicTransportLine(BaseDataModel):
                 str(name): str(url)
                 for name, url in route_variants.items()
             } if isinstance(route_variants, dict) else {},
-            dates=parse_date_url_map(d.get(cls.FIELD_DATES))
+            dates=parse_date_url_map(d.get(cls.FIELD_DATES)),
+            route_variant_groups={
+                str(name): str(group)
+                for name, group in d.get(cls.FIELD_ROUTE_VARIANT_GROUPS, {}).items()
+            } if isinstance(d.get(cls.FIELD_ROUTE_VARIANT_GROUPS), dict) else {}
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,6 +80,7 @@ class PublicTransportLine(BaseDataModel):
             self.FIELD_ANNOUNCEMENTS: self.to_dict_list(self.announcements),
             self.FIELD_DIRECTIONS: self.to_dict_list(self.directions),
             self.FIELD_ROUTE_VARIANTS: dict(self.route_variants),
+            self.FIELD_ROUTE_VARIANT_GROUPS: dict(self.route_variant_groups),
             self.FIELD_DATES: serialize_date_url_map(self.dates)
         }
 

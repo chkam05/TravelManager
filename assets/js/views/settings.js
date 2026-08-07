@@ -120,6 +120,13 @@ document.addEventListener('travel-manager:views-ready', () => {
         dataTransferOptions.find((option) => option.id === dataType)?.label || 'Dane'
     );
 
+    const showPopup = (message, type = 'info', title = null) => {
+        const popup = window.travelManagerDialogs?.popup;
+        if (popup) return popup({ type, title, message });
+        window.console?.error(message);
+        return Promise.resolve();
+    };
+
     const downloadJson = (payload, filename) => {
         const blob = new Blob(
             [JSON.stringify(payload, null, 2)],
@@ -147,7 +154,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         downloadJson(data.payload, data.filename);
-        window.alert(`Wyeksportowano dane: ${dataTransferLabel(dataType)}.`);
+        showPopup(`Wyeksportowano dane: ${dataTransferLabel(dataType)}.`, 'success', 'Eksport zakończony');
     };
 
     const browserImport = (dataType) => {
@@ -164,7 +171,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!api?.[method]) {
             if (mode === 'export') {
                 browserExport(dataType).catch((error) => {
-                    window.alert(error?.message || 'Nie udało się wyeksportować danych.');
+                    showPopup(error?.message || 'Nie udało się wyeksportować danych.', 'error', 'Błąd eksportu');
                 });
                 return;
             }
@@ -181,24 +188,24 @@ document.addEventListener('travel-manager:views-ready', () => {
             }
 
             if (result.status === 'error') {
-                window.alert(result.message || 'Nie udało się wykonać operacji.');
+                showPopup(result.message || 'Nie udało się wykonać operacji.', 'error');
                 return;
             }
 
             if (result.status === 'imported') {
                 await refreshAfterImport(dataType);
                 await loadSettings();
-                window.alert(`Zaimportowano dane: ${result.label}.`);
+                showPopup(`Zaimportowano dane: ${result.label}.`, 'success', 'Import zakończony');
                 return;
             }
 
             if (result.status === 'saved') {
-                window.alert(`Wyeksportowano dane: ${result.label}.`);
+                showPopup(`Wyeksportowano dane: ${result.label}.`, 'success', 'Eksport zakończony');
             }
         } catch (error) {
             if (mode === 'export') {
                 browserExport(dataType).catch((fallbackError) => {
-                    window.alert(fallbackError?.message || error?.message || 'Nie udało się wyeksportować danych.');
+                    showPopup(fallbackError?.message || error?.message || 'Nie udało się wyeksportować danych.', 'error', 'Błąd eksportu');
                 });
                 return;
             }
@@ -669,9 +676,9 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             await refreshAfterImport(dataType);
             await loadSettings();
-            window.alert(`Zaimportowano dane: ${data.label || dataTransferLabel(dataType)}.`);
+            showPopup(`Zaimportowano dane: ${data.label || dataTransferLabel(dataType)}.`, 'success', 'Import zakończony');
         } catch (error) {
-            window.alert(error?.message || 'Nie udało się zaimportować danych.');
+            showPopup(error?.message || 'Nie udało się zaimportować danych.', 'error', 'Błąd importu');
         }
     });
     document.addEventListener('click', (event) => {

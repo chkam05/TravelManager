@@ -227,28 +227,37 @@ document.addEventListener('travel-manager:views-ready', () => {
             && typeof metadata.route_variants === 'object'
             ? Object.entries(metadata.route_variants)
             : [];
+        const routeVariantGroups = metadata.route_variant_groups || {};
 
         if (directionSelect) {
-            directionSelect.replaceChildren();
             const options = routeVariants.length
-                ? routeVariants.map(([name, url]) => ({ name, value: url }))
+                ? routeVariants.map(([name, url]) => ({
+                    label: name,
+                    value: url,
+                    group: routeVariantGroups[name] || 'standard'
+                }))
                 : directions.map((name, index) => ({
-                    name,
+                    label: name,
                     value: String(index)
                 }));
-            options.forEach((optionData) => {
-                const option = document.createElement('option');
-                option.value = optionData.value;
-                option.textContent = optionData.name;
-                directionSelect.append(option);
-            });
-            if (
-                routeVariants.length
-                && Array.from(directionSelect.options).some(
-                    (option) => option.value === state.current.url
-                )
-            ) {
-                directionSelect.value = state.current.url;
+            if (routeVariants.length && window.travelManagerRouteVariantDropdown) {
+                window.travelManagerRouteVariantDropdown.enhance(
+                    directionSelect,
+                    options,
+                    state.current.url,
+                    (value) => {
+                        directionSelect.value = value;
+                        directionSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                );
+            } else {
+                directionSelect.replaceChildren();
+                options.forEach((optionData) => {
+                    const option = document.createElement('option');
+                    option.value = optionData.value;
+                    option.textContent = optionData.label;
+                    directionSelect.append(option);
+                });
             }
         }
 
@@ -295,7 +304,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             : [];
 
         if (routeButton) {
-            routeButton.hidden = !metadata.show_route_map || route.length < 2;
+            const canShowRoute = Boolean(metadata.show_route_map && route.length >= 2);
+            routeButton.hidden = !canShowRoute;
+            routeButton.disabled = !canShowRoute;
             routeButton.dataset.route = JSON.stringify(route);
             routeButton.dataset.name = metadata.line
                 ? `Przebieg linii ${metadata.line}`
@@ -307,12 +318,15 @@ document.addEventListener('travel-manager:views-ready', () => {
         );
 
         if (vehiclesButton) {
-            vehiclesButton.hidden = (
-                !metadata.show_vehicle_positions
-                || !metadata.line
+            const canShowVehicles = Boolean(
+                metadata.show_vehicle_positions
+                && metadata.line
             );
+            vehiclesButton.hidden = !canShowVehicles;
+            vehiclesButton.disabled = !canShowVehicles;
             vehiclesButton.dataset.line = metadata.line || '';
             vehiclesButton.dataset.type = metadata.type || '';
+            vehiclesButton.dataset.feed = metadata.vehicle_feed || '';
         }
 
         fillDateSelect(controlScope.querySelector('[data-public-transport-date]') ? controlScope : header, metadata, screen);
@@ -584,7 +598,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                     );
                 }
             } catch (error) {
-                window.alert(error.message);
+                window.travelManagerAlert?.(error.message, 'error');
                 return;
             }
         }
@@ -633,10 +647,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     };
 
-    const showVehiclesOnMap = async (line, transportType = '') => {
+    const showVehiclesOnMap = async (line, transportType = '', feed = '') => {
         try {
             const params = new URLSearchParams({ line });
             if (transportType) params.set('type', transportType);
+            if (feed) params.set('feed', feed);
             const response = await fetch(`${endpoint('vehicles')}?${params}`, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
@@ -661,7 +676,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 });
             }, 0);
         } catch (error) {
-            window.alert(error.message);
+            window.travelManagerAlert?.(error.message, 'error');
         }
     };
 
@@ -694,7 +709,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             const routeButton = content.querySelector('[data-public-transport-route]');
             if (routeButton && Array.isArray(route)) {
                 routeButton.dataset.route = JSON.stringify(route);
-                routeButton.hidden = !metadata.show_route_map || route.length < 2;
+                const canShowRoute = Boolean(metadata.show_route_map && route.length >= 2);
+                routeButton.hidden = !canShowRoute;
+                routeButton.disabled = !canShowRoute;
             }
             return;
         }
@@ -764,7 +781,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (vehiclesAction?.dataset.line) {
             showVehiclesOnMap(
                 vehiclesAction.dataset.line,
-                vehiclesAction.dataset.type || ''
+                vehiclesAction.dataset.type || '',
+                vehiclesAction.dataset.feed || ''
             );
             return;
         }

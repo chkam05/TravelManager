@@ -1,48 +1,28 @@
-Najlepsi kandydaci do aplikacji:
+[ ] Białystok,
+[X] Bydgoszcz,
+[H] Częstochowa
+[X] Elbląg,
+[ ] Ełk,
+[X] Gdańsk,
+[X] Gdynia,
+[ ] Giżyck,
+[X] Gorzów Wielkopolski,
+[ ] Grudziądz,
+[X] GZM,
+[ ] Jarosław,
+[ ] Kielce,
+[ ] Kutno,
+[X] Lublin,
+[ ] Łomża,
+[X] Olsztyn,
+[X] Poznań,
+[ ] Radom,
+[ ] Rzeszów,
+[X] Szczecin,
+[ ] Świnoujście,
+[X] Toruń,
+[X] Warszawa,
+[ ] Wejherowo,
+[X] Wrocław,
 
-[ ] Szczecin
-    Oficjalny GTFS oraz komplet GTFS-RT: pojazdy, opóźnienia i komunikaty. To moim zdaniem najlepszy następny przewoźnik.
-    https://www.zditm.szczecin.pl/pl/zditm/dla-programistow/gtfs
-
-[ ] Poznań
-    Oficjalny GTFS, pozycje pojazdów i aktualizacje kursów.
-    GTFS: https://www.ztm.poznan.pl/otwarte-dane/gtfsfiles/
-    GTFS-RT: https://www.ztm.poznan.pl/otwarte-dane/gtfs-rt/
-
-[X] Gdańsk
-    Oficjalny GTFS, GTFS-RT, komunikaty i pozycje GPS.
-    https://ckan.multimediagdansk.pl/tl/dataset/tristar
-
-[ ] Radom
-    Aktualny GTFS i GTFS-RT.
-    https://www.mzdik.pl/mzdik/pliki-do-pobrania/bazy-danych-rozkladow-jazdy
-
-[ ] Białystok
-    Oficjalny statyczny GTFS.
-    https://www.komunikacja.bialystok.pl/pl/rozklad-jazdy/dane_otwarte
-
-[ ] Rzeszów
-    Aktualizowany oficjalny GTFS.
-    https://otwartedane.erzeszow.pl/dataset/rozklady-jazdy-gtfs
-
-[X] Gdynia
-    Oficjalny statyczny GTFS.
-    https://otwartedane.gdynia.pl/dataset/informacje-o-rozkladach-jazdy-i-lokalizacji-przystankow/resource/bde30a34-bf53-4ffe-8b23-b27f2e70771f
-
-Dostępne są również feedy dla:
-[X] Warszawy,
-[ ] Bydgoszczy,
-[ ] Lublina,
-[ ] Torunia,
-[ ] Kielc,
-[ ] Łomży,
-[ ] Ełku,
-[ ] Elbląga,
-[ ] Wejherowa,
-[ ] Świnoujścia,
-[ ] Kutna,
-[ ] Jarosławia,
-[ ] Giżycka.
-
-W tej drugiej grupie część GTFS jest generowana przez zewnętrzne serwisy lub mirrory, więc ma mniejszą gwarancję stabilności niż oficjalne źródła.
 Aktualny katalog można sprawdzać w Mobility Database: https://mobilitydatabase.org/
