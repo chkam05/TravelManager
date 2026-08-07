@@ -7,7 +7,7 @@
 [X] Gdynia,
 [ ] Giżyck,
 [X] Gorzów Wielkopolski,
-[ ] Grudziądz,
+[ ] Grudziądz (H),
 [X] GZM,
 [ ] Jarosław,
 [ ] Kielce,

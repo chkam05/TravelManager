@@ -500,6 +500,53 @@ document.addEventListener('travel-manager:views-ready', () => {
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
 
+    const refreshAllProviders = async (button) => {
+        const providers = Array.from(
+            content.querySelectorAll('[data-public-transport-provider]')
+        ).map((tile) => ({
+            id: tile.dataset.publicTransportProvider,
+            name: tile.querySelector('strong')?.textContent?.trim()
+                || tile.dataset.publicTransportProvider
+        }));
+
+        if (!providers.length || button.disabled) {
+            return;
+        }
+
+        const errors = [];
+        button.disabled = true;
+        window.travelManagerDownloadStatus?.showAll(providers.length);
+
+        for (const [index, provider] of providers.entries()) {
+            window.travelManagerDownloadStatus?.updateAll(
+                provider.id,
+                provider.name,
+                index + 1
+            );
+            try {
+                const response = await fetch(
+                    `/api/public-transport/${encodeURIComponent(provider.id)}/lines?refresh=1`,
+                    { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
+                );
+                if (!response.ok) {
+                    const html = await response.text();
+                    const documentFragment = new DOMParser().parseFromString(html, 'text/html');
+                    const message = documentFragment.querySelector('p')?.textContent?.trim();
+                    throw new Error(message || `Błąd HTTP ${response.status}`);
+                }
+            } catch (error) {
+                errors.push(`${provider.name}: ${error.message}`);
+            }
+        }
+
+        button.disabled = false;
+        window.travelManagerDownloadStatus?.finish(
+            errors.length
+                ? `Nie zaktualizowano: ${errors.join(' • ')}`
+                : ''
+        );
+    };
+
     const loadRoot = (root) => {
         state.root = root;
         state.history = [];
@@ -725,6 +772,13 @@ document.addEventListener('travel-manager:views-ready', () => {
     });
 
     view.addEventListener('click', (event) => {
+        const refreshAll = event.target.closest('[data-public-transport-refresh-all]');
+
+        if (refreshAll) {
+            refreshAllProviders(refreshAll);
+            return;
+        }
+
         const provider = event.target.closest('[data-public-transport-provider]');
 
         if (provider) {
