@@ -72,7 +72,8 @@ class ViewController(BaseController):
     def public_transport_view(self):
         return render_template(
             'views/public_transport.html',
-            providers=PublicTransportProviders.options()
+            providers=PublicTransportProviders.options(),
+            provider_groups=PublicTransportProviders.options_by_region()
         )
 
     def settings_view(self):
@@ -112,7 +113,8 @@ class ViewController(BaseController):
     def public_transport_panel(self):
         return render_template(
             'panels/public_transport.html',
-            providers=PublicTransportProviders.options()
+            providers=PublicTransportProviders.options(),
+            provider_groups=PublicTransportProviders.options_by_region()
         )
 
     def public_transport_vehicle_panel(self):

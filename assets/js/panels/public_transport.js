@@ -433,6 +433,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     });
     allLinesButton?.addEventListener('click', () => load('stop-lines', state.url, true));
     closeButton.addEventListener('click', close);
+
+    // Prevent panel content from scrolling while a select dropdown is being scrolled.
+    content.addEventListener('wheel', (event) => {
+        if (event.target.closest('select')) event.preventDefault();
+    }, { passive: false });
     const resize = { x: 0, width: 0 };
     const move = (event) => {
         const computed = getComputedStyle(panel); const min = parseFloat(computed.minWidth) || 280; const max = parseFloat(computed.maxWidth) || 680;

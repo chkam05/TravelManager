@@ -3,14 +3,27 @@
 
     const enhance = (select) => {
         instances.get(select)?.destroy();
-        const options = Array.from(select.options).map((option) => ({
-            value: option.value,
-            name: option.textContent.trim(),
-            description: option.dataset.description || '',
-            icon: option.dataset.icon || 'bus-front',
-            route: option.dataset.showRouteMap === 'true',
-            vehicles: option.dataset.showVehiclePositions === 'true'
+        const groups = Array.from(select.querySelectorAll('optgroup')).map((group) => ({
+            label: group.label,
+            options: Array.from(group.querySelectorAll('option')).map((option) => ({
+                value: option.value,
+                name: option.textContent.trim(),
+                description: option.dataset.description || '',
+                icon: option.dataset.icon || 'bus-front',
+                route: option.dataset.showRouteMap === 'true',
+                vehicles: option.dataset.showVehiclePositions === 'true'
+            }))
         }));
+        const options = groups.length
+            ? groups.flatMap((g) => g.options)
+            : Array.from(select.options).map((option) => ({
+                value: option.value,
+                name: option.textContent.trim(),
+                description: option.dataset.description || '',
+                icon: option.dataset.icon || 'bus-front',
+                route: option.dataset.showRouteMap === 'true',
+                vehicles: option.dataset.showVehiclePositions === 'true'
+            }));
         select.classList.add('public-transport-provider-dropdown__native');
 
         const button = document.createElement('button');
@@ -92,7 +105,7 @@
             window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
         };
 
-        options.forEach((item) => {
+        const renderOptions = (items) => items.forEach((item) => {
             const option = document.createElement('button');
             option.type = 'button';
             option.className = 'public-transport-provider-dropdown__option';
@@ -107,6 +120,18 @@
             });
             menu.append(option);
         });
+
+        if (groups.length) {
+            groups.forEach((group) => {
+                const heading = document.createElement('p');
+                heading.className = 'public-transport-provider-dropdown__group-label';
+                heading.textContent = group.label;
+                menu.append(heading);
+                renderOptions(group.options);
+            });
+        } else {
+            renderOptions(options);
+        }
 
         button.addEventListener('click', () => {
             if (menu.hidden) {

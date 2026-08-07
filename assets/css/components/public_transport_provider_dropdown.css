@@ -44,6 +44,24 @@
     display: none;
 }
 
+.public-transport-provider-dropdown__group-label {
+    margin: 6px 8px 2px;
+    padding-top: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.5;
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+
+.public-transport-provider-dropdown__group-label:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
 .public-transport-provider-dropdown__option {
     min-height: 66px;
     padding: 7px 8px;

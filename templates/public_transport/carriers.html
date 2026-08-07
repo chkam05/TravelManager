@@ -3,36 +3,41 @@
         <h2>Komunikacja miejska</h2>
         <p>Wybierz przewoźnika, którego rozkłady chcesz przeglądać.</p>
     </header>
-    <div class="public-transport-carriers__grid">
-        {% for provider in providers %}
-            <button class="public-transport-carriers__tile" type="button" data-public-transport-provider="{{ provider.id }}" data-public-transport-filter-item data-search="{{ provider.name }} {{ provider.description }}">
-                <span class="public-transport-carriers__icon">
-                    <i data-lucide="{{ provider.icon }}" aria-hidden="true"></i>
-                </span>
-                <span>
-                    <strong>{{ provider.name }}</strong>
-                    <small>{{ provider.description }}</small>
-                    {% if provider.show_route_map or provider.show_vehicle_positions %}
-                        <span class="public-transport-carriers__capabilities" aria-label="Funkcje mapy">
-                            {% if provider.show_route_map %}
-                                <span title="Trasa na mapie">
-                                    <i data-lucide="route" aria-hidden="true"></i>
-                                    <span class="sr-only">Trasa na mapie</span>
-                                </span>
-                            {% endif %}
-                            {% if provider.show_vehicle_positions %}
-                                <span title="Pojazdy na mapie">
-                                    <i data-lucide="map-pin" aria-hidden="true"></i>
-                                    <span class="sr-only">Pojazdy na mapie</span>
+    {% for group in provider_groups %}
+        <section class="public-transport-carriers__region">
+            <h3 class="public-transport-carriers__region-heading">{{ group.region | title }}</h3>
+            <div class="public-transport-carriers__grid">
+                {% for provider in group.providers %}
+                    <button class="public-transport-carriers__tile" type="button" data-public-transport-provider="{{ provider.id }}" data-public-transport-filter-item data-search="{{ provider.name }} {{ provider.description }}">
+                        <span class="public-transport-carriers__icon">
+                            <i data-lucide="{{ provider.icon }}" aria-hidden="true"></i>
+                        </span>
+                        <span>
+                            <strong>{{ provider.name }}</strong>
+                            <small>{{ provider.description }}</small>
+                            {% if provider.show_route_map or provider.show_vehicle_positions %}
+                                <span class="public-transport-carriers__capabilities" aria-label="Funkcje mapy">
+                                    {% if provider.show_route_map %}
+                                        <span title="{{ 'Trasa na mapie (przybliżona – linie proste między przystankami)' if provider.approximate_route_map else 'Trasa na mapie' }}"{% if provider.approximate_route_map %} class="public-transport-carriers__capability--approximate"{% endif %}>
+                                            <i data-lucide="route" aria-hidden="true"></i>{% if provider.approximate_route_map %}<span aria-hidden="true">*</span>{% endif %}
+                                            <span class="sr-only">Trasa na mapie{% if provider.approximate_route_map %} (przybliżona){% endif %}</span>
+                                        </span>
+                                    {% endif %}
+                                    {% if provider.show_vehicle_positions %}
+                                        <span title="Pojazdy na mapie">
+                                            <i data-lucide="map-pin" aria-hidden="true"></i>
+                                            <span class="sr-only">Pojazdy na mapie</span>
+                                        </span>
+                                    {% endif %}
                                 </span>
                             {% endif %}
                         </span>
-                    {% endif %}
-                </span>
-                <i data-lucide="chevron-right" aria-hidden="true"></i>
-            </button>
-        {% endfor %}
-    </div>
+                        <i data-lucide="chevron-right" aria-hidden="true"></i>
+                    </button>
+                {% endfor %}
+            </div>
+        </section>
+    {% endfor %}
     <section class="public-transport-carriers__sources" aria-labelledby="public-transport-sources-title">
         <h3 id="public-transport-sources-title">Źródła danych</h3>
         <div class="public-transport-carriers__sources-list">

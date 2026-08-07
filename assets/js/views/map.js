@@ -1297,6 +1297,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             weight: 5,
             opacity: 0.9
         }).addTo(map);
+        publicTransportRouteLayer.bringToBack();
         publicTransportRouteLayer.bindPopup(title);
         map.fitBounds(publicTransportRouteLayer.getBounds(), {
             padding: [42, 42]

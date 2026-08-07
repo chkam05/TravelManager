@@ -10,6 +10,7 @@
         'route': route_points,
         'routes': routes_by_direction,
         'show_route_map': capabilities.show_route_map,
+        'approximate_route_map': capabilities.approximate_route_map | default(false),
         'show_vehicle_positions': capabilities.show_vehicle_positions,
         'dates': date_options
     }|tojson }}</script>
@@ -57,7 +58,7 @@
         </label>
         <button class="public-transport-header__button" type="button" data-public-transport-route hidden>
             <i data-lucide="map" aria-hidden="true"></i>
-            <span>Pokaż trasę</span>
+            <span>Pokaż trasę{% if capabilities.approximate_route_map | default(false) %}*{% endif %}</span>
         </button>
         <button class="public-transport-header__button" type="button" data-public-transport-vehicles hidden>
             <i data-lucide="navigation" aria-hidden="true"></i>

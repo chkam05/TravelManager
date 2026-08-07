@@ -91,17 +91,20 @@
         const escape = (event) => {
             if (event.key === 'Escape') close();
         };
+        const scrollClose = (event) => {
+            if (!menu.contains(event.target)) close();
+        };
         document.addEventListener('pointerdown', outside);
         document.addEventListener('keydown', escape);
         window.addEventListener('resize', close);
-        window.addEventListener('scroll', close, true);
+        window.addEventListener('scroll', scrollClose, true);
         updateButton();
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
         instances.set(select, { destroy: () => {
             document.removeEventListener('pointerdown', outside);
             document.removeEventListener('keydown', escape);
             window.removeEventListener('resize', close);
-            window.removeEventListener('scroll', close, true);
+            window.removeEventListener('scroll', scrollClose, true);
             button.remove();
             menu.remove();
             instances.delete(select);

@@ -959,6 +959,20 @@ button.public-transport-line-pill {
     margin: 0 auto;
 }
 
+.public-transport-carriers__region {
+    display: grid;
+    gap: 10px;
+}
+
+.public-transport-carriers__region-heading {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.55;
+}
+
 .public-transport-carriers__sources {
     width: 100%;
     margin: 22px auto 0;
@@ -1029,6 +1043,14 @@ button.public-transport-line-pill {
     width: 24px;
     height: 20px;
     border-radius: 999px;
+}
+
+.public-transport-carriers__capabilities > span.public-transport-carriers__capability--approximate {
+    display: flex;
+    align-items: flex-start;
+    width: auto;
+    gap: 1px;
+    padding-inline: 3px;
 }
 
 .public-transport-carriers__capabilities svg {

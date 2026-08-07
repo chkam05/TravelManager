@@ -3,7 +3,25 @@ import unicodedata
 from typing import Any, ClassVar, Dict, Type
 from urllib.parse import urlparse
 
+from utils.public_transport.bialystok_downloader import BialystokDownloader
+from utils.public_transport.chojnice_downloader import ChojniceDownloader
 from utils.public_transport.czestochowa_downloader import CzestochowaDownloader
+from utils.public_transport.elk_downloader import ElkDownloader
+from utils.public_transport.gizycko_downloader import GizyckoDownloader
+from utils.public_transport.kalisz_downloader import KaliszDownloader
+from utils.public_transport.kielce_downloader import KielceDownloader
+from utils.public_transport.kutno_downloader import KutnoDownloader
+from utils.public_transport.legnica_downloader import LegnicaDownloader
+from utils.public_transport.leszno_downloader import LesznoDownloader
+from utils.public_transport.lomza_downloader import LomzaDownloader
+from utils.public_transport.opole_downloader import OpoleDownloader
+from utils.public_transport.przemysl_downloader import PrzemyslDownloader
+from utils.public_transport.radom_downloader import RadomDownloader
+from utils.public_transport.rybnik_downloader import RybnikDownloader
+from utils.public_transport.rzeszow_downloader import RzeszowDownloader
+from utils.public_transport.suwalki_downloader import SuwalikiDownloader
+from utils.public_transport.swinoujscie_downloader import SwinoujscieDownloader
+from utils.public_transport.wejherowo_downloader import WejherowoDownloader
 from utils.public_transport.elblag_downloader import ElblagDownloader
 from utils.public_transport.gorzow_downloader import GorzowDownloader
 from utils.public_transport.grudziadz_downloader import GrudziadzDownloader
@@ -25,6 +43,24 @@ from utils.public_transport.wroclaw_downloader import WroclawDownloader
 class PublicTransportProviders:
     """Registers public transport regions and their downloader implementations."""
 
+    BIALYSTOK: ClassVar[str] = 'bialystok'
+    CHOJNICE: ClassVar[str] = 'chojnice'
+    ELK: ClassVar[str] = 'elk'
+    GIZYCKO: ClassVar[str] = 'gizycko'
+    KALISZ: ClassVar[str] = 'kalisz'
+    KIELCE: ClassVar[str] = 'kielce'
+    KUTNO: ClassVar[str] = 'kutno'
+    LEGNICA: ClassVar[str] = 'legnica'
+    LESZNO: ClassVar[str] = 'leszno'
+    LOMZA: ClassVar[str] = 'lomza'
+    OPOLE: ClassVar[str] = 'opole'
+    PRZEMYSL: ClassVar[str] = 'przemysl'
+    RADOM: ClassVar[str] = 'radom'
+    RYBNIK: ClassVar[str] = 'rybnik'
+    RZESZOW: ClassVar[str] = 'rzeszow'
+    SUWALKI: ClassVar[str] = 'suwalki'
+    SWINOUJSCIE: ClassVar[str] = 'swinoujscie'
+    WEJHEROWO: ClassVar[str] = 'wejherowo'
     GZM: ClassVar[str] = 'gzm'
     CZESTOCHOWA: ClassVar[str] = 'czestochowa'
     KRAKOW: ClassVar[str] = 'krakow'
@@ -51,6 +87,44 @@ class PublicTransportProviders:
     FIELD_SETTINGS_CACHE: ClassVar[str] = 'settings_cache'
     FIELD_ATTRIBUTIONS: ClassVar[str] = 'attributions'
 
+    REGIONS: ClassVar[Dict[str, str]] = {
+        'bialystok':    'podlaskie',
+        'chojnice':     'pomorskie',
+        'bydgoszcz':    'kujawsko-pomorskie',
+        'czestochowa':  'śląskie',
+        'elblag':       'warmińsko-mazurskie',
+        'elk':          'warmińsko-mazurskie',
+        'gdansk':       'pomorskie',
+        'gdynia':       'pomorskie',
+        'gizycko':      'warmińsko-mazurskie',
+        'gorzow':       'lubuskie',
+        'grudziadz':    'kujawsko-pomorskie',
+        'gzm':          'śląskie',
+        'kalisz':       'wielkopolskie',
+        'kielce':       'świętokrzyskie',
+        'krakow':       'małopolskie',
+        'kutno':        'łódzkie',
+        'legnica':      'dolnośląskie',
+        'leszno':       'wielkopolskie',
+        'lodz':         'łódzkie',
+        'lomza':        'podlaskie',
+        'lublin':       'lubelskie',
+        'olsztyn':      'warmińsko-mazurskie',
+        'opole':        'opolskie',
+        'poznan':       'wielkopolskie',
+        'przemysl':     'podkarpackie',
+        'radom':        'mazowieckie',
+        'rybnik':       'śląskie',
+        'rzeszow':      'podkarpackie',
+        'szczecin':     'zachodniopomorskie',
+        'suwalki':      'podlaskie',
+        'swinoujscie':  'zachodniopomorskie',
+        'torun':        'kujawsko-pomorskie',
+        'warsaw':       'mazowieckie',
+        'wejherowo':    'pomorskie',
+        'wroclaw':      'dolnośląskie',
+    }
+
     CAPABILITY_SHOW_PLATFORMS: ClassVar[str] = 'show_platforms'
     CAPABILITY_SHOW_STOP_MAP: ClassVar[str] = 'show_stop_map'
     CAPABILITY_SHOW_RIDE_MAP: ClassVar[str] = 'show_ride_map'
@@ -60,6 +134,7 @@ class PublicTransportProviders:
     CAPABILITY_SHOW_STOP_DEPARTURES: ClassVar[str] = 'show_stop_departures'
     CAPABILITY_SHOW_RIDE: ClassVar[str] = 'show_ride'
     CAPABILITY_SHOW_ROUTE_MAP: ClassVar[str] = 'show_route_map'
+    CAPABILITY_APPROXIMATE_ROUTE_MAP: ClassVar[str] = 'approximate_route_map'
     CAPABILITY_SHOW_VEHICLE_POSITIONS: ClassVar[str] = (
         'show_vehicle_positions'
     )
@@ -154,6 +229,7 @@ class PublicTransportProviders:
     }
     ELBLAG_CAPABILITIES: ClassVar[Dict[str, object]] = {
         **WARSAW_CAPABILITIES,
+        CAPABILITY_APPROXIMATE_ROUTE_MAP: True,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: False
     }
     GORZOW_CAPABILITIES: ClassVar[Dict[str, object]] = {
@@ -167,6 +243,7 @@ class PublicTransportProviders:
     }
     LUBLIN_CAPABILITIES: ClassVar[Dict[str, object]] = {
         **WARSAW_CAPABILITIES,
+        CAPABILITY_APPROXIMATE_ROUTE_MAP: True,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: False
     }
     LODZ_CAPABILITIES: ClassVar[Dict[str, object]] = {
@@ -174,6 +251,86 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_VEHICLE_POSITIONS: True
     }
     OLSZTYN_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_APPROXIMATE_ROUTE_MAP: True,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    BIALYSTOK_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    CHOJNICE_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **CZESTOCHOWA_CAPABILITIES,
+        CAPABILITY_SHOW_ROUTE_MAP: False,
+        CAPABILITY_CACHE_ANNOUNCEMENTS: False
+    }
+    ELK_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    GIZYCKO_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_APPROXIMATE_ROUTE_MAP: True,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    KALISZ_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    KIELCE_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    KUTNO_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    LEGNICA_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    LESZNO_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    LOMZA_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_APPROXIMATE_ROUTE_MAP: True,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    OPOLE_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    PRZEMYSL_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    RADOM_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    RYBNIK_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    RZESZOW_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    SUWALKI_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
+    }
+    SWINOUJSCIE_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_APPROXIMATE_ROUTE_MAP: True,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    WEJHEROWO_CAPABILITIES: ClassVar[Dict[str, object]] = {
         **WARSAW_CAPABILITIES,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: False
     }
@@ -206,6 +363,24 @@ class PublicTransportProviders:
                 'name': 'Miasto Częstochowa / MPK w Częstochowie',
                 'url': 'https://www.czestochowa.pl/rozklady-jazdy'
             }]
+        },
+        CHOJNICE: {
+            FIELD_NAME: 'Chojnice',
+            FIELD_DESCRIPTION: 'MZK Chojnice',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: ChojniceDownloader,
+            FIELD_CAPABILITIES: CHOJNICE_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: True,
+            FIELD_ATTRIBUTIONS: [
+                {
+                    'name': 'MZK Chojnice',
+                    'url': 'https://www.mzkchojnice.pl/'
+                },
+                {
+                    'name': 'Rozkłady: rozklad.com',
+                    'url': 'https://rozklad.com/'
+                }
+            ]
         },
         KRAKOW: {
             FIELD_NAME: 'Kraków',
@@ -420,7 +595,217 @@ class PublicTransportProviders:
                 'name': 'Zarząd Dróg, Zieleni i Transportu w Olsztynie',
                 'url': 'https://zdzit.olsztyn.eu/gtfs/'
             }]
-        }
+        },
+        BIALYSTOK: {
+            FIELD_NAME: 'Białystok',
+            FIELD_DESCRIPTION: 'BKM Białystok (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: BialystokDownloader,
+            FIELD_CAPABILITIES: BIALYSTOK_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Białostocka Komunikacja Miejska',
+                'url': 'https://komunikacja.bialystok.pl/'
+            }]
+        },
+        ELK: {
+            FIELD_NAME: 'Ełk',
+            FIELD_DESCRIPTION: 'MZK Ełk (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: ElkDownloader,
+            FIELD_CAPABILITIES: ELK_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'MZK Ełk / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        GIZYCKO: {
+            FIELD_NAME: 'Giżycko',
+            FIELD_DESCRIPTION: 'GZK Bystry Giżycko (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: GizyckoDownloader,
+            FIELD_CAPABILITIES: GIZYCKO_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'GZK Bystry / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        KALISZ: {
+            FIELD_NAME: 'Kalisz',
+            FIELD_DESCRIPTION: 'KLA Kalisz (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: KaliszDownloader,
+            FIELD_CAPABILITIES: KALISZ_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'KLA Kalisz / źródło: rj.sdip.kalisz.pl via kasznia.net (CC-BY-4.0)',
+                'url': 'https://gtfs.kasznia.net/'
+            }]
+        },
+        KIELCE: {
+            FIELD_NAME: 'Kielce',
+            FIELD_DESCRIPTION: 'ZTM Kielce (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: KielceDownloader,
+            FIELD_CAPABILITIES: KIELCE_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [
+                {
+                    'name': 'Urząd Miasta Kielce – Zarząd Transportu Miejskiego',
+                    'url': 'https://ztm.kielce.pl/'
+                },
+                {
+                    'name': 'Konwersja GTFS: Mikołaj Kuranowski',
+                    'url': 'https://mkuran.pl/gtfs/'
+                }
+            ]
+        },
+        KUTNO: {
+            FIELD_NAME: 'Kutno',
+            FIELD_DESCRIPTION: 'Komunikacja Miejska Kutno (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: KutnoDownloader,
+            FIELD_CAPABILITIES: KUTNO_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'zbiorkom.live / Komunikacja Miejska Kutno',
+                'url': 'https://zbiorkom.live/kutno'
+            }]
+        },
+        LEGNICA: {
+            FIELD_NAME: 'Legnica',
+            FIELD_DESCRIPTION: 'MPK Legnica (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: LegnicaDownloader,
+            FIELD_CAPABILITIES: LEGNICA_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'MPK Legnica / zbiorkom.live',
+                'url': 'https://zbiorkom.live/legnica'
+            }]
+        },
+        LESZNO: {
+            FIELD_NAME: 'Leszno',
+            FIELD_DESCRIPTION: 'MZK Leszno (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: LesznoDownloader,
+            FIELD_CAPABILITIES: LESZNO_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'MZK Leszno / zbiorkom.live',
+                'url': 'https://zbiorkom.live/leszno'
+            }]
+        },
+        LOMZA: {
+            FIELD_NAME: 'Łomża',
+            FIELD_DESCRIPTION: 'MPK Łomża (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: LomzaDownloader,
+            FIELD_CAPABILITIES: LOMZA_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'MPK ZB w Łomży / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        OPOLE: {
+            FIELD_NAME: 'Opole',
+            FIELD_DESCRIPTION: 'MZK Opole (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: OpoleDownloader,
+            FIELD_CAPABILITIES: OPOLE_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'MZK Sp. z o.o. Opole / zbiorkom.live',
+                'url': 'https://zbiorkom.live/opole'
+            }]
+        },
+        PRZEMYSL: {
+            FIELD_NAME: 'Przemyśl',
+            FIELD_DESCRIPTION: 'KM Przemyśl (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: PrzemyslDownloader,
+            FIELD_CAPABILITIES: PRZEMYSL_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Komunikacja Miejska w Przemyślu / zbiorkom.live',
+                'url': 'https://zbiorkom.live/przemysl'
+            }]
+        },
+        RADOM: {
+            FIELD_NAME: 'Radom',
+            FIELD_DESCRIPTION: 'MZDiK Radom (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: RadomDownloader,
+            FIELD_CAPABILITIES: RADOM_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'MZDiK Radom / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        RYBNIK: {
+            FIELD_NAME: 'Rybnik',
+            FIELD_DESCRIPTION: 'KM Rybnik (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: RybnikDownloader,
+            FIELD_CAPABILITIES: RYBNIK_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Komunikacja Miejska w Rybniku / zbiorkom.live',
+                'url': 'https://zbiorkom.live/rybnik'
+            }]
+        },
+        RZESZOW: {
+            FIELD_NAME: 'Rzeszów',
+            FIELD_DESCRIPTION: 'RTM Rzeszów (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: RzeszowDownloader,
+            FIELD_CAPABILITIES: RZESZOW_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Rzeszowski Transport Miejski / Otwarte Dane Rzeszów',
+                'url': 'https://otwartedane.erzeszow.pl/dataset/rozklady-jazdy-gtfs'
+            }]
+        },
+        SUWALKI: {
+            FIELD_NAME: 'Suwałki',
+            FIELD_DESCRIPTION: 'KM Suwałki (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: SuwalikiDownloader,
+            FIELD_CAPABILITIES: SUWALKI_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Komunikacja Miejska w Suwałkach / zbiorkom.live',
+                'url': 'https://zbiorkom.live/suwalki'
+            }]
+        },
+        SWINOUJSCIE: {
+            FIELD_NAME: 'Świnoujście',
+            FIELD_DESCRIPTION: 'KA Świnoujście (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: SwinoujscieDownloader,
+            FIELD_CAPABILITIES: SWINOUJSCIE_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'KA Świnoujście / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        WEJHEROWO: {
+            FIELD_NAME: 'Wejherowo',
+            FIELD_DESCRIPTION: 'MZK Wejherowo (GTFS)',
+            FIELD_ICON: 'bus-front',
+            FIELD_DOWNLOADER: WejherowoDownloader,
+            FIELD_CAPABILITIES: WEJHEROWO_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'MZK Wejherowo / konwersja GTFS: Mikołaj Kuranowski (CC0)',
+                'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
     }
 
     def __new__(cls):
@@ -476,27 +861,51 @@ class PublicTransportProviders:
                         False
                     )
                 ),
+                'approximate_route_map': bool(
+                    provider.get(cls.FIELD_CAPABILITIES, {}).get(
+                        cls.CAPABILITY_APPROXIMATE_ROUTE_MAP,
+                        False
+                    )
+                ),
                 'show_vehicle_positions': bool(
                     provider.get(cls.FIELD_CAPABILITIES, {}).get(
                         cls.CAPABILITY_SHOW_VEHICLE_POSITIONS,
                         False
                     )
                 ),
+                'region': cls.REGIONS.get(provider_id, ''),
                 'attributions': list(provider.get(cls.FIELD_ATTRIBUTIONS, []))
             }
             for provider_id, provider in cls.VALUES.items()
         ]
+        _pl = str.maketrans({
+            'ą': 'a~', 'ć': 'c~', 'ę': 'e~', 'ł': 'l~',
+            'ń': 'n~', 'ó': 'o~', 'ś': 's~', 'ź': 'z~', 'ż': 'z~~'
+        })
+
+        def _sort_key(text: str) -> str:
+            return text.casefold().translate(_pl)
+
         return sorted(
             options,
-            key=lambda option: ''.join(
-                character
-                for character in unicodedata.normalize(
-                    'NFKD',
-                    str(option['name']).casefold().replace('ł', 'l~')
-                )
-                if not unicodedata.combining(character)
+            key=lambda option: (
+                _sort_key(option['region']),
+                _sort_key(str(option['name']))
             )
         )
+
+    @classmethod
+    def options_by_region(cls) -> list[dict]:
+        """Returns providers grouped by region, preserving Polish sort order."""
+        groups: list[dict] = []
+        index: dict[str, int] = {}
+        for option in cls.options():
+            region = option['region']
+            if region not in index:
+                index[region] = len(groups)
+                groups.append({'region': region, 'providers': []})
+            groups[index[region]]['providers'].append(option)
+        return groups
 
     @classmethod
     def validate_url(cls, provider_id: str, url: str) -> str:

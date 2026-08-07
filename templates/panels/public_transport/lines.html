@@ -3,12 +3,17 @@
         <label>
             <span>Przewoźnik</span>
             <select data-public-transport-panel-provider aria-label="Przewoźnik">
-                {% for provider in providers %}
-                    <option value="{{ provider.id }}"
-                            data-icon="{{ provider.icon }}"
-                            data-description="{{ provider.description }}"
-                            data-show-route-map="{{ 'true' if provider.show_route_map else 'false' }}"
-                            data-show-vehicle-positions="{{ 'true' if provider.show_vehicle_positions else 'false' }}">{{ provider.name }}</option>
+                {% for group in provider_groups %}
+                    <optgroup label="{{ group.region | title }}">
+                        {% for provider in group.providers %}
+                            <option value="{{ provider.id }}"
+                                    data-icon="{{ provider.icon }}"
+                                    data-description="{{ provider.description }}"
+                                    data-show-route-map="{{ 'true' if provider.show_route_map else 'false' }}"
+                                    data-approximate-route-map="{{ 'true' if provider.approximate_route_map else 'false' }}"
+                                    data-show-vehicle-positions="{{ 'true' if provider.show_vehicle_positions else 'false' }}">{{ provider.name }}</option>
+                        {% endfor %}
+                    </optgroup>
                 {% endfor %}
             </select>
         </label>
