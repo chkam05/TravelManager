@@ -18,6 +18,10 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     if (!panel || !content || !providerSelect || !title || !backButton || !mapButton || !closeButton) return;
 
+    const providerDropdown = window.travelManagerPublicTransportProviderDropdown?.enhance(
+        providerSelect
+    );
+
     const state = {
         provider: '', screen: 'lines', url: '', history: [], metadata: {},
         fragment: null, directionIndex: 0, routeVisible: false,
@@ -322,6 +326,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         window.travelManagerLegendDetailsPanel?.close(); window.travelManagerLayerDetailsPanel?.close();
         state.provider = options.provider || state.provider || providerSelect.value;
         if ([...providerSelect.options].some((option) => option.value === state.provider)) providerSelect.value = state.provider;
+        providerDropdown?.sync();
         saveProvider(state.provider); state.history = []; clearRoute(); clearStop(); clearVehicles();
         if (!(await hasLocalData())) { renderNoData(); return; }
         const targetScreen = options.screen || 'lines';
@@ -450,6 +455,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     }).then((response) => response.json()).then((data) => {
         const provider = String(data?.provider || '');
         if ([...providerSelect.options].some((option) => option.value === provider)) providerSelect.value = provider;
+        providerDropdown?.sync();
         state.provider = providerSelect.value;
     }).catch(() => { state.provider = providerSelect.value; });
     document.addEventListener('travel-manager:ui-settings-changed', (event) => {

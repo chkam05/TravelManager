@@ -5,7 +5,10 @@
         </button>
         <h2>Wybierz przewoźnika</h2>
     </div>
-    <div class="public-transport-header__center"></div>
+    <form class="public-transport-header__center public-transport-search" data-public-transport-search="carriers">
+        <input type="search" placeholder="Wyszukaj przewoźnika…" autocomplete="off" aria-label="Wyszukaj przewoźnika">
+        <button type="submit" aria-label="Szukaj"><i data-lucide="search" aria-hidden="true"></i></button>
+    </form>
     <div class="public-transport-header__right">
         <button class="public-transport-header__button" type="button" data-public-transport-refresh-all>
             <i data-lucide="refresh-cw" aria-hidden="true"></i>

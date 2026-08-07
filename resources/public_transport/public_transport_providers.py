@@ -6,9 +6,11 @@ from urllib.parse import urlparse
 from utils.public_transport.czestochowa_downloader import CzestochowaDownloader
 from utils.public_transport.elblag_downloader import ElblagDownloader
 from utils.public_transport.gorzow_downloader import GorzowDownloader
+from utils.public_transport.grudziadz_downloader import GrudziadzDownloader
 from utils.public_transport.gzm_downloader import GzmDownloader
 from utils.public_transport.krakow_downloader import KrakowDownloader
 from utils.public_transport.lublin_downloader import LublinDownloader
+from utils.public_transport.lodz_downloader import LodzDownloader
 from utils.public_transport.olsztyn_downloader import OlsztynDownloader
 from utils.public_transport.warsaw_downloader import WarsawDownloader
 from utils.public_transport.gdansk_downloader import GdanskDownloader
@@ -36,7 +38,9 @@ class PublicTransportProviders:
     WROCLAW: ClassVar[str] = 'wroclaw'
     ELBLAG: ClassVar[str] = 'elblag'
     GORZOW: ClassVar[str] = 'gorzow'
+    GRUDZIADZ: ClassVar[str] = 'grudziadz'
     LUBLIN: ClassVar[str] = 'lublin'
+    LODZ: ClassVar[str] = 'lodz'
     OLSZTYN: ClassVar[str] = 'olsztyn'
 
     FIELD_NAME: ClassVar[str] = 'name'
@@ -87,7 +91,7 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_HIGH_FLOOR: False,
         CAPABILITY_SHOW_STOP_DEPARTURES: False,
         CAPABILITY_SHOW_RIDE: True,
-        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_SHOW_ROUTE_MAP: False,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: False,
         CAPABILITY_CACHE_ANNOUNCEMENTS: True,
         CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Wariant trasy'
@@ -156,9 +160,18 @@ class PublicTransportProviders:
         **WARSAW_CAPABILITIES,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: False
     }
+    GRUDZIADZ_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **CZESTOCHOWA_CAPABILITIES,
+        CAPABILITY_SHOW_ROUTE_MAP: True,
+        CAPABILITY_CACHE_ANNOUNCEMENTS: False
+    }
     LUBLIN_CAPABILITIES: ClassVar[Dict[str, object]] = {
         **WARSAW_CAPABILITIES,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: False
+    }
+    LODZ_CAPABILITIES: ClassVar[Dict[str, object]] = {
+        **WARSAW_CAPABILITIES,
+        CAPABILITY_SHOW_VEHICLE_POSITIONS: True
     }
     OLSZTYN_CAPABILITIES: ClassVar[Dict[str, object]] = {
         **WARSAW_CAPABILITIES,
@@ -168,7 +181,7 @@ class PublicTransportProviders:
     VALUES: ClassVar[Dict[str, Dict[str, object]]] = {
         GZM: {
             FIELD_NAME: 'Górnośląsko-Zagłębiowska Metropolia',
-            FIELD_DESCRIPTION: 'Transport GZM',
+            FIELD_DESCRIPTION: 'Transport GZM (GTFS)',
             FIELD_ICON: 'bus-front',
             FIELD_DOWNLOADER: GzmDownloader,
             FIELD_CAPABILITIES: GZM_CAPABILITIES,
@@ -354,6 +367,24 @@ class PublicTransportProviders:
                 'url': 'https://mkuran.pl/gtfs/'
             }]
         },
+        GRUDZIADZ: {
+            FIELD_NAME: 'Grudziądz',
+            FIELD_DESCRIPTION: 'Komunikacja miejska w Grudziądzu',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: GrudziadzDownloader,
+            FIELD_CAPABILITIES: GRUDZIADZ_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: True,
+            FIELD_ATTRIBUTIONS: [
+                {
+                    'name': 'Wydział Transportu w Grudziądzu',
+                    'url': 'https://transport.grudziadz.pl/rozklady-jazdy-2/'
+                },
+                {
+                    'name': 'Dane rozkładowe: Rozkładzik.pl',
+                    'url': 'https://www.rozkladzik.pl/grudziadz/'
+                }
+            ]
+        },
         LUBLIN: {
             FIELD_NAME: 'Lublin',
             FIELD_DESCRIPTION: 'ZDiTM Lublin (GTFS)',
@@ -364,6 +395,18 @@ class PublicTransportProviders:
             FIELD_ATTRIBUTIONS: [{
                 'name': 'ZDiTM Lublin / konwersja GTFS: Mikołaj Kuranowski (CC0)',
                 'url': 'https://mkuran.pl/gtfs/'
+            }]
+        },
+        LODZ: {
+            FIELD_NAME: 'Łódź',
+            FIELD_DESCRIPTION: 'MPK-Łódź (GTFS)',
+            FIELD_ICON: 'tram-front',
+            FIELD_DOWNLOADER: LodzDownloader,
+            FIELD_CAPABILITIES: LODZ_CAPABILITIES,
+            FIELD_SETTINGS_CACHE: False,
+            FIELD_ATTRIBUTIONS: [{
+                'name': 'Urząd Miasta Łodzi — Open Data Łódź',
+                'url': 'https://otwarte.miasto.lodz.pl/transport_komunikacja/'
             }]
         },
         OLSZTYN: {
@@ -427,15 +470,31 @@ class PublicTransportProviders:
                 'name': str(provider[cls.FIELD_NAME]),
                 'description': str(provider[cls.FIELD_DESCRIPTION]),
                 'icon': str(provider[cls.FIELD_ICON]),
+                'show_route_map': bool(
+                    provider.get(cls.FIELD_CAPABILITIES, {}).get(
+                        cls.CAPABILITY_SHOW_ROUTE_MAP,
+                        False
+                    )
+                ),
+                'show_vehicle_positions': bool(
+                    provider.get(cls.FIELD_CAPABILITIES, {}).get(
+                        cls.CAPABILITY_SHOW_VEHICLE_POSITIONS,
+                        False
+                    )
+                ),
                 'attributions': list(provider.get(cls.FIELD_ATTRIBUTIONS, []))
             }
             for provider_id, provider in cls.VALUES.items()
         ]
         return sorted(
             options,
-            key=lambda option: unicodedata.normalize(
-                'NFKD',
-                str(option['name']).casefold()
+            key=lambda option: ''.join(
+                character
+                for character in unicodedata.normalize(
+                    'NFKD',
+                    str(option['name']).casefold().replace('ł', 'l~')
+                )
+                if not unicodedata.combining(character)
             )
         )
 

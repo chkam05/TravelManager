@@ -937,7 +937,7 @@ button.public-transport-line-pill {
     display: grid;
     align-content: start;
     gap: 22px;
-    padding: 28px;
+    padding: 14px;
 }
 
 .public-transport-carriers > header {
@@ -953,14 +953,14 @@ button.public-transport-line-pill {
 
 .public-transport-carriers__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 14px;
-    width: min(980px, 100%);
+    width: 100%;
     margin: 0 auto;
 }
 
 .public-transport-carriers__sources {
-    width: min(980px, 100%);
+    width: 100%;
     margin: 22px auto 0;
     padding-top: 18px;
     border-top-width: 1px;
@@ -1014,6 +1014,26 @@ button.public-transport-line-pill {
 .public-transport-carriers__tile > span:nth-child(2) {
     display: grid;
     gap: 4px;
+}
+
+.public-transport-carriers__capabilities {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+}
+
+.public-transport-carriers__capabilities > span {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 20px;
+    border-radius: 999px;
+}
+
+.public-transport-carriers__capabilities svg {
+    width: 13px;
+    height: 13px;
 }
 
 .public-transport-view__progress {
