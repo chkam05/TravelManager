@@ -1,0 +1,20 @@
+<div class="public-transport-sources">
+    {% for group in provider_groups %}
+        {% set providers_with_sources = group.providers | selectattr('attributions') | list %}
+        {% if providers_with_sources %}
+            <section class="public-transport-sources__region">
+                <h3 class="public-transport-sources__region-heading">{{ group.region | title }}</h3>
+                <div class="public-transport-sources__list">
+                    {% for provider in providers_with_sources %}
+                <p class="public-transport-sources__attribution">
+                    <strong>{{ provider.name }}:</strong>
+                    {% for attribution in provider.attributions %}
+                        <a href="{{ attribution.url }}" data-external-url>{{ attribution.name }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+    {% endfor %}
+</div>

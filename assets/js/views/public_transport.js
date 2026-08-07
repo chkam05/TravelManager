@@ -8,6 +8,12 @@ document.addEventListener('travel-manager:views-ready', () => {
     }
 
     const carrierMarkup = content.innerHTML;
+    const templates = Object.fromEntries(
+        Array.from(view.querySelectorAll('[data-public-transport-template]')).map((template) => [
+            template.dataset.publicTransportTemplate,
+            template.innerHTML.trim()
+        ])
+    );
     const state = {
         provider: '',
         current: { screen: 'carriers', url: '' },
@@ -500,6 +506,18 @@ document.addEventListener('travel-manager:views-ready', () => {
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
 
+    const showSources = () => {
+        state.request?.abort();
+        state.loading = false;
+        clearProgressTimer();
+        state.provider = '';
+        state.current = { screen: 'sources', url: '' };
+        state.history = [];
+        content.innerHTML = templates.sources || '';
+        showHeader('sources');
+        window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
+    };
+
     const refreshAllProviders = async (button) => {
         const providers = Array.from(
             content.querySelectorAll('[data-public-transport-provider]')
@@ -776,6 +794,11 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (refreshAll) {
             refreshAllProviders(refreshAll);
+            return;
+        }
+
+        if (event.target.closest('[data-public-transport-sources]')) {
+            showSources();
             return;
         }
 

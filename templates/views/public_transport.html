@@ -1,6 +1,7 @@
 <section class="public-transport-view">
     <header class="public-transport-view__header">
         {% include 'public_transport/headers/carriers.html' %}
+        {% include 'public_transport/headers/sources.html' %}
         {% include 'public_transport/headers/lines.html' %}
         {% include 'public_transport/headers/stops.html' %}
         {% include 'public_transport/headers/line_view.html' %}
@@ -11,4 +12,7 @@
     <div class="public-transport-view__content" id="public-transport-content" aria-live="polite">
         {% include 'public_transport/carriers.html' %}
     </div>
+    <template data-public-transport-template="sources">
+        {% include 'public_transport/sources.html' %}
+    </template>
 </section>

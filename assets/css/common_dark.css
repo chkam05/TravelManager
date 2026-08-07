@@ -2414,15 +2414,11 @@ body {
     color: var(--text-secondary);
 }
 
-.public-transport-carriers__sources {
-    border-top-color: var(--border-color);
-}
-
-.public-transport-carriers__sources h3 {
+.public-transport-sources__region-heading {
     color: var(--text-secondary);
 }
 
-.public-transport-carriers__attribution {
+.public-transport-sources__attribution {
     color: var(--text-secondary);
 }
 

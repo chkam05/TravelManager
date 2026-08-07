@@ -874,7 +874,7 @@ body[data-theme="dark"] [role="button"].favourite-marker:is(:hover, :focus-visib
     color: var(--on-accent-color);
 }
 
-.public-transport-carriers__attribution a {
+.public-transport-sources__attribution a {
     color: var(--accent-color);
 }
 

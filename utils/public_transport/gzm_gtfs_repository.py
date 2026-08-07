@@ -1326,7 +1326,10 @@ class GzmGtfsRepository:
 
     #region Realtime lookup maps
 
-    def realtime_maps(self) -> tuple[
+    def realtime_maps(
+        self,
+        trip_ids: set[str] | None = None
+    ) -> tuple[
         dict[tuple[str, str], str],
         dict[tuple[str, str], str],
         dict[tuple[str, str], PublicTransportType],
@@ -1334,25 +1337,42 @@ class GzmGtfsRepository:
     ]:
         """Returns identifiers required to map GTFS-RT entities."""
         with self._connection() as connection:
-            feed_id = self._active_feed(connection, date.today())
-            route_rows = connection.execute(
-                """
-                    SELECT route_id, short_name, route_type
-                    FROM routes WHERE feed_id = ?
-                """,
-                (feed_id,)
-            ).fetchall()
-            trip_rows = connection.execute(
-                """
-                    SELECT t.trip_id, r.short_name, r.route_type
-                    FROM trips t
-                    JOIN routes r
-                      ON r.feed_id = t.feed_id
-                     AND r.route_id = t.route_id
-                    WHERE t.feed_id = ?
-                """,
-                (feed_id,)
-            ).fetchall()
+            if trip_ids:
+                placeholders = ','.join('?' for _ in trip_ids)
+                trip_rows = connection.execute(
+                    f"""
+                        SELECT t.trip_id, r.route_id, r.short_name, r.route_type
+                        FROM trips t
+                        JOIN routes r
+                          ON r.feed_id = t.feed_id
+                         AND r.route_id = t.route_id
+                        WHERE t.feed_id LIKE ?
+                          AND t.trip_id IN ({placeholders})
+                        ORDER BY t.feed_id
+                    """,
+                    (self.FEED_PATTERN, *sorted(trip_ids))
+                ).fetchall()
+                route_rows = trip_rows
+            else:
+                feed_id = self._active_feed(connection, date.today())
+                route_rows = connection.execute(
+                    """
+                        SELECT route_id, short_name, route_type
+                        FROM routes WHERE feed_id = ?
+                    """,
+                    (feed_id,)
+                ).fetchall()
+                trip_rows = connection.execute(
+                    """
+                        SELECT t.trip_id, r.route_id, r.short_name, r.route_type
+                        FROM trips t
+                        JOIN routes r
+                          ON r.feed_id = t.feed_id
+                         AND r.route_id = t.route_id
+                        WHERE t.feed_id = ?
+                    """,
+                    (feed_id,)
+                ).fetchall()
         route_names = {
             (self.FEED_ID, str(row['route_id'])): self._public_line_name(
                 str(row['short_name']),
@@ -1393,7 +1413,6 @@ class GzmGtfsRepository:
         if not trip_ids:
             return {}, {}, {}
         with self._connection() as connection:
-            feed_id = self._active_feed(connection, date.today())
             placeholders = ','.join('?' for _ in trip_ids)
             rows = connection.execute(
                 f"""
@@ -1404,10 +1423,10 @@ class GzmGtfsRepository:
                       ON st.feed_id = t.feed_id AND st.trip_id = t.trip_id
                     LEFT JOIN stops s
                       ON s.feed_id = st.feed_id AND s.stop_id = st.stop_id
-                    WHERE t.feed_id = ? AND t.trip_id IN ({placeholders})
+                                        WHERE t.feed_id LIKE ? AND t.trip_id IN ({placeholders})
                     ORDER BY t.trip_id, st.stop_sequence
                 """,
-                (feed_id, *sorted(trip_ids))
+                                (self.FEED_PATTERN, *sorted(trip_ids))
             ).fetchall()
         details: dict[tuple[str, str], dict[str, str]] = {}
         trip_stops: dict[tuple[str, str, int], str] = {}

@@ -1319,12 +1319,14 @@ class GzmDownloader:
     ) -> list[PublicTransportVehiclePosition]:
         """Downloads current GZM vehicle positions from GTFS-Realtime."""
         repository = cls._repository()
-        route_names, trip_names, route_types, trip_types = repository.realtime_maps()
         payload = cls._download_bytes(
             cls.GTFS_RT_VEHICLES_URL,
             'Pojazdy GZM na żywo'
         )
         trip_ids = cls._realtime_trip_ids(payload)
+        route_names, trip_names, route_types, trip_types = repository.realtime_maps(
+            trip_ids
+        )
         trip_details, trip_stop_names, stop_names = repository.realtime_trip_details(trip_ids)
         return cls.parse_vehicle_positions(
             payload,
