@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const root = document.querySelector('[data-appearance-settings]');
     const themeButtons = root?.querySelectorAll('[data-appearance-theme]');
     const presetButtons = root?.querySelectorAll('[data-appearance-color]');
@@ -60,7 +61,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             body: JSON.stringify(payload)
         });
         const data = await response.json();
-        if (!response.ok || data.status !== 'ok') throw new Error(data.message || 'Nie udało się zapisać wyglądu.');
+        if (!response.ok || data.status !== 'ok') {
+            throw new Error(data.message || t('SETTINGS_APPEARANCE.SAVE_FAILED'));
+        }
         appearance = data.appearance;
         apply();
         renderRecent();
@@ -110,7 +113,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!colors.length) {
             const empty = document.createElement('span');
             empty.className = 'appearance-settings__empty';
-            empty.textContent = 'Brak ostatnio używanych kolorów.';
+            empty.textContent = t('SETTINGS_APPEARANCE.NO_RECENT_COLORS');
             recentHost.append(empty);
             return;
         }
@@ -118,7 +121,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'color-tile';
-            button.setAttribute('aria-label', `Wybierz kolor ${color}`);
+            button.setAttribute('aria-label', t('SETTINGS_APPEARANCE.SELECT_COLOR_VALUE', { color }));
             button.title = color;
             const swatch = document.createElement('span');
             swatch.className = 'color-tile__swatch';
@@ -159,7 +162,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const presetGroup = document.createElement('div');
         presetGroup.className = 'appearance-color-combobox__group';
         presetGroup.setAttribute('role', 'group');
-        presetGroup.setAttribute('aria-label', 'Gotowe kolory');
+        presetGroup.setAttribute('aria-label', t('SETTINGS_APPEARANCE.PRESET_COLORS'));
         presets.forEach((preset) => appendColorOption(presetGroup, preset.color, preset.label, (color) => selectMapColor(host, color)));
         menu.append(presetGroup);
 
@@ -171,12 +174,12 @@ document.addEventListener('travel-manager:views-ready', () => {
         const recentGroup = document.createElement('div');
         recentGroup.className = 'appearance-color-combobox__group';
         recentGroup.setAttribute('role', 'group');
-        recentGroup.setAttribute('aria-label', 'Ostatnio używane kolory');
+        recentGroup.setAttribute('aria-label', t('SETTINGS_APPEARANCE.RECENT_COLORS'));
         const recent = customRecentColors();
         if (!recent.length) {
             const empty = document.createElement('span');
             empty.className = 'appearance-color-combobox__empty';
-            empty.textContent = 'Brak ostatnio używanych kolorów';
+            empty.textContent = t('SETTINGS_APPEARANCE.NO_RECENT_COLORS');
             recentGroup.append(empty);
         }
         recent.forEach((color) => {
@@ -186,8 +189,11 @@ document.addEventListener('travel-manager:views-ready', () => {
             const remove = document.createElement('button');
             remove.type = 'button';
             remove.className = 'appearance-color-combobox__remove';
-            remove.setAttribute('aria-label', `Usuń kolor ${color} z ostatnio używanych`);
-            remove.title = 'Usuń z ostatnio używanych';
+            remove.setAttribute(
+                'aria-label',
+                t('SETTINGS_APPEARANCE.REMOVE_RECENT_COLOR_VALUE', { color })
+            );
+            remove.title = t('SETTINGS_APPEARANCE.REMOVE_FROM_RECENT');
             remove.innerHTML = '<i data-lucide="trash-2" aria-hidden="true"></i>';
             remove.addEventListener('click', (event) => { event.stopPropagation(); removeRecentColor(color); });
             row.append(remove);
@@ -200,7 +206,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const custom = document.createElement('button');
         custom.type = 'button';
         custom.className = 'appearance-color-combobox__custom';
-        custom.innerHTML = '<i data-lucide="palette" aria-hidden="true"></i><span>Wybierz własny kolor…</span>';
+        custom.innerHTML = `<i data-lucide="palette" aria-hidden="true"></i><span>${t('SETTINGS_APPEARANCE.SELECT_CUSTOM_COLOR')}</span>`;
         custom.addEventListener('click', async () => {
             const initial = colorValue(host);
             closeColorPicker();
@@ -222,7 +228,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         button.className = 'appearance-color-combobox__button';
         button.setAttribute('aria-haspopup', 'listbox');
         button.setAttribute('aria-expanded', 'false');
-        button.setAttribute('aria-label', `Wybierz kolor: ${host.dataset.appearanceColorLabel}`);
+        button.setAttribute('aria-label', t('SETTINGS_APPEARANCE.SELECT_COLOR_FOR', {
+            label: host.dataset.appearanceColorLabel
+        }));
         button.innerHTML = '<span class="appearance-color-combobox__swatch" data-color-combobox-swatch></span><span data-color-combobox-value></span><i data-lucide="chevron-down" aria-hidden="true"></i>';
         const menu = document.createElement('div');
         menu.className = 'appearance-color-combobox__menu';

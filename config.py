@@ -16,11 +16,11 @@ TEMPLATE_FOLDER = str(PROJECT_ROOT / 'templates')
 APP_NAME = 'Travel Manager'
 APP_AUTHOR = 'Kamil Karpiński'
 APP_DESCRIPTION = (
-    'Aplikacja desktopowa do przeglądania map OpenStreetMap, wyszukiwania miejsc, '
-    'planowania i zapisywania tras oraz szacowania kosztów podróży na podstawie '
-    'profili samochodów i aktualnych cen paliw.'
+    'Plan every journey in one place: explore maps, find places, create and save '
+    'routes, follow public transport, and estimate fuel and toll costs using your '
+    'own car profiles.'
 )
-APP_VERSION = '1.7.1.0'
+APP_VERSION = '2.0.0.0'
 
 # Application settings storage.
 SETTINGS_DIR = PathUtils.get_settings_dir(APP_NAME)

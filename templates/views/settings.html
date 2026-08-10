@@ -1,40 +1,40 @@
 <div class="settings-view">
     <header class="settings-view__toolbar">
-        <button class="app-view__back-button" type="button" data-app-back-to-map aria-label="Wstecz">
+        <button class="app-view__back-button" type="button" data-app-back-to-map aria-label="{{ t('COMMON.BACK') }}">
             <i data-lucide="arrow-left" aria-hidden="true"></i>
         </button>
         <button class="app-view__save-button" type="button" data-settings-save>
             <i data-lucide="save" aria-hidden="true"></i>
-            <span>Zapisz</span>
+            <span>{{ t('COMMON.SAVE') }}</span>
         </button>
     </header>
 
     <div class="settings-view__body">
         <header class="settings-view__header">
-            <h2>Ustawienia</h2>
-            <p>Parametry używane podczas planowania podróży i działania aplikacji.</p>
+            <h2>{{ t('SETTINGS_VIEW.TITLE') }}</h2>
+            <p>{{ t('SETTINGS_VIEW.DESCRIPTION') }}</p>
         </header>
 
-    <nav class="settings-view__tabs" role="tablist" aria-label="Kategorie ustawień">
+    <nav class="settings-view__tabs" role="tablist" aria-label="{{ t('SETTINGS_VIEW.CATEGORIES') }}">
         <button class="settings-view__tab settings-view__tab--active" id="settings-tab-appearance" type="button" role="tab" aria-selected="true" aria-controls="settings-panel-appearance" tabindex="0" data-settings-tab="appearance">
             <i data-lucide="palette" aria-hidden="true"></i>
-            <span>Wygląd</span>
+            <span>{{ t('SETTINGS_VIEW.TAB_APPEARANCE') }}</span>
         </button>
         <button class="settings-view__tab" id="settings-tab-routes" type="button" role="tab" aria-selected="false" aria-controls="settings-panel-routes" tabindex="-1" data-settings-tab="routes">
             <i data-lucide="route" aria-hidden="true"></i>
-            <span>Trasy</span>
+            <span>{{ t('SETTINGS_VIEW.TAB_ROUTES') }}</span>
         </button>
         <button class="settings-view__tab" id="settings-tab-public-transport" type="button" role="tab" aria-selected="false" aria-controls="settings-panel-public-transport" tabindex="-1" data-settings-tab="public-transport">
             <i data-lucide="bus-front" aria-hidden="true"></i>
-            <span>Komunikacja miejska</span>
+            <span>{{ t('SETTINGS_VIEW.TAB_PUBLIC_TRANSPORT') }}</span>
         </button>
         <button class="settings-view__tab" id="settings-tab-backup" type="button" role="tab" aria-selected="false" aria-controls="settings-panel-backup" tabindex="-1" data-settings-tab="backup">
             <i data-lucide="database-backup" aria-hidden="true"></i>
-            <span>Kopia zapasowa</span>
+            <span>{{ t('SETTINGS_VIEW.TAB_BACKUP') }}</span>
         </button>
         <button class="settings-view__tab" id="settings-tab-application" type="button" role="tab" aria-selected="false" aria-controls="settings-panel-application" tabindex="-1" data-settings-tab="application">
             <i data-lucide="settings-2" aria-hidden="true"></i>
-            <span>Aplikacja</span>
+            <span>{{ t('SETTINGS_VIEW.TAB_APPLICATION') }}</span>
         </button>
     </nav>
 

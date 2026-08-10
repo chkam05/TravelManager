@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const layer = document.querySelector('#dialog-layer');
     const dialog = document.querySelector('#public-transport-announcement-dialog');
     const title = dialog?.querySelector('#public-transport-announcement-title');
@@ -14,7 +16,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const formatDate = (value, includeTime = false) => {
         if (!value) {
-            return 'Brak danych';
+            return t('PUBLIC_TRANSPORT_VIEW.NO_DATA');
         }
 
         const parsed = new Date(value);
@@ -23,7 +25,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             return value;
         }
 
-        return new Intl.DateTimeFormat('pl-PL', {
+        return new Intl.DateTimeFormat(locale, {
             dateStyle: 'long',
             ...(includeTime ? { timeStyle: 'short' } : {})
         }).format(parsed);
@@ -36,9 +38,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     const render = (announcement) => {
-        title.textContent = announcement.description || 'Komunikat';
-        city.textContent = announcement.city || 'Komunikacja miejska';
-        content.textContent = announcement.content || 'Brak pełnej treści komunikatu.';
+        title.textContent = announcement.description
+            || t('PUBLIC_TRANSPORT_ANNOUNCEMENT.ANNOUNCEMENT');
+        city.textContent = announcement.city || t('PUBLIC_TRANSPORT_VIEW.TITLE');
+        content.textContent = announcement.content
+            || t('PUBLIC_TRANSPORT_ANNOUNCEMENT.NO_FULL_CONTENT');
 
         const dateFrom = formatDate(announcement.effective_date_from);
         const dateTo = announcement.effective_date_to

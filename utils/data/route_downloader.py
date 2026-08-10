@@ -3,6 +3,7 @@ from typing import Any
 from urllib.parse import urlencode
 
 from models.route.route_data_model import RouteDataModel
+from core.language_service import LanguageService
 from resources.map_sources import MapSources
 from utils.converters.valhalla_route_converter import ValhallaRouteConverter
 from utils.data.map_data_downloader import MapDataDownloader
@@ -38,7 +39,7 @@ class RouteDownloader:
         )
 
         if data.get('code') != 'Ok' or not data.get('routes'):
-            raise ValueError(data.get('message') or 'No route found.')
+            raise ValueError(LanguageService.translate_current('ROUTE_ERROR.ROUTE_NOT_FOUND'))
 
         selected = data['routes'][0]
         return RouteDataModel.from_dict({
@@ -63,4 +64,4 @@ class RouteDownloader:
             'costing_options': {'auto': {'use_tolls': 0}},
             'directions_options': {'units': 'kilometers'}
         })
-        return RouteDataModel.from_dict(ValhallaRouteConverter.convert(data))
+        return RouteDataModel.from_dict(ValhallaRouteConverter.convert(data, translate))

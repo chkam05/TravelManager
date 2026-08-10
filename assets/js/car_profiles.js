@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     let profiles = [];
     let activeCarProfileId = null;
     let loaded = false;
@@ -25,7 +26,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
 
         if (!response.ok) {
-            throw new Error('Nie udało się wczytać profili samochodów.');
+            throw new Error(t('CAR_PROFILES_VIEW.LOAD_FAILED'));
         }
 
         const data = await response.json();
@@ -48,7 +49,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data?.message || 'Nie udało się zapisać profilu samochodu.');
+            throw new Error(data?.message || t('CAR_PROFILES_VIEW.SAVE_FAILED'));
         }
 
         profiles = profiles.filter((item) => item.id !== data.profile.id);
@@ -67,7 +68,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            throw new Error(data?.message || 'Nie udało się usunąć profilu samochodu.');
+            throw new Error(data?.message || t('CAR_PROFILES_VIEW.DELETE_FAILED'));
         }
 
         profiles = profiles.filter((item) => item.id !== profileId);
@@ -87,7 +88,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data?.message || 'Nie udało się ustawić aktywnego samochodu.');
+            throw new Error(data?.message || t('CAR_PROFILES_VIEW.ACTIVATE_FAILED'));
         }
 
         activeCarProfileId = data.active_car_profile_id || null;

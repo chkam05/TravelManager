@@ -26,7 +26,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             resolveResult(false);
         }
 
-        title.textContent = nextTitle || 'Potwierdzenie';
+        title.textContent = nextTitle || window.i18n.t('DIALOG_YES_NO.CONFIRMATION');
         description.textContent = nextDescription || '';
         icon.className = `yesno-dialog__icon yesno-dialog__icon--${nextIcon}`;
         dialog.setAttribute('aria-hidden', 'false');

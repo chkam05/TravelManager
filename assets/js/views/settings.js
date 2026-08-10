@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const travelCostsGroup = document.querySelector('[data-settings-group="travel-costs"]');
     const routeFuelGroup = document.querySelector('[data-settings-group="route-fuel"]');
     const routeTollsGroup = document.querySelector('[data-settings-group="route-tolls"]');
@@ -14,10 +15,10 @@ document.addEventListener('travel-manager:views-ready', () => {
     let routeFuelMainInput = null;
     let routeFuelDependentRows = [];
     const dataTransferOptions = [
-        { id: 'fuel_costs', label: 'Ceny paliwa' },
-        { id: 'routes', label: 'Trasy' },
-        { id: 'favourites', label: 'Ulubione i Tagi' },
-        { id: 'cars', label: 'Samochody' }
+        { id: 'fuel_costs', label: t('RES_SETTINGS_TRANSFER.FUEL_COSTS') },
+        { id: 'routes', label: t('RES_SETTINGS_TRANSFER.ROUTES') },
+        { id: 'favourites', label: t('RES_SETTINGS_TRANSFER.FAVOURITES') },
+        { id: 'cars', label: t('RES_SETTINGS_TRANSFER.CARS') }
     ];
     const dataTransferMenu = document.createElement('div');
     dataTransferMenu.className = 'settings-view__context-menu';
@@ -117,7 +118,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     const dataTransferLabel = (dataType) => (
-        dataTransferOptions.find((option) => option.id === dataType)?.label || 'Dane'
+        dataTransferOptions.find((option) => option.id === dataType)?.label || t('SETTINGS_BACKUP.DATA')
     );
 
     const showPopup = (message, type = 'info', title = null) => {
@@ -150,11 +151,15 @@ document.addEventListener('travel-manager:views-ready', () => {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok || data.status !== 'ok') {
-            throw new Error(data.message || 'Nie udało się wyeksportować danych.');
+            throw new Error(data.message || t('SETTINGS_BACKUP.EXPORT_FAILED'));
         }
 
         downloadJson(data.payload, data.filename);
-        showPopup(`Wyeksportowano dane: ${dataTransferLabel(dataType)}.`, 'success', 'Eksport zakończony');
+        showPopup(
+            t('SETTINGS_BACKUP.EXPORTED_DATA', { type: dataTransferLabel(dataType) }),
+            'success',
+            t('SETTINGS_BACKUP.EXPORT_COMPLETE')
+        );
     };
 
     const browserImport = (dataType) => {
@@ -171,7 +176,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!api?.[method]) {
             if (mode === 'export') {
                 browserExport(dataType).catch((error) => {
-                    showPopup(error?.message || 'Nie udało się wyeksportować danych.', 'error', 'Błąd eksportu');
+                    showPopup(
+                        error?.message || t('SETTINGS_BACKUP.EXPORT_FAILED'),
+                        'error',
+                        t('SETTINGS_BACKUP.EXPORT_ERROR')
+                    );
                 });
                 return;
             }
@@ -188,24 +197,36 @@ document.addEventListener('travel-manager:views-ready', () => {
             }
 
             if (result.status === 'error') {
-                showPopup(result.message || 'Nie udało się wykonać operacji.', 'error');
+                showPopup(result.message || t('SETTINGS_BACKUP.OPERATION_FAILED'), 'error');
                 return;
             }
 
             if (result.status === 'imported') {
                 await refreshAfterImport(dataType);
                 await loadSettings();
-                showPopup(`Zaimportowano dane: ${result.label}.`, 'success', 'Import zakończony');
+                showPopup(
+                    t('SETTINGS_BACKUP.IMPORTED_DATA', { type: result.label }),
+                    'success',
+                    t('SETTINGS_BACKUP.IMPORT_COMPLETE')
+                );
                 return;
             }
 
             if (result.status === 'saved') {
-                showPopup(`Wyeksportowano dane: ${result.label}.`, 'success', 'Eksport zakończony');
+                showPopup(
+                    t('SETTINGS_BACKUP.EXPORTED_DATA', { type: result.label }),
+                    'success',
+                    t('SETTINGS_BACKUP.EXPORT_COMPLETE')
+                );
             }
         } catch (error) {
             if (mode === 'export') {
                 browserExport(dataType).catch((fallbackError) => {
-                    showPopup(fallbackError?.message || error?.message || 'Nie udało się wyeksportować danych.', 'error', 'Błąd eksportu');
+                    showPopup(
+                        fallbackError?.message || error?.message || t('SETTINGS_BACKUP.EXPORT_FAILED'),
+                        'error',
+                        t('SETTINGS_BACKUP.EXPORT_ERROR')
+                    );
                 });
                 return;
             }
@@ -323,7 +344,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         input.disabled = Boolean(options.disabled);
 
         const text = document.createElement('span');
-        text.textContent = 'Włączone';
+        text.textContent = t('COMMON.ENABLED');
 
         if (input.disabled) {
             row.classList.add('settings-view__value--disabled');
@@ -352,6 +373,34 @@ document.addEventListener('travel-manager:views-ready', () => {
             input,
             label: labelElement
         };
+    };
+
+    const addLanguageSetting = (group, language) => {
+        const row = document.createElement('div');
+        row.className = 'settings-view__value settings-view__value--control';
+        const term = document.createElement('dt');
+        term.textContent = window.i18n.t('SETTINGS_APPLICATION.LANGUAGE');
+        const description = document.createElement('dd');
+        description.className = 'settings-view__control';
+        const select = document.createElement('select');
+        select.className = 'settings-view__select';
+        [
+            ['en_US', window.i18n.t('SETTINGS_APPLICATION.LANGUAGE_ENGLISH')],
+            ['pl_PL', window.i18n.t('SETTINGS_APPLICATION.LANGUAGE_POLISH')]
+        ].forEach(([value, label]) => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = label;
+            select.append(option);
+        });
+        select.value = language || 'en_US';
+        select.addEventListener('change', async () => {
+            const saved = await patchUiSettings({ language: select.value });
+            if (saved) window.location.reload();
+        });
+        description.append(select);
+        row.append(term, description);
+        group.append(row);
     };
 
     const addPercentSliderSetting = (group, label, field, value, options = {}) => {
@@ -415,7 +464,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             const data = await response.json();
 
             if (!response.ok || data.status !== 'ok') {
-                throw new Error(data.message || 'Nie udało się pobrać walut.');
+                throw new Error(data.message || t('SETTINGS_ROUTES.CURRENCY_LOAD_FAILED'));
             }
 
             const currencies = new Map();
@@ -435,13 +484,13 @@ document.addEventListener('travel-manager:views-ready', () => {
                 .map(([currency, countries]) => ({
                     currency,
                     label: currency === 'EUR'
-                        ? `${currency} (strefa euro)`
+                        ? t('SETTINGS_ROUTES.CURRENCY_EURO_AREA', { currency })
                         : `${currency} (${countries.join(', ')})`
                 }));
         } catch (error) {
             return [
-                { currency: 'EUR', label: 'EUR (strefa euro)' },
-                { currency: 'PLN', label: 'PLN (Polska)' }
+                { currency: 'EUR', label: t('SETTINGS_ROUTES.CURRENCY_EURO_AREA', { currency: 'EUR' }) },
+                { currency: 'PLN', label: t('SETTINGS_ROUTES.CURRENCY_POLAND', { currency: 'PLN' }) }
             ];
         }
     };
@@ -451,7 +500,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         row.className = 'settings-view__value settings-view__value--control';
 
         const term = document.createElement('dt');
-        term.textContent = 'Waluta kosztów trasy';
+        term.textContent = t('SETTINGS_ROUTES.ROUTE_COST_CURRENCY');
 
         const description = document.createElement('dd');
         description.className = 'settings-view__control settings-view__control--fuel-type';
@@ -461,11 +510,11 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         const message = document.createElement('span');
         message.className = 'settings-view__hint';
-        message.textContent = 'Według kraju zostawia lokalne waluty w tabeli cen, a koszt trasy sumuje w PLN.';
+        message.textContent = t('SETTINGS_ROUTES.CURRENCY_BY_COUNTRY_DESCRIPTION');
 
         const countryOption = document.createElement('option');
         countryOption.value = 'country';
-        countryOption.textContent = 'Według kraju';
+        countryOption.textContent = t('SETTINGS_ROUTES.CURRENCY_BY_COUNTRY');
         select.append(countryOption);
 
         (await loadFuelCostCurrencies()).forEach((item) => {
@@ -512,28 +561,30 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             const settings = (await response.json()).ui || {};
 
+            addLanguageSetting(applicationGroup, settings.language);
+
             addBooleanSetting(
                 applicationGroup,
-                'Przenieś do sieci',
+                t('SETTINGS_APPLICATION.MOVE_TO_NETWORK'),
                 'move_to_network',
                 settings.move_to_network === true
             );
             addBooleanSetting(
                 applicationGroup,
-                'Po uruchomieniu otwórz Stronę Startową',
+                t('SETTINGS_APPLICATION.OPEN_HOME'),
                 'open_home_on_startup',
                 settings.open_home_on_startup === true
             );
 
             addBooleanSetting(
                 publicTransportGroup,
-                'Aktualizacja pojazdów w tle',
+                t('SETTINGS_PUBLIC_TRANSPORT.BACKGROUND_VEHICLE_UPDATES'),
                 'public_transport_vehicle_background_updates',
                 settings.public_transport_vehicle_background_updates === true
             );
             addPercentSliderSetting(
                 publicTransportGroup,
-                'Częstotliwość aktualizacji',
+                t('SETTINGS_PUBLIC_TRANSPORT.UPDATE_FREQUENCY'),
                 'public_transport_vehicle_update_interval',
                 settings.public_transport_vehicle_update_interval || 15,
                 {
@@ -556,7 +607,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             const mainRouteFuel = addBooleanSetting(
                 routeFuelGroup,
-                'Separatory tankowania',
+                t('SETTINGS_ROUTES.REFUELLING_MARKERS'),
                 'route_fuel_separators_enabled',
                 settings.route_fuel_separators_enabled !== false,
                 { onChange: setRouteFuelDependentsEnabled }
@@ -564,28 +615,28 @@ document.addEventListener('travel-manager:views-ready', () => {
             routeFuelMainInput = mainRouteFuel.input;
             routeFuelDependentRows.push(addBooleanSetting(
                 routeFuelGroup,
-                'Jazda ekonomiczna',
+                t('SETTINGS_ROUTES.ECONOMICAL_DRIVING'),
                 'route_fuel_separator_economic_enabled',
                 settings.route_fuel_separator_economic_enabled !== false,
                 { disabled: !routeFuelMainInput.checked }
             ));
             routeFuelDependentRows.push(addBooleanSetting(
                 routeFuelGroup,
-                'Jazda średnia',
+                t('SETTINGS_ROUTES.AVERAGE_DRIVING'),
                 'route_fuel_separator_average_enabled',
                 settings.route_fuel_separator_average_enabled !== false,
                 { disabled: !routeFuelMainInput.checked }
             ));
             routeFuelDependentRows.push(addBooleanSetting(
                 routeFuelGroup,
-                'Jazda dynamiczna',
+                t('SETTINGS_ROUTES.DYNAMIC_DRIVING'),
                 'route_fuel_separator_dynamic_enabled',
                 settings.route_fuel_separator_dynamic_enabled !== false,
                 { disabled: !routeFuelMainInput.checked }
             ));
             routeFuelDependentRows.push(addPercentSliderSetting(
                 routeFuelGroup,
-                'Próg tankowania',
+                t('SETTINGS_ROUTES.REFUELLING_THRESHOLD'),
                 'route_fuel_separator_threshold_percent',
                 settings.route_fuel_separator_threshold_percent ?? 20,
                 { disabled: !routeFuelMainInput.checked }
@@ -593,12 +644,16 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             addBooleanSetting(
                 routeTollsGroup,
-                'Uwzględniaj płatne drogi i autostrady',
+                t('SETTINGS_ROUTES.ALLOW_TOLL_ROADS'),
                 'route_toll_roads_enabled',
                 settings.route_toll_roads_enabled !== false
             );
         } catch (error) {
-            addValue(travelCostsGroup, 'Stan', 'Nie udało się wczytać ustawień.');
+            addValue(
+                travelCostsGroup,
+                t('COMMON.STATUS'),
+                t('SETTINGS_VIEW.LOAD_FAILED')
+            );
         }
     };
 
@@ -671,14 +726,24 @@ document.addEventListener('travel-manager:views-ready', () => {
             const data = await response.json().catch(() => ({}));
 
             if (!response.ok || data.status !== 'imported') {
-                throw new Error(data.message || 'Nie udało się zaimportować danych.');
+                throw new Error(data.message || t('SETTINGS_BACKUP.IMPORT_FAILED'));
             }
 
             await refreshAfterImport(dataType);
             await loadSettings();
-            showPopup(`Zaimportowano dane: ${data.label || dataTransferLabel(dataType)}.`, 'success', 'Import zakończony');
+            showPopup(
+                t('SETTINGS_BACKUP.IMPORTED_DATA', {
+                    type: data.label || dataTransferLabel(dataType)
+                }),
+                'success',
+                t('SETTINGS_BACKUP.IMPORT_COMPLETE')
+            );
         } catch (error) {
-            showPopup(error?.message || 'Nie udało się zaimportować danych.', 'error', 'Błąd importu');
+            showPopup(
+                error?.message || t('SETTINGS_BACKUP.IMPORT_FAILED'),
+                'error',
+                t('SETTINGS_BACKUP.IMPORT_ERROR')
+            );
         }
     });
     document.addEventListener('click', (event) => {
@@ -704,7 +769,12 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             section?.classList.toggle('settings-view__section--collapsed', !nextExpanded);
             button.setAttribute('aria-expanded', String(nextExpanded));
-            button.setAttribute('aria-label', nextExpanded ? 'Zwiń grupę' : 'Rozwiń grupę');
+            button.setAttribute(
+                'aria-label',
+                nextExpanded
+                    ? t('SETTINGS_VIEW.COLLAPSE_GROUP')
+                    : t('SETTINGS_VIEW.EXPAND_GROUP')
+            );
             button.innerHTML = `<i data-lucide="${iconName}" aria-hidden="true"></i>`;
             window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
         });

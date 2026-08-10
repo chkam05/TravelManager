@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     let favourites = [];
     let tags = [];
     let loaded = false;
@@ -56,7 +57,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
 
         if (!response.ok) {
-            throw new Error('Nie udało się wczytać ulubionych miejsc.');
+            throw new Error(t('FAVOURITES_VIEW.LOAD_FAILED'));
         }
 
         favourites = (await response.json()).favourites || [];
@@ -78,7 +79,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
 
         if (!response.ok) {
-            throw new Error('Nie udało się wczytać tagów ulubionych.');
+            throw new Error(t('FAVOURITE_TAGS_VIEW.LOAD_FAILED'));
         }
 
         tags = (await response.json()).tags || [];
@@ -118,7 +119,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data?.message || 'Nie udało się zapisać ulubionego miejsca.');
+            throw new Error(data?.message || t('FAVOURITES_VIEW.SAVE_FAILED'));
         }
 
         const saved = data.favourite;
@@ -148,7 +149,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data?.message || 'Nie udało się zapisać tagu.');
+            throw new Error(data?.message || t('FAVOURITE_TAGS_VIEW.SAVE_FAILED'));
         }
 
         const saved = data.tag;
@@ -167,7 +168,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
 
         if (!response.ok) {
-            throw new Error('Nie udało się usunąć ulubionego miejsca.');
+            throw new Error(t('FAVOURITES_VIEW.DELETE_FAILED'));
         }
 
         favourites = favourites.filter((item) => item.id !== favouriteId);
@@ -181,7 +182,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
 
         if (!response.ok) {
-            throw new Error('Nie udało się usunąć tagu.');
+            throw new Error(t('FAVOURITE_TAGS_VIEW.DELETE_FAILED'));
         }
 
         tags = tags.filter((item) => item.id !== tagId);

@@ -1,17 +1,18 @@
 from typing import ClassVar, Dict
 
+from core.language_service import LanguageService
 from resources.public_transport.public_transport_type import PublicTransportType
 
 
 class PublicTransportTranslation:
-    """Stores Polish translations of public transport types."""
+    """Stores stable translation keys for public transport types."""
 
-    VALUES: ClassVar[Dict[PublicTransportType, str]] = {
-        PublicTransportType.BUS: 'Autobus',
-        PublicTransportType.TRAM: 'Tramwaj',
-        PublicTransportType.TROLLEY: 'Trolejbus',
-        PublicTransportType.METRO: 'Metro',
-        PublicTransportType.TRAIN: 'Pociąg'
+    NAME_KEYS: ClassVar[Dict[PublicTransportType, str]] = {
+        PublicTransportType.BUS: 'RES_PUBLIC_TRANSPORT_TYPE.BUS',
+        PublicTransportType.TRAM: 'RES_PUBLIC_TRANSPORT_TYPE.TRAM',
+        PublicTransportType.TROLLEY: 'RES_PUBLIC_TRANSPORT_TYPE.TROLLEYBUS',
+        PublicTransportType.METRO: 'RES_PUBLIC_TRANSPORT_TYPE.METRO',
+        PublicTransportType.TRAIN: 'RES_PUBLIC_TRANSPORT_TYPE.TRAIN'
     }
 
     def __new__(cls):
@@ -20,5 +21,5 @@ class PublicTransportTranslation:
 
     @classmethod
     def get(cls, transport_type: PublicTransportType) -> str:
-        """Returns the Polish label for a public transport type."""
-        return cls.VALUES[transport_type]
+        """Returns the localised label for a public transport type."""
+        return LanguageService.translate_current(cls.NAME_KEYS[transport_type])

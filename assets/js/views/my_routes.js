@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const view = document.querySelector('[data-app-view="my-routes"]');
     const form = document.querySelector('#my-routes-search');
     const searchInput = document.querySelector('#my-routes-search-input');
@@ -20,7 +22,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         menuRouteId: null
     };
 
-    const routeName = (route) => route.name || 'Trasa';
+    const routeName = (route) => route.name || t('MY_ROUTES_VIEW.ROUTE');
 
     const formatDistance = (meters) => {
         const value = Number(meters);
@@ -29,7 +31,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             return '-';
         }
 
-        return value >= 1000 ? `${(value / 1000).toFixed(1)} km` : `${Math.round(value)} m`;
+        return value >= 1000
+            ? t('MY_ROUTES_VIEW.DISTANCE_KILOMETRES', { value: (value / 1000).toFixed(1) })
+            : t('MY_ROUTES_VIEW.DISTANCE_METRES', { value: Math.round(value) });
     };
 
     const formatDuration = (seconds) => {
@@ -43,7 +47,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
 
-        return hours ? `${hours} godz. ${minutes} min` : `${minutes} min`;
+        return hours
+            ? t('MY_ROUTES_VIEW.DURATION_HOURS_MINUTES', { hours, minutes })
+            : t('MY_ROUTES_VIEW.DURATION_MINUTES', { minutes });
     };
 
     const setSortOpen = (open) => {
@@ -63,15 +69,17 @@ document.addEventListener('travel-manager:views-ready', () => {
             : [...state.routes];
 
         return items.sort((left, right) => {
-            const result = routeName(left).localeCompare(routeName(right), 'pl', { sensitivity: 'base' });
+            const result = routeName(left).localeCompare(routeName(right), locale, {
+                sensitivity: 'base'
+            });
             return state.sortDirection === 'asc' ? result : -result;
         });
     };
 
     const deleteRoute = async (route) => {
         const accepted = await window.travelManagerDialogs?.yesNo({
-            title: 'Usunąć trasę?',
-            description: `Trasa „${routeName(route)}” zostanie usunięta.`,
+            title: t('MY_ROUTES_VIEW.DELETE_TITLE'),
+            description: t('MY_ROUTES_VIEW.DELETE_DESCRIPTION', { name: routeName(route) }),
             icon: 'warning'
         });
 
@@ -138,10 +146,10 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         state.menuRouteId = routeId;
         menu.replaceChildren(
-            menuButton('Pokaż trasę', showRoute),
-            menuButton('Edytuj trasę', editRoute),
+            menuButton(t('MY_ROUTES_VIEW.SHOW_ROUTE'), showRoute),
+            menuButton(t('MY_ROUTES_VIEW.EDIT_ROUTE'), editRoute),
             menuSeparator(),
-            menuButton('Usuń trasę', deleteRoute, true)
+            menuButton(t('MY_ROUTES_VIEW.DELETE_ROUTE'), deleteRoute, true)
         );
         menu.setAttribute('aria-hidden', 'false');
 
@@ -165,7 +173,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!items.length) {
             const empty = document.createElement('p');
             empty.className = 'my-routes-view__empty';
-            empty.textContent = state.query ? 'Nie znaleziono tras.' : 'Brak zapisanych tras.';
+            empty.textContent = state.query
+                ? t('MY_ROUTES_VIEW.NO_SEARCH_RESULTS')
+                : t('MY_ROUTES_VIEW.NO_SAVED_ROUTES');
             list.append(empty);
             return;
         }
@@ -195,7 +205,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             more.className = 'my-routes-view__more';
             more.type = 'button';
             more.innerHTML = '<i data-lucide="ellipsis" aria-hidden="true"></i>';
-            more.setAttribute('aria-label', `Opcje trasy ${routeName(route)}`);
+            more.setAttribute('aria-label', t('MY_ROUTES_VIEW.ROUTE_OPTIONS', {
+                name: routeName(route)
+            }));
             more.addEventListener('click', (event) => {
                 event.stopPropagation();
                 showMenu(route.id, more);

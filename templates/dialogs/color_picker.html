@@ -1,12 +1,12 @@
 <form class="color-picker-dialog" id="color-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="color-picker-title" aria-hidden="true">
     <header class="color-picker-dialog__header">
-        <h2 id="color-picker-title">Wybierz kolor</h2>
-        <button class="color-picker-dialog__close" data-color-picker-cancel type="button" aria-label="Zamknij"></button>
+        <h2 id="color-picker-title">{{ t('DIALOG_COLOR_PICKER.TITLE') }}</h2>
+        <button class="color-picker-dialog__close" data-color-picker-cancel type="button" aria-label="{{ t('COMMON.CLOSE') }}"></button>
     </header>
     <div class="color-picker-dialog__content">
-        <canvas class="color-picker-dialog__canvas" width="360" height="240" data-color-picker-canvas aria-label="Wybierz nasycenie i jasność koloru"></canvas>
+        <canvas class="color-picker-dialog__canvas" width="360" height="240" data-color-picker-canvas aria-label="{{ t('DIALOG_COLOR_PICKER.SATURATION_AND_BRIGHTNESS') }}"></canvas>
         <label class="color-picker-dialog__hue">
-            <span>Barwa</span>
+            <span>{{ t('DIALOG_COLOR_PICKER.HUE') }}</span>
             <input type="range" min="0" max="359" value="207" data-color-picker-hue>
         </label>
         <div class="color-picker-dialog__preview" data-color-picker-preview></div>
@@ -21,7 +21,7 @@
         </div>
     </div>
     <footer class="color-picker-dialog__footer">
-        <button class="component-button" data-color-picker-cancel type="button">Anuluj</button>
-        <button class="component-button component-button--primary" type="submit">Dodaj kolor</button>
+        <button class="component-button" data-color-picker-cancel type="button">{{ t('COMMON.CANCEL') }}</button>
+        <button class="component-button component-button--primary" type="submit">{{ t('DIALOG_COLOR_PICKER.ADD_COLOR') }}</button>
     </footer>
 </form>

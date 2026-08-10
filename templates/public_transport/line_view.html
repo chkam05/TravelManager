@@ -26,7 +26,7 @@
                             <button type="button" data-public-transport-action="line-stop" data-url="{{ stop.url }}">
                                 <span>
                                     <strong>{{ stop.name }}</strong>
-                                    {% if stop.is_variant %}<small>Przystanek wariantowy</small>{% endif %}
+                                    {% if stop.is_variant %}<small>{{ t('PUBLIC_TRANSPORT_STOPS.VARIANT_STOP') }}</small>{% endif %}
                                 </span>
                                 <span class="public-transport-line-view__platform">{{ stop.platform }}</span>
                                 <i data-lucide="chevron-right" aria-hidden="true"></i>
@@ -35,9 +35,9 @@
                     {% endfor %}
                 </ol>
                 <aside class="public-transport-line-view__cities">
-                    <h3>Miasta</h3>
+                    <h3>{{ t('PUBLIC_TRANSPORT_STOPS.CITIES') }}</h3>
                     {% for city in direction.cities %}
-                        <span style="--public-transport-city-color: {{ city.color }}">{{ city.name }}</span>
+                        <span style="--public-transport-city-color: {{ city.color }}">{{ city_name(city.name) }}</span>
                     {% endfor %}
                 </aside>
             </section>
@@ -46,23 +46,23 @@
 
     <div class="public-transport-detail__sidebar-shell" data-public-transport-detail-sidebar>
     <div class="public-transport-detail__sidebar-grabber" data-public-transport-detail-sidebar-grabber aria-hidden="true"></div>
-    <aside class="public-transport-detail__sidebar" aria-label="Opcje linii">
-        <h3>Opcje linii</h3>
+    <aside class="public-transport-detail__sidebar" aria-label="{{ t('PUBLIC_TRANSPORT_LINES.LINE_OPTIONS') }}">
+        <h3>{{ t('PUBLIC_TRANSPORT_LINES.LINE_OPTIONS') }}</h3>
         <label class="public-transport-header__field">
-            <span>Kierunek</span>
+            <span>{{ t('PUBLIC_TRANSPORT_VIEW.DIRECTION') }}</span>
             <select data-public-transport-direction-select></select>
         </label>
         <label class="public-transport-header__field">
-            <span>Data</span>
+            <span>{{ t('COMMON.DATE') }}</span>
             <select data-public-transport-date></select>
         </label>
         <button class="public-transport-header__button" type="button" data-public-transport-route hidden>
             <i data-lucide="map" aria-hidden="true"></i>
-            <span>Pokaż trasę{% if capabilities.approximate_route_map | default(false) %}*{% endif %}</span>
+            <span>{{ t('PUBLIC_TRANSPORT_LINES.SHOW_ROUTE') }}{% if capabilities.approximate_route_map | default(false) %}*{% endif %}</span>
         </button>
         <button class="public-transport-header__button" type="button" data-public-transport-vehicles hidden>
             <i data-lucide="navigation" aria-hidden="true"></i>
-            <span>Pojazdy na żywo</span>
+            <span>{{ t('PUBLIC_TRANSPORT_VIEW.LIVE_VEHICLES') }}</span>
         </button>
     </aside>
     </div>

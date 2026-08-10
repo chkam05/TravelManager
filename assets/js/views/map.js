@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const mapElement = document.querySelector('#map');
     const searchForm = document.querySelector('.header__search');
     const searchInput = document.querySelector('.header__search-input');
@@ -155,9 +156,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         };
     };
 
-    const renderPlaceDetails = (element, fallbackTitle = 'Wybrane miejsce') => {
+    const renderPlaceDetails = (element, fallbackTitle = t('PANEL_PLACE_DETAILS.SELECTED_PLACE')) => {
         if (!element) {
-            placeDetailsPanel?.setStatus('Nie znaleziono miejsca.');
+            placeDetailsPanel?.setStatus(t('MAP_VIEW.PLACE_NOT_FOUND'));
             return;
         }
 
@@ -175,7 +176,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const baseLayers = {
         standard: {
-            label: 'Standard',
+            label: t('RES_MAP_LAYER.STANDARD'),
             layer: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -385,7 +386,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 title: favourite.name
             });
             marker.bindTooltip(
-                `<strong>${escapeHtml(favourite.name)}</strong><br><em>${escapeHtml(favourite.tag?.name || 'Ulubione')}</em>`,
+                `<strong>${escapeHtml(favourite.name)}</strong><br><em>${escapeHtml(favourite.tag?.name || t('FAVOURITE_TAGS_VIEW.DEFAULT_TAG'))}</em>`,
                 { direction: 'top' }
             );
             marker.on('click', () => {
@@ -421,7 +422,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         placeDetailsPanel?.render(favourite.name, favourite.place_data, favourite);
     };
 
-    const showElement = (element, title = 'Wybrane miejsce') => {
+    const showElement = (element, title = t('PANEL_PLACE_DETAILS.SELECTED_PLACE')) => {
         const coordinates = getCoordinates(element);
         const latitude = Number(coordinates.latitude);
         const longitude = Number(coordinates.longitude);
@@ -493,22 +494,26 @@ document.addEventListener('travel-manager:views-ready', () => {
             }));
 
         window.travelManagerSearchResultsPanel?.show({
-            title: subcategory?.label || category?.label || 'Ulubione',
-            subtitle: phrase ? `Szukane: ${keyword}` : 'Lokalne ulubione miejsca',
+            title: subcategory?.label || category?.label || t('FAVOURITES_VIEW.TITLE'),
+            subtitle: phrase
+                ? t('FAVOURITES_VIEW.SEARCH_QUERY', { query: keyword })
+                : t('FAVOURITES_VIEW.LOCAL_FAVOURITES'),
             results
         });
     };
 
     const advancedSearchTitle = (detail) => detail?.subcategory?.label
         || detail?.category?.label
-        || 'Wyniki wyszukiwania';
+        || t('PANEL_SEARCH_RESULTS.TITLE');
 
     const advancedSearchSubtitle = (detail) => {
         if (detail?.radiusKm > 0) {
-            return `Promień ${detail.radiusKm} km od centrum mapy`;
+            return t('ADVANCED_SEARCH.RADIUS_FROM_MAP_CENTRE', {
+                value: detail.radiusKm
+            });
         }
 
-        return 'W aktualnie widocznym obszarze mapy';
+        return t('ADVANCED_SEARCH.IN_VISIBLE_MAP_AREA');
     };
 
     const fetchJsonWithRetry = async (url, attempts = 2) => {
@@ -536,7 +541,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         const subcategory = detail?.subcategory || null;
         const title = advancedSearchTitle(detail);
         const subtitle = category?.id === 'favourites'
-            ? (detail?.keyword ? `Szukane: ${detail.keyword}` : 'Lokalne ulubione miejsca')
+            ? (detail?.keyword
+                ? t('FAVOURITES_VIEW.SEARCH_QUERY', { query: detail.keyword })
+                : t('FAVOURITES_VIEW.LOCAL_FAVOURITES'))
             : advancedSearchSubtitle(detail);
 
         window.travelManagerSearchResultsPanel?.showLoading({ title, subtitle });
@@ -551,8 +558,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
                 window.travelManagerSearchResultsPanel?.showError({
                     title,
-                    subtitle: 'Nie udało się wykonać wyszukiwania.',
-                    message: 'Nie udało się wczytać ulubionych miejsc.',
+                    subtitle: t('PANEL_SEARCH_RESULTS.SEARCH_FAILED'),
+                    message: t('FAVOURITES_VIEW.LOAD_FAILED'),
                     retry: () => searchAdvanced(searchDetail)
                 });
             }
@@ -621,8 +628,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             window.travelManagerSearchResultsPanel?.showError({
                 title,
-                subtitle: 'Nie udało się wykonać wyszukiwania.',
-                message: 'Nie udało się wykonać wyszukiwania.',
+                subtitle: t('PANEL_SEARCH_RESULTS.SEARCH_FAILED'),
+                message: t('PANEL_SEARCH_RESULTS.SEARCH_FAILED'),
                 retry: () => searchAdvanced(searchDetail)
             });
         }
@@ -828,7 +835,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     const createMapNoteMarker = (note) => {
-        const firstComment = note.comments?.[0]?.text || 'OpenStreetMap note';
+        const firstComment = note.comments?.[0]?.text || t('MAP_VIEW.OPENSTREETMAP_NOTE');
         const marker = L.circleMarker([note.lat, note.lon], {
             radius: 6,
             color: '#d97706',
@@ -984,7 +991,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         setSelectedMarker(lat, lon);
-        placeDetailsPanel?.setStatus('Ladowanie informacji o miejscu...');
+        placeDetailsPanel?.setStatus(t('MAP_VIEW.LOADING_PLACE_DETAILS'));
 
         try {
             const url = new URL('/api/map/reverse', window.location.origin);
@@ -993,13 +1000,13 @@ document.addEventListener('travel-manager:views-ready', () => {
             const data = await getJson(url);
             renderPlaceDetails(elementWithClickedCoordinates(getSelectedElement(data), lat, lon));
         } catch (error) {
-            placeDetailsPanel?.render('Wybrane miejsce', {
+            placeDetailsPanel?.render(t('PANEL_PLACE_DETAILS.SELECTED_PLACE'), {
                 coordinates: {
                     latitude: Number(lat).toFixed(6),
                     longitude: Number(lon).toFixed(6)
                 },
                 raw_data: {
-                    status: 'Nie udalo sie pobrac szczegolow miejsca.'
+                    status: t('MAP_VIEW.LOAD_PLACE_DETAILS_FAILED')
                 }
             });
         }
@@ -1007,7 +1014,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const showCurrentLocation = () => {
         if (!navigator.geolocation) {
-            placeDetailsPanel?.setStatus('Geolokalizacja nie jest dostępna w tym środowisku.');
+            placeDetailsPanel?.setStatus(t('MAP_VIEW.GEOLOCATION_UNAVAILABLE'));
             return;
         }
 
@@ -1029,10 +1036,12 @@ document.addEventListener('travel-manager:views-ready', () => {
                 }).addTo(map);
             }
 
-            locationMarker.bindPopup(`Moja lokalizacja${Number.isFinite(accuracy) ? `, dokładność około ${Math.round(accuracy)} m` : ''}`);
+            locationMarker.bindPopup(Number.isFinite(accuracy)
+                ? t('MAP_VIEW.MY_LOCATION_WITH_ACCURACY', { accuracy: Math.round(accuracy) })
+                : t('MAP_VIEW.MY_LOCATION'));
             map.setView([lat, lon], Math.max(map.getZoom(), 16));
         }, () => {
-            placeDetailsPanel?.setStatus('Nie udało się pobrać lokalizacji. Sprawdź uprawnienia lokalizacji w systemie.');
+            placeDetailsPanel?.setStatus(t('MAP_VIEW.GET_LOCATION_FAILED'));
         }, {
             enableHighAccuracy: true,
             maximumAge: 30000,
@@ -1113,8 +1122,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         searchInput.placeholder = event.detail?.selecting
-            ? 'Wyszukaj punkt trasy'
-            : 'Szukaj miejsca';
+            ? t('MAP_VIEW.SEARCH_ROUTE_POINT')
+            : t('MAP_VIEW.SEARCH_PLACE');
     });
 
     document.addEventListener('travel-manager:route-updated', (event) => {
@@ -1168,7 +1177,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             const selectingRoutePoint = Boolean(routeDetailsPanel?.isSelectingPoint());
 
             if (!selectingRoutePoint) {
-                placeDetailsPanel?.setStatus('Szukanie miejsca...');
+                placeDetailsPanel?.setStatus(t('MAP_VIEW.SEARCHING_PLACE'));
             }
 
             try {
@@ -1178,7 +1187,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 const result = getSelectedElement(data);
 
                 if (!result) {
-                    placeDetailsPanel?.setStatus('Nie znaleziono miejsca.');
+                    placeDetailsPanel?.setStatus(t('MAP_VIEW.PLACE_NOT_FOUND'));
                     return;
                 }
 
@@ -1206,7 +1215,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 renderPlaceDetails(result, query);
             } catch (error) {
                 if (!selectingRoutePoint) {
-                    placeDetailsPanel?.setStatus('Wyszukiwanie nie powiodlo sie.');
+                    placeDetailsPanel?.setStatus(t('MAP_VIEW.SEARCH_FAILED'));
                 }
             }
         });
@@ -1265,7 +1274,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         document.dispatchEvent(new CustomEvent('travel-manager:public-transport-vehicles-cleared'));
     };
 
-    const showPublicTransportStop = (latitude, longitude, title = 'Przystanek') => {
+    const showPublicTransportStop = (
+        latitude,
+        longitude,
+        title = t('PUBLIC_TRANSPORT_RIDE.STOP')
+    ) => {
         const lat = Number(latitude);
         const lon = Number(longitude);
         if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
@@ -1274,7 +1287,10 @@ document.addEventListener('travel-manager:views-ready', () => {
         map.setView([lat, lon], Math.max(map.getZoom(), 16));
     };
 
-    const showPublicTransportRoute = (points, title = 'Przebieg przejazdu') => {
+    const showPublicTransportRoute = (
+        points,
+        title = t('PUBLIC_TRANSPORT_RIDE.RIDE_ROUTE')
+    ) => {
         const coordinates = (Array.isArray(points) ? points : [])
             .map((point) => [
                 Number(point.latitude),
@@ -1306,7 +1322,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const showPublicTransportVehicles = (
         positions,
-        title = 'Pojazdy komunikacji miejskiej',
+        title = t('PANEL_PUBLIC_TRANSPORT.VEHICLES'),
         fitToVehicles = true
     ) => {
         const vehicles = (Array.isArray(positions) ? positions : [])

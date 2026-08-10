@@ -52,7 +52,7 @@ class HtmlNode:
 
     def own_text(self) -> str:
         """Returns normalized text stored directly in this node."""
-        return normalize_text(' '.join(
+        return HtmlDocument.normalize_text(' '.join(
             child for child in self.children if isinstance(child, str)
         ))
 
@@ -64,7 +64,7 @@ class HtmlNode:
                 parts.append(child)
             else:
                 parts.append(child.text())
-        return normalize_text(' '.join(parts))
+        return HtmlDocument.normalize_text(' '.join(parts))
 
 
 class HtmlDocumentParser(HTMLParser):
@@ -107,14 +107,18 @@ class HtmlDocumentParser(HTMLParser):
             self._stack[-1].children.append(data)
 
 
-def parse_html(html: str) -> HtmlNode:
-    """Parses an HTML string into a traversable document tree."""
-    parser = HtmlDocumentParser()
-    parser.feed(html)
-    parser.close()
-    return parser.root
+class HtmlDocument:
+    """Creates and normalizes dependency-free HTML document trees."""
 
+    @staticmethod
+    def parse(html: str) -> HtmlNode:
+        """Parses an HTML string into a traversable document tree."""
+        parser = HtmlDocumentParser()
+        parser.feed(html)
+        parser.close()
+        return parser.root
 
-def normalize_text(value: str) -> str:
-    """Collapses whitespace in source text."""
-    return re.sub(r'\s+', ' ', value or '').strip()
+    @staticmethod
+    def normalize_text(value: str) -> str:
+        """Collapses whitespace in source text."""
+        return re.sub(r'\s+', ' ', value or '').strip()

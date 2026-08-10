@@ -91,7 +91,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     hueInput.addEventListener('input', () => { hue = clamp(hueInput.value, 0, 359); syncFromHsv(); });
-    hexInput.addEventListener('input', () => { if (setHex(hexInput.value)) hexInput.setCustomValidity(''); else hexInput.setCustomValidity('Wpisz kolor w formacie #RRGGBB.'); });
+    hexInput.addEventListener('input', () => { if (setHex(hexInput.value)) hexInput.setCustomValidity(''); else hexInput.setCustomValidity(window.i18n.t('DIALOG_COLOR_PICKER.INVALID_HEX')); });
     [redInput, greenInput, blueInput].forEach((input) => input.addEventListener('input', syncFromRgb));
     canvas.addEventListener('pointerdown', (event) => { canvas.setPointerCapture(event.pointerId); pickCanvas(event); });
     canvas.addEventListener('pointermove', (event) => { if (canvas.hasPointerCapture(event.pointerId)) pickCanvas(event); });

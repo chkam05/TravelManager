@@ -1,7 +1,7 @@
 from typing import ClassVar
 from flask import render_template
 
-from config import APP_AUTHOR, APP_NAME, APP_VERSION
+from config import APP_NAME
 from core.api.base_controller import BaseController
 from resources.menu import Menu
 from storage.settings_storage import SettingsStorage
@@ -10,8 +10,7 @@ from storage.settings_storage import SettingsStorage
 class WindowController(BaseController):
     CONTROLLER_NAME: ClassVar[str] = 'WindowController'
 
-    def __init__(self, app_url: str, settings_storage: SettingsStorage):
-        self._app_url = app_url
+    def __init__(self, settings_storage: SettingsStorage):
         self._settings_storage = settings_storage
         super().__init__()
     
@@ -28,10 +27,8 @@ class WindowController(BaseController):
         return render_template(
             'index/index.html',
             app_name=APP_NAME,
-            app_version=APP_VERSION,
-            app_copyright=f'Copyright (c) {APP_AUTHOR}',
-            app_url=self._app_url,
             menu_sections=Menu.menu_sections(),
             initial_view=initial_view,
-            appearance=appearance
+            appearance=appearance,
+            language=settings.ui.language
         )

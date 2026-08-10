@@ -112,6 +112,26 @@ body {
     gap: 10px;
 }
 
+.header__language-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.header__language-select {
+    min-width: 118px;
+    height: 40px;
+    padding: 0 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+}
+
 .header__search {
     display: flex;
     flex: 0 1 auto;
@@ -417,6 +437,16 @@ body {
 .header__view-right {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+}
+
+.header__language-control {
+    width: 100%;
+    justify-content: space-between;
+}
+
+.header__language-select {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .header__menu-button {

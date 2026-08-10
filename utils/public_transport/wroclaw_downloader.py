@@ -15,6 +15,10 @@ from models.public_transport.public_transport_vehicle_position import (
     PublicTransportVehiclePosition
 )
 from resources.public_transport.public_transport_type import PublicTransportType
+from resources.public_transport.public_transport_messages import (
+    PublicTransportRuntimeError,
+    public_transport_message,
+)
 from utils.public_transport.warsaw_downloader import WarsawDownloader
 
 
@@ -52,7 +56,12 @@ class WroclawDownloader(WarsawDownloader):
         """Selects the newest official GTFS archive effective today."""
         payload = super()._download_bytes(
             cls._STATIC_INDEX,
-            'Lista archiwów GTFS: Wrocław'
+            public_transport_message(
+                'DOWNLOAD_STATUS.GTFS_ARCHIVE_LIST',
+                provider=public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.WROCLAW_NAME'
+                )
+            )
         )
         html = payload.decode('utf-8', errors='replace')
         candidates: list[tuple[date, str]] = []
@@ -68,7 +77,12 @@ class WroclawDownloader(WarsawDownloader):
                 continue
             candidates.append((effective_date, urljoin(cls.BASE_URL, href)))
         if not candidates:
-            raise RuntimeError('Nie udało się ustalić aktualnego pliku GTFS Wrocławia.')
+            raise PublicTransportRuntimeError(
+                'PUBLIC_TRANSPORT_ERROR.CURRENT_GTFS_FILE_UNAVAILABLE',
+                provider=public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.WROCLAW_NAME'
+                )
+            )
         today = date.today()
         active = [candidate for candidate in candidates if candidate[0] <= today]
         return max(active or candidates, key=lambda candidate: candidate[0])[1]
@@ -113,12 +127,20 @@ class WroclawDownloader(WarsawDownloader):
             )
         payload = cls._download_bytes(
             cls._VEHICLES_URL,
-            'Pojazdy na żywo: Wrocław'
+            public_transport_message(
+                'DOWNLOAD_STATUS.LIVE_VEHICLES',
+                feed='Wrocław'
+            )
         )
         try:
             document = json.loads(payload.decode('utf-8-sig'))
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
-            raise RuntimeError('Nieprawidłowa odpowiedź pojazdów Wrocławia.') from error
+            raise PublicTransportRuntimeError(
+                'PUBLIC_TRANSPORT_ERROR.INVALID_VEHICLE_RESPONSE',
+                provider=public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.WROCLAW_NAME'
+                )
+            ) from error
         rows = document.get('dane', []) if isinstance(document, dict) else []
         positions = cls._parse_vehicle_rows(
             rows,

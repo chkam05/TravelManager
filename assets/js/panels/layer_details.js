@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const panel = document.querySelector('#layer-details-panel');
     const closeButton = document.querySelector('[data-layer-details-panel-close]');
     const grabber = document.querySelector('[data-layer-details-panel-grabber]');
@@ -53,7 +54,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!tags.length) {
             const empty = document.createElement('p');
             empty.className = 'layer-details-panel__empty';
-            empty.textContent = 'Brak zdefiniowanych tagów.';
+            empty.textContent = t('PANEL_LAYER_DETAILS.NO_DEFINED_TAGS');
             favouriteTagsList.append(empty);
             return;
         }
@@ -77,7 +78,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             const subtitle = document.createElement('small');
 
             title.textContent = `${tag.icon || '⭐'} ${tag.name}`;
-            subtitle.textContent = 'Tag ulubionych miejsc';
+            subtitle.textContent = t('PANEL_LAYER_DETAILS.FAVOURITE_PLACE_TAG');
             text.append(title, subtitle);
             label.append(input, text);
             favouriteTagsList.append(label);

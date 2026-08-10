@@ -12,8 +12,9 @@ class FavouriteTag(BaseDataModel):
 
     # Default values
     DEFAULT_TAG_ID: ClassVar[str] = 'default'
-    DEFAULT_NAME: ClassVar[str] = 'Ulubione'
+    DEFAULT_NAME_KEY: ClassVar[str] = 'FAVOURITE_TAGS_VIEW.DEFAULT_TAG'
     DEFAULT_ICON: ClassVar[str] = '⭐'
+    LEGACY_DEFAULT_NAMES: ClassVar[tuple[str, ...]] = ('Ulubione',)
 
     # Field name declarations
     FIELD_ID: ClassVar[str] = 'id'
@@ -32,7 +33,7 @@ class FavouriteTag(BaseDataModel):
         """Returns the default favourite tag."""
         return cls(
             id=cls.DEFAULT_TAG_ID,
-            name=cls.DEFAULT_NAME,
+            name=cls.DEFAULT_NAME_KEY,
             icon=cls.DEFAULT_ICON
         )
 
@@ -43,9 +44,16 @@ class FavouriteTag(BaseDataModel):
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> FavouriteTag:
         """Deserializes favourite tag data from a dictionary."""
+        tag_id = str(d.get(cls.FIELD_ID, ''))
+        name = str(d.get(cls.FIELD_NAME, ''))
+        if tag_id == cls.DEFAULT_TAG_ID and (
+            not name or name in cls.LEGACY_DEFAULT_NAMES
+        ):
+            name = cls.DEFAULT_NAME_KEY
+
         return cls(
-            id=str(d.get(cls.FIELD_ID, '')),
-            name=str(d.get(cls.FIELD_NAME, '')),
+            id=tag_id,
+            name=name,
             icon=str(d.get(cls.FIELD_ICON, cls.DEFAULT_ICON) or cls.DEFAULT_ICON)
         )
 

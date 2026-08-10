@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const panel = document.querySelector('#route-details-panel');
     const tabs = document.querySelectorAll('[data-route-tab]');
     const tabPanels = document.querySelectorAll('[data-route-tab-panel]');
@@ -219,7 +220,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             const data = await response.json();
 
             if (!response.ok || data.status !== 'ok') {
-                throw new Error(data.message || 'Nie udało się pobrać cen paliw.');
+                throw new Error(data.message || t('ROUTE_ERROR.LOAD_FUEL_PRICES_FAILED'));
             }
 
             state.fuelCostRows = data.rows || [];
@@ -233,11 +234,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     const isCarTransport = () => state.transportMode === 'car';
 
     const transportLabel = () => ({
-        foot: 'Pieszo',
-        bicycle: 'Rower',
-        car: 'Samochód',
-        public: 'Transport publiczny'
-    }[state.transportMode] || 'Samochód');
+        foot: t('PANEL_ROUTE_DETAILS.ON_FOOT'),
+        bicycle: t('PANEL_ROUTE_DETAILS.BICYCLE'),
+        car: t('PANEL_ROUTE_DETAILS.CAR'),
+        public: t('PANEL_ROUTE_DETAILS.PUBLIC_TRANSPORT')
+    }[state.transportMode] || t('PANEL_ROUTE_DETAILS.CAR'));
 
     const updateTransportControls = () => {
         transportButtons.forEach((button) => {
@@ -269,10 +270,10 @@ document.addEventListener('travel-manager:views-ready', () => {
         state.selectionMode = mode;
         status.classList.toggle('route-details-panel__status--selecting', selecting);
         status.textContent = selecting
-            ? 'Kliknij punkt na mapie albo wyszukaj miejsce w polu u góry.'
+            ? t('PANEL_ROUTE_DETAILS.SELECT_POINT_INSTRUCTION')
             : state.points.length < 2
-                ? 'Trasa wymaga co najmniej dwóch punktów.'
-                : 'Przeciągnij punkty, aby zmienić ich kolejność.';
+                ? t('PANEL_ROUTE_DETAILS.MINIMUM_TWO_POINTS')
+                : t('PANEL_ROUTE_DETAILS.REORDER_POINTS_INSTRUCTION');
         addButton.disabled = selecting;
         reverseButton.disabled = selecting || state.points.length < 2;
 
@@ -288,7 +289,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             return '-';
         }
 
-        return value >= 1000 ? `${(value / 1000).toFixed(1)} km` : `${Math.round(value)} m`;
+        return value >= 1000
+            ? t('PANEL_ROUTE_DETAILS.DISTANCE_KILOMETRES', { value: (value / 1000).toFixed(1) })
+            : t('PANEL_ROUTE_DETAILS.DISTANCE_METRES', { value: Math.round(value) });
     };
 
     const formatDuration = (seconds) => {
@@ -302,10 +305,14 @@ document.addEventListener('travel-manager:views-ready', () => {
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
 
-        return hours ? `${hours} godz. ${minutes} min` : `${minutes} min`;
+        return hours
+            ? t('PANEL_ROUTE_DETAILS.DURATION_HOURS_MINUTES', { hours, minutes })
+            : t('PANEL_ROUTE_DETAILS.DURATION_MINUTES', { minutes });
     };
 
-    const formatFuel = (liters) => `${liters.toFixed(2)} l`;
+    const formatFuel = (liters) => t('PANEL_ROUTE_DETAILS.FUEL_LITRES', {
+        value: liters.toFixed(2)
+    });
 
     const fuelFieldForProfile = () => {
         const fuelType = String(state.activeCarProfile?.fuel_type || '').trim().toLowerCase();
@@ -408,7 +415,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     const formatMoney = (amount, currency = 'PLN') => (
-        new Intl.NumberFormat('pl-PL', {
+        new Intl.NumberFormat(window.i18n.locale.replace('_', '-'), {
             style: 'currency',
             currency,
             currencyDisplay: 'code',
@@ -469,7 +476,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const country = price && !price.isFallback && state.travelCostCurrency === 'country' ? ` (${price.country})` : '';
         const cost = component ? `, ${formatMoney(component.amount, component.currency)}${country}` : '';
 
-        return `${liters.toFixed(1)} l${cost}`;
+        return t('PANEL_ROUTE_DETAILS.FUEL_LITRES', { value: liters.toFixed(1) }) + cost;
     };
 
     const escapeHtml = (data) => {
@@ -478,7 +485,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         return element.innerHTML;
     };
 
-    const routeName = (route) => route?.name || 'Trasa';
+    const routeName = (route) => route?.name || t('PANEL_ROUTE_DETAILS.ROUTE');
 
     const clonePoint = (point) => ({
         id: point.id || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
@@ -491,13 +498,17 @@ document.addEventListener('travel-manager:views-ready', () => {
     const updateSavedControls = () => {
         const saved = Boolean(state.savedRoute?.id);
         saveButton.hidden = false;
-        saveButton.setAttribute('aria-label', saved ? 'Zapisz zmiany trasy' : 'Zapisz trasę');
-        saveButton.title = saved ? 'Zapisz zmiany' : 'Zapisz trasę';
+        saveButton.setAttribute('aria-label', saved
+            ? t('PANEL_ROUTE_DETAILS.SAVE_ROUTE_CHANGES')
+            : t('PANEL_ROUTE_DETAILS.SAVE_ROUTE'));
+        saveButton.title = saved
+            ? t('PANEL_ROUTE_DETAILS.SAVE_CHANGES')
+            : t('PANEL_ROUTE_DETAILS.SAVE_ROUTE');
         editNameButton.hidden = !saved;
         editNameButton.setAttribute('aria-hidden', String(!saved));
         titleIcon.hidden = !saved;
         titleIcon.textContent = state.savedRoute?.icon || '🚗';
-        titleText.textContent = saved ? routeName(state.savedRoute) : 'Trasa';
+        titleText.textContent = saved ? routeName(state.savedRoute) : t('PANEL_ROUTE_DETAILS.ROUTE');
         titleText.title = titleText.textContent;
     };
 
@@ -581,7 +592,11 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         state.initialFuelPercent = percent;
         fuelSlider.value = String(Math.round(percent));
-        fuelLabel.textContent = `${fuel.toFixed(1)} L. (${Math.round(percent)} %)${costText}`;
+        fuelLabel.textContent = t('PANEL_ROUTE_DETAILS.FUEL_LEVEL', {
+            fuel: fuel.toFixed(1),
+            percent: Math.round(percent),
+            cost: costText
+        });
         fuelSection.hidden = false;
         fuelSection.setAttribute('aria-hidden', 'false');
     }
@@ -602,22 +617,22 @@ document.addEventListener('travel-manager:views-ready', () => {
         return [
             {
                 type: 'economic',
-                title: 'Tankowanie: jazda ekonomiczna',
-                description: 'Próg tankowania przy minimalnym spalaniu.',
+                title: t('PANEL_ROUTE_DETAILS.REFUELLING_ECONOMICAL'),
+                description: t('PANEL_ROUTE_DETAILS.MINIMUM_CONSUMPTION_THRESHOLD'),
                 consumption: low,
                 enabled: state.fuelSeparators.economicEnabled
             },
             {
                 type: 'average',
-                title: 'Tankowanie: jazda średnia',
-                description: 'Próg tankowania przy średnim spalaniu.',
+                title: t('PANEL_ROUTE_DETAILS.REFUELLING_AVERAGE'),
+                description: t('PANEL_ROUTE_DETAILS.AVERAGE_CONSUMPTION_THRESHOLD'),
                 consumption: average,
                 enabled: state.fuelSeparators.averageEnabled
             },
             {
                 type: 'dynamic',
-                title: 'Tankowanie: jazda dynamiczna',
-                description: 'Próg tankowania przy maksymalnym spalaniu.',
+                title: t('PANEL_ROUTE_DETAILS.REFUELLING_DYNAMIC'),
+                description: t('PANEL_ROUTE_DETAILS.MAXIMUM_CONSUMPTION_THRESHOLD'),
                 consumption: high,
                 enabled: state.fuelSeparators.dynamicEnabled
             }
@@ -924,10 +939,25 @@ document.addEventListener('travel-manager:views-ready', () => {
                 const countryText = details.country && state.travelCostCurrency === 'country'
                     ? ` (${details.country})`
                     : '';
-                return ` Do pełna: ${details.liters.toFixed(1)} l, około ${formatMoney(details.displayCost, details.displayCurrency)}${countryText}.`;
+                return t('PANEL_ROUTE_DETAILS.REFUEL_TO_FULL_COST', {
+                    liters: details.liters.toFixed(1),
+                    cost: formatMoney(details.displayCost, details.displayCurrency),
+                    country: countryText
+                });
             })();
 
-            return `${separator.description} ${separator.sequence > 1 ? `Tankowanie ${separator.sequence}. ` : ''}Po około ${separator.distanceFromPoint.toFixed(1)} km od punktu zostaje ${separator.remainingFuel.toFixed(1)} l (${separator.remainingPercent.toFixed(0)}%), spalanie ${separator.consumption.toFixed(2)} l/100 km.${costText}`;
+            const sequence = separator.sequence > 1
+                ? t('PANEL_ROUTE_DETAILS.REFUELLING_SEQUENCE', { sequence: separator.sequence })
+                : '';
+            return t('PANEL_ROUTE_DETAILS.REFUELLING_MARKER_DESCRIPTION', {
+                description: separator.description,
+                sequence,
+                distance: separator.distanceFromPoint.toFixed(1),
+                fuel: separator.remainingFuel.toFixed(1),
+                percent: separator.remainingPercent.toFixed(0),
+                consumption: separator.consumption.toFixed(2),
+                cost: costText
+            });
         })()
     );
 
@@ -974,42 +1004,49 @@ document.addEventListener('travel-manager:views-ready', () => {
         const maneuver = step.maneuver || {};
         const type = maneuver.type || '';
         const modifier = maneuver.modifier || '';
-        const road = step.name ? ` w ${step.name}` : '';
+        const road = step.name
+            ? t('ROUTE_MANEUVER.ROAD_SUFFIX', { name: step.name })
+            : '';
 
         if (type === 'depart') {
-            return `Rusz${road || ''}`;
+            return t('ROUTE_MANEUVER.DEPART', { road });
         }
 
         if (type === 'arrive') {
-            return 'Dotrzyj do celu';
+            return t('ROUTE_MANEUVER.ARRIVE');
         }
 
         if (type === 'roundabout' || type === 'rotary') {
-            const exit = maneuver.exit ? ` i zjedź ${maneuver.exit}. zjazdem` : '';
-            return `Wjedź na rondo${exit}${road}`;
+            return maneuver.exit
+                ? t('ROUTE_MANEUVER.ROUNDABOUT_EXIT', { exit: maneuver.exit, road })
+                : t('ROUTE_MANEUVER.ROUNDABOUT', { road });
         }
 
         if (type === 'merge') {
-            return `Włącz się do ruchu${road}`;
+            return t('ROUTE_MANEUVER.MERGE', { road });
         }
 
         if (type === 'fork') {
-            return modifier.includes('left') ? `Trzymaj się lewej${road}` : `Trzymaj się prawej${road}`;
+            return modifier.includes('left')
+                ? t('ROUTE_MANEUVER.KEEP_LEFT', { road })
+                : t('ROUTE_MANEUVER.KEEP_RIGHT', { road });
         }
 
         if (modifier.includes('left')) {
-            return `Skręć w lewo${road}`;
+            return t('ROUTE_MANEUVER.TURN_LEFT', { road });
         }
 
         if (modifier.includes('right')) {
-            return `Skręć w prawo${road}`;
+            return t('ROUTE_MANEUVER.TURN_RIGHT', { road });
         }
 
         if (modifier === 'straight') {
-            return `Jedź prosto${road}`;
+            return t('ROUTE_MANEUVER.GO_STRAIGHT', { road });
         }
 
-        return index === 0 ? `Rusz${road}` : `Kontynuuj${road}`;
+        return index === 0
+            ? t('ROUTE_MANEUVER.DEPART', { road })
+            : t('ROUTE_MANEUVER.CONTINUE', { road });
     };
 
     const routeSteps = (route = state.currentRoute) => (
@@ -1027,7 +1064,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!route) {
             const empty = document.createElement('li');
             empty.className = 'route-details-panel__empty';
-            empty.textContent = 'Instrukcje pojawią się po obliczeniu trasy.';
+            empty.textContent = t('PANEL_ROUTE_DETAILS.INSTRUCTIONS_AFTER_CALCULATION');
             instructionsList.append(empty);
             return;
         }
@@ -1037,7 +1074,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!steps.length) {
             const empty = document.createElement('li');
             empty.className = 'route-details-panel__empty';
-            empty.textContent = 'Brak instrukcji nawigacji dla tej trasy.';
+            empty.textContent = t('PANEL_ROUTE_DETAILS.NO_NAVIGATION_INSTRUCTIONS');
             instructionsList.append(empty);
             return;
         }
@@ -1058,7 +1095,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             title.textContent = maneuverText(step, index);
 
             const hint = document.createElement('small');
-            hint.textContent = step.name ? step.name : 'Droga bez nazwy';
+            hint.textContent = step.name ? step.name : t('ROUTE_MANEUVER.UNNAMED_ROAD');
 
             const meta = document.createElement('span');
             meta.className = 'route-details-panel__instruction-meta';
@@ -1108,18 +1145,18 @@ document.addEventListener('travel-manager:views-ready', () => {
             && Number.isFinite(economicTripCost)
             && Number.isFinite(dynamicTripCost);
         const tripCostText = pendingRefuelCosts
-            ? 'Przeliczanie...'
+            ? t('PANEL_ROUTE_DETAILS.CALCULATING')
             : hasTripCost
                 ? rangeText(economicTripCost, dynamicTripCost, (value) => formatMoney(value, costCurrency))
                 : '-';
 
         return `
             <div class="route-details-panel__summary-grid">
-                <span>Dystans</span><strong>${formatDistance(route?.distance)}</strong>
-                <span>Czas</span><strong>${formatDuration(route?.duration)}</strong>
+                <span>${t('PANEL_ROUTE_DETAILS.DISTANCE')}</span><strong>${formatDistance(route?.distance)}</strong>
+                <span>${t('PANEL_ROUTE_DETAILS.TIME')}</span><strong>${formatDuration(route?.duration)}</strong>
                 ${isCarTransport() ? `
-                    <span>Zużycie paliwa</span><strong>${hasFuel ? rangeText(minFuel, maxFuel, formatFuel) : '-'}</strong>
-                    <span>Koszt podróży</span><strong>${tripCostText}</strong>
+                    <span>${t('PANEL_ROUTE_DETAILS.FUEL_CONSUMPTION')}</span><strong>${hasFuel ? rangeText(minFuel, maxFuel, formatFuel) : '-'}</strong>
+                    <span>${t('PANEL_ROUTE_DETAILS.TRIP_COST')}</span><strong>${tripCostText}</strong>
                 ` : ''}
             </div>
         `;
@@ -1161,15 +1198,15 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (state.points.length < 2) {
             state.currentRoute = null;
-            summary.textContent = 'Dodaj punkt początkowy.';
-            status.textContent = 'Trasa wymaga co najmniej dwóch punktów.';
+            summary.textContent = t('PANEL_ROUTE_DETAILS.ADD_STARTING_POINT');
+            status.textContent = t('PANEL_ROUTE_DETAILS.MINIMUM_TWO_POINTS');
             renderInstructions(null);
             dispatchRoute();
             return null;
         }
 
-        summary.textContent = 'Obliczanie trasy...';
-        status.textContent = 'Obliczanie trasy...';
+        summary.textContent = t('PANEL_ROUTE_DETAILS.CALCULATING_ROUTE');
+        status.textContent = t('PANEL_ROUTE_DETAILS.CALCULATING_ROUTE');
         renderInstructions(null);
 
         try {
@@ -1192,7 +1229,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             }
 
             if (!response.ok || data?.status !== 'ok') {
-                throw new Error(data?.message || 'Nie znaleziono trasy.');
+                throw new Error(data?.message || t('ROUTE_ERROR.ROUTE_NOT_FOUND'));
             }
 
             const route = data.route;
@@ -1201,8 +1238,8 @@ document.addEventListener('travel-manager:views-ready', () => {
             summary.innerHTML = routeSummaryHtml(route);
             status.textContent = route.toll_exclusion_warning
                 || (route.toll_exclusion_applied
-                    ? 'Trasa została obliczona z omijaniem płatnych dróg.'
-                    : 'Przeciągnij punkty, aby zmienić ich kolejność.');
+                    ? t('PANEL_ROUTE_DETAILS.TOLL_ROADS_AVOIDED')
+                    : t('PANEL_ROUTE_DETAILS.REORDER_POINTS_INSTRUCTION'));
             renderInstructions(route);
             renderPoints();
             refreshFuelSeparatorDetails(route);
@@ -1213,7 +1250,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 return null;
             }
 
-            summary.textContent = error.message || 'Nie udało się obliczyć trasy.';
+            summary.textContent = error.message || t('ROUTE_ERROR.CALCULATE_ROUTE_FAILED');
             status.textContent = summary.textContent;
             state.currentRoute = null;
             renderInstructions(null);
@@ -1245,14 +1282,14 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const saveNewRoute = async () => {
         if (state.points.length < 2) {
-            status.textContent = 'Dodaj co najmniej dwa punkty przed zapisem trasy.';
+            status.textContent = t('PANEL_ROUTE_DETAILS.ADD_TWO_POINTS_BEFORE_SAVE');
             return;
         }
 
         const route = await ensureCurrentRoute();
 
         if (!route) {
-            status.textContent = 'Najpierw musi udać się obliczyć trasę.';
+            status.textContent = t('PANEL_ROUTE_DETAILS.CALCULATE_BEFORE_SAVE');
             return;
         }
 
@@ -1279,14 +1316,14 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         if (state.points.length < 2) {
-            status.textContent = 'Zapisana trasa wymaga co najmniej dwóch punktów.';
+            status.textContent = t('PANEL_ROUTE_DETAILS.SAVED_ROUTE_REQUIRES_TWO_POINTS');
             return;
         }
 
         const route = await ensureCurrentRoute();
 
         if (!route) {
-            status.textContent = 'Najpierw musi udać się obliczyć trasę.';
+            status.textContent = t('PANEL_ROUTE_DETAILS.CALCULATE_BEFORE_SAVE');
             return;
         }
 
@@ -1316,8 +1353,10 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (result?.action === 'delete') {
             const accepted = await window.travelManagerDialogs?.yesNo({
-                title: 'Usunąć trasę?',
-                description: `Trasa „${routeName(state.savedRoute)}” zostanie usunięta.`,
+                title: t('MY_ROUTES_VIEW.DELETE_TITLE'),
+                description: t('MY_ROUTES_VIEW.DELETE_DESCRIPTION', {
+                    name: routeName(state.savedRoute)
+                }),
                 icon: 'warning'
             });
 
@@ -1426,19 +1465,19 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         state.menuPointId = pointId;
         menu.replaceChildren(
-            menuAction('Przesuń na górę', (id) => movePoint(id, 0)),
-            menuAction('Przesuń na dół', (id) => movePoint(id, state.points.length)),
+            menuAction(t('PANEL_ROUTE_DETAILS.MOVE_TO_TOP'), (id) => movePoint(id, 0)),
+            menuAction(t('PANEL_ROUTE_DETAILS.MOVE_TO_BOTTOM'), (id) => movePoint(id, state.points.length)),
             separator(),
-            menuAction('Przesuń wyżej', (id) => {
+            menuAction(t('PANEL_ROUTE_DETAILS.MOVE_UP'), (id) => {
                 const index = state.points.findIndex((point) => point.id === id);
                 movePoint(id, index - 1);
             }),
-            menuAction('Przesuń niżej', (id) => {
+            menuAction(t('PANEL_ROUTE_DETAILS.MOVE_DOWN'), (id) => {
                 const index = state.points.findIndex((point) => point.id === id);
                 movePoint(id, index + 1);
             }),
             separator(),
-            menuAction('Usuń', removePoint, true)
+            menuAction(t('COMMON.DELETE'), removePoint, true)
         );
 
         menu.classList.add('route-details-panel__menu--open');
@@ -1478,7 +1517,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             const drag = document.createElement('button');
             drag.className = 'route-details-panel__drag';
             drag.type = 'button';
-            drag.setAttribute('aria-label', `Przenieś punkt ${index + 1}`);
+            drag.setAttribute('aria-label', t('PANEL_ROUTE_DETAILS.MOVE_POINT', {
+                number: index + 1
+            }));
             drag.innerHTML = '<i data-lucide="grip-vertical" aria-hidden="true"></i>';
 
             const number = document.createElement('span');
@@ -1494,7 +1535,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             const more = document.createElement('button');
             more.className = 'route-details-panel__more';
             more.type = 'button';
-            more.setAttribute('aria-label', `Opcje punktu ${point.title}`);
+            more.setAttribute('aria-label', t('PANEL_ROUTE_DETAILS.POINT_OPTIONS', {
+                name: point.title
+            }));
             more.innerHTML = '<i data-lucide="ellipsis" aria-hidden="true"></i>';
             more.addEventListener('click', (event) => {
                 event.stopPropagation();
@@ -1570,7 +1613,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const point = pointFromElement(title, element);
 
         if (!point) {
-            status.textContent = 'Wybrane miejsce nie ma prawidłowych współrzędnych.';
+            status.textContent = t('ROUTE_ERROR.INVALID_SELECTED_COORDINATES');
             return true;
         }
 
@@ -1638,7 +1681,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         updateInitialFuelControls();
         renderPoints();
         renderInstructions(null);
-        summary.textContent = 'Dodaj kolejny punkt.';
+        summary.textContent = t('PANEL_ROUTE_DETAILS.ADD_NEXT_POINT');
         dispatchRoute();
         dispatchSession();
         open();
@@ -1654,7 +1697,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         updateInitialFuelControls();
         renderPoints();
         renderInstructions(null);
-        summary.textContent = 'Dodaj punkt początkowy.';
+        summary.textContent = t('PANEL_ROUTE_DETAILS.ADD_STARTING_POINT');
         dispatchRoute();
         dispatchSession();
     };
@@ -1688,8 +1731,8 @@ document.addEventListener('travel-manager:views-ready', () => {
     const startNewRoute = async () => {
         if (panel.classList.contains('route-details-panel--open')) {
             const accepted = await window.travelManagerDialogs?.yesNo({
-                title: 'Utworzyć nową trasę?',
-                description: 'Obecna trasa zostanie usunięta. Tej operacji nie można cofnąć.',
+                title: t('PANEL_ROUTE_DETAILS.NEW_ROUTE_TITLE'),
+                description: t('PANEL_ROUTE_DETAILS.NEW_ROUTE_DESCRIPTION'),
                 icon: 'warning'
             });
 
@@ -1709,8 +1752,8 @@ document.addEventListener('travel-manager:views-ready', () => {
     const close = async ({ confirm = true } = {}) => {
         if (confirm && state.points.length && !isSavedRouteUnchanged()) {
             const accepted = await window.travelManagerDialogs?.yesNo({
-                title: 'Zamknąć trasę?',
-                description: 'Wszystkie wybrane punkty i obliczona trasa zostaną usunięte.',
+                title: t('PANEL_ROUTE_DETAILS.CLOSE_ROUTE_TITLE'),
+                description: t('PANEL_ROUTE_DETAILS.CLOSE_ROUTE_DESCRIPTION'),
                 icon: 'warning'
             });
 

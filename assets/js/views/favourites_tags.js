@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const view = document.querySelector('[data-app-view="favourites-tags"]');
     const form = document.querySelector('#favourites-tags-search');
     const searchInput = document.querySelector('#favourites-tags-search-input');
@@ -32,7 +34,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             : [...state.tags];
 
         return items.sort((left, right) => {
-            const result = left.name.localeCompare(right.name, 'pl', { sensitivity: 'base' });
+            const result = left.name.localeCompare(right.name, locale, { sensitivity: 'base' });
             return state.sortDirection === 'asc' ? result : -result;
         });
     };
@@ -57,8 +59,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const removeTag = async (tag) => {
         const accepted = await window.travelManagerDialogs?.yesNo({
-            title: 'Usunąć tag?',
-            description: `Tag „${tag.name}” zostanie usunięty, a używające go miejsca wrócą do domyślnego tagu.`,
+            title: t('FAVOURITE_TAGS_VIEW.DELETE_TITLE'),
+            description: t('FAVOURITE_TAGS_VIEW.DELETE_DESCRIPTION', { name: tag.name }),
             icon: 'warning'
         });
 
@@ -83,7 +85,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!items.length) {
             const empty = document.createElement('p');
             empty.className = 'favourites-tags-view__empty';
-            empty.textContent = state.query ? 'Nie znaleziono tagów.' : 'Brak tagów.';
+            empty.textContent = state.query
+                ? t('FAVOURITE_TAGS_VIEW.NO_SEARCH_RESULTS')
+                : t('FAVOURITE_TAGS_VIEW.NO_TAGS');
             list.append(empty);
             return;
         }
@@ -104,11 +108,11 @@ document.addEventListener('travel-manager:views-ready', () => {
                 item.append(
                     icon,
                     name,
-                    createButton('Edytuj', 'pencil', () => editTag(tag))
+                    createButton(t('COMMON.EDIT'), 'pencil', () => editTag(tag))
                 );
 
                 if (tag.id !== 'default') {
-                    item.append(createButton('Usuń', 'trash-2', () => removeTag(tag), true));
+                    item.append(createButton(t('COMMON.DELETE'), 'trash-2', () => removeTag(tag), true));
                 }
 
                 list.append(item);

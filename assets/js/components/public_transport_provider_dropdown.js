@@ -51,8 +51,8 @@
                 badge.append(icon);
                 wrapper.append(badge);
             };
-            if (item.route) add('route', 'Trasa na mapie');
-            if (item.vehicles) add('map-pin', 'Pojazdy na mapie');
+            if (item.route) add('route', window.i18n.t('COMPONENT_PROVIDER_DROPDOWN.ROUTE_ON_MAP'));
+            if (item.vehicles) add('map-pin', window.i18n.t('COMPONENT_PROVIDER_DROPDOWN.VEHICLES_ON_MAP'));
             return wrapper;
         };
 

@@ -1,5 +1,8 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const panel = document.querySelector('#public-transport-vehicle-panel');
+    const iconContainer = panel?.querySelector('[data-vehicle-panel-icon]');
     const line = panel?.querySelector('[data-vehicle-panel-line]');
     const closeButton = panel?.querySelector('[data-vehicle-panel-close]');
     const trip = panel?.querySelector('[data-vehicle-panel-trip]');
@@ -16,7 +19,16 @@ document.addEventListener('travel-manager:views-ready', () => {
         openClass
     })).filter((item) => item.element);
     let selectedKey = '';
-    if (!panel || !line || !trip || !closeButton) return;
+    if (!panel || !iconContainer || !line || !trip || !closeButton) return;
+
+    const vehicleIcons = Object.freeze({
+        bus: 'bus-front',
+        tram: 'tram-front',
+        trolley: 'bus-front',
+        trolleybus: 'bus-front',
+        metro: 'train-front',
+        train: 'train-front'
+    });
 
     const updateAvailableWidth = () => {
         const leftEdges = sidePanels
@@ -62,13 +74,30 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (field !== 'recorded_at') return String(vehicle?.[field] || '').trim();
         if (!vehicle?.recorded_at) return '';
         const date = new Date(vehicle.recorded_at);
-        return Number.isNaN(date.getTime()) ? '' : date.toLocaleTimeString('pl-PL');
+        return Number.isNaN(date.getTime()) ? '' : date.toLocaleTimeString(locale);
+    };
+    const updateIcon = (vehicle) => {
+        const type = String(vehicle?.type || 'bus').trim().toLocaleLowerCase('en-US');
+        const icon = document.createElement('i');
+        icon.dataset.lucide = vehicleIcons[type] || vehicleIcons.bus;
+        iconContainer.dataset.vehicleType = type;
+        iconContainer.replaceChildren(icon);
+        window.lucide?.createIcons({
+            attrs: {
+                'stroke-width': 1.7
+            }
+        });
     };
     const render = (vehicle) => {
         if (!vehicle) return;
         selectedKey = vehicleKey(vehicle);
-        line.textContent = vehicle.line ? `Linia ${vehicle.line}` : 'Pojazd';
-        trip.textContent = vehicle.trip_id ? `ID kursu: ${vehicle.trip_id}` : '';
+        updateIcon(vehicle);
+        line.textContent = vehicle.line
+            ? t('PUBLIC_TRANSPORT_LINES.LINE_NUMBER', { line: vehicle.line })
+            : t('PANEL_PUBLIC_TRANSPORT_VEHICLE.VEHICLE');
+        trip.textContent = vehicle.trip_id
+            ? t('PANEL_PUBLIC_TRANSPORT_VEHICLE.TRIP_ID', { id: vehicle.trip_id })
+            : '';
         trip.hidden = !vehicle.trip_id;
         panel.querySelectorAll('[data-vehicle-panel-field]').forEach((field) => {
             const value = fieldValue(vehicle, field.dataset.vehiclePanelField);

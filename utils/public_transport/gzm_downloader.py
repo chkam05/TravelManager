@@ -31,13 +31,17 @@ from models.public_transport.public_transport_stop_all import PublicTransportSto
 from models.public_transport.public_transport_stop_platform import PublicTransportStopPlatform
 from models.public_transport.public_transport_vehicle_position import PublicTransportVehiclePosition
 from resources.public_transport.public_transport_type import PublicTransportType
+from resources.public_transport.public_transport_messages import (
+    PublicTransportRuntimeError,
+    PublicTransportValueError,
+    public_transport_message,
+)
 from utils.data.map_data_downloader import MapDataDownloader
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
 from utils.public_transport.gzm_gtfs_repository import GzmGtfsRepository
 from utils.public_transport.html_document import (
+    HtmlDocument,
     HtmlNode as _HtmlNode,
-    normalize_text as _normalize_text,
-    parse_html
 )
 
 
@@ -89,7 +93,7 @@ class GzmDownloader:
     def _download_html(
         cls,
         url: str,
-        item: str = 'Dane przewoźnika',
+        item: object = public_transport_message('DOWNLOAD_STATUS.PROVIDER_DATA'),
         current: int = 1,
         total: int = 1
     ) -> str:
@@ -141,7 +145,7 @@ class GzmDownloader:
     def _download_bytes(
         cls,
         url: str,
-        item: str,
+        item: object,
         current: int = 1,
         total: int = 1
     ) -> bytes:
@@ -203,7 +207,9 @@ class GzmDownloader:
                 url
             ))
         if not candidates:
-            raise ValueError('Portal GZM nie udostępnił paczki GTFS.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.GZM_GTFS_ARCHIVE_UNAVAILABLE'
+            )
         return [
             (serial, name, url)
             for _, serial, name, url in sorted(
@@ -258,7 +264,12 @@ class GzmDownloader:
                     cls.GTFS_DATASET_API,
                     timeout=cls._REQUEST_TIMEOUT
                 ),
-                'Lista paczek GTFS GZM',
+                public_transport_message(
+                    'DOWNLOAD_STATUS.GTFS_ARCHIVE_LIST',
+                    provider=public_transport_message(
+                        'RES_PUBLIC_TRANSPORT_PROVIDER.GZM_NAME'
+                    )
+                ),
                 1,
                 3
             )
@@ -286,8 +297,8 @@ class GzmDownloader:
                 ):
                     archives[f'{GzmGtfsRepository.FEED_ID}:{serial}'] = archive
             if not archives:
-                raise ValueError(
-                    'Paczki GTFS GZM nie obejmują wymaganego okresu.'
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GZM_GTFS_PERIOD_UNAVAILABLE'
                 )
             build_total = 1 + len(resources) + len(archives)
             GtfsDatabase.build(
@@ -295,7 +306,10 @@ class GzmDownloader:
                 archives,
                 lambda feed_id, current, _count: (
                     PublicTransportDownloadProgress.report(
-                        f'Przetwarzanie GTFS GZM: {feed_id}',
+                        public_transport_message(
+                            'DOWNLOAD_STATUS.PROCESSING_GTFS',
+                            feed=feed_id
+                        ),
                         1 + len(resources) + current,
                         build_total
                     )
@@ -325,13 +339,13 @@ class GzmDownloader:
     @staticmethod
     def _document(html: str) -> _HtmlNode:
         """Parses HTML into the internal dependency-free DOM."""
-        return parse_html(html)
+        return HtmlDocument.parse(html)
 
     @classmethod
     def download_stop_locations(
         cls,
         refresh: bool = False,
-        item: str = 'Lokalizacje przystanków',
+        item: object = public_transport_message('DOWNLOAD_STATUS.STOP_LOCATIONS'),
         current: int = 1,
         total: int = 1
     ) -> dict[str, tuple[float, float]]:
@@ -590,7 +604,10 @@ class GzmDownloader:
         try:
             document = cls._document(cls._download_html(
                 announcement_url,
-                f'Komunikaty linii {model.line}'
+                public_transport_message(
+                    'DOWNLOAD_STATUS.LINE_ANNOUNCEMENTS',
+                    line=model.line
+                )
             ))
             model.announcements = cls._parse_announcements(
                 document,
@@ -744,7 +761,12 @@ class GzmDownloader:
         return cls.parse_announcement(
             cls._download_html(
                 url,
-                f'Komunikat „{description}”' if description else 'Komunikat',
+                public_transport_message(
+                    'DOWNLOAD_STATUS.ANNOUNCEMENT_DETAILS',
+                    description=description
+                ) if description else public_transport_message(
+                    'DOWNLOAD_STATUS.ANNOUNCEMENT'
+                ),
                 current,
                 total
             ),
@@ -814,7 +836,10 @@ class GzmDownloader:
             model.announcements = cls._parse_announcements(
                 cls._document(cls._download_html(
                     announcement_url,
-                    f'Komunikaty linii {model.line}'
+                    public_transport_message(
+                        'DOWNLOAD_STATUS.LINE_ANNOUNCEMENTS',
+                        line=model.line
+                    )
                 )),
                 announcement_url
             )
@@ -1099,14 +1124,20 @@ class GzmDownloader:
     def download_stops(
         cls,
         url: str | None = None,
-        progress_callback: Callable[[int, int, str], None] | None = None,
+        progress_callback: Callable[[int, int, object], None] | None = None,
         refresh: bool = False
     ) -> list[PublicTransportStop]:
         """Loads all cities, stops and platforms from GTFS."""
         del url
         stops = cls._repository(refresh).stops()
         if progress_callback:
-            progress_callback(1, 1, 'GZM')
+            progress_callback(
+                1,
+                1,
+                public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.GZM_NAME'
+                )
+            )
         return stops
 
     @classmethod
@@ -1138,7 +1169,12 @@ class GzmDownloader:
         return cls.parse_city_stops(
             cls._download_html(
                 url,
-                f'Przystanki: {city_name}' if city_name else 'Przystanki miasta',
+                public_transport_message(
+                    'DOWNLOAD_STATUS.CITY_STOPS',
+                    city=city_name
+                ) if city_name else public_transport_message(
+                    'DOWNLOAD_STATUS.CITY_STOP_LIST'
+                ),
                 current,
                 total
             ),
@@ -1321,7 +1357,10 @@ class GzmDownloader:
         repository = cls._repository()
         payload = cls._download_bytes(
             cls.GTFS_RT_VEHICLES_URL,
-            'Pojazdy GZM na żywo'
+            public_transport_message(
+                'DOWNLOAD_STATUS.LIVE_VEHICLES',
+                feed='GZM'
+            )
         )
         trip_ids = cls._realtime_trip_ids(payload)
         route_names, trip_names, route_types, trip_types = repository.realtime_maps(
@@ -1359,8 +1398,8 @@ class GzmDownloader:
         try:
             from google.transit import gtfs_realtime_pb2
         except ImportError as error:
-            raise RuntimeError(
-                'Brak biblioteki gtfs-realtime-bindings.'
+            raise PublicTransportRuntimeError(
+                'PUBLIC_TRANSPORT_ERROR.GTFS_REALTIME_LIBRARY_MISSING'
             ) from error
         message = gtfs_realtime_pb2.FeedMessage()
         message.ParseFromString(payload)
@@ -1401,9 +1440,9 @@ class GzmDownloader:
             status = ''
             if vehicle.HasField('current_status'):
                 status = {
-                    0: 'Zbliża się do przystanku',
-                    1: 'Na przystanku',
-                    2: 'W drodze do przystanku'
+                    0: 'PUBLIC_TRANSPORT_VEHICLE_STATUS.APPROACHING_STOP',
+                    1: 'PUBLIC_TRANSPORT_VEHICLE_STATUS.STOPPED_AT_STOP',
+                    2: 'PUBLIC_TRANSPORT_VEHICLE_STATUS.IN_TRANSIT_TO_STOP'
                 }.get(int(vehicle.current_status), '')
             raw_vehicle_id = str(
                 descriptor.id or descriptor.label or entity.id
@@ -1457,7 +1496,9 @@ class GzmDownloader:
         try:
             from google.transit import gtfs_realtime_pb2
         except ImportError as error:
-            raise RuntimeError('Brak biblioteki gtfs-realtime-bindings.') from error
+            raise PublicTransportRuntimeError(
+                'PUBLIC_TRANSPORT_ERROR.GTFS_REALTIME_LIBRARY_MISSING'
+            ) from error
         message = gtfs_realtime_pb2.FeedMessage()
         message.ParseFromString(payload)
         return {
@@ -1476,7 +1517,7 @@ class GzmDownloader:
         include_line_details: bool = False,
         include_stops: bool = False,
         include_vehicle_positions: bool = False,
-        progress_callback: Callable[[int, int, str], None] | None = None
+        progress_callback: Callable[[int, int, object], None] | None = None
     ) -> PublicTransportDataContainer:
         """Downloads a selectable provider snapshot into one typed container."""
         base_lines = cls.download_lines()
@@ -1486,7 +1527,14 @@ class GzmDownloader:
             for index, base_line in enumerate(base_lines, start=1):
                 lines.append(cls.download_line(base_line.url))
                 if progress_callback:
-                    progress_callback(index, total, f'Linia {base_line.line}')
+                    progress_callback(
+                        index,
+                        total,
+                        public_transport_message(
+                            'DOWNLOAD_STATUS.LINE_DETAILS',
+                            line=base_line.line
+                        )
+                    )
         stops = cls.download_stops(
             progress_callback=progress_callback
         ) if include_stops else []

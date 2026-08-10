@@ -3,24 +3,24 @@
         <section class="public-transport-stops__city">
             <header class="public-transport-stops__city-header">
                 <h2>{{ group.city }}</h2>
-                <span>{{ group.stops|length }} przystanków</span>
+                <span>{{ t('PUBLIC_TRANSPORT_STOPS.STOPS_COUNT', count=group.stops|length) }}</span>
                 <button class="public-transport-collapse-button" type="button" aria-expanded="false" aria-controls="public-transport-city-{{ loop.index0 }}" data-public-transport-collapse>
                     <i data-lucide="chevron-up" aria-hidden="true"></i>
-                    <span class="sr-only">Zwiń lub rozwiń miasto</span>
+                    <span class="sr-only">{{ t('PUBLIC_TRANSPORT_STOPS.TOGGLE_CITY') }}</span>
                 </button>
             </header>
             <div class="public-transport-stops__list" id="public-transport-city-{{ loop.index0 }}" hidden>
                 {% set city_index = loop.index0 %}
                 {% for stop in group.stops %}
-                    <article class="public-transport-stops__item" data-public-transport-filter-item data-search="{{ stop.city.name }} {{ stop.name }}">
+                    <article class="public-transport-stops__item" data-public-transport-filter-item data-search="{{ city_name(stop.city.name) }} {{ stop.name }}">
                         <button class="public-transport-stops__toggle" type="button" aria-expanded="false" aria-controls="public-transport-stop-{{ city_index }}-{{ loop.index0 }}">
                             <span>
                                 <strong>{{ stop.name }}</strong>
                                 <small>
                                     {% if capabilities.show_platforms %}
-                                        {{ stop.platforms|length }} stanowisk
+                                        {{ t('PUBLIC_TRANSPORT_STOPS.PLATFORMS_COUNT', count=stop.platforms|length) }}
                                     {% else %}
-                                        Rozkład przystanku
+                                        {{ t('PUBLIC_TRANSPORT_STOPS.STOP_TIMETABLE') }}
                                     {% endif %}
                                 </small>
                             </span>
@@ -32,20 +32,20 @@
                                     <header>
                                         <strong>
                                             {% if capabilities.show_platforms %}
-                                                <span class="public-transport-stops__platform-label">Stanowisko:</span>
+                                                <span class="public-transport-stops__platform-label">{{ t('PUBLIC_TRANSPORT_STOPS.PLATFORM') }}:</span>
                                                 {{ platform.name or '—' }}
                                             {% else %}
-                                                Rozkład przystanku
+                                                {{ t('PUBLIC_TRANSPORT_STOPS.STOP_TIMETABLE') }}
                                             {% endif %}
                                         </strong>
                                         <div class="public-transport-stops__platform-actions">
                                             <button type="button" data-public-transport-action="stop-lines" data-url="{{ platform.url_all }}">
-                                                <span>{% if capabilities.show_platforms %}Pokaż stanowisko{% else %}Pokaż odjazdy{% endif %}</span>
+                                                <span>{{ t('PUBLIC_TRANSPORT_STOPS.SHOW_PLATFORM') if capabilities.show_platforms else t('PUBLIC_TRANSPORT_STOPS.SHOW_DEPARTURES') }}</span>
                                                 <i data-lucide="chevron-right" aria-hidden="true"></i>
                                             </button>
                                             {% if capabilities.show_stop_map %}
-                                                <button type="button" data-public-transport-map data-name="{{ stop.city.name }} {{ stop.name }}, stanowisko {{ platform.name }}" data-query="{{ stop.name }}, {{ stop.city.name }}" data-latitude="{{ platform.latitude if platform.latitude is not none else '' }}" data-longitude="{{ platform.longitude if platform.longitude is not none else '' }}">
-                                                    <span>Pokaż na mapie</span>
+                                                <button type="button" data-public-transport-map data-name="{{ t('PUBLIC_TRANSPORT_STOPS.STOP_PLATFORM_NAME', city=city_name(stop.city.name), stop=stop.name, platform=platform.name) }}" data-query="{{ stop.name }}, {{ stop.city.name }}" data-latitude="{{ platform.latitude if platform.latitude is not none else '' }}" data-longitude="{{ platform.longitude if platform.longitude is not none else '' }}">
+                                                    <span>{{ t('PUBLIC_TRANSPORT_VIEW.SHOW_ON_MAP') }}</span>
                                                     <i data-lucide="map-pin" aria-hidden="true"></i>
                                                 </button>
                                             {% endif %}
@@ -54,7 +54,7 @@
                                     {% if capabilities.show_platforms or platform.lines %}
                                         <div class="public-transport-stops__lines">
                                             {% for line in platform.lines %}
-                                                <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}" title="Pokaż linię {{ line.line }}">
+                                                <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}" title="{{ t('PUBLIC_TRANSPORT_LINES.SHOW_LINE_NUMBER', line=line.line) }}">
                                                     {% if line.type.value == 'tram' %}
                                                         <i data-lucide="tram-front" aria-hidden="true"></i>
                                                     {% elif line.type.value == 'metro' %}
@@ -67,7 +67,7 @@
                                                     <span>{{ line.line }}</span>
                                                 </button>
                                             {% else %}
-                                                <span class="public-transport-stops__no-lines">Brak linii.</span>
+                                                <span class="public-transport-stops__no-lines">{{ t('PUBLIC_TRANSPORT_LINES.NO_LINES_SHORT') }}</span>
                                             {% endfor %}
                                         </div>
                                     {% endif %}
@@ -79,6 +79,6 @@
             </div>
         </section>
     {% else %}
-        <p class="public-transport-empty">Brak dostępnych przystanków.</p>
+        <p class="public-transport-empty">{{ t('PUBLIC_TRANSPORT_VIEW.NO_STOPS') }}</p>
     {% endfor %}
 </div>

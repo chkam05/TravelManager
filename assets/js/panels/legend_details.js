@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const panel = document.querySelector('#legend-details-panel');
     const tabs = document.querySelector('#legend-details-panel-tabs');
     const content = document.querySelector('#legend-details-panel-content');
@@ -64,7 +65,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         state.loading = true;
-        setStatus('Ładowanie legendy...');
+        setStatus(t('PANEL_LEGEND_DETAILS.LOADING'));
 
         try {
             const response = await fetch('/api/map/legend', {
@@ -82,7 +83,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             state.loaded = true;
         } catch (error) {
             state.tabs = [];
-            setStatus('Nie udało się załadować legendy.');
+            setStatus(t('PANEL_LEGEND_DETAILS.LOAD_FAILED'));
         } finally {
             state.loading = false;
         }
@@ -139,7 +140,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         const heading = document.createElement('h3');
         heading.className = 'legend-details-panel__section-title';
-        heading.textContent = group.title || group.id || 'Legenda';
+        heading.textContent = group.title || group.id || t('PANEL_LEGEND_DETAILS.LEGEND');
 
         const list = document.createElement('div');
         list.className = 'legend-details-panel__list';
@@ -179,7 +180,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const tab = activeTab();
 
         if (!tab) {
-            setStatus('Brak danych legendy.');
+            setStatus(t('PANEL_LEGEND_DETAILS.NO_DATA'));
             return;
         }
 
@@ -192,7 +193,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
 
         if (!content.children.length) {
-            setStatus('Brak elementów w tej zakładce.');
+            setStatus(t('PANEL_LEGEND_DETAILS.NO_ITEMS_IN_TAB'));
         }
     };
 
@@ -260,7 +261,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     }
 
     loadUiSettings();
-    setStatus('Legenda mapy jest gotowa do wyświetlenia.');
+    setStatus(t('PANEL_LEGEND_DETAILS.READY'));
 
     window.travelManagerLegendDetailsPanel = {
         close,

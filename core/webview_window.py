@@ -5,11 +5,12 @@ import mimetypes
 import webbrowser
 from pathlib import Path
 from threading import Lock
-from typing import Any, Callable, ClassVar
+from typing import Any, Callable
 
 import webview
 
-from config import APP_ICON, APP_ICON_WINDOWS, APP_NAME
+from config import APP_ICON, APP_ICON_WINDOWS, APP_NAME, PROJECT_ROOT
+from core.language_service import LanguageService
 from core.webview_window_interface import WebViewWindowInterface
 from models.settings.window_settings import WindowSettings
 from resources.settings_transfer import SettingsTransferTypes
@@ -20,25 +21,23 @@ from utils.webview_runtime import WebviewRuntime
 class WebViewWindow(WebViewWindowInterface):
     """Owns the native WebView window and its JavaScript bridge."""
 
-    _JSON_FILE_TYPES: ClassVar[tuple[str, ...]] = ('JSON Files (*.json)',)
-    _IMAGE_FILE_TYPES: ClassVar[tuple[str, ...]] = (
-        'Image Files (*.png;*.jpg;*.jpeg;*.webp)',
-        'PNG Files (*.png)',
-        'JPEG Files (*.jpg;*.jpeg)',
-        'WebP Files (*.webp)'
-    )
-
     def __init__(
         self,
         url: str,
         settings_storage: SettingsStorage,
-        on_all_windows_closed: Callable[[], None] | None = None
+        on_all_windows_closed: Callable[[], None] | None = None,
+        forced_locale: str | None = None
     ):
-        WebviewRuntime.validate_webview_runtime()
-        self._configure_app_metadata()
-
         self._url = url
         self._settings_storage = settings_storage
+        self._language_service = LanguageService(PROJECT_ROOT / 'assets' / 'languages')
+        self._forced_locale = (
+            self._language_service.normalize_locale(forced_locale)
+            if forced_locale is not None
+            else None
+        )
+        WebviewRuntime.validate_webview_runtime(self._translate)
+        self._configure_app_metadata()
         self._on_all_windows_closed = on_all_windows_closed
         self._backend = WebviewRuntime.choose_webview_backend()
         self._icon = APP_ICON_WINDOWS if WebviewRuntime.is_windows() else APP_ICON
@@ -121,7 +120,10 @@ class WebViewWindow(WebViewWindowInterface):
     def open_external_url(self, url: str) -> dict[str, str]:
         """Opens an external URL in the default system browser."""
         if not isinstance(url, str) or not url.startswith(('http://', 'https://')):
-            return {'status': 'error', 'message': 'Unsupported URL.'}
+            return {
+                'status': 'error',
+                'message': self._translate('NATIVE_APP.UNSUPPORTED_URL')
+            }
 
         webbrowser.open_new(url)
         return {'status': 'opened'}
@@ -130,12 +132,15 @@ class WebViewWindow(WebViewWindowInterface):
         """Opens a save dialog and persists selected map element data as JSON."""
         window = self._active_window()
         if not window:
-            return {'status': 'error', 'message': 'No active WebView window.'}
+            return {
+                'status': 'error',
+                'message': self._translate('NATIVE_APP.NO_ACTIVE_WINDOW')
+            }
 
         save_path = self._selected_path(window.create_file_dialog(
             webview.FileDialog.SAVE,
             save_filename=filename,
-            file_types=self._JSON_FILE_TYPES
+            file_types=self._json_file_types()
         ))
         if not save_path:
             return {'status': 'cancelled'}
@@ -150,16 +155,22 @@ class WebViewWindow(WebViewWindowInterface):
     def export_settings_data(self, data_type: str) -> dict[str, str]:
         """Opens a save dialog and exports selected application data."""
         if not SettingsTransferTypes.is_supported(data_type):
-            return {'status': 'error', 'message': 'Unsupported export data type.'}
+            return {
+                'status': 'error',
+                'message': self._translate('SETTINGS_BACKUP.UNSUPPORTED_EXPORT_TYPE')
+            }
 
         window = self._active_window()
         if not window:
-            return {'status': 'error', 'message': 'No active WebView window.'}
+            return {
+                'status': 'error',
+                'message': self._translate('SETTINGS_BACKUP.NO_ACTIVE_WINDOW')
+            }
 
         save_path = self._selected_path(window.create_file_dialog(
             webview.FileDialog.SAVE,
             save_filename=SettingsTransferTypes.file_name(data_type),
-            file_types=self._JSON_FILE_TYPES
+            file_types=self._json_file_types()
         ))
         if not save_path:
             return {'status': 'cancelled'}
@@ -170,21 +181,27 @@ class WebViewWindow(WebViewWindowInterface):
             'status': 'saved',
             'path': str(path),
             'type': data_type,
-            'label': SettingsTransferTypes.label(data_type)
+            'label': self._translate(SettingsTransferTypes.label_key(data_type))
         }
 
     def import_settings_data(self, data_type: str) -> dict[str, str]:
         """Opens a file dialog and imports selected application data."""
         if not SettingsTransferTypes.is_supported(data_type):
-            return {'status': 'error', 'message': 'Unsupported import data type.'}
+            return {
+                'status': 'error',
+                'message': self._translate('SETTINGS_BACKUP.UNSUPPORTED_IMPORT_TYPE')
+            }
 
         window = self._active_window()
         if not window:
-            return {'status': 'error', 'message': 'No active WebView window.'}
+            return {
+                'status': 'error',
+                'message': self._translate('SETTINGS_BACKUP.NO_ACTIVE_WINDOW')
+            }
 
         selected = self._selected_path(window.create_file_dialog(
             webview.FileDialog.OPEN,
-            file_types=self._JSON_FILE_TYPES
+            file_types=self._json_file_types()
         ))
         if not selected:
             return {'status': 'cancelled'}
@@ -196,25 +213,28 @@ class WebViewWindow(WebViewWindowInterface):
         except (OSError, TypeError, ValueError, json.JSONDecodeError):
             return {
                 'status': 'error',
-                'message': 'Selected JSON does not match the requested data type.'
+                'message': self._translate('SETTINGS_BACKUP.INVALID_IMPORT_FILE')
             }
 
         return {
             'status': 'imported',
             'path': str(path),
             'type': data_type,
-            'label': SettingsTransferTypes.label(data_type)
+            'label': self._translate(SettingsTransferTypes.label_key(data_type))
         }
 
     def select_car_image(self) -> dict[str, str]:
         """Opens a file dialog and returns a selected car image as text."""
         window = self._active_window()
         if not window:
-            return {'status': 'error', 'message': 'No active WebView window.'}
+            return {
+                'status': 'error',
+                'message': self._translate('NATIVE_APP.NO_ACTIVE_WINDOW')
+            }
 
         selected = self._selected_path(window.create_file_dialog(
             webview.FileDialog.OPEN,
-            file_types=self._IMAGE_FILE_TYPES
+            file_types=self._image_file_types()
         ))
         if not selected:
             return {'status': 'cancelled'}
@@ -231,6 +251,24 @@ class WebViewWindow(WebViewWindowInterface):
     def _active_window(self) -> Any | None:
         """Returns the window owned by this instance when it is active."""
         return self._window
+
+    def _translate(self, key: str, **parameters: object) -> str:
+        """Translates a native bridge message using the effective UI locale."""
+        locale = self._forced_locale or self._settings_storage.load().ui.language
+        return self._language_service.translate(key, locale, parameters)
+
+    def _json_file_types(self) -> tuple[str, ...]:
+        """Returns a localized native JSON file filter."""
+        return (self._translate('NATIVE_APP.JSON_FILES'),)
+
+    def _image_file_types(self) -> tuple[str, ...]:
+        """Returns localized native image file filters."""
+        return (
+            self._translate('NATIVE_APP.IMAGE_FILES'),
+            self._translate('NATIVE_APP.PNG_FILES'),
+            self._translate('NATIVE_APP.JPEG_FILES'),
+            self._translate('NATIVE_APP.WEBP_FILES')
+        )
 
     @staticmethod
     def _selected_path(selected: Any) -> str | None:

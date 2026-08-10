@@ -14,3 +14,10 @@ class FuelLabels:
         'diesel': 'ON',
         'gaz': 'LPG'
     }
+
+    NAME_KEYS: ClassVar[dict[str, str]] = {
+        '95': 'RES_FUEL_TYPE.PETROL_95',
+        '98': 'RES_FUEL_TYPE.PETROL_98',
+        'diesel': 'RES_FUEL_TYPE.DIESEL',
+        'gaz': 'RES_FUEL_TYPE.LPG'
+    }

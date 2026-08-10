@@ -2,9 +2,9 @@
     <div class="car-details-panel__grabber" data-car-details-panel-grabber aria-hidden="true"></div>
     <div class="car-details-panel__body">
         <div class="car-details-panel__header">
-            <h2 class="car-details-panel__title" id="car-details-panel-title">Samochód</h2>
+            <h2 class="car-details-panel__title" id="car-details-panel-title">{{ t('PANEL_CAR_DETAILS.CAR') }}</h2>
             <div class="car-details-panel__header-actions">
-                <button class="car-details-panel__close" data-car-details-panel-close type="button" aria-label="Zamknij panel"></button>
+                <button class="car-details-panel__close" data-car-details-panel-close type="button" aria-label="{{ t('PANEL_CAR_DETAILS.CLOSE_PANEL') }}"></button>
             </div>
         </div>
         <div class="car-details-panel__content" id="car-details-panel-content">
@@ -13,97 +13,97 @@
             </div>
 
             <section class="car-details-panel__group">
-                <h3 class="car-details-panel__group-title">Podstawowe</h3>
+                <h3 class="car-details-panel__group-title">{{ t('PANEL_CAR_DETAILS.BASIC') }}</h3>
                 <div class="car-details-panel__row">
-                    <span>Nazwa</span>
+                    <span>{{ t('COMMON.NAME') }}</span>
                     <strong data-car-detail-value="name">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Marka</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.BRAND') }}</span>
                     <strong data-car-detail-value="brand">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Model</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.MODEL') }}</span>
                     <strong data-car-detail-value="model">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Wersja</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.VERSION') }}</span>
                     <strong data-car-detail-value="version">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Generacja</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.GENERATION') }}</span>
                     <strong data-car-detail-value="generation">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Rok produkcji</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.PRODUCTION_YEAR') }}</span>
                     <strong data-car-detail-value="production_year">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Rejestracja</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.REGISTRATION') }}</span>
                     <strong data-car-detail-value="registration_number">-</strong>
                 </div>
             </section>
 
             <section class="car-details-panel__group">
-                <h3 class="car-details-panel__group-title">Techniczne</h3>
+                <h3 class="car-details-panel__group-title">{{ t('PANEL_CAR_DETAILS.TECHNICAL') }}</h3>
                 <div class="car-details-panel__row">
-                    <span>Nadwozie</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.BODY') }}</span>
                     <strong data-car-detail-value="body_type">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Pojemność</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.ENGINE_CAPACITY') }}</span>
                     <strong data-car-detail-value="engine_capacity">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Moc (KM)</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.POWER_HP') }}</span>
                     <strong data-car-detail-value="power_hp">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Moc (kW)</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.POWER_KW') }}</span>
                     <strong data-car-detail-value="power_kw">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Prędkość maks.</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.MAX_SPEED') }}</span>
                     <strong data-car-detail-value="max_speed">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Napęd</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.DRIVE') }}</span>
                     <strong data-car-detail-value="drive_type">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Skrzynia biegów</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.GEARBOX') }}</span>
                     <strong data-car-detail-value="transmission_type">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Bak</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.FUEL_TANK') }}</span>
                     <strong data-car-detail-value="fuel_tank_capacity">-</strong>
                 </div>
             </section>
 
             <section class="car-details-panel__group">
-                <h3 class="car-details-panel__group-title">Paliwo</h3>
+                <h3 class="car-details-panel__group-title">{{ t('PANEL_CAR_DETAILS.FUEL') }}</h3>
                 <div class="car-details-panel__row">
-                    <span>Typ</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.FUEL_TYPE') }}</span>
                     <strong data-car-detail-value="fuel_type">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Dodatkowy typ</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.SECONDARY_FUEL_TYPE') }}</span>
                     <strong data-car-detail-value="secondary_fuel_type">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Spalanie min.</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.MIN_CONSUMPTION') }}</span>
                     <strong data-car-detail-value="min_consumption">-</strong>
                 </div>
                 <div class="car-details-panel__row">
-                    <span>Spalanie max.</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.MAX_CONSUMPTION') }}</span>
                     <strong data-car-detail-value="max_consumption">-</strong>
                 </div>
             </section>
 
             <section class="car-details-panel__group">
-                <h3 class="car-details-panel__group-title">Przebieg</h3>
+                <h3 class="car-details-panel__group-title">{{ t('PANEL_CAR_DETAILS.MILEAGE') }}</h3>
                 <div class="car-details-panel__row">
-                    <span>Wpisy</span>
+                    <span>{{ t('PANEL_CAR_DETAILS.ENTRIES') }}</span>
                     <strong data-car-detail-value="odometer_entries">-</strong>
                 </div>
             </section>
@@ -111,15 +111,15 @@
         <div class="car-details-panel__footer">
             <button class="car-details-panel__button car-details-panel__button--primary" id="car-details-panel-use" type="button">
                 <i data-lucide="car" aria-hidden="true"></i>
-                <span>Użyj tego samochodu</span>
+                <span>{{ t('PANEL_CAR_DETAILS.USE_THIS_CAR') }}</span>
             </button>
             <button class="car-details-panel__button" id="car-details-panel-edit" type="button">
                 <i data-lucide="pencil" aria-hidden="true"></i>
-                <span>Edytuj</span>
+                <span>{{ t('COMMON.EDIT') }}</span>
             </button>
             <button class="car-details-panel__button car-details-panel__button--danger" id="car-details-panel-delete" type="button">
                 <i data-lucide="trash-2" aria-hidden="true"></i>
-                <span>Usuń</span>
+                <span>{{ t('COMMON.DELETE') }}</span>
             </button>
         </div>
     </div>

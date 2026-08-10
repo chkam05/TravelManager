@@ -1,164 +1,150 @@
 <form class="car-profile-editor" id="car-profile-editor" role="dialog" aria-modal="true" aria-labelledby="car-profile-editor-title" aria-hidden="true">
     <header class="car-profile-editor__header">
-        <h2 id="car-profile-editor-title">Dodaj samochód</h2>
-        <button class="car-profile-editor__close" data-car-profile-editor-cancel type="button" aria-label="Zamknij"></button>
+        <h2 id="car-profile-editor-title">{{ t('CAR_PROFILE_EDITOR.ADD_TITLE') }}</h2>
+        <button class="car-profile-editor__close" data-car-profile-editor-cancel type="button" aria-label="{{ t('COMMON.CLOSE') }}"></button>
     </header>
 
     <div class="car-profile-editor__content">
         <fieldset class="car-profile-editor__group">
-            <legend>Podstawowe</legend>
+            <legend>{{ t('CAR_PROFILE_EDITOR.BASIC') }}</legend>
             <label class="car-profile-editor__field">
-                <span>Nazwa</span>
+                <span>{{ t('COMMON.NAME') }}</span>
                 <input name="name" type="text" maxlength="120" autocomplete="off">
             </label>
             <label class="car-profile-editor__field">
-                <span>Marka</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.BRAND') }}</span>
                 <input name="brand" type="text" maxlength="80" autocomplete="off">
             </label>
             <label class="car-profile-editor__field">
-                <span>Model</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.MODEL') }}</span>
                 <input name="model" type="text" maxlength="80" autocomplete="off">
             </label>
             <label class="car-profile-editor__field">
-                <span>Wersja</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.VERSION') }}</span>
                 <input name="version" type="text" maxlength="120" autocomplete="off">
             </label>
             <label class="car-profile-editor__field">
-                <span>Generacja</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.GENERATION') }}</span>
                 <input name="generation" type="text" maxlength="120" autocomplete="off">
             </label>
             <label class="car-profile-editor__field">
-                <span>Rok produkcji</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.PRODUCTION_YEAR') }}</span>
                 <input name="production_year" type="number" min="1886" max="2300">
             </label>
             <label class="car-profile-editor__field">
-                <span>Nr. rejestracyjny</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.REGISTRATION_NUMBER') }}</span>
                 <input name="registration_number" type="text" maxlength="32" autocomplete="off">
             </label>
         </fieldset>
 
         <fieldset class="car-profile-editor__group">
-            <legend>Techniczne</legend>
+            <legend>{{ t('CAR_PROFILE_EDITOR.TECHNICAL') }}</legend>
             <label class="car-profile-editor__field">
-                <span>Typ nadwozia</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.BODY_TYPE') }}</span>
                 <select name="body_type">
-                    <option value="">Brak</option>
-                    <option value="Hatchback">Hatchback</option>
-                    <option value="Sedan">Sedan</option>
-                    <option value="Kombi">Kombi</option>
-                    <option value="Coupe">Coupe</option>
-                    <option value="Kabriolet">Kabriolet</option>
-                    <option value="Liftback">Liftback</option>
-                    <option value="Fastback">Fastback</option>
-                    <option value="SUV">SUV</option>
-                    <option value="Crossover">Crossover</option>
-                    <option value="Minivan / MPV">Minivan / MPV</option>
-                    <option value="Roadster">Roadster</option>
-                    <option value="Pickup">Pickup</option>
-                    <option value="Van">Van</option>
+                    <option value="">{{ t('COMMON.NONE') }}</option>
+                    {% for option in car_body_types %}
+                        <option value="{{ option.value }}">{{ t(option.name_key) }}</option>
+                    {% endfor %}
                 </select>
             </label>
             <label class="car-profile-editor__field">
-                <span>Pojemność silnika (cm3)</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.ENGINE_CAPACITY') }}</span>
                 <input name="engine_capacity" type="number" min="0" step="1">
             </label>
             <label class="car-profile-editor__field">
-                <span>Moc (KM)</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.POWER_HP') }}</span>
                 <input name="power_hp" type="number" min="0" step="1">
             </label>
             <label class="car-profile-editor__field">
-                <span>Moc (kW)</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.POWER_KW') }}</span>
                 <input name="power_kw" type="number" min="0" step="0.01">
             </label>
             <label class="car-profile-editor__field">
-                <span>Maksymalna prędkość (km/h)</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.MAX_SPEED') }}</span>
                 <input name="max_speed" type="number" min="0" step="1">
             </label>
             <label class="car-profile-editor__field">
-                <span>Rodzaj napędu</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.DRIVE_TYPE') }}</span>
                 <select name="drive_type">
-                    <option value="">Brak</option>
-                    <option value="Przednia oś">Przednia oś</option>
-                    <option value="Tylna oś">Tylna oś</option>
-                    <option value="AWD">AWD</option>
-                    <option value="4x4">4x4</option>
+                    <option value="">{{ t('COMMON.NONE') }}</option>
+                    {% for option in car_drive_types %}
+                        <option value="{{ option.value }}">{{ t(option.name_key) }}</option>
+                    {% endfor %}
                 </select>
             </label>
             <label class="car-profile-editor__field">
-                <span>Rodzaj skrzyni biegów</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.TRANSMISSION_TYPE') }}</span>
                 <select name="transmission_type">
-                    <option value="">Brak</option>
-                    <option value="Manualna">Manualna</option>
-                    <option value="Automatyczna">Automatyczna</option>
-                    <option value="Półautomatyczna">Półautomatyczna</option>
-                    <option value="Zautomatyzowana manualna">Zautomatyzowana manualna</option>
-                    <option value="CVT">CVT</option>
-                    <option value="Dwusprzęgłowa">Dwusprzęgłowa</option>
+                    <option value="">{{ t('COMMON.NONE') }}</option>
+                    {% for option in car_transmission_types %}
+                        <option value="{{ option.value }}">{{ t(option.name_key) }}</option>
+                    {% endfor %}
                 </select>
             </label>
             <label class="car-profile-editor__field">
-                <span>Pojemność baku (L)</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.FUEL_TANK_CAPACITY') }}</span>
                 <input name="fuel_tank_capacity" type="number" min="0" step="0.1">
             </label>
         </fieldset>
 
         <fieldset class="car-profile-editor__group">
-            <legend>Paliwo</legend>
+            <legend>{{ t('CAR_PROFILE_EDITOR.FUEL') }}</legend>
             <label class="car-profile-editor__field">
-                <span>Typ paliwa</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.FUEL_TYPE') }}</span>
                 <select name="fuel_type">
                     <option value="95">95</option>
                     <option value="98">98</option>
-                    <option value="Diesel">Diesel</option>
-                    <option value="Gaz">Gaz</option>
-                    <option value="Elektryczny">Elektryczny</option>
-                    <option value="Wodór">Wodór</option>
+                    <option value="Diesel">{{ t('CAR_PROFILE_EDITOR.DIESEL') }}</option>
+                    <option value="Gaz">{{ t('CAR_PROFILE_EDITOR.GAS') }}</option>
+                    <option value="Elektryczny">{{ t('CAR_PROFILE_EDITOR.ELECTRIC') }}</option>
+                    <option value="Wodór">{{ t('CAR_PROFILE_EDITOR.HYDROGEN') }}</option>
                 </select>
             </label>
             <label class="car-profile-editor__field">
-                <span>Dodatkowy typ paliwa</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.SECONDARY_FUEL_TYPE') }}</span>
                 <select name="secondary_fuel_type">
-                    <option value="">Brak</option>
-                    <option value="Gaz">Gaz</option>
-                    <option value="Elektryczny">Elektryczny</option>
+                    <option value="">{{ t('COMMON.NONE') }}</option>
+                    <option value="Gaz">{{ t('CAR_PROFILE_EDITOR.GAS') }}</option>
+                    <option value="Elektryczny">{{ t('CAR_PROFILE_EDITOR.ELECTRIC') }}</option>
                     <option value="95">95</option>
                     <option value="98">98</option>
-                    <option value="Diesel">Diesel</option>
-                    <option value="Wodór">Wodór</option>
+                    <option value="Diesel">{{ t('CAR_PROFILE_EDITOR.DIESEL') }}</option>
+                    <option value="Wodór">{{ t('CAR_PROFILE_EDITOR.HYDROGEN') }}</option>
                 </select>
             </label>
             <label class="car-profile-editor__field">
-                <span>Minimalne spalanie (L/100km)</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.MIN_CONSUMPTION') }}</span>
                 <input name="min_consumption" type="number" min="0" step="0.01">
             </label>
             <label class="car-profile-editor__field">
-                <span>Maksymalne spalanie (L/100km)</span>
+                <span>{{ t('CAR_PROFILE_EDITOR.MAX_CONSUMPTION') }}</span>
                 <input name="max_consumption" type="number" min="0" step="0.01">
             </label>
         </fieldset>
 
         <fieldset class="car-profile-editor__group">
-            <legend>Przebieg</legend>
+            <legend>{{ t('CAR_PROFILE_EDITOR.ODOMETER') }}</legend>
             <div class="car-profile-editor__odometer" id="car-profile-editor-odometer"></div>
-            <button class="car-profile-editor__small-button" id="car-profile-editor-add-odometer" type="button">Dodaj przebieg</button>
+            <button class="car-profile-editor__small-button" id="car-profile-editor-add-odometer" type="button">{{ t('CAR_PROFILE_EDITOR.ADD_ODOMETER') }}</button>
         </fieldset>
 
         <fieldset class="car-profile-editor__group">
-            <legend>Zdjęcie</legend>
+            <legend>{{ t('CAR_PROFILE_EDITOR.IMAGE') }}</legend>
             <input name="image" type="hidden">
             <div class="car-profile-editor__image-preview" id="car-profile-editor-image-preview" hidden>
                 <img id="car-profile-editor-image-preview-img" alt="">
             </div>
             <div class="car-profile-editor__image-actions">
-                <button class="car-profile-editor__small-button" id="car-profile-editor-select-image" type="button">Wybierz zdjęcie</button>
-                <button class="car-profile-editor__small-button" id="car-profile-editor-remove-image" type="button" hidden>Usuń zdjęcie</button>
-                <span id="car-profile-editor-image-name">Brak zdjęcia</span>
+                <button class="car-profile-editor__small-button" id="car-profile-editor-select-image" type="button">{{ t('CAR_PROFILE_EDITOR.SELECT_IMAGE') }}</button>
+                <button class="car-profile-editor__small-button" id="car-profile-editor-remove-image" type="button" hidden>{{ t('CAR_PROFILE_EDITOR.REMOVE_IMAGE') }}</button>
+                <span id="car-profile-editor-image-name">{{ t('CAR_PROFILE_EDITOR.NO_IMAGE') }}</span>
             </div>
         </fieldset>
     </div>
 
     <footer class="car-profile-editor__footer">
-        <button class="car-profile-editor__button" data-car-profile-editor-cancel type="button">Anuluj</button>
-        <button class="car-profile-editor__button car-profile-editor__button--primary" type="submit">Zapisz</button>
+        <button class="car-profile-editor__button" data-car-profile-editor-cancel type="button">{{ t('COMMON.CANCEL') }}</button>
+        <button class="car-profile-editor__button car-profile-editor__button--primary" type="submit">{{ t('COMMON.SAVE') }}</button>
     </footer>
 </form>

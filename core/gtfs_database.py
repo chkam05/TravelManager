@@ -8,6 +8,8 @@ import tempfile
 from typing import Callable, ClassVar, Iterable
 from zipfile import ZipFile
 
+from resources.public_transport.public_transport_messages import PublicTransportValueError
+
 
 GtfsBuildProgress = Callable[[str, int, int], None]
 
@@ -633,7 +635,10 @@ class GtfsDatabase:
             source = archive.open(file_name)
         except KeyError:
             if required:
-                raise ValueError(f'Brak wymaganego pliku GTFS: {file_name}')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.REQUIRED_GTFS_FILE_MISSING',
+                    file=file_name
+                )
             return
         with source, TextIOWrapper(source, encoding='utf-8-sig', newline='') as text:
             reader = csv.DictReader(text)

@@ -5,10 +5,12 @@ from typing import Any, ClassVar
 from flask import jsonify, request
 
 from core.api.base_controller import BaseController
+from core.language_service import LanguageService
 from models.exchange_rate_data_model import ExchangeRateDataModel
 from models.fuel_data_model import FuelDataModel
 from models.settings_data_model import SettingsDataModel
 from resources.countries import Countries
+from resources.enums.countries.currency_codes import CurrencyCodes
 from resources.fuel.labels import FuelLabels
 from resources.fuel.price_fields import FuelPriceFields
 from resources.fuel.sources import FuelSources
@@ -66,13 +68,16 @@ class FuelController(BaseController):
             if model.currency and model.rate > 0
         }
 
-    @staticmethod
-    def _rows_payload(models: list[FuelDataModel]) -> list[dict[str, Any]]:
+    @classmethod
+    def _rows_payload(cls, models: list[FuelDataModel]) -> list[dict[str, Any]]:
         """Converts fuel models to the public API shape."""
         rows: list[dict[str, Any]] = []
 
         for model in models:
             row = model.to_dict()
+            country_key = Countries.NAME_KEYS.get(model.country_code.upper())
+            if country_key:
+                row[FuelDataModel.FIELD_COUNTRY] = LanguageService.translate_current(country_key)
             row.pop(FuelDataModel.FIELD_LOADED_AT, None)
 
             if not model.manual:
@@ -134,7 +139,9 @@ class FuelController(BaseController):
         return rates
 
     @classmethod
-    def _download_data(cls) -> tuple[list[FuelDataModel], list[ExchangeRateDataModel]]:
+    def _download_data(
+        cls
+    ) -> tuple[list[FuelDataModel], list[ExchangeRateDataModel], str | None]:
         """Downloads typed fuel and exchange rate models."""
         downloader = FuelPriceDownloader()
         fuel_data = downloader.download()
@@ -144,7 +151,11 @@ class FuelController(BaseController):
             model.updated = model.updated or downloader.updated
             model.loaded_at = loaded_at
 
-        return fuel_data, ExchangeRateDownloader.download()
+        warning = LanguageService.translate_current(
+            'FUEL_COST_VIEW.AUTOCENTRUM_LOAD_FAILED',
+            error=downloader.poland_warning
+        ) if downloader.poland_warning else None
+        return fuel_data, ExchangeRateDownloader.download(), warning
 
     #endregion Stored data
 
@@ -153,14 +164,19 @@ class FuelController(BaseController):
     @staticmethod
     def _countries_payload() -> list[dict[str, str]]:
         """Returns countries available for fuel costs and manual entries."""
-        return [
+        currency_keys = CurrencyCodes.name_keys()
+        countries = [
             {
                 'country_code': code,
-                'country': data['country'],
-                'currency': data['currency']
+                'country': LanguageService.translate_current(Countries.NAME_KEYS[code]),
+                'currency': data['currency'],
+                'currency_name': LanguageService.translate_current(currency_keys[data['currency']])
+                if data['currency'] in currency_keys
+                else data['currency']
             }
-            for code, data in sorted(Countries.VALUES.items(), key=lambda item: item[1]['country'])
+            for code, data in Countries.VALUES.items()
         ]
+        return sorted(countries, key=lambda item: item['country'])
 
     @staticmethod
     def _manual_rows(fuel_data: list[FuelDataModel]) -> dict[str, FuelDataModel]:
@@ -211,7 +227,7 @@ class FuelController(BaseController):
         currency = str(payload.get('currency') or (existing.currency if existing else '')).strip().upper()
 
         if not country_code or not country or not currency:
-            raise ValueError('Country code, country and currency are required.')
+            raise ValueError(LanguageService.translate_current('FUEL_COST_EDITOR.REQUIRED_COUNTRY_FIELDS'))
 
         return FuelDataModel(
             country_code=country_code,
@@ -284,24 +300,27 @@ class FuelController(BaseController):
 
     def latest(self):
         """Returns the latest known average fuel price for the selected fuel type."""
-        fuel_type = request.args.get('fuel_type', '95')
-        label = FuelLabels.VALUES.get(fuel_type.strip().lower())
+        fuel_type = request.args.get('fuel_type', '95').strip().lower()
+        label = FuelLabels.VALUES.get(fuel_type)
 
         if not label:
-            return jsonify({'status': 'error', 'message': 'Unsupported fuel type.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FUEL_COST_VIEW.UNSUPPORTED_FUEL_TYPE')
+            }), 400
 
         try:
             model = FuelPriceDownloader().download_latest(fuel_type)
-        except Exception as error:
+        except Exception:
             return jsonify({
                 'status': 'error',
-                'message': f'Could not load fuel prices: {error}'
+                'message': LanguageService.translate_current('FUEL_COST_VIEW.LOAD_PRICES_FAILED')
             }), 502
 
         if not model:
             return jsonify({
                 'status': 'error',
-                'message': 'Fuel price was not found in the source document.'
+                'message': LanguageService.translate_current('FUEL_COST_VIEW.PRICE_NOT_FOUND_IN_SOURCE')
             }), 502
 
         price = {
@@ -315,7 +334,7 @@ class FuelController(BaseController):
             'status': 'ok',
             'fuel': {
                 'fuel_type': fuel_type,
-                'label': label,
+                'label': LanguageService.translate_current(FuelLabels.NAME_KEYS[fuel_type]),
                 'price': price,
                 'source': model.source,
                 'updated': model.updated
@@ -335,7 +354,7 @@ class FuelController(BaseController):
 
         if force or not stored_fuel:
             try:
-                fuel_data, exchange_rates = self._download_data()
+                fuel_data, exchange_rates, warning = self._download_data()
                 fuel_data = self._merge_manual_rows(
                     fuel_data,
                     self._manual_rows(stored_fuel),
@@ -345,13 +364,14 @@ class FuelController(BaseController):
                 return self._data_response(
                     fuel_data,
                     exchange_rates,
-                    selected_exchange_rate
+                    selected_exchange_rate,
+                    warning=warning
                 )
-            except Exception as error:
+            except Exception:
                 if not stored_fuel:
                     return jsonify({
                         'status': 'error',
-                        'message': f'Could not load fuel cost data: {error}'
+                        'message': LanguageService.translate_current('FUEL_COST_VIEW.LOAD_COST_DATA_FAILED')
                     }), 502
 
                 stored_rates = self._refresh_rates(stored_fuel, stored_rates, force=True)
@@ -359,7 +379,7 @@ class FuelController(BaseController):
                     stored_fuel,
                     stored_rates,
                     selected_exchange_rate,
-                    warning=f'Nie udało się odświeżyć danych, pokazuję cache: {error}'
+                    warning=LanguageService.translate_current('FUEL_COST_VIEW.REFRESH_FAILED_USING_CACHE_GENERIC')
                 )
 
         stored_rates = self._refresh_rates(stored_fuel, stored_rates)
@@ -384,7 +404,7 @@ class FuelController(BaseController):
         elif selected_exchange_rate not in available_rates:
             return jsonify({
                 'status': 'error',
-                'message': 'Unsupported exchange rate.'
+                'message': LanguageService.translate_current('FUEL_COST_VIEW.UNSUPPORTED_EXCHANGE_RATE')
             }), 400
 
         settings.selected_exchange_rate = selected_exchange_rate

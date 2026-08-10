@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     let routes = [];
     let loaded = false;
 
@@ -23,7 +24,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
 
         if (!response.ok) {
-            throw new Error('Nie udało się wczytać tras.');
+            throw new Error(t('ROUTE_ERROR.LOAD_ROUTES_FAILED'));
         }
 
         const data = await response.json();
@@ -45,7 +46,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data?.message || 'Nie udało się zapisać trasy.');
+            throw new Error(data?.message || t('ROUTE_ERROR.SAVE_ROUTE_FAILED'));
         }
 
         routes = routes.filter((item) => item.id !== data.route.id);
@@ -63,7 +64,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            throw new Error(data?.message || 'Nie udało się usunąć trasy.');
+            throw new Error(data?.message || t('ROUTE_ERROR.DELETE_ROUTE_FAILED'));
         }
 
         routes = routes.filter((item) => item.id !== routeId);

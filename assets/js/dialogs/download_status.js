@@ -24,14 +24,40 @@ document.addEventListener('travel-manager:views-ready', () => {
                 progressBar.max = data.total;
                 progressBar.value = data.status === 'complete' ? data.total : Math.max(0, data.current - 1);
             }
-            const position = data.total > 0 ? ` (${data.current}/${data.total})` : '';
-            const retry = data.attempt > 1 ? ` — próba ${data.attempt}/${data.max_attempts}` : '';
-            const details = data.item
-                ? `Pobieranie „${data.item}”${position}${retry}…`
-                : 'Przygotowywanie danych…';
-            text.textContent = batch
-                ? `Przewoźnik ${batch.current} z ${batch.total} — ${details.toLocaleLowerCase('pl-PL')}`
-                : details;
+            const position = data.total > 0
+                ? window.i18n.t('DIALOG_DOWNLOAD_STATUS.ITEM_POSITION', {
+                    current: data.current,
+                    total: data.total
+                })
+                : '';
+            const retry = data.attempt > 1
+                ? window.i18n.t('DIALOG_DOWNLOAD_STATUS.RETRY', {
+                    attempt: data.attempt,
+                    maxAttempts: data.max_attempts
+                })
+                : '';
+            if (batch) {
+                text.textContent = data.item
+                    ? window.i18n.t('DIALOG_DOWNLOAD_STATUS.BATCH_DOWNLOADING_ITEM', {
+                        current: batch.current,
+                        total: batch.total,
+                        item: data.item,
+                        position,
+                        retry
+                    })
+                    : window.i18n.t('DIALOG_DOWNLOAD_STATUS.BATCH_PREPARING_DATA', {
+                        current: batch.current,
+                        total: batch.total
+                    });
+            } else {
+                text.textContent = data.item
+                    ? window.i18n.t('DIALOG_DOWNLOAD_STATUS.DOWNLOADING_ITEM', {
+                        item: data.item,
+                        position,
+                        retry
+                    })
+                    : window.i18n.t('DIALOG_DOWNLOAD_STATUS.PREPARING_DATA');
+            }
         } catch (error) { /* Request performing the update reports the final error. */ }
         if (active) timer = window.setTimeout(poll, 250);
     };
@@ -39,7 +65,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         provider = providerId;
         batch = null;
         active = true;
-        heading.textContent = 'Pobieranie danych…'; text.textContent = 'Przygotowywanie danych…';
+        heading.textContent = window.i18n.t('DIALOG_DOWNLOAD_STATUS.DOWNLOADING_DATA');
+        text.textContent = window.i18n.t('DIALOG_DOWNLOAD_STATUS.PREPARING_DATA');
         progressBar.hidden = true; footer.hidden = true; spinner.hidden = false;
         dialog.setAttribute('aria-hidden', 'false'); layer.classList.add('dialog-layer--open'); layer.setAttribute('aria-hidden', 'false');
         stopPolling(); poll(); window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
@@ -48,8 +75,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         provider = '';
         batch = { current: 0, total: Math.max(0, Number(total) || 0) };
         active = true;
-        heading.textContent = 'Aktualizowanie wszystkich przewoźników…';
-        text.textContent = 'Przygotowywanie danych…';
+        heading.textContent = window.i18n.t('DIALOG_DOWNLOAD_STATUS.UPDATING_ALL_PROVIDERS');
+        text.textContent = window.i18n.t('DIALOG_DOWNLOAD_STATUS.PREPARING_DATA');
         progressBar.hidden = false;
         progressBar.max = Math.max(1, batch.total);
         progressBar.value = 0;
@@ -66,8 +93,13 @@ document.addEventListener('travel-manager:views-ready', () => {
         provider = providerId;
         batch.current = Math.max(1, Number(current) || 1);
         progressBar.value = Math.max(0, batch.current - 1);
-        heading.textContent = `Aktualizowanie: ${providerName}`;
-        text.textContent = `Przewoźnik ${batch.current} z ${batch.total} — przygotowywanie danych…`;
+        heading.textContent = window.i18n.t('DIALOG_DOWNLOAD_STATUS.UPDATING_PROVIDER', {
+            provider: providerName
+        });
+        text.textContent = window.i18n.t('DIALOG_DOWNLOAD_STATUS.BATCH_PREPARING_DATA', {
+            current: batch.current,
+            total: batch.total
+        });
         stopPolling();
         poll();
     };
@@ -76,8 +108,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (batch) progressBar.value = batch.total;
         if (error) {
             heading.textContent = batch
-                ? 'Aktualizacja zakończona z błędami'
-                : 'Nie udało się pobrać danych';
+                ? window.i18n.t('DIALOG_DOWNLOAD_STATUS.FINISHED_WITH_ERRORS')
+                : window.i18n.t('DIALOG_DOWNLOAD_STATUS.DOWNLOAD_FAILED');
             text.textContent = error;
         }
         else close();

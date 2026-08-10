@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const layer = document.querySelector('#dialog-layer');
     const dialog = document.querySelector('#favourites-editor');
     const title = document.querySelector('#favourites-editor-title');
@@ -59,13 +60,17 @@ document.addEventListener('travel-manager:views-ready', () => {
         const value = icon || '';
         iconInput.value = value;
         selectedIcon.textContent = value || '-';
-        selectedName.textContent = value ? (label || 'Własna ikona miejsca') : 'Brak własnej ikony';
+        selectedName.textContent = value
+            ? (label || t('FAVOURITE_EDITOR.CUSTOM_PLACE_ICON'))
+            : t('FAVOURITE_EDITOR.NO_CUSTOM_ICON');
         removeIconButton.hidden = !value;
     };
 
     const setEmojiPickerOpen = (open) => {
         emojiPicker.hidden = !open;
-        toggleIconsButton.textContent = open ? 'Ukryj ikony' : 'Wybierz ikonę';
+        toggleIconsButton.textContent = open
+            ? t('FAVOURITE_EDITOR.HIDE_ICONS')
+            : t('FAVOURITE_EDITOR.CHOOSE_ICON');
     };
 
     const fetchJson = async (url) => {
@@ -103,7 +108,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!items.length) {
             const empty = document.createElement('p');
             empty.className = 'favourites-editor__empty';
-            empty.textContent = 'Brak emoji w tej kategorii.';
+            empty.textContent = t('FAVOURITE_EDITOR.NO_EMOJI_IN_CATEGORY');
             presets.append(empty);
             return;
         }
@@ -127,7 +132,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     const loadGroup = async (groupKey) => {
         state.activeGroup = groupKey;
         renderTabs();
-        presets.textContent = 'Ładowanie...';
+        presets.textContent = t('FAVOURITE_EDITOR.LOADING_EMOJI');
         const data = await fetchJson(`/api/emojis?group=${encodeURIComponent(groupKey)}`);
         renderPresets(data.emojis || []);
     };
@@ -161,9 +166,11 @@ document.addEventListener('travel-manager:views-ready', () => {
             resolveResult(null);
         }
 
-        title.textContent = editing ? 'Edytuj ulubione miejsce' : 'Dodaj do ulubionych';
+        title.textContent = editing
+            ? t('FAVOURITE_EDITOR.EDIT_TITLE')
+            : t('FAVOURITE_EDITOR.ADD_TITLE');
         nameInput.value = name;
-        setIcon(icon || null, icon ? 'Aktualnie wybrana ikona' : '');
+        setIcon(icon || null, icon ? t('FAVOURITE_EDITOR.CURRENT_ICON') : '');
         setEmojiPickerOpen(false);
         try {
             renderTags(await window.travelManagerFavourites?.listTags(), tagId);
@@ -201,7 +208,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             try {
                 await loadGroups();
             } catch (error) {
-                presets.textContent = 'Nie udało się wczytać emoji.';
+                presets.textContent = t('FAVOURITE_EDITOR.EMOJI_LOAD_FAILED');
             }
         }
     });

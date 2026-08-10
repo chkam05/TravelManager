@@ -10,10 +10,10 @@ document.addEventListener('travel-manager:views-ready', () => {
     if (!layer || !dialog || !title || !message || !icon || !closeButton) return;
 
     const variants = {
-        info: { title: 'Informacja', icon: 'info' },
-        success: { title: 'Gotowe', icon: 'circle-check' },
-        warning: { title: 'Ostrzeżenie', icon: 'triangle-alert' },
-        error: { title: 'Błąd', icon: 'circle-x' }
+        info: { title: window.i18n.t('DIALOG_POPUP.INFORMATION'), icon: 'info' },
+        success: { title: window.i18n.t('DIALOG_POPUP.SUCCESS'), icon: 'circle-check' },
+        warning: { title: window.i18n.t('DIALOG_POPUP.WARNING'), icon: 'triangle-alert' },
+        error: { title: window.i18n.t('DIALOG_POPUP.ERROR'), icon: 'circle-x' }
     };
 
     const finish = () => {

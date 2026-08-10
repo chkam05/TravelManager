@@ -1,10 +1,10 @@
 (() => {
     const groupNames = {
-        standard: 'Trasy standardowe',
-        short: 'Trasy skrócone',
-        changed: 'Trasy zmienione',
-        from_depot: 'Trasy z zajezdni',
-        to_depot: 'Trasy do zajezdni'
+        standard: window.i18n.t('COMPONENT_ROUTE_VARIANT.STANDARD_ROUTES'),
+        short: window.i18n.t('COMPONENT_ROUTE_VARIANT.SHORT_ROUTES'),
+        changed: window.i18n.t('COMPONENT_ROUTE_VARIANT.CHANGED_ROUTES'),
+        from_depot: window.i18n.t('COMPONENT_ROUTE_VARIANT.FROM_DEPOT_ROUTES'),
+        to_depot: window.i18n.t('COMPONENT_ROUTE_VARIANT.TO_DEPOT_ROUTES')
     };
     const groupOrder = Object.keys(groupNames);
     const instances = new Map();
@@ -37,7 +37,7 @@
 
         const updateButton = () => {
             const item = items.find((entry) => entry.value === select.value) || items[0];
-            button.querySelector('span').textContent = item?.label || 'Wybierz trasę';
+            button.querySelector('span').textContent = item?.label || window.i18n.t('COMPONENT_ROUTE_VARIANT.SELECT_ROUTE');
         };
         const close = () => {
             menu.hidden = true;

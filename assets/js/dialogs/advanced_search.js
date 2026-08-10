@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const layer = document.querySelector('#dialog-layer');
     const dialog = document.querySelector('#advanced-search');
     const queryInput = document.querySelector('#advanced-search-query');
@@ -26,90 +27,90 @@ document.addEventListener('travel-manager:views-ready', () => {
     const categories = [
         {
             id: '',
-            label: 'Brak',
+            label: t('RES_MAP_SEARCH.NONE'),
             query: '',
             icon: 'circle-slash',
             subcategories: []
         },
         {
             id: 'attractions',
-            label: 'Atrakcje',
+            label: t('RES_MAP_SEARCH.ATTRACTIONS'),
             query: 'attraction',
             icon: 'landmark',
             subcategories: [
-                { id: 'attraction', label: 'Atrakcje', query: 'attraction', icon: 'sparkles' },
-                { id: 'library', label: 'Biblioteki', query: 'library', icon: 'library' },
-                { id: 'cinema', label: 'Kina', query: 'cinema', icon: 'clapperboard' },
-                { id: 'museum', label: 'Muzea', query: 'museum', icon: 'landmark' },
-                { id: 'live_music', label: 'Muzyka na żywo', query: 'live music', icon: 'music' },
-                { id: 'park', label: 'Parki', query: 'park', icon: 'trees' },
-                { id: 'gym', label: 'Siłownie', query: 'gym fitness', icon: 'dumbbell' },
-                { id: 'art', label: 'Sztuka', query: 'art gallery', icon: 'palette' },
-                { id: 'theatre', label: 'Teatry', query: 'theatre', icon: 'drama' },
-                { id: 'nightlife', label: 'Życie nocne', query: 'nightclub', icon: 'moon' },
-                { id: 'zoo', label: 'Zoo', query: 'zoo', icon: 'paw-print' }
+                { id: 'attraction', label: t('RES_MAP_SEARCH.ATTRACTIONS'), query: 'attraction', icon: 'sparkles' },
+                { id: 'library', label: t('RES_MAP_SEARCH.LIBRARIES'), query: 'library', icon: 'library' },
+                { id: 'cinema', label: t('RES_MAP_SEARCH.CINEMAS'), query: 'cinema', icon: 'clapperboard' },
+                { id: 'museum', label: t('RES_MAP_SEARCH.MUSEUMS'), query: 'museum', icon: 'landmark' },
+                { id: 'live_music', label: t('RES_MAP_SEARCH.LIVE_MUSIC'), query: 'live music', icon: 'music' },
+                { id: 'park', label: t('RES_MAP_SEARCH.PARKS'), query: 'park', icon: 'trees' },
+                { id: 'gym', label: t('RES_MAP_SEARCH.GYMS'), query: 'gym fitness', icon: 'dumbbell' },
+                { id: 'art', label: t('RES_MAP_SEARCH.ART'), query: 'art gallery', icon: 'palette' },
+                { id: 'theatre', label: t('RES_MAP_SEARCH.THEATRES'), query: 'theatre', icon: 'drama' },
+                { id: 'nightlife', label: t('RES_MAP_SEARCH.NIGHTLIFE'), query: 'nightclub', icon: 'moon' },
+                { id: 'zoo', label: t('RES_MAP_SEARCH.ZOOS'), query: 'zoo', icon: 'paw-print' }
             ]
         },
         {
             id: 'food',
-            label: 'Jedzenie i napoje',
+            label: t('RES_MAP_SEARCH.FOOD_AND_DRINK'),
             query: 'food drink',
             icon: 'utensils',
             subcategories: [
-                { id: 'bar', label: 'Bary', query: 'bar', icon: 'martini' },
-                { id: 'fast_food', label: 'Fast food', query: 'fast food', icon: 'sandwich' },
-                { id: 'food_court', label: 'Food courty', query: 'food court', icon: 'store' },
-                { id: 'cafe', label: 'Kawiarnie', query: 'cafe', icon: 'coffee' },
-                { id: 'takeaway', label: 'Na wynos', query: 'takeaway', icon: 'package' },
-                { id: 'pub', label: 'Puby', query: 'pub', icon: 'beer' },
-                { id: 'restaurant', label: 'Restauracje', query: 'restaurant', icon: 'utensils' },
-                { id: 'delivery', label: 'Z dostawą', query: 'food delivery', icon: 'truck' }
+                { id: 'bar', label: t('RES_MAP_SEARCH.BARS'), query: 'bar', icon: 'martini' },
+                { id: 'fast_food', label: t('RES_MAP_SEARCH.FAST_FOOD'), query: 'fast food', icon: 'sandwich' },
+                { id: 'food_court', label: t('RES_MAP_SEARCH.FOOD_COURTS'), query: 'food court', icon: 'store' },
+                { id: 'cafe', label: t('RES_MAP_SEARCH.CAFES'), query: 'cafe', icon: 'coffee' },
+                { id: 'takeaway', label: t('RES_MAP_SEARCH.TAKEAWAY'), query: 'takeaway', icon: 'package' },
+                { id: 'pub', label: t('RES_MAP_SEARCH.PUBS'), query: 'pub', icon: 'beer' },
+                { id: 'restaurant', label: t('RES_MAP_SEARCH.RESTAURANTS'), query: 'restaurant', icon: 'utensils' },
+                { id: 'delivery', label: t('RES_MAP_SEARCH.DELIVERY'), query: 'food delivery', icon: 'truck' }
             ]
         },
         {
             id: 'shopping',
-            label: 'Zakupy',
+            label: t('RES_MAP_SEARCH.SHOPPING'),
             query: 'shop',
             icon: 'shopping-bag',
             subcategories: [
-                { id: 'mall', label: 'Centra handlowe', query: 'mall shopping centre', icon: 'building-2' },
-                { id: 'garden', label: 'Dom i ogród', query: 'garden centre houseware', icon: 'shovel' },
-                { id: 'chemist', label: 'Drogerie', query: 'chemist cosmetics', icon: 'sparkles' },
-                { id: 'electronics', label: 'Elektronika', query: 'electronics shop', icon: 'smartphone' },
-                { id: 'books', label: 'Książki i prasa', query: 'books newsagent', icon: 'book-open' },
-                { id: 'local', label: 'Sklepy lokalne', query: 'convenience shop', icon: 'store' },
-                { id: 'sports', label: 'Sportowe', query: 'sports shop', icon: 'dumbbell' },
-                { id: 'grocery', label: 'Spożywcze', query: 'supermarket grocery', icon: 'shopping-cart' },
-                { id: 'car_sales', label: 'Sprzedaż aut', query: 'car dealer', icon: 'car' },
-                { id: 'clothes', label: 'Ubrania', query: 'clothes shop', icon: 'shirt' }
+                { id: 'mall', label: t('RES_MAP_SEARCH.SHOPPING_CENTRES'), query: 'mall shopping centre', icon: 'building-2' },
+                { id: 'garden', label: t('RES_MAP_SEARCH.HOME_AND_GARDEN'), query: 'garden centre houseware', icon: 'shovel' },
+                { id: 'chemist', label: t('RES_MAP_SEARCH.CHEMISTS'), query: 'chemist cosmetics', icon: 'sparkles' },
+                { id: 'electronics', label: t('RES_MAP_SEARCH.ELECTRONICS'), query: 'electronics shop', icon: 'smartphone' },
+                { id: 'books', label: t('RES_MAP_SEARCH.BOOKS_AND_PRESS'), query: 'books newsagent', icon: 'book-open' },
+                { id: 'local', label: t('RES_MAP_SEARCH.LOCAL_SHOPS'), query: 'convenience shop', icon: 'store' },
+                { id: 'sports', label: t('RES_MAP_SEARCH.SPORTS_SHOPS'), query: 'sports shop', icon: 'dumbbell' },
+                { id: 'grocery', label: t('RES_MAP_SEARCH.GROCERIES'), query: 'supermarket grocery', icon: 'shopping-cart' },
+                { id: 'car_sales', label: t('RES_MAP_SEARCH.CAR_SALES'), query: 'car dealer', icon: 'car' },
+                { id: 'clothes', label: t('RES_MAP_SEARCH.CLOTHES'), query: 'clothes shop', icon: 'shirt' }
             ]
         },
         {
             id: 'favourites',
-            label: 'Ulubione',
+            label: t('RES_MAP_SEARCH.FAVOURITES'),
             query: '',
             icon: 'star',
             subcategories: []
         },
         {
             id: 'services',
-            label: 'Usługi',
+            label: t('RES_MAP_SEARCH.SERVICES'),
             query: 'services',
             icon: 'briefcase',
             subcategories: [
-                { id: 'pharmacy', label: 'Apteki', query: 'pharmacy', icon: 'cross' },
-                { id: 'car_wash', label: 'Automyjnie', query: 'car wash', icon: 'waves' },
-                { id: 'atm', label: 'Bankomaty', query: 'atm', icon: 'banknote' },
-                { id: 'hotel', label: 'Hotele', query: 'hotel', icon: 'bed' },
-                { id: 'parking', label: 'Parkingi', query: 'parking', icon: 'square-parking' },
-                { id: 'post_office', label: 'Poczta', query: 'post office', icon: 'mail' },
-                { id: 'laundry', label: 'Pralnie', query: 'laundry', icon: 'shirt' },
-                { id: 'beauty', label: 'Salony piękności', query: 'beauty salon', icon: 'scissors' },
-                { id: 'charging', label: 'Stacje ładowania', query: 'charging station', icon: 'plug-zap' },
-                { id: 'fuel', label: 'Stacje paliw', query: 'fuel station', icon: 'fuel' },
-                { id: 'healthcare', label: 'Szpitale i przychodnie', query: 'hospital clinic', icon: 'hospital' },
-                { id: 'courier', label: 'Usługi kurierskie', query: 'parcel locker courier', icon: 'package' },
-                { id: 'car_rental', label: 'Wynajem aut', query: 'car rental', icon: 'key-round' }
+                { id: 'pharmacy', label: t('RES_MAP_SEARCH.PHARMACIES'), query: 'pharmacy', icon: 'cross' },
+                { id: 'car_wash', label: t('RES_MAP_SEARCH.CAR_WASHES'), query: 'car wash', icon: 'waves' },
+                { id: 'atm', label: t('RES_MAP_SEARCH.ATMS'), query: 'atm', icon: 'banknote' },
+                { id: 'hotel', label: t('RES_MAP_SEARCH.HOTELS'), query: 'hotel', icon: 'bed' },
+                { id: 'parking', label: t('RES_MAP_SEARCH.PARKING'), query: 'parking', icon: 'square-parking' },
+                { id: 'post_office', label: t('RES_MAP_SEARCH.POST_OFFICES'), query: 'post office', icon: 'mail' },
+                { id: 'laundry', label: t('RES_MAP_SEARCH.LAUNDRIES'), query: 'laundry', icon: 'shirt' },
+                { id: 'beauty', label: t('RES_MAP_SEARCH.BEAUTY_SALONS'), query: 'beauty salon', icon: 'scissors' },
+                { id: 'charging', label: t('RES_MAP_SEARCH.CHARGING_STATIONS'), query: 'charging station', icon: 'plug-zap' },
+                { id: 'fuel', label: t('RES_MAP_SEARCH.FUEL_STATIONS'), query: 'fuel station', icon: 'fuel' },
+                { id: 'healthcare', label: t('RES_MAP_SEARCH.HOSPITALS_AND_CLINICS'), query: 'hospital clinic', icon: 'hospital' },
+                { id: 'courier', label: t('RES_MAP_SEARCH.COURIER_SERVICES'), query: 'parcel locker courier', icon: 'package' },
+                { id: 'car_rental', label: t('RES_MAP_SEARCH.CAR_RENTAL'), query: 'car rental', icon: 'key-round' }
             ]
         }
     ];
@@ -132,7 +133,9 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const updateRadiusLabel = () => {
         const value = Number(radiusInput.value);
-        radiusLabel.textContent = value > 0 ? `${value} km` : 'Widoczny obszar';
+        radiusLabel.textContent = value > 0
+            ? t('ADVANCED_SEARCH.RADIUS_KILOMETRES', { value })
+            : t('ADVANCED_SEARCH.VISIBLE_AREA');
     };
 
     const createChoice = (item, active, onClick) => {
@@ -169,7 +172,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (!subcategorySection.hidden) {
             subcategoriesContainer.append(createChoice(
-                { id: '', label: 'Brak', query: '', icon: 'circle-slash' },
+                { id: '', label: t('RES_MAP_SEARCH.NONE'), query: '', icon: 'circle-slash' },
                 !state.subcategory,
                 () => {
                     state.subcategory = null;

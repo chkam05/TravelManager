@@ -21,22 +21,22 @@
                         <strong>{{ line.line }}</strong>
                     </button>
                     <div>
-                        <strong>{{ timetable.direction_name or 'Brak danych o kierunku' }}</strong>
+                        <strong>{{ timetable.direction_name or t('PUBLIC_TRANSPORT_LINES.NO_DIRECTION_DATA') }}</strong>
                         {% if capabilities.show_stop_departures %}
-                            <span>{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else 'Rozkład' }} · {{ timetable.departures|length }} odjazdów</span>
+                            <span>{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else t('PUBLIC_TRANSPORT_VIEW.TIMETABLE') }} · {{ t('PUBLIC_TRANSPORT_STOPS.DEPARTURES_COUNT', count=timetable.departures|length) }}</span>
                         {% else %}
-                            <span>Trasa linii</span>
+                            <span>{{ t('PUBLIC_TRANSPORT_LINES.LINE_ROUTE') }}</span>
                         {% endif %}
                     </div>
                     <div class="public-transport-stop-lines__header-actions">
                         <button type="button" data-public-transport-action="line" data-url="{{ line.url }}">
-                            <span>Pokaż linię</span>
+                            <span>{{ t('PUBLIC_TRANSPORT_LINES.SHOW_LINE') }}</span>
                             <i data-lucide="chevron-right" aria-hidden="true"></i>
                         </button>
                         {% if capabilities.show_stop_departures %}
                             <button class="public-transport-collapse-button" type="button" aria-expanded="false" aria-controls="public-transport-stop-line-{{ loop.index0 }}" data-public-transport-collapse>
                                 <i data-lucide="chevron-up" aria-hidden="true"></i>
-                                <span class="sr-only">Rozwiń lub zwiń odjazdy linii</span>
+                                <span class="sr-only">{{ t('PUBLIC_TRANSPORT_LINES.TOGGLE_LINE_DEPARTURES') }}</span>
                             </button>
                         {% endif %}
                     </div>
@@ -51,14 +51,14 @@
                                     {% if capabilities.show_high_floor and departure.is_high_floor %}<i data-lucide="accessibility" aria-hidden="true"></i>{% endif %}
                                 </button>
                             {% else %}
-                                <span class="public-transport-empty">Brak odjazdów.</span>
+                                <span class="public-transport-empty">{{ t('PUBLIC_TRANSPORT_VIEW.NO_DEPARTURES') }}</span>
                             {% endfor %}
                         </div>
                         {% if timetable.variants %}
                             <aside class="public-transport-line-stop__variant-list">
-                                <h3>Warianty</h3>
+                                <h3>{{ t('PUBLIC_TRANSPORT_LINES.VARIANTS') }}</h3>
                                 <section>
-                                    <span class="public-transport-line-stop__variant-date">{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else 'Rozkład' }}</span>
+                                    <span class="public-transport-line-stop__variant-date">{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else t('PUBLIC_TRANSPORT_VIEW.TIMETABLE') }}</span>
                                     {% for variant in timetable.variants %}
                                         <div class="public-transport-line-stop__variant">
                                             <strong>{{ variant_codes.get(variant, variant) }}</strong>
@@ -72,7 +72,7 @@
                 {% endif %}
             </article>
         {% else %}
-            <p class="public-transport-empty">Brak linii dla tego stanowiska.</p>
+            <p class="public-transport-empty">{{ t('PUBLIC_TRANSPORT_STOPS.NO_LINES_FOR_PLATFORM') }}</p>
         {% endfor %}
     </div>
 </div>

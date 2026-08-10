@@ -29,9 +29,14 @@ from models.public_transport.public_transport_stop_all import PublicTransportSto
 from models.public_transport.public_transport_stop_platform import PublicTransportStopPlatform
 from models.public_transport.public_transport_vehicle_position import PublicTransportVehiclePosition
 from resources.public_transport.public_transport_type import PublicTransportType
+from resources.public_transport.public_transport_messages import (
+    PublicTransportRuntimeError,
+    PublicTransportValueError,
+    public_transport_message,
+)
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
 from core.gtfs_database import GtfsDatabase
-from utils.public_transport.html_document import HtmlNode, parse_html
+from utils.public_transport.html_document import HtmlDocument, HtmlNode
 
 
 class KrakowDownloader:
@@ -90,7 +95,7 @@ class KrakowDownloader:
     def _download_bytes(
         cls,
         url: str,
-        item: str,
+        item: object,
         current: int = 1,
         total: int = 1
     ) -> bytes:
@@ -123,7 +128,7 @@ class KrakowDownloader:
     def _download_html(
         cls,
         url: str,
-        item: str,
+        item: object,
         current: int = 1,
         total: int = 1
     ) -> str:
@@ -165,7 +170,10 @@ class KrakowDownloader:
             ):
                 archives[feed_id] = cls._download_bytes(
                     feed['static'],
-                    f"GTFS: {feed['name']}",
+                    public_transport_message(
+                        'DOWNLOAD_STATUS.GTFS_FEED',
+                        feed=feed['name']
+                    ),
                     index,
                     total
                 )
@@ -179,7 +187,10 @@ class KrakowDownloader:
                 archives,
                 lambda feed_id, current, count: (
                     PublicTransportDownloadProgress.report(
-                        f'Przetwarzanie GTFS: {labels[feed_id]}',
+                        public_transport_message(
+                            'DOWNLOAD_STATUS.PROCESSING_GTFS',
+                            feed=labels[feed_id]
+                        ),
                         len(cls._FEEDS) + current,
                         len(cls._FEEDS) + count
                     )
@@ -385,7 +396,9 @@ class KrakowDownloader:
         selected_trip_id = values.get('trip', '')
         service_date = cls._selected_date(url)
         if feed_id not in cls._FEEDS or not route_id:
-            raise ValueError('Nieprawidłowy identyfikator linii GTFS.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.INVALID_GTFS_LINE_ID'
+            )
 
         with cls._connection() as connection:
             route = connection.execute(
@@ -397,7 +410,9 @@ class KrakowDownloader:
                 (feed_id, route_id)
             ).fetchone()
             if route is None:
-                raise ValueError('Nie znaleziono linii w danych GTFS.')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GTFS_LINE_NOT_FOUND'
+                )
             variants = cls._line_variants(
                 connection,
                 feed_id,
@@ -743,14 +758,14 @@ class KrakowDownloader:
             if counts[label] > 1:
                 stops = item['stops']
                 label = (
-                    f'{label} · przez {stops[len(stops) // 2]}'
+                    f'{label} · {stops[len(stops) // 2]}'
                     if len(stops) > 2
-                    else f'{label} · bez przystanków pośrednich'
+                    else f'{label} · ∅'
                 )
             unique = label
             suffix = 2
             while unique in used:
-                unique = f'{label} · wariant {suffix}'
+                unique = f'{label} · {suffix}'
                 suffix += 1
             used.add(unique)
             result[item['old']] = unique
@@ -862,7 +877,9 @@ class KrakowDownloader:
             or not trip_id
             or not stop_id
         ):
-            raise ValueError('Nieprawidłowy adres rozkładu GTFS.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.INVALID_GTFS_TIMETABLE_URL'
+            )
 
         with cls._connection() as connection:
             route = connection.execute(
@@ -887,7 +904,9 @@ class KrakowDownloader:
                 (feed_id, stop_id)
             ).fetchone()
             if route is None or selected_trip is None or stop is None:
-                raise ValueError('Nie znaleziono rozkładu w danych GTFS.')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GTFS_TIMETABLE_NOT_FOUND'
+                )
             service_ids = cls._service_ids(
                 connection,
                 feed_id,
@@ -1036,7 +1055,13 @@ class KrakowDownloader:
         """Builds grouped stops, platforms and serving lines from GTFS."""
         del url
         if progress_callback:
-            progress_callback(1, 1, cls.CITY_NAME)
+            progress_callback(
+                1,
+                1,
+                public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.KRAKOW_NAME'
+                )
+            )
         with cls._connection(refresh) as connection:
             stop_rows = connection.execute("""
                 SELECT *
@@ -1156,7 +1181,9 @@ class KrakowDownloader:
                 references = [(feed_id, stop_id)]
         service_date = cls._selected_date(url)
         if not references:
-            raise ValueError('Nieprawidłowy identyfikator przystanku GTFS.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.INVALID_GTFS_STOP_ID'
+            )
 
         entries: dict[
             tuple[str, str, str, Any],
@@ -1312,7 +1339,7 @@ class KrakowDownloader:
         announcements = cls.parse_announcements(
             cls._download_html(
                 cls.ANNOUNCEMENTS_URL,
-                'Lista komunikatów'
+                public_transport_message('DOWNLOAD_STATUS.ANNOUNCEMENT_LIST')
             ),
             cls.ANNOUNCEMENTS_URL,
             line
@@ -1341,7 +1368,7 @@ class KrakowDownloader:
         line: str = ''
     ) -> list[PublicTransportAnnouncement]:
         """Parses typed announcement summaries and affected lines."""
-        document = parse_html(html)
+        document = HtmlDocument.parse(html)
         result: list[PublicTransportAnnouncement] = []
         source_url = source_url or cls.ANNOUNCEMENTS_URL
         for panel in document.find_all('div', 'route-info-panel'):
@@ -1388,7 +1415,12 @@ class KrakowDownloader:
         return cls.parse_announcement(
             cls._download_html(
                 url,
-                f'Komunikat „{description}”' if description else 'Komunikat',
+                public_transport_message(
+                    'DOWNLOAD_STATUS.ANNOUNCEMENT_DETAILS',
+                    description=description
+                ) if description else public_transport_message(
+                    'DOWNLOAD_STATUS.ANNOUNCEMENT'
+                ),
                 current,
                 total
             ),
@@ -1402,7 +1434,7 @@ class KrakowDownloader:
         source_url: str
     ) -> PublicTransportAnnouncement:
         """Parses full announcement text, dates and affected lines."""
-        document = parse_html(html)
+        document = HtmlDocument.parse(html)
         main = document.find('main') or document
         heading = main.find('h1', 'section-title')
         subtitle = main.find('h2', 'announcement-subtitle')
@@ -1581,7 +1613,10 @@ class KrakowDownloader:
         ):
             payload = cls._download_bytes(
                 feed['vehicles'],
-                f"Pojazdy na żywo: {feed['name']}",
+                public_transport_message(
+                    'DOWNLOAD_STATUS.LIVE_VEHICLES',
+                    feed=feed['name']
+                ),
                 index,
                 total
             )
@@ -1617,8 +1652,8 @@ class KrakowDownloader:
         try:
             from google.transit import gtfs_realtime_pb2
         except ImportError as error:
-            raise RuntimeError(
-                'Brak biblioteki gtfs-realtime-bindings.'
+            raise PublicTransportRuntimeError(
+                'PUBLIC_TRANSPORT_ERROR.GTFS_REALTIME_LIBRARY_MISSING'
             ) from error
         message = gtfs_realtime_pb2.FeedMessage()
         message.ParseFromString(payload)
@@ -1663,9 +1698,9 @@ class KrakowDownloader:
             status = ''
             if vehicle.HasField('current_status'):
                 status = {
-                    0: 'Zbliża się do przystanku',
-                    1: 'Na przystanku',
-                    2: 'W drodze do przystanku'
+                    0: 'PUBLIC_TRANSPORT_VEHICLE_STATUS.APPROACHING_STOP',
+                    1: 'PUBLIC_TRANSPORT_VEHICLE_STATUS.STOPPED_AT_STOP',
+                    2: 'PUBLIC_TRANSPORT_VEHICLE_STATUS.IN_TRANSIT_TO_STOP'
                 }.get(int(vehicle.current_status), '')
             recorded_at = (
                 datetime.fromtimestamp(
@@ -1712,7 +1747,9 @@ class KrakowDownloader:
         feed_id = values.get('feed', '')
         trip_id = values.get('trip', '')
         if feed_id not in cls._FEEDS or not trip_id:
-            raise ValueError('Nieprawidłowy identyfikator kursu GTFS.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.INVALID_GTFS_TRIP_ID'
+            )
 
         with cls._connection() as connection:
             trip = connection.execute(
@@ -1741,7 +1778,9 @@ class KrakowDownloader:
             ).fetchall()
 
         if trip is None or not rows:
-            raise ValueError('Nie znaleziono kursu w danych GTFS.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.GTFS_TRIP_NOT_FOUND'
+            )
 
         first_seconds = cls._clock_sort_value(
             str(rows[0]['departure_time'])

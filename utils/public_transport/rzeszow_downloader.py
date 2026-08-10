@@ -5,6 +5,10 @@ from threading import Lock
 from typing import ClassVar
 
 from config import SETTINGS_DIR
+from resources.public_transport.public_transport_messages import (
+    PublicTransportRuntimeError,
+    public_transport_message,
+)
 from utils.public_transport.warsaw_downloader import WarsawDownloader
 
 # Stable API endpoint by numeric dataset ID — slug-based endpoint returns 500.
@@ -75,14 +79,24 @@ class RzeszowDownloader(WarsawDownloader):
         """Queries the open-data portal API and returns the newest GTFS ZIP URL."""
         payload = super()._download_bytes(
             _RESOURCES_API,
-            'Lista archiwów GTFS: Rzeszów'
+            public_transport_message(
+                'DOWNLOAD_STATUS.GTFS_ARCHIVE_LIST',
+                provider=public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.RZESZOW_NAME'
+                )
+            )
         )
         resources = json.loads(payload.decode('utf-8'))
         for resource in resources:
             file_url = resource.get('file') or ''
             if file_url.endswith('.zip'):
                 return file_url
-        raise RuntimeError('Nie udało się ustalić aktualnego pliku GTFS Rzeszowa.')
+        raise PublicTransportRuntimeError(
+            'PUBLIC_TRANSPORT_ERROR.CURRENT_GTFS_FILE_UNAVAILABLE',
+            provider=public_transport_message(
+                'RES_PUBLIC_TRANSPORT_PROVIDER.RZESZOW_NAME'
+            )
+        )
 
     @classmethod
     def _download_bytes(
@@ -92,4 +106,3 @@ class RzeszowDownloader(WarsawDownloader):
         if url == _RESOURCES_API:
             url = cls._current_static_url()
         return super()._download_bytes(url, item, current, total)
-

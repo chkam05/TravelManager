@@ -1,21 +1,21 @@
 <aside class="public-transport-vehicle-panel" id="public-transport-vehicle-panel" aria-labelledby="public-transport-vehicle-panel-title" aria-hidden="true">
     <header class="public-transport-vehicle-panel__header">
-        <div class="public-transport-vehicle-panel__icon" aria-hidden="true"><i data-lucide="bus-front"></i></div>
+        <div class="public-transport-vehicle-panel__icon" data-vehicle-panel-icon aria-hidden="true"><i data-lucide="bus-front"></i></div>
         <div class="public-transport-vehicle-panel__heading">
-            <span>Pojazd komunikacji miejskiej</span>
+            <span>{{ t('PANEL_PUBLIC_TRANSPORT_VEHICLE.PUBLIC_TRANSPORT_VEHICLE') }}</span>
             <strong id="public-transport-vehicle-panel-title" data-vehicle-panel-line></strong>
             <small data-vehicle-panel-trip hidden></small>
         </div>
-        <button class="public-transport-vehicle-panel__close" data-vehicle-panel-close type="button" aria-label="Zamknij informacje o pojeździe"></button>
+        <button class="public-transport-vehicle-panel__close" data-vehicle-panel-close type="button" aria-label="{{ t('PANEL_PUBLIC_TRANSPORT_VEHICLE.CLOSE_VEHICLE_INFORMATION') }}"></button>
     </header>
     <dl class="public-transport-vehicle-panel__details">
-        <div data-vehicle-panel-field="vehicle_label"><dt>Numer boczny</dt><dd></dd></div>
-        <div data-vehicle-panel-field="brigade"><dt>Brygada</dt><dd></dd></div>
-        <div data-vehicle-panel-field="direction"><dt>Kierunek</dt><dd></dd></div>
-        <div data-vehicle-panel-field="next_stop"><dt>Następny przystanek</dt><dd></dd></div>
-        <div data-vehicle-panel-field="destination"><dt>Przystanek końcowy</dt><dd></dd></div>
-        <div data-vehicle-panel-field="status"><dt>Status</dt><dd></dd></div>
-        <div data-vehicle-panel-field="source_code"><dt>Kod źródłowy</dt><dd></dd></div>
-        <div data-vehicle-panel-field="recorded_at"><dt>Aktualizacja</dt><dd></dd></div>
+        <div data-vehicle-panel-field="vehicle_label"><dt>{{ t('PANEL_PUBLIC_TRANSPORT_VEHICLE.FLEET_NUMBER') }}</dt><dd></dd></div>
+        <div data-vehicle-panel-field="brigade"><dt>{{ t('PANEL_PUBLIC_TRANSPORT_VEHICLE.BRIGADE') }}</dt><dd></dd></div>
+        <div data-vehicle-panel-field="direction"><dt>{{ t('PUBLIC_TRANSPORT_VIEW.DIRECTION') }}</dt><dd></dd></div>
+        <div data-vehicle-panel-field="next_stop"><dt>{{ t('PANEL_PUBLIC_TRANSPORT_VEHICLE.NEXT_STOP') }}</dt><dd></dd></div>
+        <div data-vehicle-panel-field="destination"><dt>{{ t('PANEL_PUBLIC_TRANSPORT_VEHICLE.FINAL_STOP') }}</dt><dd></dd></div>
+        <div data-vehicle-panel-field="status"><dt>{{ t('COMMON.STATUS') }}</dt><dd></dd></div>
+        <div data-vehicle-panel-field="source_code"><dt>{{ t('PANEL_PUBLIC_TRANSPORT_VEHICLE.SOURCE_CODE') }}</dt><dd></dd></div>
+        <div data-vehicle-panel-field="recorded_at"><dt>{{ t('PANEL_PUBLIC_TRANSPORT_VEHICLE.UPDATED') }}</dt><dd></dd></div>
     </dl>
 </aside>

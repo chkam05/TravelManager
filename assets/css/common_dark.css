@@ -925,6 +925,17 @@ body {
     background: var(--text-primary);
 }
 
+.header__language-label {
+    color: var(--text-secondary);
+}
+
+.header__language-select {
+    border-color: var(--border-strong);
+    background: var(--surface-background);
+    color: var(--text-primary);
+    box-shadow: 0 10px 22px var(--shadow-color);
+}
+
 .header__search-input {
     border-color: var(--border-strong);
     background: var(--surface-background);

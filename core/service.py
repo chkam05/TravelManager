@@ -1,15 +1,24 @@
 from __future__ import annotations
-from flask import Blueprint, Flask
+from flask import Blueprint, Flask, g
 from threading import Lock, Thread, current_thread
 from typing import Any
 from werkzeug.serving import make_server
 
 from storage.settings_storage import SettingsStorage
+from config import PROJECT_ROOT
+from core.language_service import LanguageService
 
 
 class Service:
 
-    def __init__(self, host: str, port: int, settings_storage: SettingsStorage, **args: Any):
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        settings_storage: SettingsStorage,
+        forced_locale: str | None = None,
+        **args: Any
+    ):
         self._host = host
         self._port = port
         self._app_url = f'http://{host}:{port}'
@@ -17,9 +26,36 @@ class Service:
         self._service = Flask(__name__, **args)
         self._server: Any | None = None
         self._settings_storage = settings_storage
+        self._language_service = LanguageService(PROJECT_ROOT / 'assets' / 'languages')
+        self._forced_locale = (
+            self._language_service.normalize_locale(forced_locale)
+            if forced_locale is not None
+            else None
+        )
         self._thread: Thread | None = None
         self._lock = Lock()
+        self._configure_language_service()
         self._register_controllers()
+
+    def _configure_language_service(self) -> None:
+        """Registers the request locale and translation function for Jinja."""
+        self._service.extensions[LanguageService.EXTENSION_KEY] = self._language_service
+
+        @self._service.before_request
+        def select_request_language() -> None:
+            settings = self._settings_storage.load()
+            g.language = self._forced_locale or self._language_service.normalize_locale(
+                settings.ui.language
+            )
+
+        self._service.jinja_env.globals['t'] = self._translate_template
+
+    def _translate_template(self, key: str, **parameters: object) -> str:
+        return self._language_service.translate(
+            key,
+            locale=getattr(g, 'language', LanguageService.DEFAULT_LOCALE),
+            parameters=parameters
+        )
     
     #region Properties
 
@@ -42,7 +78,7 @@ class Service:
         from controllers.window_controller import WindowController
 
         self._register_controller(FuelController())
-        self._register_controller(WindowController(self._app_url, self._settings_storage))
+        self._register_controller(WindowController(self._settings_storage))
         self._register_controller(ViewController(self._app_url))
         self._register_controller(MapController())
         self._register_controller(PublicTransportController(self._settings_storage))

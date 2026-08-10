@@ -9,6 +9,11 @@ from urllib.parse import parse_qs, urlparse
 from flask import jsonify, render_template, request
 
 from core.api.base_controller import BaseController
+from core.language_service import LanguageService
+from resources.public_transport.public_transport_messages import (
+    PublicTransportValueError,
+    resolve_public_transport_message,
+)
 from resources.public_transport.public_transport_providers import PublicTransportProviders
 from resources.public_transport.public_transport_translation import PublicTransportTranslation
 from resources.public_transport.public_transport_type import PublicTransportType
@@ -104,6 +109,7 @@ class PublicTransportController(BaseController):
         return self._render(provider_id, lambda downloader: render_template(
             'public_transport/stops.html',
             city_groups=self._stop_groups(self._load_stops(provider_id, downloader)),
+            city_name=self._city_name,
             capabilities=PublicTransportProviders.capabilities(provider_id)
         ))
 
@@ -112,7 +118,9 @@ class PublicTransportController(BaseController):
         try:
             PublicTransportProviders.downloader(provider_id)
         except ValueError as error:
-            return jsonify({'error': str(error)}), 400
+            return jsonify({
+                'error': resolve_public_transport_message(error)
+            }), 400
         with self._cache_lock:
             progress = dict(self._download_progress.get(provider_id, {
                 'status': 'idle',
@@ -135,7 +143,9 @@ class PublicTransportController(BaseController):
                 available = bool(getattr(downloader, 'has_local_data', lambda: False)())
             return jsonify({'available': available})
         except ValueError as error:
-            return jsonify({'error': str(error)}), 400
+            return jsonify({
+                'error': resolve_public_transport_message(error)
+            }), 400
 
     def stops_progress(self, provider_id: str):
         """Keeps compatibility with the original stop progress endpoint."""
@@ -150,6 +160,7 @@ class PublicTransportController(BaseController):
                 route_points=self._line_route_points(model),
                 routes_by_direction=self._line_routes_by_direction(model),
                 date_options=self._date_options(model.dates),
+                city_name=self._city_name,
                 vehicle_feed=(parse_qs(urlparse(url).query).get('feed') or [''])[0],
                 capabilities=PublicTransportProviders.capabilities(provider_id)
             )
@@ -226,13 +237,12 @@ class PublicTransportController(BaseController):
             )
             return jsonify(model.to_dict())
         except ValueError as error:
-            return jsonify({'error': str(error)}), 400
-        except Exception as error:
             return jsonify({
-                'error': (
-                    'Nie udało się pobrać treści komunikatu: '
-                    f'{error}'
-                )
+                'error': resolve_public_transport_message(error)
+            }), 400
+        except Exception:
+            return jsonify({
+                'error': LanguageService.translate_current('PUBLIC_TRANSPORT_ERROR.LOAD_ANNOUNCEMENT_FAILED')
             }), 502
 
     def vehicle_positions(self, provider_id: str):
@@ -243,8 +253,8 @@ class PublicTransportController(BaseController):
                 PublicTransportProviders.CAPABILITY_SHOW_VEHICLE_POSITIONS,
                 False
             ):
-                raise ValueError(
-                    'Ten przewoźnik nie udostępnia pozycji pojazdów.'
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.VEHICLE_POSITIONS_UNAVAILABLE'
                 )
             downloader = PublicTransportProviders.downloader(provider_id)
             line = str(request.args.get('line') or '').strip()
@@ -255,21 +265,29 @@ class PublicTransportController(BaseController):
             positions = downloader.download_vehicle_positions(**arguments)
             return jsonify({
                 'positions': [
-                    position.to_dict()
+                    self._vehicle_position_payload(position)
                     for position in positions
                 ]
             })
         except ValueError as error:
-            return jsonify({'error': str(error)}), 400
-        except Exception as error:
             return jsonify({
-                'error': (
-                    'Nie udało się pobrać pozycji pojazdów: '
-                    f'{error}'
-                )
+                'error': resolve_public_transport_message(error)
+            }), 400
+        except Exception:
+            return jsonify({
+                'error': LanguageService.translate_current('PUBLIC_TRANSPORT_ERROR.LOAD_VEHICLE_POSITIONS_FAILED')
             }), 502
 
     #endregion Endpoints
+
+    @staticmethod
+    def _vehicle_position_payload(position) -> dict[str, Any]:
+        """Localizes deferred GTFS status keys at the API boundary."""
+        payload = position.to_dict()
+        status = str(payload.get('status') or '')
+        if status.startswith('PUBLIC_TRANSPORT_VEHICLE_STATUS.'):
+            payload['status'] = LanguageService.translate_current(status)
+        return payload
 
     #region Rendering
 
@@ -284,7 +302,7 @@ class PublicTransportController(BaseController):
         )
 
         def update(
-            item: str,
+            item: object,
             current: int,
             total: int,
             attempt: int,
@@ -293,7 +311,7 @@ class PublicTransportController(BaseController):
             self._set_download_progress(
                 provider_id,
                 'downloading',
-                item,
+                resolve_public_transport_message(item),
                 current,
                 total,
                 attempt,
@@ -313,28 +331,30 @@ class PublicTransportController(BaseController):
             )
             return result
         except ValueError as error:
+            message = resolve_public_transport_message(error)
             self._set_download_progress(
                 provider_id,
                 'error',
-                str(error),
+                message,
                 0,
                 0
             )
             return render_template(
                 'public_transport/error.html',
-                message=str(error)
+                message=message
             ), 400
-        except Exception as error:
+        except Exception:
+            message = LanguageService.translate_current('PUBLIC_TRANSPORT_ERROR.LOAD_DATA_FAILED')
             self._set_download_progress(
                 provider_id,
                 'error',
-                str(error),
+                message,
                 0,
                 0
             )
             return render_template(
                 'public_transport/error.html',
-                message=f'Nie udało się pobrać danych komunikacji miejskiej: {error}'
+                message=message
             ), 502
 
     def _render_url(self, provider_id: str, renderer: Callable):
@@ -616,7 +636,10 @@ class PublicTransportController(BaseController):
                 if normalized and normalized not in variants:
                     variants.append(normalized)
         return {
-            variant: f'W{index}'
+            variant: LanguageService.translate_current(
+                'PUBLIC_TRANSPORT_VIEW.VARIANT_CODE',
+                index=index
+            )
             for index, variant in enumerate(variants, start=1)
         }
 
@@ -658,8 +681,24 @@ class PublicTransportController(BaseController):
         for stop in sorted(stops, key=lambda item: (item.city.name, item.name)):
             grouped[stop.city.name].append(stop)
         return [
-            {'city': city, 'stops': city_stops}
+            {
+                'city': PublicTransportController._city_name(city),
+                'stops': city_stops
+            }
             for city, city_stops in grouped.items()
         ]
+
+    @staticmethod
+    def _city_name(value: object) -> str:
+        """Localizes a descriptive suffix without translating a proper name."""
+        name = str(value or '').strip()
+        suffix_keys = {
+            ' i okolice': 'PUBLIC_TRANSPORT_STOPS.CITY_AND_SURROUNDING_AREA',
+            ' i aglomeracja': 'PUBLIC_TRANSPORT_STOPS.CITY_AND_METROPOLITAN_AREA',
+        }
+        for suffix, key in suffix_keys.items():
+            if name.casefold().endswith(suffix):
+                return LanguageService.translate_current(key, city=name[:-len(suffix)])
+        return name
 
     #endregion Rendering

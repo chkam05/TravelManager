@@ -1,4 +1,7 @@
+import re
 from typing import Any, ClassVar, TypeAlias
+
+from core.language_service import LanguageService
 
 from resources.enums.access import Access
 from resources.enums.advertising import Advertising
@@ -122,6 +125,20 @@ class MapLegend:
     FIELD_TITLE: ClassVar[str] = 'title'
     FIELD_ICON: ClassVar[str] = 'icon'
     FIELD_REQUIREMENTS: ClassVar[str] = 'requirements'
+    TRANSLATION_GROUP: ClassVar[str] = 'RES_MAP_LEGEND'
+
+    @classmethod
+    def title_key(cls, item_id: str) -> str:
+        """Returns a stable English translation key derived from an item id."""
+        member = re.sub(r'[^A-Z0-9]+', '_', item_id.upper()).strip('_')
+        return f'{cls.TRANSLATION_GROUP}.{member}'
+
+    @classmethod
+    def title(cls, item_id: str, fallback: str | None = None) -> str:
+        """Returns a localized presentation title without changing legend data."""
+        key = cls.title_key(item_id)
+        localized = LanguageService.translate_current(key)
+        return fallback if localized == key and fallback is not None else localized
 
     SYMBOLS: ClassVar[LegendDict] = {
         MapSymbols.GASTRONOMY: {

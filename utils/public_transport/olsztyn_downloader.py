@@ -6,6 +6,10 @@ from typing import ClassVar
 from urllib.parse import urljoin
 
 from config import SETTINGS_DIR
+from resources.public_transport.public_transport_messages import (
+    PublicTransportRuntimeError,
+    public_transport_message,
+)
 from utils.public_transport.warsaw_downloader import WarsawDownloader
 
 
@@ -37,7 +41,12 @@ class OlsztynDownloader(WarsawDownloader):
         """Selects the newest archive whose start date is not in the future."""
         payload = super()._download_bytes(
             cls._STATIC_INDEX,
-            'Lista archiwów GTFS: Olsztyn'
+            public_transport_message(
+                'DOWNLOAD_STATUS.GTFS_ARCHIVE_LIST',
+                provider=public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.OLSZTYN_NAME'
+                )
+            )
         )
         html = payload.decode('utf-8', errors='replace')
         candidates: list[tuple[date, str]] = []
@@ -54,7 +63,12 @@ class OlsztynDownloader(WarsawDownloader):
             candidates.append((start_date, urljoin(cls.BASE_URL, url)))
         active = [candidate for candidate in candidates if candidate[0] <= date.today()]
         if not active:
-            raise RuntimeError('Nie udało się ustalić aktualnego pliku GTFS Olsztyna.')
+            raise PublicTransportRuntimeError(
+                'PUBLIC_TRANSPORT_ERROR.CURRENT_GTFS_FILE_UNAVAILABLE',
+                provider=public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.OLSZTYN_NAME'
+                )
+            )
         return max(active, key=lambda candidate: candidate[0])[1]
 
     @classmethod

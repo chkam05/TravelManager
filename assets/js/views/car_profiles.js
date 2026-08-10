@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const view = document.querySelector('[data-app-view="car-profiles"]');
     const form = document.querySelector('#car-profiles-search');
     const searchInput = document.querySelector('#car-profiles-search-input');
@@ -18,7 +20,13 @@ document.addEventListener('travel-manager:views-ready', () => {
         activeCarProfileId: null
     };
 
-    const name = (profile) => profile.name || [profile.brand, profile.model].filter(Boolean).join(' ') || 'Samochód';
+    const name = (profile) => profile.name
+        || [profile.brand, profile.model].filter(Boolean).join(' ')
+        || t('CAR_PROFILES_VIEW.DEFAULT_CAR');
+    const selectValueLabel = (fieldName, value) => {
+        const options = document.querySelector(`[name="${fieldName}"]`)?.options || [];
+        return Array.from(options).find((option) => option.value === value)?.textContent || value;
+    };
     const meta = (profile) => [
         profile.brand,
         profile.model,
@@ -28,11 +36,18 @@ document.addEventListener('travel-manager:views-ready', () => {
     ].filter(Boolean).join(' · ');
     const spec = (profile) => [
         profile.registration_number,
-        profile.fuel_type,
-        profile.power_hp ? `${profile.power_hp} KM` : null,
-        profile.power_kw ? `${profile.power_kw} kW` : null,
+        selectValueLabel('fuel_type', profile.fuel_type),
+        profile.power_hp
+            ? t('PANEL_CAR_DETAILS.POWER_HP_VALUE', { value: profile.power_hp })
+            : null,
+        profile.power_kw
+            ? t('PANEL_CAR_DETAILS.POWER_KW_VALUE', { value: profile.power_kw })
+            : null,
         profile.min_consumption && profile.max_consumption
-            ? `${profile.min_consumption}-${profile.max_consumption} L/100km`
+            ? t('PANEL_CAR_DETAILS.CONSUMPTION_RANGE_VALUE', {
+                minimum: profile.min_consumption,
+                maximum: profile.max_consumption
+            })
             : null
     ].filter(Boolean).join(' · ');
 
@@ -50,7 +65,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             : [...state.profiles];
 
         return items.sort((left, right) => {
-            const result = name(left).localeCompare(name(right), 'pl', { sensitivity: 'base' });
+            const result = name(left).localeCompare(name(right), locale, { sensitivity: 'base' });
             return state.sortDirection === 'asc' ? result : -result;
         });
     };
@@ -65,8 +80,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const deleteProfile = async (profile) => {
         const accepted = await window.travelManagerDialogs?.yesNo({
-            title: 'Usunąć samochód?',
-            description: `Profil „${name(profile)}” zostanie usunięty.`,
+            title: t('CAR_PROFILES_VIEW.DELETE_TITLE'),
+            description: t('CAR_PROFILES_VIEW.DELETE_DESCRIPTION', { name: name(profile) }),
             icon: 'warning'
         });
 
@@ -111,7 +126,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!items.length) {
             const empty = document.createElement('p');
             empty.className = 'car-profiles-view__empty';
-            empty.textContent = state.query ? 'Nie znaleziono samochodów.' : 'Brak profili samochodów.';
+            empty.textContent = state.query
+                ? t('CAR_PROFILES_VIEW.NO_SEARCH_RESULTS')
+                : t('CAR_PROFILES_VIEW.NO_PROFILES');
             list.append(empty);
             return;
         }
@@ -125,22 +142,24 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             const title = document.createElement('div');
             title.className = 'car-profiles-view__name';
-            title.textContent = `${name(profile)}${profile.id === state.activeCarProfileId ? ' · aktywny' : ''}`;
+            title.textContent = profile.id === state.activeCarProfileId
+                ? `${name(profile)} · ${t('CAR_PROFILES_VIEW.ACTIVE')}`
+                : name(profile);
 
             const metaLine = document.createElement('div');
             metaLine.className = 'car-profiles-view__meta';
-            metaLine.textContent = meta(profile) || 'Brak danych podstawowych';
+            metaLine.textContent = meta(profile) || t('CAR_PROFILES_VIEW.NO_BASIC_DATA');
 
             const specLine = document.createElement('div');
             specLine.className = 'car-profiles-view__spec';
-            specLine.textContent = spec(profile) || 'Brak danych technicznych';
+            specLine.textContent = spec(profile) || t('CAR_PROFILES_VIEW.NO_TECHNICAL_DATA');
 
             const actions = document.createElement('div');
             actions.className = 'car-profiles-view__actions';
             actions.append(
-                createButton('Pokaż', 'eye', () => openDetails(profile)),
-                createButton('Edytuj', 'pencil', () => editProfile(profile)),
-                createButton('Usuń', 'trash-2', () => deleteProfile(profile), true)
+                createButton(t('COMMON.SHOW'), 'eye', () => openDetails(profile)),
+                createButton(t('COMMON.EDIT'), 'pencil', () => editProfile(profile)),
+                createButton(t('COMMON.DELETE'), 'trash-2', () => deleteProfile(profile), true)
             );
 
             details.append(title, metaLine, specLine);

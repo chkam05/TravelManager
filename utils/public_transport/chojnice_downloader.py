@@ -23,25 +23,11 @@ from models.public_transport.public_transport_stop import PublicTransportStop
 from models.public_transport.public_transport_stop_all import PublicTransportStopAll
 from models.public_transport.public_transport_stop_platform import PublicTransportStopPlatform
 from resources.public_transport.public_transport_type import PublicTransportType
+from resources.public_transport.public_transport_messages import (
+    PublicTransportValueError,
+    public_transport_message,
+)
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
-
-
-# Day-type index → weekday range used for date labels.
-_WORKDAY = 0   # Monday–Friday (weekday 0–4)
-_SATURDAY = 1  # Saturday (weekday 5)
-_SUNDAY = 2    # Sunday / holiday (weekday 6)
-
-_SECTION_LABELS = ['Dni robocze', 'Soboty', 'Niedziele i święta']
-
-
-def _day_type(weekday: int) -> int:
-    if weekday < 5:
-        return _WORKDAY
-    return _SATURDAY if weekday == 5 else _SUNDAY
-
-
-def _strip_tags(fragment: str) -> str:
-    return html_lib.unescape(re.sub(r'<[^>]+>', '', fragment)).strip()
 
 
 class ChojniceDownloader:
@@ -59,11 +45,25 @@ class ChojniceDownloader:
     _REQUEST_TIMEOUT: ClassVar[int] = 15
     _LINES_LOCK: ClassVar[Lock] = Lock()
     _LINES_CACHE: ClassVar[list[dict] | None] = None
+    _WORKDAY: ClassVar[int] = 0
+    _SATURDAY: ClassVar[int] = 1
+    _SUNDAY: ClassVar[int] = 2
+
+    @classmethod
+    def _day_type(cls, weekday: int) -> int:
+        """Maps a weekday index to the provider's timetable day type."""
+        if weekday < 5:
+            return cls._WORKDAY
+        return cls._SATURDAY if weekday == 5 else cls._SUNDAY
 
     # ------------------------------------------------------------------ HTTP
 
     @classmethod
-    def _fetch(cls, url: str, item: str = 'Dane MZK Chojnice') -> str:
+    def _fetch(
+        cls,
+        url: str,
+        item: object = public_transport_message('DOWNLOAD_STATUS.PROVIDER_DATA')
+    ) -> str:
         request = Request(url, headers={
             'User-Agent': cls._USER_AGENT,
             'Referer': cls.BASE_URL
@@ -89,7 +89,10 @@ class ChojniceDownloader:
         with cls._LINES_LOCK:
             if cls._LINES_CACHE is not None and not refresh:
                 return cls._LINES_CACHE
-            html = cls._fetch(cls.BASE_URL, 'Lista linii MZK Chojnice')
+            html = cls._fetch(
+                cls.BASE_URL,
+                public_transport_message('DOWNLOAD_STATUS.LINE_LIST')
+            )
             entries = re.findall(
                 r'href=["\']https?://rozklad\.com/maps/index\.php'
                 r'\?IDKlienta=CHOJNICE_MZK&IDLinii=([^"\'&#\s]+)[^"\']*["\']'
@@ -196,12 +199,14 @@ class ChojniceDownloader:
     def _dates_for_stop(cls, url: str) -> dict[date, str]:
         """Generates 7 upcoming dates each with the matching day-type URL."""
         q = cls._query(url)
-        selected_type = int(q.get('day_type', _day_type(date.today().weekday())))
+        selected_type = int(q.get(
+            'day_type', cls._day_type(date.today().weekday())
+        ))
         today = date.today()
         dates: dict[date, str] = {}
         for offset in range(7):
             d = today + timedelta(days=offset)
-            dt = _day_type(d.weekday())
+            dt = cls._day_type(d.weekday())
             q_new = dict(q, day_type=dt)
             new_url = urlparse(url)._replace(
                 query=urlencode(q_new)
@@ -235,7 +240,13 @@ class ChojniceDownloader:
             (e['display'] for e in cls._lines() if e['id'] == line_id),
             line_id.lstrip('_')
         )
-        html = cls._fetch(url, f'Linia {display} – Chojnice')
+        html = cls._fetch(
+            url,
+            public_transport_message(
+                'DOWNLOAD_STATUS.LINE_DETAILS',
+                line=display
+            )
+        )
         raw_directions = cls._parse_directions(html, line_id)
 
         directions = []
@@ -246,7 +257,7 @@ class ChojniceDownloader:
                     f'{cls.ROZKLAD_TIMETABLE}'
                     f'?IDKlienta={cls.CLIENT_ID}&cmd=rozID'
                     f'&ID={stop["id"]}&IDLinii={line_id}'
-                    f'&day_type={_day_type(date.today().weekday())}'
+                    f'&day_type={cls._day_type(date.today().weekday())}'
                 )
                 stops.append(PublicTransportDirectionStop(
                     line=display,
@@ -281,7 +292,9 @@ class ChojniceDownloader:
         q = cls._query(url)
         line_id = q.get('IDLinii', '')
         stop_id = q.get('ID', '')
-        day_type = int(q.get('day_type', _day_type(date.today().weekday())))
+        day_type = int(q.get(
+            'day_type', cls._day_type(date.today().weekday())
+        ))
         display = next(
             (e['display'] for e in cls._lines() if e['id'] == line_id),
             line_id.lstrip('_')
@@ -292,21 +305,28 @@ class ChojniceDownloader:
             f'?IDKlienta={cls.CLIENT_ID}&cmd=rozID'
             f'&ID={stop_id}&IDLinii={line_id}'
         )
-        html = cls._fetch(remote_url, f'Rozkład przystanku {stop_id} linii {display}')
+        html = cls._fetch(
+            remote_url,
+            public_transport_message(
+                'DOWNLOAD_STATUS.STOP_TIMETABLE',
+                stop=stop_id,
+                line=display
+            )
+        )
         stop_name, direction_name, valid_from, sections = cls._parse_timetable_html(html)
 
         selected_date = date.today()
         # Shift selected_date to match day_type
         for offset in range(7):
             d = date.today() + timedelta(days=offset)
-            if _day_type(d.weekday()) == day_type:
+            if cls._day_type(d.weekday()) == day_type:
                 selected_date = d
                 break
 
         timetable: dict[date, PublicTransportDateTimetable] = {}
         dates = cls._dates_for_stop(url)
         for d, d_url in dates.items():
-            dt = _day_type(d.weekday())
+            dt = cls._day_type(d.weekday())
             section = next((s for s in sections if s['day_type'] == dt), None)
             if section is None:
                 continue
@@ -352,7 +372,13 @@ class ChojniceDownloader:
             if progress_callback:
                 progress_callback(i, total)
             try:
-                html = cls._fetch(entry['url'], f'Przystanki linii {entry["display"]}')
+                html = cls._fetch(
+                    entry['url'],
+                    public_transport_message(
+                        'DOWNLOAD_STATUS.LINE_STOPS',
+                        line=entry['display']
+                    )
+                )
             except Exception:
                 continue
             directions = cls._parse_directions(html, entry['id'])
@@ -382,7 +408,12 @@ class ChojniceDownloader:
     @classmethod
     def download_ride(cls, url: str, from_first_stop: bool = True):
         del url, from_first_stop
-        raise NotImplementedError('Przejazd nie jest dostępny dla Chojnic.')
+        raise PublicTransportValueError(
+            'PUBLIC_TRANSPORT_ERROR.RIDE_UNAVAILABLE_FOR_PROVIDER',
+            provider=public_transport_message(
+                'RES_PUBLIC_TRANSPORT_PROVIDER.CHOJNICE_NAME'
+            )
+        )
 
     @classmethod
     def download_announcements(

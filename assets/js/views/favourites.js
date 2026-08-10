@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const view = document.querySelector('[data-app-view="favourites"]');
     const form = document.querySelector('#favourites-search');
     const searchInput = document.querySelector('#favourites-search-input');
@@ -36,7 +38,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             [postcode, city].filter(Boolean).join(' ')
         ].filter(Boolean).join(', ');
 
-        return line || place.display_name || 'Brak adresu';
+        return line || place.display_name || t('FAVOURITES_VIEW.NO_ADDRESS');
     };
 
     const coordinatesText = (favourite) => {
@@ -44,7 +46,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const longitude = Number(favourite.longitude);
 
         if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-            return 'Brak koordynatów';
+            return t('FAVOURITES_VIEW.NO_COORDINATES');
         }
 
         return `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
@@ -68,16 +70,18 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const updateTagFilterLabel = () => {
         if (!state.tags.length || !Array.isArray(state.selectedTagIds)) {
-            tagFilterLabel.textContent = 'Tagi: wszystkie';
+            tagFilterLabel.textContent = t('FAVOURITES_VIEW.TAGS_ALL');
             return;
         }
 
         if (!state.selectedTagIds.length) {
-            tagFilterLabel.textContent = 'Tagi: brak';
+            tagFilterLabel.textContent = t('FAVOURITES_VIEW.TAGS_NONE');
             return;
         }
 
-        tagFilterLabel.textContent = `Tagi: ${state.selectedTagIds.length}`;
+        tagFilterLabel.textContent = t('FAVOURITES_VIEW.TAGS_SELECTED', {
+            count: state.selectedTagIds.length
+        });
     };
 
     const getSelectedTagIds = () => Array.from(tagFilterOptions.querySelectorAll('[data-favourites-tag-filter]'))
@@ -90,7 +94,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!state.tags.length) {
             const empty = document.createElement('p');
             empty.className = 'favourites-view__tag-filter-empty';
-            empty.textContent = 'Brak tagów.';
+            empty.textContent = t('FAVOURITE_TAGS_VIEW.NO_TAGS');
             tagFilterOptions.append(empty);
             updateTagFilterLabel();
             return;
@@ -139,7 +143,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             : items;
 
         return visibleItems.sort((left, right) => {
-            const result = left.name.localeCompare(right.name, 'pl', { sensitivity: 'base' });
+            const result = left.name.localeCompare(right.name, locale, { sensitivity: 'base' });
             return state.sortDirection === 'asc' ? result : -result;
         });
     };
@@ -167,8 +171,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const removeFavourite = async (favourite) => {
         const accepted = await window.travelManagerDialogs?.yesNo({
-            title: 'Usunąć z ulubionych?',
-            description: `Miejsce „${favourite.name}” zniknie z ulubionych i z mapy.`,
+            title: t('FAVOURITES_VIEW.DELETE_TITLE'),
+            description: t('FAVOURITES_VIEW.DELETE_DESCRIPTION', { name: favourite.name }),
             icon: 'warning'
         });
 
@@ -198,7 +202,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!items.length) {
             const empty = document.createElement('p');
             empty.className = 'favourites-view__empty';
-            empty.textContent = 'Brak ulubionych miejsc.';
+            empty.textContent = t('FAVOURITES_VIEW.NO_FAVOURITES');
             list.append(empty);
             return;
         }
@@ -230,9 +234,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             item.append(
                 icon,
                 details,
-                createButton('Pokaż', 'eye', () => showFavourite(favourite)),
-                createButton('Edytuj', 'pencil', () => editFavourite(favourite)),
-                createButton('Usuń', 'trash-2', () => removeFavourite(favourite), true)
+                createButton(t('COMMON.SHOW'), 'eye', () => showFavourite(favourite)),
+                createButton(t('COMMON.EDIT'), 'pencil', () => editFavourite(favourite)),
+                createButton(t('COMMON.DELETE'), 'trash-2', () => removeFavourite(favourite), true)
             );
             list.append(item);
         });

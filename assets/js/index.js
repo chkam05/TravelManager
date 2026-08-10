@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    await window.i18n.ready;
     const menuButton = document.querySelector('.header__menu-button');
     const sideMenu = document.querySelector('#side-menu');
     const appShell = document.querySelector('.app-shell');
@@ -59,8 +60,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         carButtonTexts.forEach((text) => {
             text.textContent = activeCarProfile
-                ? (activeCarProfile.name || [activeCarProfile.brand, activeCarProfile.model].filter(Boolean).join(' ') || 'Samochód')
-                : 'Samochód';
+                ? (activeCarProfile.name || [activeCarProfile.brand, activeCarProfile.model].filter(Boolean).join(' ') || window.i18n.t('APP_SHELL.DEFAULT_CAR'))
+                : window.i18n.t('APP_SHELL.DEFAULT_CAR');
         });
     };
 
@@ -213,11 +214,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         button.disabled = false;
 
         if (results.every((result) => result !== false)) {
-            showNotification('Zmiany zostały zapisane.');
+            showNotification(window.i18n.t('APP_SHELL.SETTINGS_SAVED'));
             return;
         }
 
-        showNotification('Nie udało się zapisać zmian.', 'error');
+        showNotification(window.i18n.t('APP_SHELL.SETTINGS_SAVE_FAILED'), 'error');
     });
 
     try {
@@ -230,7 +231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const mapView = document.querySelector('[data-app-view="map"]');
 
         if (mapView) {
-            mapView.textContent = 'Nie udało się załadować widoku.';
+            mapView.textContent = window.i18n.t('APP_SHELL.VIEW_LOAD_FAILED');
         }
     }
 

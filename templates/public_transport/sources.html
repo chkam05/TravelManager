@@ -3,7 +3,7 @@
         {% set providers_with_sources = group.providers | selectattr('attributions') | list %}
         {% if providers_with_sources %}
             <section class="public-transport-sources__region">
-                <h3 class="public-transport-sources__region-heading">{{ group.region | title }}</h3>
+                <h3 class="public-transport-sources__region-heading">{{ group.region }}</h3>
                 <div class="public-transport-sources__list">
                     {% for provider in providers_with_sources %}
                 <p class="public-transport-sources__attribution">

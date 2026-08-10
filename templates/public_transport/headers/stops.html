@@ -1,21 +1,21 @@
 <div class="public-transport-header" data-public-transport-header="stops" hidden>
     <div class="public-transport-header__left">
-        <button class="public-transport-header__button" type="button" data-public-transport-carriers aria-label="Wstecz">
+        <button class="public-transport-header__button" type="button" data-public-transport-carriers aria-label="{{ t('COMMON.BACK') }}">
             <i data-lucide="arrow-left" aria-hidden="true"></i>
         </button>
     </div>
     <form class="public-transport-header__center public-transport-search" data-public-transport-search="stops">
-        <input type="search" placeholder="Wyszukaj przystanek…" autocomplete="off" aria-label="Wyszukaj przystanek">
-        <button type="submit" aria-label="Szukaj"><i data-lucide="search" aria-hidden="true"></i></button>
+        <input type="search" placeholder="{{ t('PUBLIC_TRANSPORT_STOPS.SEARCH_STOP') }}" autocomplete="off" aria-label="{{ t('PUBLIC_TRANSPORT_STOPS.SEARCH_STOP') }}">
+        <button type="submit" aria-label="{{ t('COMMON.SEARCH') }}"><i data-lucide="search" aria-hidden="true"></i></button>
     </form>
     <div class="public-transport-header__right">
         <button class="public-transport-header__button" type="button" data-public-transport-refresh>
             <i data-lucide="refresh-cw" aria-hidden="true"></i>
-            <span>Aktualizuj</span>
+            <span>{{ t('COMMON.UPDATE') }}</span>
         </button>
         <button class="public-transport-header__button public-transport-header__button--primary" type="button" data-public-transport-root="lines">
             <i data-lucide="route" aria-hidden="true"></i>
-            <span>Linie</span>
+            <span>{{ t('PUBLIC_TRANSPORT_VIEW.LINES') }}</span>
         </button>
     </div>
 </div>

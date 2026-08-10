@@ -362,7 +362,7 @@ class FuelPriceDownloader:
                 'lpg': self._parse_price(html, 'LPG')[0]
             }
         except Exception as error:
-            self.poland_warning = f'Nie udało się pobrać cen AutoCentrum: {error}'
+            self.poland_warning = str(error)
             return
 
         for field, price in prices.items():

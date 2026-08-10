@@ -1,6 +1,6 @@
 <div class="information-view">
     <header class="information-view__toolbar">
-        <button class="app-view__back-button" type="button" data-app-back-to-map aria-label="Wstecz">
+        <button class="app-view__back-button" type="button" data-app-back-to-map aria-label="{{ t('COMMON.BACK') }}">
             <i data-lucide="arrow-left" aria-hidden="true"></i>
         </button>
     </header>
@@ -10,29 +10,29 @@
             <div class="information-view__app-icon" aria-hidden="true"></div>
             <div>
                 <h2>{{ app_name }}</h2>
-                <p>{{ app_description or 'Aplikacja do przeglądania map i planowania tras.' }}</p>
+                <p>{{ t('INFORMATION_VIEW.APP_DESCRIPTION') }}</p>
             </div>
         </header>
 
     <dl class="information-view__details">
         <div class="information-view__row">
-            <dt>Nazwa</dt>
+            <dt>{{ t('INFORMATION_VIEW.NAME') }}</dt>
             <dd>{{ app_name }}</dd>
         </div>
         <div class="information-view__row">
-            <dt>Autor</dt>
-            <dd>{{ app_author }}</dd>
+            <dt>{{ t('INFORMATION_VIEW.AUTHOR') }}</dt>
+            <dd>{{ t('INFORMATION_VIEW.COPYRIGHT', author=app_author) }}</dd>
         </div>
         <div class="information-view__row">
-            <dt>Opis</dt>
-            <dd>{{ app_description or 'Brak opisu.' }}</dd>
+            <dt>{{ t('INFORMATION_VIEW.DESCRIPTION') }}</dt>
+            <dd>{{ t('INFORMATION_VIEW.APP_DESCRIPTION') }}</dd>
         </div>
         <div class="information-view__row">
-            <dt>Wersja</dt>
+            <dt>{{ t('INFORMATION_VIEW.VERSION') }}</dt>
             <dd>{{ app_version }}</dd>
         </div>
         <div class="information-view__row">
-            <dt>Adres aplikacji</dt>
+            <dt>{{ t('INFORMATION_VIEW.APPLICATION_ADDRESS') }}</dt>
             <dd>
                 <a class="information-view__link" data-external-url href="{{ app_url }}" rel="noopener noreferrer">{{ app_url }}</a>
             </dd>

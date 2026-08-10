@@ -1,4 +1,3 @@
-import argparse
 import socket
 import sys
 from time import sleep, time
@@ -13,90 +12,13 @@ from config import (
     TEMPLATE_FOLDER
 )
 
+from core.language_service import LanguageService
 from core.service import Service
 from core.webview_window import WebViewWindow
 from core.webview_window_interface import WebViewWindowInterface
 from storage.settings_storage import SettingsStorage
+from utils.command_line_manager import CommandLineManager
 from utils.network_utils import NetworkUtils
-
-
-def _ipv4_argument(value: str) -> str:
-    """Validates an IPv4 command-line argument."""
-    try:
-        return NetworkUtils.normalize_ipv4(value)
-    except (TypeError, ValueError) as error:
-        raise argparse.ArgumentTypeError(str(error)) from error
-
-
-def _port_argument(value: str) -> int:
-    """Validates a TCP port command-line argument."""
-    try:
-        port = int(value)
-    except ValueError as error:
-        raise argparse.ArgumentTypeError('Port musi być liczbą całkowitą.') from error
-
-    if not 1 <= port <= 65535:
-        raise argparse.ArgumentTypeError('Port musi mieścić się w zakresie 1–65535.')
-
-    return port
-
-
-def create_argument_parser() -> argparse.ArgumentParser:
-    """Creates a parser supporting Unix and Windows-style options."""
-    parser = argparse.ArgumentParser(
-        description='Uruchamia aplikację Travel Manager.',
-        add_help=False,
-        prefix_chars='-/'
-    )
-    parser.add_argument(
-        '--ip', '/ip',
-        type=_ipv4_argument,
-        help='Adres IPv4, pod którym serwer ma nasłuchiwać.'
-    )
-    parser.add_argument(
-        '--port', '/port',
-        type=_port_argument,
-        help='Port serwera z zakresu 1–65535.'
-    )
-    parser.add_argument(
-        '--no-window', '/no-window',
-        action='store_true',
-        help='Uruchom wyłącznie serwer, bez okna WebView.'
-    )
-    parser.add_argument(
-        '-h', '--help', '/h', '/help',
-        action='help',
-        help='Pokaż ten komunikat pomocy i zakończ.'
-    )
-    return parser
-
-
-def prepare_cli_console() -> None:
-    """Attaches windowed builds to a terminal when CLI options are used."""
-    if len(sys.argv) <= 1 or (sys.stdout is not None and sys.stderr is not None):
-        return
-
-    if sys.platform == 'win32':
-        try:
-            import ctypes
-
-            kernel32 = ctypes.windll.kernel32
-            if not kernel32.AttachConsole(-1):
-                kernel32.AllocConsole()
-            kernel32.SetConsoleCtrlHandler(None, False)
-            sys.stdin = open('CONIN$', 'r', encoding='utf-8')
-            sys.stdout = open('CONOUT$', 'w', encoding='utf-8', buffering=1)
-            sys.stderr = open('CONOUT$', 'w', encoding='utf-8', buffering=1)
-        except (OSError, AttributeError):
-            return
-        return
-
-    try:
-        sys.stdin = open('/dev/tty', 'r', encoding='utf-8')
-        sys.stdout = open('/dev/tty', 'w', encoding='utf-8', buffering=1)
-        sys.stderr = open('/dev/tty', 'w', encoding='utf-8', buffering=1)
-    except OSError:
-        return
 
 
 class App:
@@ -110,10 +32,19 @@ class App:
         webview_window: WebViewWindowInterface | None = None,
         ip: str | None = None,
         port: int | None = None,
-        no_window: bool = False
+        no_window: bool = False,
+        locale: str | None = None
     ):
         self._settings_storage = SettingsStorage()
         settings = self._settings_storage.load()
+        self._forced_locale = (
+            LanguageService.normalize_locale(locale)
+            if locale is not None
+            else None
+        )
+        self._locale = self._forced_locale or LanguageService.normalize_locale(
+            settings.ui.language
+        )
         network_ip = (
             NetworkUtils.get_local_ip()
             if ip is None and settings.ui.move_to_network
@@ -127,6 +58,7 @@ class App:
             self._host,
             self._port,
             settings_storage=self._settings_storage,
+            forced_locale=self._forced_locale,
             template_folder=TEMPLATE_FOLDER,
             static_folder=STATIC_FOLDER,
             static_url_path=STATIC_URL_PATH
@@ -136,7 +68,8 @@ class App:
             self._webview_window = WebViewWindow(
                 url=self._app_url,
                 settings_storage=self._settings_storage,
-                on_all_windows_closed=self._service.stop
+                on_all_windows_closed=self._service.stop,
+                forced_locale=self._forced_locale
             )
 
     @classmethod
@@ -157,13 +90,21 @@ class App:
         """Starts the local service and native WebView application."""
         if self._no_window:
             self._print_console(
-                f'Serwer aplikacji działa pod adresem: {self._app_url}'
+                CommandLineManager.translate(
+                    'CLI.SERVER_RUNNING', self._locale, url=self._app_url
+                )
             )
-            self._print_console('Naciśnij Ctrl+C, aby go zatrzymać.')
+            self._print_console(
+                CommandLineManager.translate('CLI.PRESS_CTRL_C', self._locale)
+            )
             try:
                 self._service.run()
             except KeyboardInterrupt:
-                self._print_console('\nZatrzymywanie serwera…')
+                self._print_console(
+                    '\n' + CommandLineManager.translate(
+                        'CLI.STOPPING_SERVER', self._locale
+                    )
+                )
             finally:
                 self._service.stop()
             return
@@ -172,10 +113,14 @@ class App:
 
         if not self.__wait_for_server__(self._host, self._port, SERVICE_TIMEOUT):
             self._service.stop()
-            raise RuntimeError('Flask server failed to start.')
+            raise RuntimeError(CommandLineManager.translate(
+                'CLI.SERVER_START_FAILED', self._locale
+            ))
 
         if self._webview_window is None:
-            raise RuntimeError('WebView window is not configured.')
+            raise RuntimeError(CommandLineManager.translate(
+                'CLI.WINDOW_NOT_CONFIGURED', self._locale
+            ))
 
         self._webview_window.create()
 
@@ -192,10 +137,11 @@ class App:
 
 
 if __name__ == '__main__':
-    prepare_cli_console()
-    arguments = create_argument_parser().parse_args()
+    CommandLineManager.prepare_console()
+    arguments = CommandLineManager.parse_arguments()
     App(
         ip=arguments.ip,
         port=arguments.port,
-        no_window=arguments.no_window
+        no_window=arguments.no_window,
+        locale=CommandLineManager.language_locale(arguments.language)
     ).startup()

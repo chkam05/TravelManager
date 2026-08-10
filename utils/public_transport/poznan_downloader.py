@@ -6,6 +6,7 @@ from typing import ClassVar
 from urllib.parse import urlencode
 
 from config import SETTINGS_DIR
+from resources.public_transport.public_transport_messages import public_transport_message
 from utils.public_transport.krakow_downloader import KrakowDownloader
 
 
@@ -53,7 +54,12 @@ class PoznanDownloader(KrakowDownloader):
         try:
             html = super()._download_html(
                 cls._STATIC_INDEX,
-                'Lista archiwów GTFS: ZTM Poznań'
+                public_transport_message(
+                    'DOWNLOAD_STATUS.GTFS_ARCHIVE_LIST',
+                    provider=public_transport_message(
+                        'RES_PUBLIC_TRANSPORT_PROVIDER.POZNAN_NAME'
+                    )
+                )
             )
             today = date.today().strftime('%Y%m%d')
             names = set(re.findall(r'\b(\d{8}_\d{8}\.zip)\b', html))
@@ -67,7 +73,7 @@ class PoznanDownloader(KrakowDownloader):
 
     @classmethod
     def _download_bytes(
-        cls, url: str, item: str, current: int = 1, total: int = 1
+        cls, url: str, item: object, current: int = 1, total: int = 1
     ) -> bytes:
         """Resolves Poznań's date-ranged archive before downloading it."""
         if url == cls._STATIC_ENDPOINT:

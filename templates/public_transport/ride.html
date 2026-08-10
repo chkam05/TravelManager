@@ -14,26 +14,26 @@
     }|tojson }}</script>
 
     <section class="public-transport-ride__summary">
-        <div><span>Przewoźnik</span><strong>{{ ride.carrier or 'Brak danych' }}</strong></div>
+        <div><span>{{ t('PUBLIC_TRANSPORT_VIEW.CARRIER') }}</span><strong>{{ ride.carrier or t('PUBLIC_TRANSPORT_VIEW.NO_DATA') }}</strong></div>
         {% if capabilities.show_vehicle_details %}
-            <div><span>Typ pojazdu</span><strong>{{ ride.vehicle_type or 'Brak danych' }}</strong></div>
+            <div><span>{{ t('PUBLIC_TRANSPORT_RIDE.VEHICLE_TYPE') }}</span><strong>{{ ride.vehicle_type or t('PUBLIC_TRANSPORT_VIEW.NO_DATA') }}</strong></div>
         {% endif %}
-        <div><span>Liczba kolejnych przystanków</span><strong>{{ ride.next_stops|length }}</strong></div>
+        <div><span>{{ t('PUBLIC_TRANSPORT_RIDE.NEXT_STOPS_COUNT') }}</span><strong>{{ ride.next_stops|length }}</strong></div>
     </section>
 
     <div class="public-transport-table-wrap">
         <table class="public-transport-table">
             <thead>
                 <tr>
-                    <th>Przystanek</th>
-                    <th>Odjazd</th>
-                    <th>Czas odcinka</th>
-                    <th>Czas łącznie</th>
+                    <th>{{ t('PUBLIC_TRANSPORT_RIDE.STOP') }}</th>
+                    <th>{{ t('PUBLIC_TRANSPORT_VIEW.DEPARTURE') }}</th>
+                    <th>{{ t('PUBLIC_TRANSPORT_RIDE.SECTION_TIME') }}</th>
+                    <th>{{ t('PUBLIC_TRANSPORT_RIDE.TOTAL_TIME') }}</th>
                     {% if capabilities.show_ride_distances %}
-                        <th>Odległość odcinka</th>
-                        <th>Odległość łącznie</th>
+                        <th>{{ t('PUBLIC_TRANSPORT_RIDE.SECTION_DISTANCE') }}</th>
+                        <th>{{ t('PUBLIC_TRANSPORT_RIDE.TOTAL_DISTANCE') }}</th>
                     {% endif %}
-                    {% if capabilities.show_ride_map %}<th>Mapa</th>{% endif %}
+                    {% if capabilities.show_ride_map %}<th>{{ t('PUBLIC_TRANSPORT_RIDE.MAP') }}</th>{% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -44,22 +44,22 @@
                             {{ stop.stop }}
                         </td>
                         <td>{{ stop.departure_time.strftime('%H:%M') if stop.departure_time else '—' }}</td>
-                        <td>{{ stop.travel_time }} min</td>
-                        <td>{{ stop.travel_time_sum }} min</td>
+                        <td>{{ t('PUBLIC_TRANSPORT_RIDE.MINUTES', value=stop.travel_time) }}</td>
+                        <td>{{ t('PUBLIC_TRANSPORT_RIDE.MINUTES', value=stop.travel_time_sum) }}</td>
                         {% if capabilities.show_ride_distances %}
-                            <td>{{ '%.2f'|format(stop.distance) }} km</td>
-                            <td>{{ '%.2f'|format(stop.distance_sum) }} km</td>
+                            <td>{{ t('PUBLIC_TRANSPORT_RIDE.KILOMETRES', value='%.2f'|format(stop.distance)) }}</td>
+                            <td>{{ t('PUBLIC_TRANSPORT_RIDE.KILOMETRES', value='%.2f'|format(stop.distance_sum)) }}</td>
                         {% endif %}
                         {% if capabilities.show_ride_map %}
                             <td>
-                                <button class="public-transport-table__map-button" type="button" data-public-transport-map data-name="{{ stop.stop }}" data-query="{{ stop.stop }}" data-latitude="{{ stop.latitude if stop.latitude is not none else '' }}" data-longitude="{{ stop.longitude if stop.longitude is not none else '' }}" aria-label="Pokaż {{ stop.stop }} na mapie">
+                                <button class="public-transport-table__map-button" type="button" data-public-transport-map data-name="{{ stop.stop }}" data-query="{{ stop.stop }}" data-latitude="{{ stop.latitude if stop.latitude is not none else '' }}" data-longitude="{{ stop.longitude if stop.longitude is not none else '' }}" aria-label="{{ t('PUBLIC_TRANSPORT_RIDE.SHOW_STOP_ON_MAP', stop=stop.stop) }}">
                                     <i data-lucide="map-pin" aria-hidden="true"></i>
                                 </button>
                             </td>
                         {% endif %}
                     </tr>
                 {% else %}
-                    <tr><td colspan="{{ 4 + (2 if capabilities.show_ride_distances else 0) + (1 if capabilities.show_ride_map else 0) }}" class="public-transport-empty">Brak kolejnych przystanków.</td></tr>
+                    <tr><td colspan="{{ 4 + (2 if capabilities.show_ride_distances else 0) + (1 if capabilities.show_ride_map else 0) }}" class="public-transport-empty">{{ t('PUBLIC_TRANSPORT_RIDE.NO_NEXT_STOPS') }}</td></tr>
                 {% endfor %}
             </tbody>
         </table>

@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const layer = document.querySelector('#dialog-layer');
     const dialog = document.querySelector('#route-editor');
     const title = document.querySelector('#route-editor-title');
@@ -20,7 +21,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         groups: [],
         activeGroup: null,
         selectedBaseEmoji: '🚗',
-        selectedName: 'Samochód',
+        selectedName: t('ROUTE_EDITOR.CAR'),
         selectedSupportsGender: false,
         selectedSupportsSkinTone: false,
         editing: false,
@@ -102,7 +103,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         supports_skin_tone: supportsSkinTone
     }) => {
         state.selectedBaseEmoji = emoji || '🚗';
-        state.selectedName = name || 'Samochód';
+        state.selectedName = name || t('ROUTE_EDITOR.CAR');
         state.selectedSupportsGender = Boolean(supportSex ?? supportsGender);
         state.selectedSupportsSkinTone = Boolean(supportColor ?? supportsSkinTone);
         selectedName.textContent = state.selectedName;
@@ -159,7 +160,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!items.length) {
             const empty = document.createElement('p');
             empty.className = 'route-editor__empty';
-            empty.textContent = 'Brak emoji w tej kategorii.';
+            empty.textContent = t('ROUTE_EDITOR.NO_EMOJI_IN_CATEGORY');
             presets.append(empty);
             return;
         }
@@ -183,7 +184,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     const loadGroup = async (groupKey) => {
         state.activeGroup = groupKey;
         renderTabs();
-        presets.textContent = 'Ładowanie...';
+        presets.textContent = t('ROUTE_EDITOR.LOADING');
         const data = await fetchJson(`/api/emojis?group=${encodeURIComponent(groupKey)}`);
         renderPresets(data.emojis || []);
     };
@@ -219,12 +220,14 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         state.editing = Boolean(editing);
         state.allowDelete = Boolean(allowDelete);
-        title.textContent = editing ? 'Edytuj trasę' : 'Zapisz trasę';
+        title.textContent = editing
+            ? t('ROUTE_EDITOR.EDIT_ROUTE')
+            : t('ROUTE_EDITOR.SAVE_ROUTE');
         nameInput.value = name;
         deleteButton.hidden = !state.allowDelete;
         updateSelectedEmoji({
             emoji: icon || '🚗',
-            name: 'Aktualnie wybrana ikona',
+            name: t('ROUTE_EDITOR.CURRENT_ICON'),
             supports_gender: false,
             supports_skin_tone: false
         });

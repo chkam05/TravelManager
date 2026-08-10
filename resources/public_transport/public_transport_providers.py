@@ -3,6 +3,8 @@ import unicodedata
 from typing import Any, ClassVar, Dict, Type
 from urllib.parse import urlparse
 
+from core.language_service import LanguageService
+from resources.public_transport.public_transport_messages import PublicTransportValueError
 from utils.public_transport.bialystok_downloader import BialystokDownloader
 from utils.public_transport.chojnice_downloader import ChojniceDownloader
 from utils.public_transport.czestochowa_downloader import CzestochowaDownloader
@@ -87,6 +89,155 @@ class PublicTransportProviders:
     FIELD_SETTINGS_CACHE: ClassVar[str] = 'settings_cache'
     FIELD_ATTRIBUTIONS: ClassVar[str] = 'attributions'
 
+    NAME_KEYS: ClassVar[Dict[str, str]] = {
+        BIALYSTOK: 'RES_PUBLIC_TRANSPORT_PROVIDER.BIALYSTOK_NAME',
+        CHOJNICE: 'RES_PUBLIC_TRANSPORT_PROVIDER.CHOJNICE_NAME',
+        ELK: 'RES_PUBLIC_TRANSPORT_PROVIDER.ELK_NAME',
+        GIZYCKO: 'RES_PUBLIC_TRANSPORT_PROVIDER.GIZYCKO_NAME',
+        KALISZ: 'RES_PUBLIC_TRANSPORT_PROVIDER.KALISZ_NAME',
+        KIELCE: 'RES_PUBLIC_TRANSPORT_PROVIDER.KIELCE_NAME',
+        KUTNO: 'RES_PUBLIC_TRANSPORT_PROVIDER.KUTNO_NAME',
+        LEGNICA: 'RES_PUBLIC_TRANSPORT_PROVIDER.LEGNICA_NAME',
+        LESZNO: 'RES_PUBLIC_TRANSPORT_PROVIDER.LESZNO_NAME',
+        LOMZA: 'RES_PUBLIC_TRANSPORT_PROVIDER.LOMZA_NAME',
+        OPOLE: 'RES_PUBLIC_TRANSPORT_PROVIDER.OPOLE_NAME',
+        PRZEMYSL: 'RES_PUBLIC_TRANSPORT_PROVIDER.PRZEMYSL_NAME',
+        RADOM: 'RES_PUBLIC_TRANSPORT_PROVIDER.RADOM_NAME',
+        RYBNIK: 'RES_PUBLIC_TRANSPORT_PROVIDER.RYBNIK_NAME',
+        RZESZOW: 'RES_PUBLIC_TRANSPORT_PROVIDER.RZESZOW_NAME',
+        SUWALKI: 'RES_PUBLIC_TRANSPORT_PROVIDER.SUWALKI_NAME',
+        SWINOUJSCIE: 'RES_PUBLIC_TRANSPORT_PROVIDER.SWINOUJSCIE_NAME',
+        WEJHEROWO: 'RES_PUBLIC_TRANSPORT_PROVIDER.WEJHEROWO_NAME',
+        GZM: 'RES_PUBLIC_TRANSPORT_PROVIDER.GZM_NAME',
+        CZESTOCHOWA: 'RES_PUBLIC_TRANSPORT_PROVIDER.CZESTOCHOWA_NAME',
+        KRAKOW: 'RES_PUBLIC_TRANSPORT_PROVIDER.KRAKOW_NAME',
+        WARSAW: 'RES_PUBLIC_TRANSPORT_PROVIDER.WARSAW_NAME',
+        GDANSK: 'RES_PUBLIC_TRANSPORT_PROVIDER.GDANSK_NAME',
+        GDYNIA: 'RES_PUBLIC_TRANSPORT_PROVIDER.GDYNIA_NAME',
+        SZCZECIN: 'RES_PUBLIC_TRANSPORT_PROVIDER.SZCZECIN_NAME',
+        POZNAN: 'RES_PUBLIC_TRANSPORT_PROVIDER.POZNAN_NAME',
+        BYDGOSZCZ: 'RES_PUBLIC_TRANSPORT_PROVIDER.BYDGOSZCZ_NAME',
+        TORUN: 'RES_PUBLIC_TRANSPORT_PROVIDER.TORUN_NAME',
+        WROCLAW: 'RES_PUBLIC_TRANSPORT_PROVIDER.WROCLAW_NAME',
+        ELBLAG: 'RES_PUBLIC_TRANSPORT_PROVIDER.ELBLAG_NAME',
+        GORZOW: 'RES_PUBLIC_TRANSPORT_PROVIDER.GORZOW_NAME',
+        GRUDZIADZ: 'RES_PUBLIC_TRANSPORT_PROVIDER.GRUDZIADZ_NAME',
+        LUBLIN: 'RES_PUBLIC_TRANSPORT_PROVIDER.LUBLIN_NAME',
+        LODZ: 'RES_PUBLIC_TRANSPORT_PROVIDER.LODZ_NAME',
+        OLSZTYN: 'RES_PUBLIC_TRANSPORT_PROVIDER.OLSZTYN_NAME'
+    }
+    DESCRIPTION_KEYS: ClassVar[Dict[str, str]] = {
+        BIALYSTOK: 'RES_PUBLIC_TRANSPORT_PROVIDER.BIALYSTOK_DESCRIPTION',
+        CHOJNICE: 'RES_PUBLIC_TRANSPORT_PROVIDER.CHOJNICE_DESCRIPTION',
+        ELK: 'RES_PUBLIC_TRANSPORT_PROVIDER.ELK_DESCRIPTION',
+        GIZYCKO: 'RES_PUBLIC_TRANSPORT_PROVIDER.GIZYCKO_DESCRIPTION',
+        KALISZ: 'RES_PUBLIC_TRANSPORT_PROVIDER.KALISZ_DESCRIPTION',
+        KIELCE: 'RES_PUBLIC_TRANSPORT_PROVIDER.KIELCE_DESCRIPTION',
+        KUTNO: 'RES_PUBLIC_TRANSPORT_PROVIDER.KUTNO_DESCRIPTION',
+        LEGNICA: 'RES_PUBLIC_TRANSPORT_PROVIDER.LEGNICA_DESCRIPTION',
+        LESZNO: 'RES_PUBLIC_TRANSPORT_PROVIDER.LESZNO_DESCRIPTION',
+        LOMZA: 'RES_PUBLIC_TRANSPORT_PROVIDER.LOMZA_DESCRIPTION',
+        OPOLE: 'RES_PUBLIC_TRANSPORT_PROVIDER.OPOLE_DESCRIPTION',
+        PRZEMYSL: 'RES_PUBLIC_TRANSPORT_PROVIDER.PRZEMYSL_DESCRIPTION',
+        RADOM: 'RES_PUBLIC_TRANSPORT_PROVIDER.RADOM_DESCRIPTION',
+        RYBNIK: 'RES_PUBLIC_TRANSPORT_PROVIDER.RYBNIK_DESCRIPTION',
+        RZESZOW: 'RES_PUBLIC_TRANSPORT_PROVIDER.RZESZOW_DESCRIPTION',
+        SUWALKI: 'RES_PUBLIC_TRANSPORT_PROVIDER.SUWALKI_DESCRIPTION',
+        SWINOUJSCIE: 'RES_PUBLIC_TRANSPORT_PROVIDER.SWINOUJSCIE_DESCRIPTION',
+        WEJHEROWO: 'RES_PUBLIC_TRANSPORT_PROVIDER.WEJHEROWO_DESCRIPTION',
+        GZM: 'RES_PUBLIC_TRANSPORT_PROVIDER.GZM_DESCRIPTION',
+        CZESTOCHOWA: 'RES_PUBLIC_TRANSPORT_PROVIDER.CZESTOCHOWA_DESCRIPTION',
+        KRAKOW: 'RES_PUBLIC_TRANSPORT_PROVIDER.KRAKOW_DESCRIPTION',
+        WARSAW: 'RES_PUBLIC_TRANSPORT_PROVIDER.WARSAW_DESCRIPTION',
+        GDANSK: 'RES_PUBLIC_TRANSPORT_PROVIDER.GDANSK_DESCRIPTION',
+        GDYNIA: 'RES_PUBLIC_TRANSPORT_PROVIDER.GDYNIA_DESCRIPTION',
+        SZCZECIN: 'RES_PUBLIC_TRANSPORT_PROVIDER.SZCZECIN_DESCRIPTION',
+        POZNAN: 'RES_PUBLIC_TRANSPORT_PROVIDER.POZNAN_DESCRIPTION',
+        BYDGOSZCZ: 'RES_PUBLIC_TRANSPORT_PROVIDER.BYDGOSZCZ_DESCRIPTION',
+        TORUN: 'RES_PUBLIC_TRANSPORT_PROVIDER.TORUN_DESCRIPTION',
+        WROCLAW: 'RES_PUBLIC_TRANSPORT_PROVIDER.WROCLAW_DESCRIPTION',
+        ELBLAG: 'RES_PUBLIC_TRANSPORT_PROVIDER.ELBLAG_DESCRIPTION',
+        GORZOW: 'RES_PUBLIC_TRANSPORT_PROVIDER.GORZOW_DESCRIPTION',
+        GRUDZIADZ: 'RES_PUBLIC_TRANSPORT_PROVIDER.GRUDZIADZ_DESCRIPTION',
+        LUBLIN: 'RES_PUBLIC_TRANSPORT_PROVIDER.LUBLIN_DESCRIPTION',
+        LODZ: 'RES_PUBLIC_TRANSPORT_PROVIDER.LODZ_DESCRIPTION',
+        OLSZTYN: 'RES_PUBLIC_TRANSPORT_PROVIDER.OLSZTYN_DESCRIPTION'
+    }
+    ATTRIBUTION_KEYS: ClassVar[Dict[str, tuple[str, ...]]] = {
+        GZM: ('RES_PUBLIC_TRANSPORT_PROVIDER.GZM_ATTRIBUTION_1',),
+        CZESTOCHOWA: ('RES_PUBLIC_TRANSPORT_PROVIDER.CZESTOCHOWA_ATTRIBUTION_1',),
+        CHOJNICE: (
+            'RES_PUBLIC_TRANSPORT_PROVIDER.CHOJNICE_ATTRIBUTION_1',
+            'RES_PUBLIC_TRANSPORT_PROVIDER.CHOJNICE_ATTRIBUTION_2'
+        ),
+        KRAKOW: ('RES_PUBLIC_TRANSPORT_PROVIDER.KRAKOW_ATTRIBUTION_1',),
+        WARSAW: (
+            'RES_PUBLIC_TRANSPORT_PROVIDER.WARSAW_ATTRIBUTION_1',
+            'RES_PUBLIC_TRANSPORT_PROVIDER.WARSAW_ATTRIBUTION_2',
+            'RES_PUBLIC_TRANSPORT_PROVIDER.WARSAW_ATTRIBUTION_3'
+        ),
+        GDANSK: ('RES_PUBLIC_TRANSPORT_PROVIDER.GDANSK_ATTRIBUTION_1',),
+        GDYNIA: ('RES_PUBLIC_TRANSPORT_PROVIDER.GDYNIA_ATTRIBUTION_1',),
+        SZCZECIN: ('RES_PUBLIC_TRANSPORT_PROVIDER.SZCZECIN_ATTRIBUTION_1',),
+        POZNAN: ('RES_PUBLIC_TRANSPORT_PROVIDER.POZNAN_ATTRIBUTION_1',),
+        BYDGOSZCZ: ('RES_PUBLIC_TRANSPORT_PROVIDER.BYDGOSZCZ_ATTRIBUTION_1',),
+        TORUN: (
+            'RES_PUBLIC_TRANSPORT_PROVIDER.TORUN_ATTRIBUTION_1',
+            'RES_PUBLIC_TRANSPORT_PROVIDER.TORUN_ATTRIBUTION_2'
+        ),
+        WROCLAW: (
+            'RES_PUBLIC_TRANSPORT_PROVIDER.WROCLAW_ATTRIBUTION_1',
+            'RES_PUBLIC_TRANSPORT_PROVIDER.WROCLAW_ATTRIBUTION_2'
+        ),
+        ELBLAG: ('RES_PUBLIC_TRANSPORT_PROVIDER.ELBLAG_ATTRIBUTION_1',),
+        GORZOW: ('RES_PUBLIC_TRANSPORT_PROVIDER.GORZOW_ATTRIBUTION_1',),
+        GRUDZIADZ: (
+            'RES_PUBLIC_TRANSPORT_PROVIDER.GRUDZIADZ_ATTRIBUTION_1',
+            'RES_PUBLIC_TRANSPORT_PROVIDER.GRUDZIADZ_ATTRIBUTION_2'
+        ),
+        LUBLIN: ('RES_PUBLIC_TRANSPORT_PROVIDER.LUBLIN_ATTRIBUTION_1',),
+        LODZ: ('RES_PUBLIC_TRANSPORT_PROVIDER.LODZ_ATTRIBUTION_1',),
+        OLSZTYN: ('RES_PUBLIC_TRANSPORT_PROVIDER.OLSZTYN_ATTRIBUTION_1',),
+        BIALYSTOK: ('RES_PUBLIC_TRANSPORT_PROVIDER.BIALYSTOK_ATTRIBUTION_1',),
+        ELK: ('RES_PUBLIC_TRANSPORT_PROVIDER.ELK_ATTRIBUTION_1',),
+        GIZYCKO: ('RES_PUBLIC_TRANSPORT_PROVIDER.GIZYCKO_ATTRIBUTION_1',),
+        KALISZ: ('RES_PUBLIC_TRANSPORT_PROVIDER.KALISZ_ATTRIBUTION_1',),
+        KIELCE: (
+            'RES_PUBLIC_TRANSPORT_PROVIDER.KIELCE_ATTRIBUTION_1',
+            'RES_PUBLIC_TRANSPORT_PROVIDER.KIELCE_ATTRIBUTION_2'
+        ),
+        KUTNO: ('RES_PUBLIC_TRANSPORT_PROVIDER.KUTNO_ATTRIBUTION_1',),
+        LEGNICA: ('RES_PUBLIC_TRANSPORT_PROVIDER.LEGNICA_ATTRIBUTION_1',),
+        LESZNO: ('RES_PUBLIC_TRANSPORT_PROVIDER.LESZNO_ATTRIBUTION_1',),
+        LOMZA: ('RES_PUBLIC_TRANSPORT_PROVIDER.LOMZA_ATTRIBUTION_1',),
+        OPOLE: ('RES_PUBLIC_TRANSPORT_PROVIDER.OPOLE_ATTRIBUTION_1',),
+        PRZEMYSL: ('RES_PUBLIC_TRANSPORT_PROVIDER.PRZEMYSL_ATTRIBUTION_1',),
+        RADOM: ('RES_PUBLIC_TRANSPORT_PROVIDER.RADOM_ATTRIBUTION_1',),
+        RYBNIK: ('RES_PUBLIC_TRANSPORT_PROVIDER.RYBNIK_ATTRIBUTION_1',),
+        RZESZOW: ('RES_PUBLIC_TRANSPORT_PROVIDER.RZESZOW_ATTRIBUTION_1',),
+        SUWALKI: ('RES_PUBLIC_TRANSPORT_PROVIDER.SUWALKI_ATTRIBUTION_1',),
+        SWINOUJSCIE: ('RES_PUBLIC_TRANSPORT_PROVIDER.SWINOUJSCIE_ATTRIBUTION_1',),
+        WEJHEROWO: ('RES_PUBLIC_TRANSPORT_PROVIDER.WEJHEROWO_ATTRIBUTION_1',)
+    }
+    REGION_KEYS: ClassVar[Dict[str, str]] = {
+        'dolnośląskie': 'RES_PUBLIC_TRANSPORT_REGION.LOWER_SILESIAN',
+        'kujawsko-pomorskie': 'RES_PUBLIC_TRANSPORT_REGION.KUYAVIAN_POMERANIAN',
+        'lubelskie': 'RES_PUBLIC_TRANSPORT_REGION.LUBLIN',
+        'lubuskie': 'RES_PUBLIC_TRANSPORT_REGION.LUBUSZ',
+        'mazowieckie': 'RES_PUBLIC_TRANSPORT_REGION.MASOVIAN',
+        'małopolskie': 'RES_PUBLIC_TRANSPORT_REGION.LESSER_POLAND',
+        'opolskie': 'RES_PUBLIC_TRANSPORT_REGION.OPOLE',
+        'podkarpackie': 'RES_PUBLIC_TRANSPORT_REGION.SUBCARPATHIAN',
+        'podlaskie': 'RES_PUBLIC_TRANSPORT_REGION.PODLASKIE',
+        'pomorskie': 'RES_PUBLIC_TRANSPORT_REGION.POMERANIAN',
+        'warmińsko-mazurskie': 'RES_PUBLIC_TRANSPORT_REGION.WARMIAN_MASURIAN',
+        'wielkopolskie': 'RES_PUBLIC_TRANSPORT_REGION.GREATER_POLAND',
+        'zachodniopomorskie': 'RES_PUBLIC_TRANSPORT_REGION.WEST_POMERANIAN',
+        'łódzkie': 'RES_PUBLIC_TRANSPORT_REGION.LODZ',
+        'śląskie': 'RES_PUBLIC_TRANSPORT_REGION.SILESIAN',
+        'świętokrzyskie': 'RES_PUBLIC_TRANSPORT_REGION.HOLY_CROSS'
+    }
+
     REGIONS: ClassVar[Dict[str, str]] = {
         'bialystok':    'podlaskie',
         'chojnice':     'pomorskie',
@@ -155,7 +306,7 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_ROUTE_MAP: True,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: True,
         CAPABILITY_CACHE_ANNOUNCEMENTS: False,
-        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Kierunek'
+        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'PUBLIC_TRANSPORT_VIEW.DIRECTION'
     }
     CZESTOCHOWA_CAPABILITIES: ClassVar[Dict[str, object]] = {
         CAPABILITY_SHOW_PLATFORMS: False,
@@ -169,7 +320,7 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_ROUTE_MAP: False,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: False,
         CAPABILITY_CACHE_ANNOUNCEMENTS: True,
-        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Wariant trasy'
+        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'PUBLIC_TRANSPORT_LINES.ROUTE_VARIANT'
     }
     KRAKOW_CAPABILITIES: ClassVar[Dict[str, object]] = {
         CAPABILITY_SHOW_PLATFORMS: True,
@@ -183,7 +334,7 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_ROUTE_MAP: True,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: True,
         CAPABILITY_CACHE_ANNOUNCEMENTS: True,
-        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Wariant trasy'
+        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'PUBLIC_TRANSPORT_LINES.ROUTE_VARIANT'
     }
     WARSAW_CAPABILITIES: ClassVar[Dict[str, object]] = {
         CAPABILITY_SHOW_PLATFORMS: True,
@@ -197,7 +348,7 @@ class PublicTransportProviders:
         CAPABILITY_SHOW_ROUTE_MAP: True,
         CAPABILITY_SHOW_VEHICLE_POSITIONS: True,
         CAPABILITY_CACHE_ANNOUNCEMENTS: False,
-        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'Wariant trasy'
+        CAPABILITY_DIRECTION_SELECTOR_LABEL: 'PUBLIC_TRANSPORT_LINES.ROUTE_VARIANT'
     }
     GDANSK_CAPABILITIES: ClassVar[Dict[str, object]] = {
         **WARSAW_CAPABILITIES,
@@ -817,7 +968,9 @@ class PublicTransportProviders:
         """Returns the downloader registered for a provider identifier."""
         provider = cls.VALUES.get(provider_id)
         if not provider:
-            raise ValueError('Unsupported public transport provider.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.UNSUPPORTED_PROVIDER'
+            )
         return provider[cls.FIELD_DOWNLOADER]
 
     @classmethod
@@ -825,16 +978,24 @@ class PublicTransportProviders:
         """Returns an immutable copy of provider-specific view capabilities."""
         provider = cls.VALUES.get(provider_id)
         if not provider:
-            raise ValueError('Unsupported public transport provider.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.UNSUPPORTED_PROVIDER'
+            )
         capabilities = provider.get(cls.FIELD_CAPABILITIES, {})
-        return dict(capabilities) if isinstance(capabilities, dict) else {}
+        result = dict(capabilities) if isinstance(capabilities, dict) else {}
+        direction_key = result.get(cls.CAPABILITY_DIRECTION_SELECTOR_LABEL)
+        if isinstance(direction_key, str) and direction_key.startswith('PUBLIC_TRANSPORT_'):
+            result[cls.CAPABILITY_DIRECTION_SELECTOR_LABEL] = LanguageService.translate_current(direction_key)
+        return result
 
     @classmethod
     def uses_settings_cache(cls, provider_id: str) -> bool:
         """Returns whether view data is persisted in settings JSON."""
         provider = cls.VALUES.get(provider_id)
         if not provider:
-            raise ValueError('Unsupported public transport provider.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.UNSUPPORTED_PROVIDER'
+            )
         return bool(provider.get(cls.FIELD_SETTINGS_CACHE, False))
 
     @classmethod
@@ -852,8 +1013,8 @@ class PublicTransportProviders:
         options = [
             {
                 'id': provider_id,
-                'name': str(provider[cls.FIELD_NAME]),
-                'description': str(provider[cls.FIELD_DESCRIPTION]),
+                'name': LanguageService.translate_current(cls.NAME_KEYS[provider_id]),
+                'description': LanguageService.translate_current(cls.DESCRIPTION_KEYS[provider_id]),
                 'icon': str(provider[cls.FIELD_ICON]),
                 'show_route_map': bool(
                     provider.get(cls.FIELD_CAPABILITIES, {}).get(
@@ -873,8 +1034,17 @@ class PublicTransportProviders:
                         False
                     )
                 ),
-                'region': cls.REGIONS.get(provider_id, ''),
-                'attributions': list(provider.get(cls.FIELD_ATTRIBUTIONS, []))
+                'region': LanguageService.translate_current(cls.REGION_KEYS[cls.REGIONS[provider_id]]),
+                'attributions': [
+                    {
+                        **attribution,
+                        'name': LanguageService.translate_current(key)
+                    }
+                    for attribution, key in zip(
+                        provider.get(cls.FIELD_ATTRIBUTIONS, []),
+                        cls.ATTRIBUTION_KEYS[provider_id]
+                    )
+                ]
             }
             for provider_id, provider in cls.VALUES.items()
         ]
@@ -896,7 +1066,7 @@ class PublicTransportProviders:
 
     @classmethod
     def options_by_region(cls) -> list[dict]:
-        """Returns providers grouped by region, preserving Polish sort order."""
+        """Returns providers grouped by region in the active locale."""
         groups: list[dict] = []
         index: dict[str, int] = {}
         for option in cls.options():
@@ -924,5 +1094,7 @@ class PublicTransportProviders:
             for expected in map(urlparse, prefixes)
         )
         if not is_allowed:
-            raise ValueError('Invalid public transport URL.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.INVALID_URL'
+            )
         return url

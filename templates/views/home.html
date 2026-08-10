@@ -6,8 +6,8 @@
     {% for section in home_sections %}
         <section class="home-view__section" aria-labelledby="home-group-{{ section.group.id }}">
             <header class="home-view__section-header">
-                <h3 id="home-group-{{ section.group.id }}">{{ section.group.name }}</h3>
-                {% if section.group.description %}<p>{{ section.group.description }}</p>{% endif %}
+                <h3 id="home-group-{{ section.group.id }}">{{ t(section.group.name_key) }}</h3>
+                {% if section.group.description_key %}<p>{{ t(section.group.description_key) }}</p>{% endif %}
             </header>
             <div class="home-view__tiles">
                 {% for item in section['items'] %}
@@ -15,8 +15,8 @@
                     <button class="home-view__tile" {% if navigation_type == 'view' %}data-navigation-view="{{ navigation_target }}"{% else %}data-navigation-action="{{ navigation_target }}"{% endif %} type="button">
                         <span class="home-view__tile-icon"><i data-lucide="{{ item.icon }}" aria-hidden="true"></i></span>
                         <span class="home-view__tile-copy">
-                            <strong>{{ item.name }}</strong>
-                            <small>{{ item.description }}</small>
+                            <strong>{{ t(item.name_key) }}</strong>
+                            <small>{{ t(item.description_key) }}</small>
                         </span>
                         <i class="home-view__tile-arrow" data-lucide="chevron-right" aria-hidden="true"></i>
                     </button>
@@ -27,11 +27,11 @@
 
     <label class="home-view__startup-option component-checkbox">
         <input type="checkbox" data-home-open-on-startup>
-        <span>Po uruchomieniu otwórz Stronę Startową</span>
+        <span>{{ t('HOME_VIEW.OPEN_ON_STARTUP') }}</span>
     </label>
 
     <footer class="home-view__footer">
-        <span>Versja: {{ app_version }}</span>
-        <span>Copyright (c) {{ app_author }}</span>
+        <span>{{ t('HOME_VIEW.VERSION', version=app_version) }}</span>
+        <span>{{ t('HOME_VIEW.COPYRIGHT', author=app_author) }}</span>
     </footer>
 </div>

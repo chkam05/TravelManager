@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Any
 
 from resources.map_legend import MapLegend
+from core.language_service import LanguageService
 
 
 class MapLegendConverter:
@@ -12,24 +13,43 @@ class MapLegendConverter:
         icon_type = data.get(MapLegend.FIELD_ICON)
         return {
             'id': key,
-            'title': data.get(MapLegend.FIELD_TITLE, key),
+            'title': MapLegend.title(
+                key,
+                data.get(MapLegend.FIELD_TITLE, key)
+            ),
             'icon_type': icon_type,
             'image': f'/assets/images/legend/{key}.{icon_type}' if icon_type else None,
             'requirements': data.get(MapLegend.FIELD_REQUIREMENTS, [])
         }
 
     @classmethod
-    def convert_group(cls, key: str, items: dict[str, Any]) -> dict[str, Any]:
+    def convert_group(
+        cls,
+        key: str,
+        items: dict[str, Any],
+        name_keys: dict[str, str] | None = None
+    ) -> dict[str, Any]:
         return {
             'id': key,
-            'title': key.replace('_', ' ').title(),
+            'title': LanguageService.translate_current(name_keys[key])
+            if name_keys and key in name_keys
+            else key.replace('_', ' ').title(),
             'items': [cls.convert_item(item_key, data) for item_key, data in items.items()]
         }
 
     @classmethod
-    def convert_tab(cls, tab_id: str, label: str, groups: dict[str, Any]) -> dict[str, Any]:
+    def convert_tab(
+        cls,
+        tab_id: str,
+        label: str,
+        groups: dict[str, Any],
+        group_name_keys: dict[str, str] | None = None
+    ) -> dict[str, Any]:
         return {
             'id': tab_id,
             'label': label,
-            'groups': [cls.convert_group(key, items) for key, items in groups.items()]
+            'groups': [
+                cls.convert_group(key, items, group_name_keys)
+                for key, items in groups.items()
+            ]
         }

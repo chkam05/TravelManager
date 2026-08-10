@@ -4,9 +4,13 @@ from typing import Any, ClassVar
 from flask import jsonify, request
 
 from core.api.base_controller import BaseController
+from core.language_service import LanguageService
 from models.map.map_place_data_model import MapPlaceDataModel
 from models.map_data_model import MapDataModel
 from resources.map_legend import MapLegend
+from resources.map_areas import MapAreas
+from resources.map_lines import MapLines
+from resources.map_symbols import MapSymbols
 from services.map_search_service import MapSearchService
 from utils.converters.map_legend_converter import MapLegendConverter
 from utils.data.nominatim_downloader import NominatimDownloader
@@ -50,21 +54,21 @@ class MapController(BaseController):
     def _route_points(value: Any) -> list[dict[str, float]]:
         """Validates and normalizes route point payloads."""
         if not isinstance(value, list) or not 2 <= len(value) <= 25:
-            raise ValueError('Route requires between 2 and 25 points.')
+            raise ValueError(LanguageService.translate_current('ROUTE_ERROR.POINT_COUNT_RANGE'))
 
         result: list[dict[str, float]] = []
         for point in value:
             if not isinstance(point, dict):
-                raise ValueError('Invalid route point.')
+                raise ValueError(LanguageService.translate_current('ROUTE_ERROR.INVALID_ROUTE_POINT'))
 
             try:
                 latitude = float(point.get('latitude'))
                 longitude = float(point.get('longitude'))
             except (TypeError, ValueError) as error:
-                raise ValueError('Invalid route coordinates.') from error
+                raise ValueError(LanguageService.translate_current('ROUTE_ERROR.INVALID_ROUTE_COORDINATES')) from error
 
             if not -90 <= latitude <= 90 or not -180 <= longitude <= 180:
-                raise ValueError('Route coordinates are out of range.')
+                raise ValueError(LanguageService.translate_current('ROUTE_ERROR.ROUTE_COORDINATES_OUT_OF_RANGE'))
 
             result.append({'latitude': latitude, 'longitude': longitude})
 
@@ -80,9 +84,24 @@ class MapController(BaseController):
             'status': 'ok',
             'legend': {
                 'tabs': [
-                    MapLegendConverter.convert_tab('symbols', 'Symbole', MapLegend.SYMBOLS),
-                    MapLegendConverter.convert_tab('lines', 'Linie', MapLegend.LINES),
-                    MapLegendConverter.convert_tab('areas', 'Obszary', MapLegend.AREAS)
+                    MapLegendConverter.convert_tab(
+                        'symbols',
+                        LanguageService.translate_current('PANEL_LEGEND_DETAILS.SYMBOLS'),
+                        MapLegend.SYMBOLS,
+                        MapSymbols.NAME_KEYS
+                    ),
+                    MapLegendConverter.convert_tab(
+                        'lines',
+                        LanguageService.translate_current('PANEL_LEGEND_DETAILS.LINES'),
+                        MapLegend.LINES,
+                        MapLines.NAME_KEYS
+                    ),
+                    MapLegendConverter.convert_tab(
+                        'areas',
+                        LanguageService.translate_current('PANEL_LEGEND_DETAILS.AREAS'),
+                        MapLegend.AREAS,
+                        MapAreas.NAME_KEYS
+                    )
                 ]
             }
         })
@@ -103,11 +122,11 @@ class MapController(BaseController):
             route = RouteDownloader.download(points, transport, include_toll_roads)
         except ValueError as error:
             return jsonify({'status': 'error', 'message': str(error)}), 422
-        except Exception as error:
-            message = (
-                f'Nie udało się obliczyć trasy bez płatnych dróg: {error}'
+        except Exception:
+            message = LanguageService.translate_current(
+                'ROUTE_ERROR.CALCULATE_WITHOUT_TOLLS_FAILED_GENERIC'
                 if transport == 'car' and not include_toll_roads
-                else f'Could not calculate route: {error}'
+                else 'ROUTE_ERROR.CALCULATE_ROUTE_FAILED'
             )
             return jsonify({'status': 'error', 'message': message}), 502
 
@@ -119,12 +138,14 @@ class MapController(BaseController):
         longitude = request.args.get('lon')
 
         if not latitude or not longitude:
-            return self._response(self._error('Missing lat or lon.'), 400)
+            return self._response(self._error(LanguageService.translate_current('MAP_VIEW.MISSING_COORDINATES')), 400)
 
         try:
             selected = NominatimDownloader.reverse(latitude, longitude)
-        except Exception as error:
-            return self._response(self._error(f'Could not load map data: {error}'), 502)
+        except Exception:
+            return self._response(self._error(
+                LanguageService.translate_current('MAP_VIEW.LOAD_MAP_DATA_FAILED')
+            ), 502)
 
         return self._response(self._ok(MapPlaceDataModel(
             query=f'{latitude},{longitude}',
@@ -138,12 +159,14 @@ class MapController(BaseController):
         query = request.args.get('q', '').strip()
 
         if not query:
-            return self._response(self._error('Missing search query.'), 400)
+            return self._response(self._error(LanguageService.translate_current('MAP_VIEW.MISSING_SEARCH_QUERY')), 400)
 
         try:
             place = MapSearchService.search(query)
-        except Exception as error:
-            return self._response(self._error(f'Could not search map data: {error}'), 502)
+        except Exception:
+            return self._response(self._error(
+                LanguageService.translate_current('MAP_VIEW.SEARCH_MAP_DATA_FAILED')
+            ), 502)
 
         return self._response(self._ok(place))
 
@@ -155,7 +178,7 @@ class MapController(BaseController):
         subcategory_id = request.args.get('subcategory_id', '').strip()
 
         if not query and not category_id and not subcategory_id:
-            return self._response(self._error('Missing search query.'), 400)
+            return self._response(self._error(LanguageService.translate_current('MAP_VIEW.MISSING_SEARCH_QUERY')), 400)
 
         try:
             limit = max(1, min(50, int(request.args.get('limit', 20))))
@@ -171,8 +194,10 @@ class MapController(BaseController):
                 limit=limit,
                 bounds=request.args.to_dict()
             )
-        except Exception as error:
-            return self._response(self._error(str(error)), 502)
+        except Exception:
+            return self._response(self._error(
+                LanguageService.translate_current('MAP_VIEW.ADVANCED_SEARCH_FAILED')
+            ), 502)
 
         return self._response(self._ok(place))
 

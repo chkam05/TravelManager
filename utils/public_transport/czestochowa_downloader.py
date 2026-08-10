@@ -26,9 +26,10 @@ from models.public_transport.public_transport_stop import PublicTransportStop
 from models.public_transport.public_transport_stop_all import PublicTransportStopAll
 from models.public_transport.public_transport_stop_platform import PublicTransportStopPlatform
 from resources.public_transport.public_transport_type import PublicTransportType
+from resources.public_transport.public_transport_messages import public_transport_message
 from utils.data.overpass_downloader import OverpassDownloader
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
-from utils.public_transport.html_document import HtmlNode, parse_html
+from utils.public_transport.html_document import HtmlDocument, HtmlNode
 
 
 class CzestochowaDownloader:
@@ -58,7 +59,7 @@ class CzestochowaDownloader:
     def _download_html(
         cls,
         url: str,
-        item: str = 'Dane przewoźnika',
+        item: object = public_transport_message('DOWNLOAD_STATUS.PROVIDER_DATA'),
         current: int = 1,
         total: int = 1
     ) -> str:
@@ -78,7 +79,7 @@ class CzestochowaDownloader:
     def _download_json(
         cls,
         url: str,
-        item: str = 'Dane przejazdu',
+        item: object = public_transport_message('DOWNLOAD_STATUS.TRIP_DATA'),
         current: int = 1,
         total: int = 1
     ) -> dict[str, Any]:
@@ -96,7 +97,7 @@ class CzestochowaDownloader:
     def _download_request(
         cls,
         request: Request,
-        item: str,
+        item: object,
         current: int,
         total: int
     ) -> str:
@@ -142,7 +143,7 @@ class CzestochowaDownloader:
     @staticmethod
     def _document(html: str) -> HtmlNode:
         """Parses HTML into the shared dependency-free document tree."""
-        return parse_html(html)
+        return HtmlDocument.parse(html)
 
     @staticmethod
     def _request_url(url: str) -> str:
@@ -176,7 +177,7 @@ class CzestochowaDownloader:
             if cls._STOP_LOCATIONS_CACHE is not None and not refresh:
                 return dict(cls._STOP_LOCATIONS_CACHE)
             PublicTransportDownloadProgress.report(
-                'Lokalizacje przystanków',
+                public_transport_message('DOWNLOAD_STATUS.STOP_LOCATIONS'),
                 current,
                 total
             )
@@ -185,7 +186,9 @@ class CzestochowaDownloader:
                     cls._stop_locations_query(),
                     lambda attempt, attempts: (
                         PublicTransportDownloadProgress.report(
-                            'Lokalizacje przystanków',
+                            public_transport_message(
+                                'DOWNLOAD_STATUS.STOP_LOCATIONS'
+                            ),
                             current,
                             total,
                             attempt=attempt,
@@ -495,7 +498,10 @@ class CzestochowaDownloader:
         del refresh
         source_url = url or cls.TIMETABLE_URL
         return cls.parse_lines(
-            cls._download_html(source_url, 'Lista linii'),
+            cls._download_html(
+                source_url,
+                public_transport_message('DOWNLOAD_STATUS.LINE_LIST')
+            ),
             source_url
         )
 
@@ -534,7 +540,13 @@ class CzestochowaDownloader:
     ) -> PublicTransportLine:
         """Downloads directions, stops, dates and related announcements."""
         line = cls._line_from_url(url)
-        html = cls._download_html(url, f'Linia {line}')
+        html = cls._download_html(
+            url,
+            public_transport_message(
+                'DOWNLOAD_STATUS.LINE_DETAILS',
+                line=line
+            )
+        )
         model = cls.parse_line(html, url)
         route_options = cls._route_options(cls._document(html), url)
         model.route_variants = dict(route_options)
@@ -622,7 +634,10 @@ class CzestochowaDownloader:
     ) -> list[PublicTransportAnnouncement]:
         """Downloads announcement summaries, optionally filtered by line."""
         announcements = cls.parse_announcements(
-            cls._download_html(cls.TIMETABLE_URL, 'Lista komunikatów'),
+            cls._download_html(
+                cls.TIMETABLE_URL,
+                public_transport_message('DOWNLOAD_STATUS.ANNOUNCEMENT_LIST')
+            ),
             cls.TIMETABLE_URL,
             line
         )
@@ -704,7 +719,12 @@ class CzestochowaDownloader:
         return cls.parse_announcement(
             cls._download_html(
                 url,
-                f'Komunikat „{description}”' if description else 'Komunikat',
+                public_transport_message(
+                    'DOWNLOAD_STATUS.ANNOUNCEMENT_DETAILS',
+                    description=description
+                ) if description else public_transport_message(
+                    'DOWNLOAD_STATUS.ANNOUNCEMENT'
+                ),
                 current,
                 total
             ),
@@ -752,7 +772,10 @@ class CzestochowaDownloader:
         return cls.parse_line_stop_timetable(
             cls._download_html(
                 url,
-                f'Odjazdy z „{cls._stop_name_from_url(url)}”'
+                public_transport_message(
+                    'DOWNLOAD_STATUS.STOP_DEPARTURES',
+                    stop=cls._stop_name_from_url(url)
+                )
             ),
             url,
             cls._safe_stop_locations()
@@ -795,7 +818,7 @@ class CzestochowaDownloader:
                 'przystanek': cls._query_value(source_url, 'przystanek')
             }
             variant = (
-                f'Trasa {route}'
+                str(route)
                 if route and selected_route and route != selected_route
                 else ''
             )
@@ -847,7 +870,10 @@ class CzestochowaDownloader:
         from_first_stop: bool = True
     ) -> PublicTransportRide:
         """Downloads a complete trip through the provider JSON endpoint."""
-        data = cls._download_json(url, 'Szczegóły przejazdu')
+        data = cls._download_json(
+            url,
+            public_transport_message('DOWNLOAD_STATUS.TRIP_DETAILS')
+        )
         html = str(data.get('html') or '') if data.get('success') else ''
         return cls.parse_ride(html, url, cls._safe_stop_locations())
 
@@ -916,16 +942,27 @@ class CzestochowaDownloader:
     def download_stops(
         cls,
         url: str | None = None,
-        progress_callback: Callable[[int, int, str], None] | None = None,
+        progress_callback: Callable[[int, int, object], None] | None = None,
         refresh: bool = False
     ) -> list[PublicTransportStop]:
         """Downloads the provider's single-page stop index."""
         del refresh
         source_url = url or cls.STOPS_URL
         if progress_callback:
-            progress_callback(1, 1, cls.CITY_NAME)
+            progress_callback(
+                1,
+                1,
+                public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.CZESTOCHOWA_NAME'
+                )
+            )
         stops = cls.parse_stops(
-            cls._download_html(source_url, 'Lista przystanków', 1, 2),
+            cls._download_html(
+                source_url,
+                public_transport_message('DOWNLOAD_STATUS.STOP_LIST'),
+                1,
+                2
+            ),
             source_url
         )
         return cls._apply_stop_locations(
@@ -975,7 +1012,10 @@ class CzestochowaDownloader:
         """Downloads the route list for one stop without following timetable links."""
         html = cls._download_html(
             url,
-            f'Linie przystanku „{cls._stop_name_from_url(url)}”'
+            public_transport_message(
+                'DOWNLOAD_STATUS.STOP_LINES',
+                stop=cls._stop_name_from_url(url)
+            )
         )
         return cls.parse_stop_all(html, url, cls._safe_stop_locations())
 
@@ -1047,7 +1087,7 @@ class CzestochowaDownloader:
         cls,
         include_line_details: bool = False,
         include_stops: bool = False,
-        progress_callback: Callable[[int, int, str], None] | None = None
+        progress_callback: Callable[[int, int, object], None] | None = None
     ) -> PublicTransportDataContainer:
         """Downloads a selectable provider snapshot into one typed container."""
         base_lines = cls.download_lines()

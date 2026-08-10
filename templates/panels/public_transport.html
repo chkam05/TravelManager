@@ -2,20 +2,20 @@
     <div class="public-transport-panel__grabber" data-public-transport-panel-grabber aria-hidden="true"></div>
     <div class="public-transport-panel__body">
         <header class="public-transport-panel__header">
-            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-back aria-label="Wstecz" hidden>
+            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-back aria-label="{{ t('COMMON.BACK') }}" hidden>
                 <i data-lucide="arrow-left" aria-hidden="true"></i>
             </button>
-            <h2 data-public-transport-panel-title>Komunikacja miejska</h2>
-            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-map aria-label="Pokaż na mapie" title="Pokaż na mapie" hidden>
+            <h2 data-public-transport-panel-title>{{ t('PUBLIC_TRANSPORT_VIEW.TITLE') }}</h2>
+            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-map aria-label="{{ t('PUBLIC_TRANSPORT_VIEW.SHOW_ON_MAP') }}" title="{{ t('PUBLIC_TRANSPORT_VIEW.SHOW_ON_MAP') }}" hidden>
                 <i data-lucide="route" aria-hidden="true"></i>
             </button>
-            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-vehicles aria-label="Pokaż pojazdy na mapie" title="Pokaż pojazdy na mapie" hidden>
+            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-vehicles aria-label="{{ t('PANEL_PUBLIC_TRANSPORT.SHOW_VEHICLES_ON_MAP') }}" title="{{ t('PANEL_PUBLIC_TRANSPORT.SHOW_VEHICLES_ON_MAP') }}" hidden>
                 <i data-lucide="navigation" aria-hidden="true"></i>
             </button>
-            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-stop-map aria-label="Pokaż przystanek na mapie" title="Pokaż przystanek na mapie" hidden>
+            <button class="public-transport-panel__icon-button" type="button" data-public-transport-panel-stop-map aria-label="{{ t('PANEL_PUBLIC_TRANSPORT.SHOW_STOP_ON_MAP') }}" title="{{ t('PANEL_PUBLIC_TRANSPORT.SHOW_STOP_ON_MAP') }}" hidden>
                 <i data-lucide="map-pin" aria-hidden="true"></i>
             </button>
-            <button class="public-transport-panel__close" type="button" data-public-transport-panel-close aria-label="Zamknij panel"></button>
+            <button class="public-transport-panel__close" type="button" data-public-transport-panel-close aria-label="{{ t('PANEL_PUBLIC_TRANSPORT.CLOSE_PANEL') }}"></button>
         </header>
         <div class="public-transport-panel__live-status" data-public-transport-panel-live-status hidden>
             <i data-lucide="radio" aria-hidden="true"></i>

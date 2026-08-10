@@ -9,6 +9,7 @@ from config import SETTINGS_DIR
 from core.gtfs_database import GtfsDatabase
 from models.public_transport.public_transport_announcement import PublicTransportAnnouncement
 from resources.public_transport.public_transport_type import PublicTransportType
+from resources.public_transport.public_transport_messages import public_transport_message
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
 from utils.public_transport.krakow_downloader import KrakowDownloader
 
@@ -85,7 +86,10 @@ class WarsawDownloader(KrakowDownloader):
             feed_id, feed = next(iter(cls._FEEDS.items()))
             archive = cls._download_bytes(
                 feed['static'],
-                f"GTFS: {feed['name']}",
+                public_transport_message(
+                    'DOWNLOAD_STATUS.GTFS_FEED',
+                    feed=feed['name']
+                ),
                 1,
                 2
             )
@@ -94,7 +98,10 @@ class WarsawDownloader(KrakowDownloader):
                 {feed_id: archive},
                 lambda _feed_id, current, count: (
                     PublicTransportDownloadProgress.report(
-                        f"Przetwarzanie GTFS: {feed['name']}",
+                        public_transport_message(
+                            'DOWNLOAD_STATUS.PROCESSING_GTFS',
+                            feed=feed['name']
+                        ),
                         1 + current,
                         1 + count
                     )

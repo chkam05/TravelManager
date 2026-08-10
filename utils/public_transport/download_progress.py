@@ -4,9 +4,13 @@ from contextvars import ContextVar
 from time import sleep
 from typing import Callable, ClassVar, Iterator, TypeVar
 
+from resources.public_transport.public_transport_messages import (
+    PublicTransportMessage,
+    PublicTransportRuntimeError,
+)
 
 T = TypeVar('T')
-ProgressCallback = Callable[[str, int, int, int, int], None]
+ProgressCallback = Callable[[object, int, int, int, int], None]
 
 
 class PublicTransportDownloadProgress:
@@ -41,7 +45,7 @@ class PublicTransportDownloadProgress:
     @classmethod
     def report(
         cls,
-        item: str,
+        item: str | PublicTransportMessage,
         current: int = 1,
         total: int = 1,
         attempt: int = 1,
@@ -62,7 +66,7 @@ class PublicTransportDownloadProgress:
     def retry(
         cls,
         operation: Callable[[], T],
-        item: str,
+        item: str | PublicTransportMessage,
         current: int = 1,
         total: int = 1,
         max_attempts: int | None = None
@@ -81,6 +85,9 @@ class PublicTransportDownloadProgress:
                 last_error = error
                 if attempt < attempts:
                     sleep(0.2 * attempt)
-        raise last_error or RuntimeError(f'Nie udało się pobrać: {item}')
+        raise last_error or PublicTransportRuntimeError(
+            'PUBLIC_TRANSPORT_ERROR.DOWNLOAD_ITEM_FAILED',
+            item=item
+        )
 
     #endregion Progress and retry

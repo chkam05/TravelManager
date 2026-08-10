@@ -1,14 +1,14 @@
 <section class="download-status" id="download-status" role="dialog" aria-modal="true" aria-labelledby="download-status-title" aria-hidden="true">
     <header class="download-status__header">
-        <h2 id="download-status-title">Aktualizacja komunikacji miejskiej</h2>
+        <h2 id="download-status-title">{{ t('DIALOG_DOWNLOAD_STATUS.TITLE') }}</h2>
     </header>
     <div class="download-status__content">
         <span class="download-status__spinner" aria-hidden="true"><i data-lucide="loader-circle"></i></span>
-        <strong data-download-status-heading>Pobieranie danych…</strong>
+        <strong data-download-status-heading>{{ t('DIALOG_DOWNLOAD_STATUS.DOWNLOADING_DATA') }}</strong>
         <progress value="0" max="1" data-download-status-progress hidden></progress>
-        <span data-download-status-text>Przygotowywanie danych…</span>
+        <span data-download-status-text>{{ t('DIALOG_DOWNLOAD_STATUS.PREPARING_DATA') }}</span>
     </div>
     <footer class="download-status__footer" hidden data-download-status-footer>
-        <button type="button" data-download-status-close>Zamknij</button>
+        <button type="button" data-download-status-close>{{ t('COMMON.CLOSE') }}</button>
     </footer>
 </section>

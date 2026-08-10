@@ -3,11 +3,11 @@
         <h1 class="header__title">{{ app_name }}</h1>
     </div>
     <div class="header__view-center">
-        <form class="header__search" role="search" aria-label="Szukaj miejsca">
-            <input class="header__search-input" type="search" name="place" placeholder="Szukaj miejsca" aria-label="Szukaj miejsca">
-            <span class="header__search-actions" role="group" aria-label="Opcje wyszukiwania">
-                <button class="header__search-button" type="submit" aria-label="Szukaj"></button>
-                <button class="header__advanced-search-button" type="button" aria-label="Wyszukiwanie zaawansowane" title="Wyszukiwanie zaawansowane">
+        <form class="header__search" role="search" aria-label="{{ t('HEADER.SEARCH_PLACE') }}">
+            <input class="header__search-input" type="search" name="place" placeholder="{{ t('HEADER.SEARCH_PLACE') }}" aria-label="{{ t('HEADER.SEARCH_PLACE') }}">
+            <span class="header__search-actions" role="group" aria-label="{{ t('HEADER.SEARCH_OPTIONS') }}">
+                <button class="header__search-button" type="submit" aria-label="{{ t('COMMON.SEARCH') }}"></button>
+                <button class="header__advanced-search-button" type="button" aria-label="{{ t('HEADER.ADVANCED_SEARCH') }}" title="{{ t('HEADER.ADVANCED_SEARCH') }}">
                     <i data-lucide="chevron-down" aria-hidden="true"></i>
                 </button>
             </span>
@@ -16,7 +16,7 @@
     <div class="header__view-right">
         <button class="header__car-button" type="button" hidden>
             <i data-lucide="car" aria-hidden="true"></i>
-            <span class="header__car-button-text">Samochód</span>
+            <span class="header__car-button-text">{{ t('HEADER.CAR') }}</span>
         </button>
     </div>
 </div>

@@ -1,21 +1,21 @@
-<section class="map-panel" aria-label="OpenStreetMap">
+<section class="map-panel" aria-label="{{ t('MAP_VIEW.MAP') }}">
     <div class="map-panel__map" id="map"></div>
-    <div class="map-toolbar" aria-label="Narzędzia mapy">
-        <button class="map-toolbar__button map-toolbar__button--public-transport" data-map-tool="public-transport" type="button" aria-label="Komunikacja miejska">
+    <div class="map-toolbar" aria-label="{{ t('MAP_VIEW.MAP_TOOLS') }}">
+        <button class="map-toolbar__button map-toolbar__button--public-transport" data-map-tool="public-transport" type="button" aria-label="{{ t('MAP_VIEW.PUBLIC_TRANSPORT') }}">
             <i data-lucide="bus-front" aria-hidden="true"></i>
-            <span class="map-toolbar__tooltip" role="tooltip">Komunikacja miejska</span>
+            <span class="map-toolbar__tooltip" role="tooltip">{{ t('MAP_VIEW.PUBLIC_TRANSPORT') }}</span>
         </button>
-        <button class="map-toolbar__button map-toolbar__button--legend" data-map-tool="legend" type="button" aria-label="Legenda">
+        <button class="map-toolbar__button map-toolbar__button--legend" data-map-tool="legend" type="button" aria-label="{{ t('MAP_VIEW.LEGEND') }}">
             <i data-lucide="list" aria-hidden="true"></i>
-            <span class="map-toolbar__tooltip" role="tooltip">Legenda</span>
+            <span class="map-toolbar__tooltip" role="tooltip">{{ t('MAP_VIEW.LEGEND') }}</span>
         </button>
-        <button class="map-toolbar__button map-toolbar__button--location" data-map-tool="location" type="button" aria-label="Moja lokalizacja">
+        <button class="map-toolbar__button map-toolbar__button--location" data-map-tool="location" type="button" aria-label="{{ t('MAP_VIEW.MY_LOCATION') }}">
             <i data-lucide="locate-fixed" aria-hidden="true"></i>
-            <span class="map-toolbar__tooltip" role="tooltip">Moja lokalizacja</span>
+            <span class="map-toolbar__tooltip" role="tooltip">{{ t('MAP_VIEW.MY_LOCATION') }}</span>
         </button>
-        <button class="map-toolbar__button map-toolbar__button--layers" data-map-tool="layers" type="button" aria-label="Warstwy">
+        <button class="map-toolbar__button map-toolbar__button--layers" data-map-tool="layers" type="button" aria-label="{{ t('MAP_VIEW.LAYERS') }}">
             <i data-lucide="layers" aria-hidden="true"></i>
-            <span class="map-toolbar__tooltip" role="tooltip">Warstwy</span>
+            <span class="map-toolbar__tooltip" role="tooltip">{{ t('MAP_VIEW.LAYERS') }}</span>
         </button>
     </div>
 </section>

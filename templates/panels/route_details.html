@@ -4,41 +4,41 @@
         <div class="route-details-panel__header">
             <h2 class="route-details-panel__title">
                 <span class="route-details-panel__title-icon" id="route-details-panel-title-icon" aria-hidden="true" hidden>🚗</span>
-                <span id="route-details-panel-title-text">Trasa</span>
+                <span id="route-details-panel-title-text">{{ t('PANEL_ROUTE_DETAILS.ROUTE') }}</span>
             </h2>
-            <div class="route-details-panel__transport" role="radiogroup" aria-label="Środek komunikacji">
-                <button class="route-details-panel__transport-button" data-route-transport="foot" type="button" role="radio" aria-checked="false" aria-label="Pieszo" title="Pieszo">
+            <div class="route-details-panel__transport" role="radiogroup" aria-label="{{ t('PANEL_ROUTE_DETAILS.TRANSPORT_MODE') }}">
+                <button class="route-details-panel__transport-button" data-route-transport="foot" type="button" role="radio" aria-checked="false" aria-label="{{ t('PANEL_ROUTE_DETAILS.ON_FOOT') }}" title="{{ t('PANEL_ROUTE_DETAILS.ON_FOOT') }}">
                     <i data-lucide="person-standing" aria-hidden="true"></i>
-                    <span>Pieszo</span>
+                    <span>{{ t('PANEL_ROUTE_DETAILS.ON_FOOT') }}</span>
                 </button>
-                <button class="route-details-panel__transport-button" data-route-transport="bicycle" type="button" role="radio" aria-checked="false" aria-label="Rower" title="Rower">
+                <button class="route-details-panel__transport-button" data-route-transport="bicycle" type="button" role="radio" aria-checked="false" aria-label="{{ t('PANEL_ROUTE_DETAILS.BICYCLE') }}" title="{{ t('PANEL_ROUTE_DETAILS.BICYCLE') }}">
                     <i data-lucide="bike" aria-hidden="true"></i>
-                    <span>Rower</span>
+                    <span>{{ t('PANEL_ROUTE_DETAILS.BICYCLE') }}</span>
                 </button>
-                <button class="route-details-panel__transport-button route-details-panel__transport-button--active" data-route-transport="car" type="button" role="radio" aria-checked="true" aria-label="Samochód" title="Samochód">
+                <button class="route-details-panel__transport-button route-details-panel__transport-button--active" data-route-transport="car" type="button" role="radio" aria-checked="true" aria-label="{{ t('PANEL_ROUTE_DETAILS.CAR') }}" title="{{ t('PANEL_ROUTE_DETAILS.CAR') }}">
                     <i data-lucide="car" aria-hidden="true"></i>
-                    <span>Samochód</span>
+                    <span>{{ t('PANEL_ROUTE_DETAILS.CAR') }}</span>
                 </button>
-                <button class="route-details-panel__transport-button" data-route-transport="public" type="button" role="radio" aria-checked="false" aria-label="Transport publiczny" title="Transport publiczny" disabled>
+                <button class="route-details-panel__transport-button" data-route-transport="public" type="button" role="radio" aria-checked="false" aria-label="{{ t('PANEL_ROUTE_DETAILS.PUBLIC_TRANSPORT') }}" title="{{ t('PANEL_ROUTE_DETAILS.PUBLIC_TRANSPORT') }}" disabled>
                     <i data-lucide="bus" aria-hidden="true"></i>
-                    <span>Transport publiczny</span>
+                    <span>{{ t('PANEL_ROUTE_DETAILS.PUBLIC_TRANSPORT') }}</span>
                 </button>
             </div>
             <div class="route-details-panel__header-separator" aria-hidden="true"></div>
             <div class="route-details-panel__header-actions">
-                <button class="route-details-panel__edit-name" id="route-details-panel-edit-name" type="button" aria-label="Edytuj nazwę trasy" hidden>
+                <button class="route-details-panel__edit-name" id="route-details-panel-edit-name" type="button" aria-label="{{ t('PANEL_ROUTE_DETAILS.EDIT_ROUTE_NAME') }}" hidden>
                     <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
-                <button class="route-details-panel__save" id="route-details-panel-save" type="button" aria-label="Zapisz trasę">
+                <button class="route-details-panel__save" id="route-details-panel-save" type="button" aria-label="{{ t('PANEL_ROUTE_DETAILS.SAVE_ROUTE') }}">
                     <i data-lucide="save" aria-hidden="true"></i>
                 </button>
-                <button class="route-details-panel__close" data-route-details-panel-close type="button" aria-label="Zamknij panel"></button>
+                <button class="route-details-panel__close" data-route-details-panel-close type="button" aria-label="{{ t('PANEL_ROUTE_DETAILS.CLOSE_PANEL') }}"></button>
             </div>
         </div>
-        <nav class="route-details-panel__tabs" id="route-details-panel-tabs" aria-label="Zakładki trasy">
-            <button class="route-details-panel__tab route-details-panel__tab--active" data-route-tab="points" type="button" aria-selected="true">Punkty</button>
-            <button class="route-details-panel__tab" data-route-tab="navigation" type="button" aria-selected="false">Nawigacja</button>
-            <button class="route-details-panel__tab" data-route-tab="settings" type="button" aria-selected="false">Konfiguracja</button>
+        <nav class="route-details-panel__tabs" id="route-details-panel-tabs" aria-label="{{ t('PANEL_ROUTE_DETAILS.ROUTE_TABS') }}">
+            <button class="route-details-panel__tab route-details-panel__tab--active" data-route-tab="points" type="button" aria-selected="true">{{ t('PANEL_ROUTE_DETAILS.POINTS') }}</button>
+            <button class="route-details-panel__tab" data-route-tab="navigation" type="button" aria-selected="false">{{ t('PANEL_ROUTE_DETAILS.NAVIGATION') }}</button>
+            <button class="route-details-panel__tab" data-route-tab="settings" type="button" aria-selected="false">{{ t('PANEL_ROUTE_DETAILS.CONFIGURATION') }}</button>
         </nav>
         <div class="route-details-panel__content">
             <section class="route-details-panel__tab-panel route-details-panel__tab-panel--active" data-route-tab-panel="points">
@@ -47,11 +47,11 @@
                 <div class="route-details-panel__actions">
                     <button class="route-details-panel__add" id="route-details-panel-add" type="button">
                         <span class="route-details-panel__add-icon" aria-hidden="true"></span>
-                        <span>Dodaj punkt</span>
+                        <span>{{ t('PANEL_ROUTE_DETAILS.ADD_POINT') }}</span>
                     </button>
                     <button class="route-details-panel__reverse" id="route-details-panel-reverse" type="button">
                         <i data-lucide="rotate-ccw" aria-hidden="true"></i>
-                        <span>Odwróć trasę</span>
+                        <span>{{ t('PANEL_ROUTE_DETAILS.REVERSE_ROUTE') }}</span>
                     </button>
                 </div>
             </section>
@@ -61,37 +61,37 @@
             <section class="route-details-panel__tab-panel" data-route-tab-panel="settings" hidden>
             <section class="route-details-panel__fuel" id="route-details-panel-fuel" hidden>
                 <div class="route-details-panel__fuel-header">
-                    <span>Paliwo na start</span>
+                    <span>{{ t('PANEL_ROUTE_DETAILS.INITIAL_FUEL') }}</span>
                     <strong id="route-details-panel-fuel-label">45.0 L. (100 %)</strong>
                 </div>
                 <input class="route-details-panel__fuel-slider" id="route-details-panel-fuel-slider" type="range" min="0" max="100" step="1" value="100">
             </section>
                 <fieldset class="route-details-panel__settings" id="route-details-panel-separator-settings">
-                    <legend>Separatory tankowania</legend>
+                    <legend>{{ t('PANEL_ROUTE_DETAILS.REFUELLING_MARKERS') }}</legend>
                     <label class="route-details-panel__checkbox">
                         <input id="route-details-panel-separators-enabled" type="checkbox">
-                        <span>Pokazuj separatory tankowania</span>
+                        <span>{{ t('PANEL_ROUTE_DETAILS.SHOW_REFUELLING_MARKERS') }}</span>
                     </label>
                     <div class="route-details-panel__settings-options" id="route-details-panel-separators-options">
                         <label class="route-details-panel__checkbox">
                             <input id="route-details-panel-separator-economic" type="checkbox">
-                            <span>Jazda ekonomiczna</span>
+                            <span>{{ t('PANEL_ROUTE_DETAILS.ECONOMICAL_DRIVING') }}</span>
                         </label>
                         <label class="route-details-panel__checkbox">
                             <input id="route-details-panel-separator-average" type="checkbox">
-                            <span>Jazda średnia</span>
+                            <span>{{ t('PANEL_ROUTE_DETAILS.AVERAGE_DRIVING') }}</span>
                         </label>
                         <label class="route-details-panel__checkbox">
                             <input id="route-details-panel-separator-dynamic" type="checkbox">
-                            <span>Jazda dynamiczna</span>
+                            <span>{{ t('PANEL_ROUTE_DETAILS.DYNAMIC_DRIVING') }}</span>
                         </label>
                     </div>
                 </fieldset>
                 <fieldset class="route-details-panel__settings" id="route-details-panel-toll-settings">
-                    <legend>Płatne odcinki</legend>
+                    <legend>{{ t('PANEL_ROUTE_DETAILS.TOLL_SECTIONS') }}</legend>
                     <label class="route-details-panel__checkbox">
                         <input id="route-details-panel-toll-roads-enabled" type="checkbox">
-                        <span>Uwzględniaj płatne drogi i autostrady</span>
+                        <span>{{ t('PANEL_ROUTE_DETAILS.INCLUDE_TOLL_ROADS') }}</span>
                     </label>
                 </fieldset>
             </section>

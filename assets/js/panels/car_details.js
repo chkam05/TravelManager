@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const panel = document.querySelector('#car-details-panel');
     const title = document.querySelector('#car-details-panel-title');
     const content = document.querySelector('#car-details-panel-content');
@@ -45,8 +46,14 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     };
 
-    const name = (profile) => profile?.name || [profile?.brand, profile?.model].filter(Boolean).join(' ') || 'Samochód';
+    const name = (profile) => profile?.name
+        || [profile?.brand, profile?.model].filter(Boolean).join(' ')
+        || t('PANEL_CAR_DETAILS.CAR');
     const value = (data) => data === null || data === undefined || data === '' ? '-' : String(data);
+    const selectValueLabel = (fieldName, data) => {
+        const options = document.querySelector(`[name="${fieldName}"]`)?.options || [];
+        return Array.from(options).find((option) => option.value === data)?.textContent || data;
+    };
     const setValue = (field, data) => {
         if (valueFields[field]) {
             valueFields[field].textContent = value(data);
@@ -73,7 +80,12 @@ document.addEventListener('travel-manager:views-ready', () => {
                 field.appendChild(document.createElement('br'));
             }
 
-            field.append(`${entry.distance || 0} km${entry.date ? ` (${entry.date})` : ''}`);
+            field.append(t('PANEL_CAR_DETAILS.MILEAGE_VALUE', {
+                value: entry.distance || 0
+            }));
+            if (entry.date) {
+                field.append(` (${entry.date})`);
+            }
         });
     };
 
@@ -94,18 +106,38 @@ document.addEventListener('travel-manager:views-ready', () => {
         setValue('generation', currentProfile.generation);
         setValue('production_year', currentProfile.production_year);
         setValue('registration_number', currentProfile.registration_number);
-        setValue('body_type', currentProfile.body_type);
-        setValue('engine_capacity', currentProfile.engine_capacity ? `${currentProfile.engine_capacity} cm3` : '');
-        setValue('power_hp', currentProfile.power_hp ? `${currentProfile.power_hp} KM` : '');
-        setValue('power_kw', currentProfile.power_kw ? `${currentProfile.power_kw} kW` : '');
-        setValue('max_speed', currentProfile.max_speed ? `${currentProfile.max_speed} km/h` : '');
-        setValue('drive_type', currentProfile.drive_type);
-        setValue('transmission_type', currentProfile.transmission_type);
-        setValue('fuel_tank_capacity', currentProfile.fuel_tank_capacity ? `${currentProfile.fuel_tank_capacity} L` : '');
-        setValue('fuel_type', currentProfile.fuel_type);
-        setValue('secondary_fuel_type', currentProfile.secondary_fuel_type);
-        setValue('min_consumption', currentProfile.min_consumption ? `${currentProfile.min_consumption} L/100km` : '');
-        setValue('max_consumption', currentProfile.max_consumption ? `${currentProfile.max_consumption} L/100km` : '');
+        setValue('body_type', selectValueLabel('body_type', currentProfile.body_type));
+        setValue('engine_capacity', currentProfile.engine_capacity
+            ? t('PANEL_CAR_DETAILS.ENGINE_CAPACITY_VALUE', { value: currentProfile.engine_capacity })
+            : '');
+        setValue('power_hp', currentProfile.power_hp
+            ? t('PANEL_CAR_DETAILS.POWER_HP_VALUE', { value: currentProfile.power_hp })
+            : '');
+        setValue('power_kw', currentProfile.power_kw
+            ? t('PANEL_CAR_DETAILS.POWER_KW_VALUE', { value: currentProfile.power_kw })
+            : '');
+        setValue('max_speed', currentProfile.max_speed
+            ? t('PANEL_CAR_DETAILS.MAX_SPEED_VALUE', { value: currentProfile.max_speed })
+            : '');
+        setValue('drive_type', selectValueLabel('drive_type', currentProfile.drive_type));
+        setValue(
+            'transmission_type',
+            selectValueLabel('transmission_type', currentProfile.transmission_type)
+        );
+        setValue('fuel_tank_capacity', currentProfile.fuel_tank_capacity
+            ? t('PANEL_CAR_DETAILS.FUEL_TANK_VALUE', { value: currentProfile.fuel_tank_capacity })
+            : '');
+        setValue('fuel_type', selectValueLabel('fuel_type', currentProfile.fuel_type));
+        setValue(
+            'secondary_fuel_type',
+            selectValueLabel('secondary_fuel_type', currentProfile.secondary_fuel_type)
+        );
+        setValue('min_consumption', currentProfile.min_consumption
+            ? t('PANEL_CAR_DETAILS.CONSUMPTION_VALUE', { value: currentProfile.min_consumption })
+            : '');
+        setValue('max_consumption', currentProfile.max_consumption
+            ? t('PANEL_CAR_DETAILS.CONSUMPTION_VALUE', { value: currentProfile.max_consumption })
+            : '');
         setOdometer(currentProfile.odometer_entries);
 
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
@@ -145,8 +177,10 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         const accepted = await window.travelManagerDialogs?.yesNo({
-            title: 'Usunąć samochód?',
-            description: `Profil „${name(currentProfile)}” zostanie usunięty.`,
+            title: t('CAR_PROFILES_VIEW.DELETE_TITLE'),
+            description: t('CAR_PROFILES_VIEW.DELETE_DESCRIPTION', {
+                name: name(currentProfile)
+            }),
             icon: 'warning'
         });
 

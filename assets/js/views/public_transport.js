@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const view = document.querySelector('[data-app-view="public-transport"]');
     const content = view?.querySelector('#public-transport-content');
     const headers = Array.from(view?.querySelectorAll('[data-public-transport-header]') || []);
@@ -27,7 +29,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     const normalize = (value) => String(value || '')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
-        .toLocaleLowerCase('pl-PL')
+        .toLocaleLowerCase(locale)
         .trim();
 
     const endpoint = (screen) => {
@@ -52,10 +54,10 @@ document.addEventListener('travel-manager:views-ready', () => {
         content.innerHTML = `
             <div class="public-transport-view__loading">
                 <i data-lucide="loader-circle" aria-hidden="true"></i>
-                <span>Ładowanie danych…</span>
+                <span>${t('PUBLIC_TRANSPORT_VIEW.LOADING_DATA')}</span>
                 <div class="public-transport-view__progress">
                     <progress value="0" max="1" data-public-transport-progress hidden></progress>
-                    <span data-public-transport-progress-text>Przygotowywanie danych…</span>
+                    <span data-public-transport-progress-text>${t('PUBLIC_TRANSPORT_VIEW.PREPARING_DATA')}</span>
                 </div>
             </div>
         `;
@@ -90,14 +92,24 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             if (text && progress.status === 'downloading') {
                 const position = progress.total > 0
-                    ? ` (${progress.current}/${progress.total})`
+                    ? t('PUBLIC_TRANSPORT_VIEW.DOWNLOAD_POSITION', {
+                        current: progress.current,
+                        total: progress.total
+                    })
                     : '';
                 const retry = progress.attempt > 1
-                    ? ` — próba ${progress.attempt}/${progress.max_attempts}`
+                    ? t('PUBLIC_TRANSPORT_VIEW.DOWNLOAD_ATTEMPT', {
+                        attempt: progress.attempt,
+                        maximum: progress.max_attempts
+                    })
                     : '';
                 text.textContent = progress.item
-                    ? `Pobieranie „${progress.item}”${position}${retry}…`
-                    : 'Przygotowywanie danych…';
+                    ? t('PUBLIC_TRANSPORT_VIEW.DOWNLOADING_ITEM', {
+                        item: progress.item,
+                        position,
+                        retry
+                    })
+                    : t('PUBLIC_TRANSPORT_VIEW.PREPARING_DATA');
             }
         } catch (error) {
             // The main request remains responsible for reporting download errors.
@@ -208,19 +220,34 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (details) {
             if (screen === 'line-stop') {
                 const platform = metadata.show_platforms
-                    ? ` · stanowisko ${metadata.platform || '—'}`
+                    ? t('PUBLIC_TRANSPORT_STOPS.PLATFORM_SUFFIX', {
+                        platform: metadata.platform || '—'
+                    })
                     : '';
-                details.textContent = `Kierunek: ${metadata.direction || '—'}${platform}`;
+                details.textContent = t('PUBLIC_TRANSPORT_LINES.DIRECTION_DETAILS', {
+                    direction: metadata.direction || '—',
+                    platform
+                });
             } else if (screen === 'ride') {
                 const platform = metadata.show_platforms && metadata.platform
-                    ? ` · stanowisko ${metadata.platform}`
+                    ? t('PUBLIC_TRANSPORT_STOPS.PLATFORM_SUFFIX', {
+                        platform: metadata.platform
+                    })
                     : '';
-                details.textContent = `Odjazd ${metadata.departure || '—'}${platform}`;
+                details.textContent = t('PUBLIC_TRANSPORT_RIDE.DEPARTURE_DETAILS', {
+                    departure: metadata.departure || '—',
+                    platform
+                });
             } else if (screen === 'stop-lines') {
                 const platform = metadata.show_platforms
-                    ? `Stanowisko ${metadata.platform || '—'} · `
+                    ? t('PUBLIC_TRANSPORT_STOPS.PLATFORM_PREFIX', {
+                        platform: metadata.platform || '—'
+                    })
                     : '';
-                details.textContent = `${platform}${metadata.directions_count || 0} kierunków`;
+                details.textContent = t('PUBLIC_TRANSPORT_STOPS.DIRECTIONS_COUNT', {
+                    platform,
+                    count: metadata.directions_count || 0
+                });
             }
         }
 
@@ -272,7 +299,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             const label = directionField.querySelector('span');
 
             if (label) {
-                label.textContent = metadata.direction_label || 'Kierunek';
+                label.textContent = metadata.direction_label || t('PUBLIC_TRANSPORT_VIEW.DIRECTION');
             }
         }
 
@@ -295,7 +322,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (mapButton) {
             mapButton.hidden = !hasCoordinates && !canSearchStop;
-            mapButton.dataset.name = metadata.stop || 'Przystanek';
+            mapButton.dataset.name = metadata.stop || t('PUBLIC_TRANSPORT_RIDE.STOP');
             mapButton.dataset.query = metadata.stop || '';
             mapButton.dataset.latitude = hasCoordinates ? String(latitude) : '';
             mapButton.dataset.longitude = hasCoordinates ? String(longitude) : '';
@@ -315,8 +342,8 @@ document.addEventListener('travel-manager:views-ready', () => {
             routeButton.disabled = !canShowRoute;
             routeButton.dataset.route = JSON.stringify(route);
             routeButton.dataset.name = metadata.line
-                ? `Przebieg linii ${metadata.line}`
-                : 'Przebieg przejazdu';
+                ? t('PUBLIC_TRANSPORT_LINES.LINE_ROUTE_NUMBER', { line: metadata.line })
+                : t('PUBLIC_TRANSPORT_RIDE.RIDE_ROUTE');
         }
 
         const vehiclesButton = control(
@@ -481,11 +508,11 @@ document.addEventListener('travel-manager:views-ready', () => {
             content.innerHTML = `
                 <div class="public-transport-error" role="alert">
                     <i data-lucide="circle-alert" aria-hidden="true"></i>
-                    <h2>Nie udało się załadować widoku</h2>
+                    <h2>${t('PUBLIC_TRANSPORT_VIEW.LOAD_VIEW_FAILED')}</h2>
                     <p data-public-transport-error-message></p>
                     <button type="button" data-public-transport-retry>
                         <i data-lucide="refresh-cw" aria-hidden="true"></i>
-                        <span>Spróbuj ponownie</span>
+                        <span>${t('COMMON.RETRY')}</span>
                     </button>
                 </div>
             `;
@@ -550,7 +577,9 @@ document.addEventListener('travel-manager:views-ready', () => {
                     const html = await response.text();
                     const documentFragment = new DOMParser().parseFromString(html, 'text/html');
                     const message = documentFragment.querySelector('p')?.textContent?.trim();
-                    throw new Error(message || `Błąd HTTP ${response.status}`);
+                    throw new Error(message || t('PUBLIC_TRANSPORT_VIEW.HTTP_ERROR', {
+                        status: response.status
+                    }));
                 }
             } catch (error) {
                 errors.push(`${provider.name}: ${error.message}`);
@@ -560,7 +589,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         button.disabled = false;
         window.travelManagerDownloadStatus?.finish(
             errors.length
-                ? `Nie zaktualizowano: ${errors.join(' • ')}`
+                ? t('PUBLIC_TRANSPORT_VIEW.NOT_UPDATED_DETAILS', {
+                    errors: errors.join(' • ')
+                })
                 : ''
         );
     };
@@ -635,8 +666,8 @@ document.addEventListener('travel-manager:views-ready', () => {
             const lon = Number(longitude);
             element = {
                 place_id: `public-transport:${lat}:${lon}`,
-                display_name: name || 'Przystanek',
-                name: { name: name || 'Przystanek' },
+                display_name: name || t('PUBLIC_TRANSPORT_RIDE.STOP'),
+                name: { name: name || t('PUBLIC_TRANSPORT_RIDE.STOP') },
                 coordinates: {
                     latitude: lat,
                     longitude: lon
@@ -649,7 +680,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             )
                 ? ', Częstochowa'
                 : '';
-            const searchQuery = `${query || name || 'Przystanek'}${suffix}`;
+            const searchQuery = `${query || name || t('PUBLIC_TRANSPORT_RIDE.STOP')}${suffix}`;
             try {
                 const params = new URLSearchParams({ q: searchQuery });
                 const response = await fetch(`/api/map/search?${params}`, {
@@ -659,7 +690,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 element = data.place?.selected || data.place?.elements?.[0];
                 if (!response.ok || !element?.coordinates) {
                     throw new Error(
-                        data.message || 'Nie znaleziono położenia przystanku.'
+                        data.message || t('PUBLIC_TRANSPORT_STOPS.LOCATION_NOT_FOUND')
                     );
                 }
             } catch (error) {
@@ -684,7 +715,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 window.travelManagerMap?.showPublicTransportStop(
                     element.coordinates.latitude,
                     element.coordinates.longitude,
-                    name || 'Przystanek'
+                    name || t('PUBLIC_TRANSPORT_RIDE.STOP')
                 );
             }
         }, 0);
@@ -724,11 +755,11 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             if (!response.ok) {
                 throw new Error(
-                    data.error || 'Nie udało się pobrać pozycji pojazdów.'
+                    data.error || t('PANEL_PUBLIC_TRANSPORT.LOAD_VEHICLE_POSITIONS_FAILED')
                 );
             }
             if (!Array.isArray(data.positions) || !data.positions.length) {
-                throw new Error(`Brak aktywnych pojazdów linii ${line}.`);
+                throw new Error(t('PANEL_PUBLIC_TRANSPORT.NO_ACTIVE_VEHICLES', { line }));
             }
 
             window.travelManagerNavigation?.showView('map');
@@ -910,7 +941,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 const dialog = window.travelManagerPublicTransportAnnouncement;
                 dialog?.open({
                     ...summary,
-                    content: summary.content || 'Pobieranie treści komunikatu…'
+                    content: summary.content || t('PUBLIC_TRANSPORT_ANNOUNCEMENT.LOADING_CONTENT')
                 });
                 if (!summary.url || summary.content) {
                     return;
@@ -922,7 +953,9 @@ document.addEventListener('travel-manager:views-ready', () => {
                     .then(async (response) => {
                         const data = await response.json();
                         if (!response.ok) {
-                            throw new Error(data.error || 'Nie udało się pobrać komunikatu.');
+                            throw new Error(
+                                data.error || t('PUBLIC_TRANSPORT_ANNOUNCEMENT.LOAD_FAILED')
+                            );
                         }
                         return data;
                     })

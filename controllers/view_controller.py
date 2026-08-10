@@ -1,11 +1,14 @@
 from typing import ClassVar
 from flask import render_template
 
-from config import APP_AUTHOR, APP_DESCRIPTION, APP_NAME, APP_VERSION
+from config import APP_AUTHOR, APP_NAME, APP_VERSION
 from core.api.base_controller import BaseController
 from resources.emojis import Emojis
 from resources.menu import Menu
 from resources.color_presets import ColorPresets
+from resources.enums.car_body_type import CarBodyType
+from resources.enums.car_drive_type import CarDriveType
+from resources.enums.car_transmission_type import CarTransmissionType
 from resources.public_transport.public_transport_providers import PublicTransportProviders
 
 
@@ -86,8 +89,7 @@ class ViewController(BaseController):
         return render_template(
             'views/information.html',
             app_name=APP_NAME,
-            app_author=f'Copyright (C) {APP_AUTHOR}',
-            app_description=APP_DESCRIPTION,
+            app_author=APP_AUTHOR,
             app_version=APP_VERSION,
             app_url=self._app_url
         )
@@ -124,4 +126,9 @@ class ViewController(BaseController):
         return render_template('dialogs/yesno_dialog.html')
 
     def dialogs(self):
-        return render_template('dialogs/dialogs.html')
+        return render_template(
+            'dialogs/dialogs.html',
+            car_body_types=CarBodyType.options(),
+            car_drive_types=CarDriveType.options(),
+            car_transmission_types=CarTransmissionType.options()
+        )

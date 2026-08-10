@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const layer = document.querySelector('#dialog-layer');
     const dialog = document.querySelector('#fuel-update');
     const list = document.querySelector('#fuel-update-list');
@@ -24,7 +25,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!rows.length) {
             const empty = document.createElement('p');
             empty.className = 'fuel-update__description';
-            empty.textContent = 'Brak ręcznych zmian do sprawdzenia.';
+            empty.textContent = t('FUEL_UPDATE_DIALOG.NO_MANUAL_CHANGES');
             list.append(empty);
             return;
         }
@@ -40,7 +41,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             if (!row.updateAvailable) {
                 const warning = document.createElement('span');
                 warning.className = 'fuel-update__warning';
-                warning.textContent = '! Dane nie zostaną zaktualizowane';
+                warning.textContent = t('FUEL_UPDATE_DIALOG.DATA_WILL_NOT_BE_UPDATED');
                 item.append(name, warning);
             } else {
                 const label = document.createElement('label');
@@ -52,7 +53,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 checkbox.dataset.fuelUpdateOverwrite = row.country_code;
 
                 const text = document.createElement('span');
-                text.textContent = 'Nadpisz';
+                text.textContent = t('FUEL_UPDATE_DIALOG.OVERWRITE');
 
                 label.append(checkbox, text);
                 item.append(name, label);

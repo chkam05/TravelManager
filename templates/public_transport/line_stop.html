@@ -18,22 +18,22 @@
                 <section class="public-transport-line-stop__day">
                     <header>
                         <div>
-                            <h3>Dzień {{ timetable_date.strftime('%d.%m.%Y') }}</h3>
+                            <h3>{{ t('PUBLIC_TRANSPORT_STOPS.DAY_DATE', date=timetable_date.strftime('%d.%m.%Y')) }}</h3>
                             {% if day.effective_date_from %}
                                 <p>
-                                    Rozkład obowiązuje od {{ day.effective_date_from.strftime('%d.%m.%Y') }}
-                                    {% if day.effective_date_to %} do {{ day.effective_date_to.strftime('%d.%m.%Y') }}{% endif %}
+                                    {{ t('PUBLIC_TRANSPORT_STOPS.TIMETABLE_VALID_FROM', date=day.effective_date_from.strftime('%d.%m.%Y')) }}
+                                    {% if day.effective_date_to %} {{ t('PUBLIC_TRANSPORT_STOPS.TIMETABLE_VALID_TO', date=day.effective_date_to.strftime('%d.%m.%Y')) }}{% endif %}
                                 </p>
                             {% endif %}
                         </div>
                         <button class="public-transport-collapse-button" type="button" aria-expanded="true" aria-controls="public-transport-day-{{ loop.index0 }}" data-public-transport-collapse>
                             <i data-lucide="chevron-up" aria-hidden="true"></i>
-                            <span class="sr-only">Zwiń lub rozwiń dzień</span>
+                            <span class="sr-only">{{ t('PUBLIC_TRANSPORT_STOPS.TOGGLE_DAY') }}</span>
                         </button>
                     </header>
                     <div class="public-transport-line-stop__departures" id="public-transport-day-{{ loop.index0 }}">
                         {% for departure in day.departures %}
-                            <button type="button"{% if capabilities.show_ride and departure.url %} data-public-transport-action="ride" data-url="{{ departure.url }}" title="Pokaż kurs"{% endif %}{% if not capabilities.show_ride or not departure.url %} disabled{% endif %}>
+                            <button type="button"{% if capabilities.show_ride and departure.url %} data-public-transport-action="ride" data-url="{{ departure.url }}" title="{{ t('PUBLIC_TRANSPORT_RIDE.SHOW_RIDE') }}"{% endif %}{% if not capabilities.show_ride or not departure.url %} disabled{% endif %}>
                                 <span>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</span>
                                 {% if departure.variant or (capabilities.show_high_floor and departure.is_high_floor) %}
                                     <span class="public-transport-line-stop__departure-meta">
@@ -43,7 +43,7 @@
                                 {% endif %}
                             </button>
                         {% else %}
-                            <span class="public-transport-empty">Brak odjazdów.</span>
+                            <span class="public-transport-empty">{{ t('PUBLIC_TRANSPORT_VIEW.NO_DEPARTURES') }}</span>
                         {% endfor %}
                     </div>
                 </section>
@@ -53,14 +53,14 @@
         <div class="public-transport-detail__sidebar-grabber" data-public-transport-detail-sidebar-grabber aria-hidden="true"></div>
         <aside class="public-transport-detail__sidebar public-transport-line-stop__variant-list">
             <label class="public-transport-header__field">
-                <span>Data</span>
+                <span>{{ t('COMMON.DATE') }}</span>
                 <select data-public-transport-date></select>
             </label>
             <button class="public-transport-header__button" type="button" data-public-transport-map hidden>
                 <i data-lucide="map-pin" aria-hidden="true"></i>
-                <span>Pokaż na mapie</span>
+                <span>{{ t('PUBLIC_TRANSPORT_VIEW.SHOW_ON_MAP') }}</span>
             </button>
-            <h3>Warianty</h3>
+            <h3>{{ t('PUBLIC_TRANSPORT_LINES.VARIANTS') }}</h3>
             {% for timetable_date, day in timetable_days %}
                 {% if day.variants %}
                     <section>
@@ -74,7 +74,7 @@
                     </section>
                 {% endif %}
             {% else %}
-                <p class="public-transport-empty">Brak wariantów.</p>
+                <p class="public-transport-empty">{{ t('PUBLIC_TRANSPORT_LINES.NO_VARIANTS') }}</p>
             {% endfor %}
         </aside>
         </div>

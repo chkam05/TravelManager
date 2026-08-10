@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const panel = document.querySelector('#public-transport-panel');
     const content = panel?.querySelector('[data-public-transport-panel-content]');
     const providerSelect = panel?.querySelector('[data-public-transport-panel-provider]');
@@ -77,7 +79,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         state.routeVisible = Boolean(visible && state.lineMetadata);
         mapButton.classList.toggle('public-transport-panel__icon-button--active', state.routeVisible);
         mapButton.setAttribute('aria-pressed', String(state.routeVisible));
-        mapButton.title = state.routeVisible ? 'Ukryj trasę' : 'Pokaż na mapie';
+        const label = state.routeVisible
+            ? t('PANEL_PUBLIC_TRANSPORT.HIDE_ROUTE')
+            : t('PUBLIC_TRANSPORT_VIEW.SHOW_ON_MAP');
+        mapButton.title = label;
+        mapButton.setAttribute('aria-label', label);
     };
     const clearRoute = () => {
         window.travelManagerMap?.clearPublicTransportRoute();
@@ -88,7 +94,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         stopMapButton?.classList.toggle('public-transport-panel__icon-button--active', state.stopVisible);
         stopMapButton?.setAttribute('aria-pressed', String(state.stopVisible));
         if (stopMapButton) {
-            stopMapButton.title = state.stopVisible ? 'Ukryj przystanek' : 'Pokaż przystanek na mapie';
+            const label = state.stopVisible
+                ? t('PANEL_PUBLIC_TRANSPORT.HIDE_STOP')
+                : t('PANEL_PUBLIC_TRANSPORT.SHOW_STOP_ON_MAP');
+            stopMapButton.title = label;
+            stopMapButton.setAttribute('aria-label', label);
             const icon = document.createElement('i');
             icon.dataset.lucide = state.stopVisible ? 'map-pin-off' : 'map-pin';
             icon.setAttribute('aria-hidden', 'true');
@@ -104,7 +114,13 @@ document.addEventListener('travel-manager:views-ready', () => {
         state.vehiclesVisible = Boolean(visible && state.lineMetadata);
         vehiclesButton?.classList.toggle('public-transport-panel__icon-button--active', state.vehiclesVisible);
         vehiclesButton?.setAttribute('aria-pressed', String(state.vehiclesVisible));
-        if (vehiclesButton) vehiclesButton.title = state.vehiclesVisible ? 'Ukryj pojazdy' : 'Pokaż pojazdy na mapie';
+        if (vehiclesButton) {
+            const label = state.vehiclesVisible
+                ? t('PANEL_PUBLIC_TRANSPORT.HIDE_VEHICLES')
+                : t('PANEL_PUBLIC_TRANSPORT.SHOW_VEHICLES_ON_MAP');
+            vehiclesButton.title = label;
+            vehiclesButton.setAttribute('aria-label', label);
+        }
         scheduleVehicleRefresh();
     };
     const clearVehicles = () => {
@@ -120,10 +136,15 @@ document.addEventListener('travel-manager:views-ready', () => {
     const scheduleVehicleRefresh = () => {
         window.clearTimeout(state.vehicleTimer); state.vehicleTimer = null;
         if (!state.vehiclesVisible) { setLiveStatus(''); return; }
-        if (!state.vehicleBackgroundUpdates) { setLiveStatus('Aktualizacja w tle jest wyłączona'); return; }
-        setLiveStatus(`Oczekiwanie na kolejną aktualizację (${state.vehicleUpdateInterval} s)`);
+        if (!state.vehicleBackgroundUpdates) {
+            setLiveStatus(t('PANEL_PUBLIC_TRANSPORT.BACKGROUND_UPDATES_DISABLED'));
+            return;
+        }
+        setLiveStatus(t('PANEL_PUBLIC_TRANSPORT.WAITING_FOR_NEXT_UPDATE', {
+            seconds: state.vehicleUpdateInterval
+        }));
         state.vehicleTimer = window.setTimeout(async () => {
-            setLiveStatus('Szukanie nowych pozycji pojazdów…');
+            setLiveStatus(t('PANEL_PUBLIC_TRANSPORT.SEARCHING_VEHICLE_POSITIONS'));
             await new Promise((resolve) => window.setTimeout(resolve, 180));
             if (!state.vehiclesVisible) return;
             await refreshVehicles(true);
@@ -134,7 +155,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const line = state.lineMetadata?.line;
         if (state.vehicleRequestActive || !line) return false;
         state.vehicleRequestActive = true;
-        setLiveStatus('Pobieranie danych o pojazdach…');
+        setLiveStatus(t('PANEL_PUBLIC_TRANSPORT.LOADING_VEHICLE_DATA'));
         try {
             const params = new URLSearchParams({ line });
             if (state.lineMetadata?.type) {
@@ -144,14 +165,16 @@ document.addEventListener('travel-manager:views-ready', () => {
                 params.set('feed', state.lineMetadata.vehicle_feed);
             }
             const response = await fetch(`${endpoint('vehicles')}?${params}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-            setLiveStatus('Przetwarzanie pozycji pojazdów…');
+            setLiveStatus(t('PANEL_PUBLIC_TRANSPORT.PROCESSING_VEHICLE_POSITIONS'));
             const data = await response.json();
             if (!response.ok || !Array.isArray(data.positions) || !data.positions.length) {
-                throw new Error(data.error || `Brak aktywnych pojazdów linii ${line}.`);
+                throw new Error(
+                    data.error || t('PANEL_PUBLIC_TRANSPORT.NO_ACTIVE_VEHICLES', { line })
+                );
             }
             window.travelManagerMap?.showPublicTransportVehicles(
                 data.positions,
-                `Pojazdy linii ${line}`,
+                t('PANEL_PUBLIC_TRANSPORT.VEHICLES_OF_LINE', { line }),
                 !silent
             );
             setVehiclesVisible(true);
@@ -164,10 +187,14 @@ document.addEventListener('travel-manager:views-ready', () => {
     const updateHeader = () => {
         setActiveView();
         title.textContent = state.screen === 'lines'
-            ? 'Komunikacja miejska'
+            ? t('PUBLIC_TRANSPORT_VIEW.TITLE')
             : state.screen === 'line'
-                ? `Linia ${state.metadata.line || ''}`
-                : state.metadata.stop || `Linia ${state.metadata.line || ''}`;
+                ? t('PUBLIC_TRANSPORT_LINES.LINE_NUMBER', {
+                    line: state.metadata.line || ''
+                })
+                : state.metadata.stop || t('PUBLIC_TRANSPORT_LINES.LINE_NUMBER', {
+                    line: state.metadata.line || ''
+                });
         const isRoot = state.screen === 'lines';
         const route = state.lineMetadata?.routes?.[state.directionIndex]
             || state.lineMetadata?.route
@@ -194,7 +221,9 @@ document.addEventListener('travel-manager:views-ready', () => {
     const renderLines = () => {
         const host = view('lines').querySelector('[data-public-transport-panel-lines]');
         const lines = state.fragment.querySelector('.public-transport-lines');
-        host.replaceChildren(lines ? lines.cloneNode(true) : document.createTextNode('Brak linii.'));
+        host.replaceChildren(lines
+            ? lines.cloneNode(true)
+            : document.createTextNode(t('PUBLIC_TRANSPORT_LINES.NO_LINES_SHORT')));
         emptyState.hidden = true;
         host.hidden = false;
         searchInput.closest('label').hidden = false;
@@ -218,7 +247,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         const host = view('line').querySelector('[data-public-transport-panel-stops]');
         const sections = state.fragment.querySelectorAll('[data-public-transport-direction]');
         const list = sections[index]?.querySelector('.public-transport-line-view__stops');
-        host.replaceChildren(list ? list.cloneNode(true) : document.createTextNode('Brak przystanków.'));
+        host.replaceChildren(list
+            ? list.cloneNode(true)
+            : document.createTextNode(t('PUBLIC_TRANSPORT_STOPS.NO_STOPS_SHORT')));
     };
     const renderLine = () => {
         const lineView = view('line');
@@ -236,7 +267,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         state.lineMetadata = state.metadata;
         state.lineUrl = state.url;
         state.directionIndex = 0;
-        directionLabel.textContent = state.metadata.direction_label || 'Kierunek';
+        directionLabel.textContent = state.metadata.direction_label || t('PUBLIC_TRANSPORT_VIEW.DIRECTION');
         directionField.hidden = !directions.length;
         const changeDirection = (value) => {
             if (/^https?:\/\//.test(value)) { load('line', value, true); return; }
@@ -274,12 +305,16 @@ document.addEventListener('travel-manager:views-ready', () => {
             load(option.dataset.screen || 'line-stop', value, true);
         });
         const days = state.fragment.querySelector('.public-transport-line-stop__days');
-        departures.replaceChildren(days ? days.cloneNode(true) : document.createTextNode('Brak odjazdów.'));
+        departures.replaceChildren(days
+            ? days.cloneNode(true)
+            : document.createTextNode(t('PUBLIC_TRANSPORT_VIEW.NO_DEPARTURES')));
     };
     const renderStopLines = () => {
         const host = view('stop-lines').querySelector('[data-public-transport-panel-stop-lines]');
         const list = state.fragment.querySelector('.public-transport-stop-lines__list');
-        host.replaceChildren(list ? list.cloneNode(true) : document.createTextNode('Brak linii na tym przystanku.'));
+        host.replaceChildren(list
+            ? list.cloneNode(true)
+            : document.createTextNode(t('PUBLIC_TRANSPORT_STOPS.NO_LINES_AT_STOP')));
     };
     const render = () => {
         content.querySelectorAll('.public-transport-panel__status').forEach((item) => item.remove());
@@ -298,13 +333,16 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (push) state.history.push({ screen: state.screen, url: state.url });
         if (screen === 'lines') { clearRoute(); clearVehicles(); clearStop(); state.lineMetadata = null; state.lineUrl = ''; }
         if (screen === 'stop-lines') clearVehicles();
-        state.screen = screen; state.url = url; status('Ładowanie danych…'); updateHeader();
+        state.screen = screen;
+        state.url = url;
+        status(t('PUBLIC_TRANSPORT_VIEW.LOADING_DATA'));
+        updateHeader();
         try {
             const params = new URLSearchParams();
             if (url) params.set('url', url);
             if (refresh) params.set('refresh', '1');
             const response = await fetch(`${endpoint(screen)}${params.size ? `?${params}` : ''}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-            if (!response.ok) throw new Error('Nie udało się załadować danych.');
+            if (!response.ok) throw new Error(t('PUBLIC_TRANSPORT_VIEW.LOAD_DATA_FAILED'));
             const fragment = document.createElement('div');
             fragment.innerHTML = await response.text();
             state.fragment = fragment; state.metadata = metadataFrom(fragment); render(); return true;
@@ -313,7 +351,10 @@ document.addEventListener('travel-manager:views-ready', () => {
     const showCurrentRoute = () => {
         const metadata = state.lineMetadata || {};
         const route = metadata.routes?.[state.directionIndex] || metadata.route || [];
-        window.travelManagerMap?.showPublicTransportRoute(route, `Linia ${metadata.line || ''}`);
+        window.travelManagerMap?.showPublicTransportRoute(
+            route,
+            t('PUBLIC_TRANSPORT_LINES.LINE_NUMBER', { line: metadata.line || '' })
+        );
         setRouteVisible(true);
     };
     const activateCurrentLine = async () => {
@@ -345,12 +386,17 @@ document.addEventListener('travel-manager:views-ready', () => {
             window.travelManagerMap?.showPublicTransportStop(
                 options.stopCoordinates?.latitude ?? state.metadata.latitude,
                 options.stopCoordinates?.longitude ?? state.metadata.longitude,
-                state.metadata.stop || 'Przystanek'
+                state.metadata.stop || t('PUBLIC_TRANSPORT_RIDE.STOP')
             );
             setStopVisible(true);
         }
         if (Array.isArray(options.vehicles) && options.vehicles.length && state.lineMetadata) {
-            window.travelManagerMap?.showPublicTransportVehicles(options.vehicles, `Pojazdy linii ${state.lineMetadata.line || ''}`);
+            window.travelManagerMap?.showPublicTransportVehicles(
+                options.vehicles,
+                t('PANEL_PUBLIC_TRANSPORT.VEHICLES_OF_LINE', {
+                    line: state.lineMetadata.line || ''
+                })
+            );
             setVehiclesVisible(true);
         }
     };
@@ -367,7 +413,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         window.travelManagerDownloadStatus?.show(state.provider);
         try {
             const loaded = await load('lines', '', false, true);
-            if (!loaded) throw new Error('Nie udało się pobrać danych komunikacji miejskiej.');
+            if (!loaded) {
+                throw new Error(t('PANEL_PUBLIC_TRANSPORT.LOAD_PUBLIC_TRANSPORT_DATA_FAILED'));
+            }
             searchInput.closest('label').hidden = false;
             window.travelManagerDownloadStatus?.finish();
         } catch (error) {
@@ -375,9 +423,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     });
     searchInput?.addEventListener('input', () => {
-        const query = searchInput.value.trim().toLocaleLowerCase('pl');
+        const query = searchInput.value.trim().toLocaleLowerCase(locale);
         view('lines').querySelectorAll('[data-public-transport-filter-item]').forEach((item) => {
-            item.hidden = !String(item.dataset.search || '').toLocaleLowerCase('pl').includes(query);
+            item.hidden = !String(item.dataset.search || '').toLocaleLowerCase(locale).includes(query);
         });
         view('lines').querySelectorAll('.public-transport-lines__group').forEach((group) => {
             group.hidden = !group.querySelector('[data-public-transport-filter-item]:not([hidden])');
@@ -405,7 +453,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 window.travelManagerMap?.showPublicTransportStop(
                     state.metadata.latitude,
                     state.metadata.longitude,
-                    state.metadata.stop || 'Przystanek'
+                    state.metadata.stop || t('PUBLIC_TRANSPORT_RIDE.STOP')
                 );
                 setStopVisible(true);
             }
@@ -423,7 +471,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     stopMapButton?.addEventListener('click', () => {
         if (state.stopVisible) clearStop();
         else {
-            window.travelManagerMap?.showPublicTransportStop(state.metadata.latitude, state.metadata.longitude, state.metadata.stop || 'Przystanek');
+            window.travelManagerMap?.showPublicTransportStop(
+                state.metadata.latitude,
+                state.metadata.longitude,
+                state.metadata.stop || t('PUBLIC_TRANSPORT_RIDE.STOP')
+            );
             setStopVisible(true);
         }
     });

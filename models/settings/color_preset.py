@@ -16,13 +16,11 @@ class ColorPreset(BaseDataModel):
 
     # Field name declarations
     FIELD_CODE: ClassVar[str] = 'code'
-    FIELD_NAME_EN: ClassVar[str] = 'name_en'
-    FIELD_NAME_PL: ClassVar[str] = 'name_pl'
+    FIELD_NAME_KEY: ClassVar[str] = 'name_key'
 
     # Fields
     code: str
-    name_en: str
-    name_pl: str
+    name_key: str
 
     #region Serialization
 
@@ -44,16 +42,14 @@ class ColorPreset(BaseDataModel):
         """Deserializes a color preset from a dictionary."""
         return cls(
             code=cls.normalize_code(d.get(cls.FIELD_CODE)),
-            name_en=str(d.get(cls.FIELD_NAME_EN) or ''),
-            name_pl=str(d.get(cls.FIELD_NAME_PL) or '')
+            name_key=str(d.get(cls.FIELD_NAME_KEY) or '')
         )
 
     def to_dict(self) -> Dict[str, Any]:
         """Serializes the color preset to a dictionary."""
         return {
             self.FIELD_CODE: self.code,
-            self.FIELD_NAME_EN: self.name_en,
-            self.FIELD_NAME_PL: self.name_pl
+            self.FIELD_NAME_KEY: self.name_key
         }
 
     #endregion Serialization

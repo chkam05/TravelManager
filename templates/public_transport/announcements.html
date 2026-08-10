@@ -2,7 +2,7 @@
 <section class="public-transport-announcements">
     <header>
         <i data-lucide="triangle-alert" aria-hidden="true"></i>
-        <h3>Komunikaty</h3>
+        <h3>{{ t('PUBLIC_TRANSPORT_ANNOUNCEMENT.ANNOUNCEMENTS') }}</h3>
         <span>{{ announcements|length }}</span>
     </header>
     <div class="public-transport-announcements__list">
@@ -12,7 +12,7 @@
                 <i data-lucide="chevron-right" aria-hidden="true"></i>
             </button>
         {% else %}
-            <p class="public-transport-empty">Brak komunikatów dla wybranej linii.</p>
+            <p class="public-transport-empty">{{ t('PUBLIC_TRANSPORT_ANNOUNCEMENT.NO_ANNOUNCEMENTS_FOR_LINE') }}</p>
         {% endfor %}
     </div>
 </section>

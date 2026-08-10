@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const panel = document.querySelector('#search-results-panel');
     const title = document.querySelector('#search-results-panel-title');
     const subtitle = document.querySelector('#search-results-panel-subtitle');
@@ -76,7 +77,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         || result.favourite?.name
         || result.element?.name?.name
         || result.element?.display_name
-        || 'Wynik wyszukiwania'
+        || t('PANEL_SEARCH_RESULTS.SEARCH_RESULT')
     );
 
     const resultSubtitle = (result) => (
@@ -176,7 +177,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!state.results.length) {
             const empty = document.createElement('p');
             empty.className = 'search-results-panel__empty';
-            empty.textContent = 'Brak wyników w wybranym obszarze.';
+            empty.textContent = t('PANEL_SEARCH_RESULTS.NO_RESULTS_IN_AREA');
             list.append(empty);
             return;
         }
@@ -212,13 +213,15 @@ document.addEventListener('travel-manager:views-ready', () => {
             actions.className = 'search-results-panel__item-actions';
             actions.append(createAction(
                 window.travelManagerRouteDetailsPanel?.isActive() ? 'plus' : 'route',
-                window.travelManagerRouteDetailsPanel?.isActive() ? 'Dodaj do trasy' : 'Trasa',
+                window.travelManagerRouteDetailsPanel?.isActive()
+                    ? t('PANEL_SEARCH_RESULTS.ADD_TO_ROUTE')
+                    : t('PANEL_SEARCH_RESULTS.ROUTE'),
                 () => addToRoute(result)
             ));
 
             if (!result.favourite) {
                 actions.append(
-                    createAction('star', 'Dodaj do ulubionych', () => addToFavourites(result))
+                    createAction('star', t('PANEL_SEARCH_RESULTS.ADD_TO_FAVOURITES'), () => addToFavourites(result))
                 );
             }
 
@@ -238,35 +241,35 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
     };
 
-    const show = ({ title: nextTitle = 'Wyniki wyszukiwania', subtitle: nextSubtitle = '', results = [] } = {}) => {
+    const show = ({ title: nextTitle = t('PANEL_SEARCH_RESULTS.TITLE'), subtitle: nextSubtitle = '', results = [] } = {}) => {
         state.results = Array.isArray(results) ? results : [];
         title.textContent = nextTitle;
         subtitle.textContent = nextSubtitle;
         setRetry(null);
-        setStatus(`${state.results.length} wyników`);
+        setStatus(t('PANEL_SEARCH_RESULTS.RESULT_COUNT', { count: state.results.length }));
         render();
         open();
     };
 
-    const showLoading = ({ title: nextTitle = 'Wyniki wyszukiwania', subtitle: nextSubtitle = '' } = {}) => {
+    const showLoading = ({ title: nextTitle = t('PANEL_SEARCH_RESULTS.TITLE'), subtitle: nextSubtitle = '' } = {}) => {
         state.results = [];
         title.textContent = nextTitle;
         subtitle.textContent = nextSubtitle;
         setRetry(null);
-        setStatus('Szukam...');
+        setStatus(t('PANEL_SEARCH_RESULTS.SEARCHING'));
         list.replaceChildren();
 
         const loading = document.createElement('p');
         loading.className = 'search-results-panel__loading';
-        loading.textContent = 'Wyszukiwanie trwa, zaraz coś tu wyląduje.';
+        loading.textContent = t('PANEL_SEARCH_RESULTS.SEARCH_IN_PROGRESS');
         list.append(loading);
         open();
     };
 
     const showError = ({
-        title: nextTitle = 'Wyniki wyszukiwania',
-        subtitle: nextSubtitle = 'Nie udało się wykonać wyszukiwania.',
-        message = 'Nie udało się wykonać wyszukiwania.',
+        title: nextTitle = t('PANEL_SEARCH_RESULTS.TITLE'),
+        subtitle: nextSubtitle = t('PANEL_SEARCH_RESULTS.SEARCH_FAILED'),
+        message = t('PANEL_SEARCH_RESULTS.SEARCH_FAILED'),
         retry = null
     } = {}) => {
         state.results = [];
@@ -278,7 +281,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         const empty = document.createElement('p');
         empty.className = 'search-results-panel__empty';
-        empty.textContent = 'Możesz ponowić wyszukiwanie albo zmienić obszar mapy.';
+        empty.textContent = t('PANEL_SEARCH_RESULTS.RETRY_OR_CHANGE_AREA');
         list.append(empty);
         open();
         window.lucide?.createIcons({

@@ -2,24 +2,24 @@
     <header class="public-transport-announcement-dialog__header">
         <div>
             <span id="public-transport-announcement-city"></span>
-            <h2 id="public-transport-announcement-title">Komunikat</h2>
+            <h2 id="public-transport-announcement-title">{{ t('PUBLIC_TRANSPORT_ANNOUNCEMENT.ANNOUNCEMENT') }}</h2>
         </div>
-        <button type="button" data-public-transport-announcement-close aria-label="Zamknij"></button>
+        <button type="button" data-public-transport-announcement-close aria-label="{{ t('COMMON.CLOSE') }}"></button>
     </header>
     <div class="public-transport-announcement-dialog__content">
         <dl>
             <div>
-                <dt>Obowiązuje</dt>
+                <dt>{{ t('PUBLIC_TRANSPORT_ANNOUNCEMENT.EFFECTIVE') }}</dt>
                 <dd id="public-transport-announcement-effective-date"></dd>
             </div>
             <div>
-                <dt>Ostatnia aktualizacja</dt>
+                <dt>{{ t('PUBLIC_TRANSPORT_ANNOUNCEMENT.LAST_UPDATED') }}</dt>
                 <dd id="public-transport-announcement-updated"></dd>
             </div>
         </dl>
         <p id="public-transport-announcement-content"></p>
     </div>
     <footer class="public-transport-announcement-dialog__footer">
-        <button type="button" data-public-transport-announcement-close>Zamknij</button>
+        <button type="button" data-public-transport-announcement-close>{{ t('COMMON.CLOSE') }}</button>
     </footer>
 </article>

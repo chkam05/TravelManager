@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const layer = document.querySelector('#dialog-layer');
     const dialog = document.querySelector('#fuel-cost-editor');
     const title = document.querySelector('#fuel-cost-editor-title');
@@ -33,7 +35,16 @@ document.addEventListener('travel-manager:views-ready', () => {
             .sort(([left], [right]) => left.localeCompare(right))
             .map(([currency, names]) => ({
                 currency,
-                label: currency === 'EUR' ? 'EUR (strefa euro)' : `${currency} (${names.join(', ')})`
+                label: currency === 'EUR'
+                    ? t('FUEL_COST_VIEW.EURO_AREA_CURRENCY', {
+                        currency,
+                        name: countries.find((country) => country.currency === currency)?.currency_name || currency
+                    })
+                    : t('FUEL_COST_VIEW.CURRENCY_COUNTRIES', {
+                        currency,
+                        name: countries.find((country) => country.currency === currency)?.currency_name || currency,
+                        countries: names.join(', ')
+                    })
             }));
     };
 
@@ -103,10 +114,12 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         loadCurrencies(countries);
         countryPresets = [...countries].sort((left, right) => (
-            (left.country || '').localeCompare(right.country || '', 'pl', { sensitivity: 'base' })
+            (left.country || '').localeCompare(right.country || '', locale, { sensitivity: 'base' })
         ));
         dialog.reset();
-        title.textContent = row ? 'Edytuj ceny paliw' : 'Dodaj kraj';
+        title.textContent = row
+            ? t('FUEL_COST_EDITOR.EDIT_TITLE')
+            : t('FUEL_COST_EDITOR.ADD_COUNTRY_TITLE');
         renderCurrencies(row?.currency || 'EUR');
         renderCountries(row?.country_code || countryPresets[0]?.country_code || '');
         syncCountryFields(!row);

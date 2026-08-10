@@ -23,6 +23,10 @@ from models.public_transport.public_transport_stop import PublicTransportStop
 from models.public_transport.public_transport_stop_all import PublicTransportStopAll
 from models.public_transport.public_transport_stop_platform import PublicTransportStopPlatform
 from resources.public_transport.public_transport_type import PublicTransportType
+from resources.public_transport.public_transport_messages import (
+    PublicTransportValueError,
+    public_transport_message,
+)
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
 
 
@@ -42,7 +46,7 @@ class GrudziadzDownloader:
     _DATA_CACHE: ClassVar[dict | None] = None
 
     @classmethod
-    def _download(cls, url: str, item: str) -> str:
+    def _download(cls, url: str, item: object) -> str:
         request = Request(url, headers={'User-Agent': cls._USER_AGENT})
         ssl_context: list[ssl.SSLContext | None] = [None]
 
@@ -82,7 +86,15 @@ class GrudziadzDownloader:
             if cls._DATA_CACHE is not None and not refresh:
                 return cls._DATA_CACHE
             cls._DATA_CACHE = cls.parse_data(
-                cls._download(cls.DATA_URL, 'Rozkład Grudziądza')
+                cls._download(
+                    cls.DATA_URL,
+                    public_transport_message(
+                        'DOWNLOAD_STATUS.PROVIDER_TIMETABLE',
+                        provider=public_transport_message(
+                            'RES_PUBLIC_TRANSPORT_PROVIDER.GRUDZIADZ_NAME'
+                        )
+                    )
+                )
             )
             return cls._DATA_CACHE
 
@@ -95,7 +107,12 @@ class GrudziadzDownloader:
         """Decodes the public repository format used by Rozkładzik.pl."""
         sections = raw.split('#SEP#')
         if len(sections) < 12:
-            raise ValueError('Źródło Grudziądza zwróciło niepełne dane.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.PROVIDER_SOURCE_INCOMPLETE',
+                provider=public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.GRUDZIADZ_NAME'
+                )
+            )
         names = sections[0].split(';')
         table_names = sections[2].split(';')
         latitudes = [float(value or 0) for value in sections[3].split(';')]
@@ -175,7 +192,10 @@ class GrudziadzDownloader:
     def _line(cls, data: dict, name: str) -> dict:
         line = next((item for item in data['lines'] if item['name'] == name), None)
         if not line:
-            raise ValueError(f'Nie znaleziono linii {name}.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.LINE_NOT_FOUND',
+                line=name
+            )
         return line
 
     @staticmethod
@@ -317,10 +337,18 @@ class GrudziadzDownloader:
         day = int(query.get('day', date.today().weekday()))
         direction = line['directions'][direction_index]
         endpoint = f'{cls.TIMETABLE_URL}?{urlencode({"c": "bs", "l": line["name"], "d": direction_index, "b": stop_index, "sid": data["schedule_id"], "day": day})}'
-        raw = cls._download(endpoint, f'Odjazdy linii {line["name"]}')
+        raw = cls._download(
+            endpoint,
+            public_transport_message(
+                'DOWNLOAD_STATUS.LINE_DEPARTURES',
+                line=line['name']
+            )
+        )
         parts = raw.split('#$#')
         if len(parts) < 3:
-            raise ValueError('Nie udało się odczytać rozkładu przystanku.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.STOP_TIMETABLE_READ_FAILED'
+            )
         table_id = int(parts[0])
         values = parts[2].split(';')
         departures = []
@@ -360,7 +388,13 @@ class GrudziadzDownloader:
         direction_index = int(query['direction'])
         direction = line['directions'][direction_index]
         endpoint = f'{cls.TIMETABLE_URL}?{urlencode({"c": "bs", "l": line["name"], "d": direction_index, "sid": data["schedule_id"], "day": query["day"], "i": query["ride"]})}'
-        values = [int(value or -1) for value in cls._download(endpoint, 'Szczegóły przejazdu').split(';')]
+        values = [
+            int(value or -1)
+            for value in cls._download(
+                endpoint,
+                public_transport_message('DOWNLOAD_STATUS.TRIP_DETAILS')
+            ).split(';')
+        ]
         rows = []
         previous_minutes = None
         for index, minutes in enumerate(values):
@@ -391,7 +425,13 @@ class GrudziadzDownloader:
     def download_stops(cls, url: str | None = None, progress_callback=None, refresh: bool = False):
         del url
         if progress_callback:
-            progress_callback(1, 1, cls.CITY_NAME)
+            progress_callback(
+                1,
+                1,
+                public_transport_message(
+                    'RES_PUBLIC_TRANSPORT_PROVIDER.GRUDZIADZ_NAME'
+                )
+            )
         data = cls._data(refresh)
         serving: dict[int, dict[str, PublicTransportBaseLine]] = {}
         tables: dict[int, list[int]] = {}

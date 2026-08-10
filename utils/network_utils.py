@@ -22,15 +22,15 @@ class NetworkUtils:
     def normalize_ipv4(value: str) -> str:
         """Validates and returns a normalized IPv4 address."""
         if not isinstance(value, str) or not value.strip():
-            raise TypeError('Adres IP musi być niepustym tekstem.')
+            raise TypeError('CLI.IP_REQUIRED')
 
         try:
             address = ipaddress.ip_address(value.strip())
         except ValueError as error:
-            raise ValueError(f'Nieprawidłowy adres IPv4: {value!r}.') from error
+            raise ValueError('CLI.INVALID_IPV4') from error
 
         if not isinstance(address, ipaddress.IPv4Address):
-            raise ValueError('Obsługiwane są wyłącznie adresy IPv4.')
+            raise ValueError('CLI.IPV4_ONLY')
 
         return str(address)
 

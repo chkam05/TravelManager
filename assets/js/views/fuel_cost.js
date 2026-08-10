@@ -1,4 +1,6 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
+    const locale = window.i18n.locale.replace('_', '-');
     const view = document.querySelector('[data-app-view="fuel-cost"]');
     const form = document.querySelector('#fuel-cost-search');
     const searchInput = document.querySelector('#fuel-cost-search-input');
@@ -50,7 +52,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const parsed = new Date(value);
 
         if (!Number.isNaN(parsed.getTime())) {
-            return parsed.toLocaleDateString('pl-PL');
+            return parsed.toLocaleDateString(locale);
         }
 
         const match = String(value).match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
@@ -76,7 +78,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         const day = match[1].padStart(2, '0');
         const month = months[match[2].toLowerCase()];
 
-        return month ? `${day}.${month}.${match[3]}` : String(value);
+        return month
+            ? new Date(`${match[3]}-${month}-${day}T00:00:00Z`).toLocaleDateString(locale)
+            : String(value);
     };
 
     const formatDateTime = (value) => {
@@ -90,7 +94,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             return String(value);
         }
 
-        return parsed.toLocaleString('pl-PL', {
+        return parsed.toLocaleString(locale, {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
@@ -154,7 +158,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         const currency = displayCurrency(row);
 
-        return new Intl.NumberFormat('pl-PL', {
+        return new Intl.NumberFormat(locale, {
             style: 'currency',
             currency,
             minimumFractionDigits: 2,
@@ -173,11 +177,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     const filteredRows = () => {
-        const query = state.query.trim().toLocaleLowerCase('pl');
+        const query = state.query.trim().toLocaleLowerCase(locale);
         const rows = query
             ? state.rows.filter((row) => (
-                (row.country || '').toLocaleLowerCase('pl').includes(query)
-                || (row.country_code || '').toLocaleLowerCase('pl').includes(query)
+                (row.country || '').toLocaleLowerCase(locale).includes(query)
+                || (row.country_code || '').toLocaleLowerCase(locale).includes(query)
             ))
             : [...state.rows];
 
@@ -185,7 +189,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             let result = 0;
 
             if (state.sortField === 'country') {
-                result = (left.country || '').localeCompare(right.country || '', 'pl', { sensitivity: 'base' });
+                result = (left.country || '').localeCompare(right.country || '', locale, { sensitivity: 'base' });
             } else if (state.sortField === 'manual_updated_at') {
                 result = new Date(left.manual_updated_at || 0).getTime() - new Date(right.manual_updated_at || 0).getTime();
             } else {
@@ -202,7 +206,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         const original = document.createElement('option');
         original.value = 'original';
-        original.textContent = 'Oryginalne';
+        original.textContent = t('FUEL_COST_VIEW.ORIGINAL_CURRENCIES');
         currencySelect.append(original);
 
         const currencies = new Map();
@@ -221,9 +225,16 @@ document.addEventListener('travel-manager:views-ready', () => {
             const countries = currencies.get(currency) || [];
             const option = document.createElement('option');
             option.value = currency;
+            const currencyName = state.countries.find((country) => (
+                country.currency === currency
+            ))?.currency_name || currency;
             option.textContent = currency === 'EUR'
-                ? `${currency} (strefa euro)`
-                : `${currency} (${countries.join(', ')})`;
+                ? t('FUEL_COST_VIEW.EURO_AREA_CURRENCY', { currency, name: currencyName })
+                : t('FUEL_COST_VIEW.CURRENCY_COUNTRIES', {
+                    currency,
+                    name: currencyName,
+                    countries: countries.join(', ')
+                });
             currencySelect.append(option);
         });
 
@@ -235,33 +246,37 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const renderMeta = () => {
         if (state.loading) {
-            meta.textContent = 'Ładowanie cen paliw...';
+            meta.textContent = t('FUEL_COST_VIEW.LOADING_PRICES');
             return;
         }
 
         const parts = [];
 
         if (state.metadata.source === 'manual') {
-            parts.push('Źródło: dane ręczne');
+            parts.push(t('FUEL_COST_VIEW.SOURCE_MANUAL'));
         } else if (state.metadata.source) {
             parts.push(state.metadata.poland_source
-                ? 'Źródło: European Commission Weekly Oil Bulletin + AutoCentrum (Polska)'
-                : 'Źródło: European Commission Weekly Oil Bulletin');
+                ? t('FUEL_COST_VIEW.SOURCE_EU_AND_AUTOCENTRUM')
+                : t('FUEL_COST_VIEW.SOURCE_EU_BULLETIN'));
         }
 
         if (state.metadata.updated) {
-            parts.push(`Ostatnia aktualizacja: ${formatDateOnly(state.metadata.updated)}`);
+            parts.push(t('FUEL_COST_VIEW.LAST_UPDATE', {
+                date: formatDateOnly(state.metadata.updated)
+            }));
         }
 
         if (state.metadata.loaded_at) {
-            parts.push(`Pobrano: ${formatDateTime(state.metadata.loaded_at)}`);
+            parts.push(t('FUEL_COST_VIEW.DOWNLOADED_AT', {
+                date: formatDateTime(state.metadata.loaded_at)
+            }));
         }
 
         if (state.metadata.warning) {
             parts.push(state.metadata.warning);
         }
 
-        meta.textContent = parts.join(' | ') || 'Brak pobranych danych. Użyj przycisku „Aktualizuj dane”.';
+        meta.textContent = parts.join(' | ') || t('FUEL_COST_VIEW.NO_DOWNLOADED_DATA');
     };
 
     const render = () => {
@@ -273,7 +288,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             const td = document.createElement('td');
             td.className = 'fuel-cost-view__empty';
             td.colSpan = 7;
-            td.textContent = state.query ? 'Nie znaleziono kraju.' : 'Brak danych cen paliw.';
+            td.textContent = state.query
+                ? t('FUEL_COST_VIEW.COUNTRY_NOT_FOUND')
+                : t('FUEL_COST_VIEW.NO_PRICE_DATA');
             tr.append(td);
             tableBody.append(tr);
             renderMeta();
@@ -310,7 +327,10 @@ document.addEventListener('travel-manager:views-ready', () => {
             const edit = document.createElement('button');
             edit.className = 'fuel-cost-view__edit';
             edit.type = 'button';
-            edit.innerHTML = '<i data-lucide="pencil" aria-hidden="true"></i><span>Edytuj</span>';
+            edit.innerHTML = '<i data-lucide="pencil" aria-hidden="true"></i>';
+            const editLabel = document.createElement('span');
+            editLabel.textContent = t('COMMON.EDIT');
+            edit.append(editLabel);
             edit.addEventListener('click', () => editRow(row));
 
             actionsWrap.append(edit);
@@ -368,7 +388,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         } catch (error) {
             state.metadata = {
                 ...state.metadata,
-                warning: `Nie udało się pobrać danych: ${error.message}`
+                warning: t('FUEL_COST_VIEW.LOAD_DATA_FAILED', { error: error.message })
             };
         } finally {
             state.loading = false;
@@ -424,7 +444,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         } catch (error) {
             state.metadata = {
                 ...state.metadata,
-                warning: `Nie udało się zapisać cen: ${error.message}`
+                warning: t('FUEL_COST_VIEW.SAVE_PRICES_FAILED', { error: error.message })
             };
             render();
         }
@@ -496,7 +516,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             currencySelect.value = previousCurrency;
             state.metadata = {
                 ...state.metadata,
-                warning: `Nie udało się zapisać przelicznika: ${error.message}`
+                warning: t('FUEL_COST_VIEW.SAVE_CONVERSION_FAILED', { error: error.message })
             };
             render();
         }

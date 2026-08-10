@@ -24,6 +24,7 @@ from models.public_transport.public_transport_stop import PublicTransportStop
 from models.public_transport.public_transport_stop_all import PublicTransportStopAll
 from models.public_transport.public_transport_stop_platform import PublicTransportStopPlatform
 from resources.public_transport.public_transport_type import PublicTransportType
+from resources.public_transport.public_transport_messages import PublicTransportValueError
 
 
 class GzmGtfsRepository:
@@ -238,8 +239,9 @@ class GzmGtfsRepository:
         """Returns the preferred GTFS package for a selected date."""
         feed_ids = cls._active_feed_ids(connection, service_date)
         if not feed_ids:
-            raise ValueError(
-                f'Brak rozkładu GTFS GZM na dzień {service_date.isoformat()}.'
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.GZM_SCHEDULE_DATE_UNAVAILABLE',
+                date=service_date.isoformat()
             )
         return feed_ids[-1]
 
@@ -473,7 +475,9 @@ class GzmGtfsRepository:
         with self._connection() as connection:
             route = self._route_reference(connection, url, service_date)
             if route is None:
-                raise ValueError('Nie znaleziono linii w danych GTFS GZM.')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GZM_LINE_NOT_FOUND'
+                )
             feed_id = str(route['feed_id'])
             variants = self._line_variants(
                 connection,
@@ -786,12 +790,16 @@ class GzmGtfsRepository:
         with self._connection() as connection:
             route = self._route_reference(connection, url, service_date)
             if route is None:
-                raise ValueError('Nie znaleziono rozkładu w danych GTFS GZM.')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GZM_TIMETABLE_NOT_FOUND'
+                )
             feed_id = str(route['feed_id'])
             stop = self._stop_reference(connection, url, feed_id)
             trip = self._trip_reference(connection, url, feed_id)
             if route is None or stop is None:
-                raise ValueError('Nie znaleziono rozkładu w danych GTFS GZM.')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GZM_TIMETABLE_NOT_FOUND'
+                )
             if trip is None:
                 direction_id = self._legacy_direction(url)
                 trip = self._representative_trip(
@@ -802,7 +810,9 @@ class GzmGtfsRepository:
                     service_date
                 )
             if trip is None:
-                raise ValueError('Nie znaleziono wariantu linii w danych GTFS GZM.')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GZM_LINE_VARIANT_NOT_FOUND'
+                )
             departures = self._departures(
                 connection,
                 feed_id,
@@ -1093,7 +1103,9 @@ class GzmGtfsRepository:
             )
             stop = self._stop_reference(connection, url, feed_id)
             if stop is None:
-                raise ValueError('Nie znaleziono przystanku w danych GTFS GZM.')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GZM_STOP_NOT_FOUND'
+                )
             service_ids = self._service_ids(
                 connection,
                 feed_id,
@@ -1224,7 +1236,9 @@ class GzmGtfsRepository:
             )
             trip = self._trip_reference(connection, url, feed_id)
             if trip is None:
-                raise ValueError('Nie znaleziono przejazdu w danych GTFS GZM.')
+                raise PublicTransportValueError(
+                    'PUBLIC_TRANSPORT_ERROR.GZM_TRIP_NOT_FOUND'
+                )
             metadata = connection.execute(
                 """
                     SELECT r.*, te.operator_id, te.vehicle_class_id,
@@ -1267,7 +1281,9 @@ class GzmGtfsRepository:
                 (feed_id, str(trip['trip_id']))
             ).fetchall()
         if metadata is None or not rows:
-            raise ValueError('Przejazd GTFS GZM nie zawiera przystanków.')
+            raise PublicTransportValueError(
+                'PUBLIC_TRANSPORT_ERROR.GZM_TRIP_HAS_NO_STOPS'
+            )
         first_seconds = self._seconds(str(rows[0]['departure_time']))
         previous_seconds = first_seconds
         previous_distance = float(rows[0]['shape_dist_traveled'] or 0.0)

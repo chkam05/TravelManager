@@ -1,4 +1,5 @@
 document.addEventListener('travel-manager:views-ready', () => {
+    const t = window.i18n.t;
     const layer = document.querySelector('#dialog-layer');
     const dialog = document.querySelector('#car-profile-editor');
     const title = document.querySelector('#car-profile-editor-title');
@@ -26,7 +27,7 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const displayName = (profile) => profile.name?.trim()
         || [profile.brand, profile.model].filter(Boolean).join(' ')
-        || 'Samochód';
+        || t('CAR_PROFILE_EDITOR.DEFAULT_CAR');
 
     const setValue = (name, value) => {
         if (field(name)) {
@@ -52,7 +53,9 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     const setImage = (image, name = '') => {
         setValue('image', image || '');
-        imageName.textContent = image ? (name || 'Wybrane zdjęcie') : 'Brak zdjęcia';
+        imageName.textContent = image
+            ? (name || t('CAR_PROFILE_EDITOR.SELECTED_IMAGE'))
+            : t('CAR_PROFILE_EDITOR.NO_IMAGE');
         imagePreview.hidden = !image;
         removeImage.hidden = !image;
         imagePreviewImg.src = image || '';
@@ -66,7 +69,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         distance.type = 'number';
         distance.min = '0';
         distance.step = '1';
-        distance.placeholder = 'Przebieg km';
+        distance.placeholder = t('CAR_PROFILE_EDITOR.ODOMETER_PLACEHOLDER');
         distance.value = entry.distance ?? '';
 
         const date = document.createElement('input');
@@ -77,6 +80,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         remove.className = 'car-profile-editor__odometer-remove';
         remove.type = 'button';
         remove.textContent = 'X';
+        remove.setAttribute('aria-label', t('CAR_PROFILE_EDITOR.REMOVE_ODOMETER_ENTRY'));
+        remove.title = t('CAR_PROFILE_EDITOR.REMOVE_ODOMETER_ENTRY');
         remove.addEventListener('click', () => row.remove());
 
         row.append(distance, date, remove);
@@ -108,7 +113,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         editingProfile = profile;
-        title.textContent = profile ? 'Edytuj samochód' : 'Dodaj samochód';
+        title.textContent = profile
+            ? t('CAR_PROFILE_EDITOR.EDIT_TITLE')
+            : t('CAR_PROFILE_EDITOR.ADD_TITLE');
         dialog.reset();
         odometer.replaceChildren();
         setImage(profile?.image || '');

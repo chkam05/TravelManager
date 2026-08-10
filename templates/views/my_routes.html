@@ -1,24 +1,24 @@
 <section class="my-routes-view">
     <header class="my-routes-view__header">
-        <button class="app-view__back-button" type="button" data-app-back-to-map aria-label="Wstecz">
+        <button class="app-view__back-button" type="button" data-app-back-to-map aria-label="{{ t('COMMON.BACK') }}">
             <i data-lucide="arrow-left" aria-hidden="true"></i>
         </button>
-        <form class="my-routes-view__search" id="my-routes-search" role="search" aria-label="Szukaj trasy">
-            <input class="my-routes-view__search-input" id="my-routes-search-input" type="search" placeholder="Szukaj trasy" aria-label="Szukaj trasy">
+        <form class="my-routes-view__search" id="my-routes-search" role="search" aria-label="{{ t('MY_ROUTES_VIEW.SEARCH_ROUTE') }}">
+            <input class="my-routes-view__search-input" id="my-routes-search-input" type="search" placeholder="{{ t('MY_ROUTES_VIEW.SEARCH_ROUTE') }}" aria-label="{{ t('MY_ROUTES_VIEW.SEARCH_ROUTE') }}">
             <button class="my-routes-view__search-button" type="submit">
                 <i data-lucide="search" aria-hidden="true"></i>
-                <span>Szukaj</span>
+                <span>{{ t('COMMON.SEARCH') }}</span>
             </button>
         </form>
         <div class="my-routes-view__spacer"></div>
         <div class="my-routes-view__sort">
             <button class="my-routes-view__sort-button" id="my-routes-sort-button" type="button" aria-haspopup="menu" aria-expanded="false">
                 <i data-lucide="arrow-up-down" aria-hidden="true"></i>
-                <span>Sortuj</span>
+                <span>{{ t('MY_ROUTES_VIEW.SORT') }}</span>
             </button>
             <div class="my-routes-view__sort-menu" id="my-routes-sort-menu" role="menu" aria-hidden="true">
-                <button type="button" role="menuitem" data-sort-direction="asc">Rosnąco</button>
-                <button type="button" role="menuitem" data-sort-direction="desc">Malejąco</button>
+                <button type="button" role="menuitem" data-sort-direction="asc">{{ t('MY_ROUTES_VIEW.ASCENDING') }}</button>
+                <button type="button" role="menuitem" data-sort-direction="desc">{{ t('MY_ROUTES_VIEW.DESCENDING') }}</button>
             </div>
         </div>
     </header>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ language[:2] }}" data-language="{{ language }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,7 +53,7 @@
     <div class="app-shell" data-current-view="{{ initial_view }}">
         <div class="header">
             <div class="header__left">
-                <button class="header__menu-button" type="button" aria-label="Otwórz menu" aria-controls="side-menu" aria-expanded="false">
+                <button class="header__menu-button" type="button" aria-label="{{ t('APP_SHELL.OPEN_MENU') }}" aria-controls="side-menu" aria-expanded="false">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <aside class="side-menu" id="side-menu" aria-label="Menu główne" aria-hidden="true">
+        <aside class="side-menu" id="side-menu" aria-label="{{ t('APP_SHELL.MAIN_MENU') }}" aria-hidden="true">
             <nav class="side-menu__navigation">
                 {% for section in menu_sections %}
                     {% if not loop.first %}<div class="side-menu__separator" role="separator"></div>{% endif %}
@@ -82,7 +82,7 @@
                         {% set navigation_type, navigation_target = item.url.split(':', 1) %}
                         <button class="side-menu__item{% if item.url == 'view:' ~ initial_view %} side-menu__item--active{% endif %}" {% if navigation_type == 'view' %}data-navigation-view="{{ navigation_target }}"{% else %}data-navigation-action="{{ navigation_target }}"{% endif %} type="button">
                             <i class="side-menu__icon" data-lucide="{{ item.icon }}" aria-hidden="true"></i>
-                            <span>{{ item.name }}</span>
+                            <span>{{ t(item.name_key) }}</span>
                         </button>
                     {% endfor %}
                 {% endfor %}
@@ -112,6 +112,8 @@
         </main>
     </div>
 
+    <script>window.TRAVEL_MANAGER_LANGUAGE = {{ language|tojson }};</script>
+    <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/lucide/lucide.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>

@@ -1,4 +1,4 @@
-from typing import ClassVar
+from typing import Callable, ClassVar
 
 import platform
 import subprocess
@@ -70,23 +70,24 @@ class WebviewRuntime:
         return None
 
     @classmethod
-    def dependency_message(cls) -> str:
+    def dependency_message_key(cls) -> str:
+        """Returns the translation key for the missing native dependency."""
         if cls.is_windows():
-            return (
-                'Microsoft Edge WebView2 Runtime is missing.\n'
-                'Install WebView2 Evergreen Runtime.'
-            )
+            return 'NATIVE_APP.WEBVIEW2_RUNTIME_MISSING'
 
         if cls.is_linux():
-            return (
-                'No WebView backend.\n\n'
-                'Ubuntu/Debian:\n'
-                'sudo apt install libwebkit2gtk-4.1-0 gir1.2-webkit2-4.1\n\n'
-                'Alternatively:\n'
-                'pip install pywebview[qt]'
-            )
+            return 'NATIVE_APP.LINUX_WEBVIEW_BACKEND_MISSING'
 
-        return 'No WebView backend supported.'
+        return 'NATIVE_APP.WEBVIEW_BACKEND_UNSUPPORTED'
+
+    @classmethod
+    def dependency_message(
+        cls,
+        translate_message: Callable[[str], str] | None = None
+    ) -> str:
+        """Resolves the missing-dependency key when a locale resolver is available."""
+        key = cls.dependency_message_key()
+        return translate_message(key) if translate_message else key
 
     @staticmethod
     def get_system() -> str:
@@ -153,11 +154,11 @@ class WebviewRuntime:
         return False
 
     @classmethod
-    def validate_webview_runtime(cls) -> None:
+    def validate_webview_runtime(
+        cls,
+        translate_message: Callable[[str], str] | None = None
+    ) -> None:
         backend = cls.choose_webview_backend()
 
-        if cls.is_windows() and backend is None:
-            raise RuntimeError(cls.dependency_message())
-
-        if cls.is_linux() and backend is None:
-            raise RuntimeError(cls.dependency_message())
+        if (cls.is_windows() or cls.is_linux()) and backend is None:
+            raise RuntimeError(cls.dependency_message(translate_message))

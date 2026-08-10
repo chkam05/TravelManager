@@ -7,6 +7,7 @@ from uuid import uuid4
 from flask import jsonify, request
 
 from core.api.base_controller import BaseController
+from core.language_service import LanguageService
 from models.settings.ui_settings import UiSettings
 from models.settings.appearance import Appearance
 from models.settings.car_profile import CarProfile
@@ -66,7 +67,7 @@ class SettingsController(BaseController):
         if not isinstance(data, dict):
             return jsonify({
                 'status': 'error',
-                'message': 'Invalid JSON body.'
+                'message': LanguageService.translate_current('SETTINGS_VIEW.INVALID_JSON_BODY')
             }), 400
 
         settings = self._settings_storage.load()
@@ -90,7 +91,10 @@ class SettingsController(BaseController):
         """Updates selected appearance fields and persists recent colors."""
         data = request.get_json(silent=True) or {}
         if not isinstance(data, dict):
-            return jsonify({'status': 'error', 'message': 'Invalid JSON body.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('SETTINGS_VIEW.INVALID_JSON_BODY')
+            }), 400
         settings = self._settings_storage.load()
         merged = settings.appearance.to_dict()
         for key in Appearance.field_names():
@@ -113,7 +117,10 @@ class SettingsController(BaseController):
     def update_public_transport_settings(self):
         provider = str((request.get_json(silent=True) or {}).get('provider') or '')
         if provider not in PublicTransportProviders.VALUES:
-            return jsonify({'status': 'error', 'message': 'Unsupported provider.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('PUBLIC_TRANSPORT_ERROR.UNSUPPORTED_PROVIDER')
+            }), 400
         settings = self._settings_storage.load()
         settings.selected_public_transport_provider = provider
         self._settings_storage.save(settings)
@@ -121,7 +128,10 @@ class SettingsController(BaseController):
 
     def export_data(self, data_type: str):
         if not SettingsTransferTypes.is_supported(data_type):
-            return jsonify({'status': 'error', 'message': 'Unsupported export data type.'}), 404
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('SETTINGS_BACKUP.UNSUPPORTED_EXPORT_TYPE')
+            }), 404
 
         plaintext = self._export_settings_text(data_type)
 
@@ -133,7 +143,10 @@ class SettingsController(BaseController):
 
     def import_data(self, data_type: str):
         if not SettingsTransferTypes.is_supported(data_type):
-            return jsonify({'status': 'error', 'message': 'Unsupported import data type.'}), 404
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('SETTINGS_BACKUP.UNSUPPORTED_IMPORT_TYPE')
+            }), 404
 
         payload = request.get_json(silent=True)
 
@@ -143,18 +156,32 @@ class SettingsController(BaseController):
         except (TypeError, ValueError, json.JSONDecodeError):
             return jsonify({
                 'status': 'error',
-                'message': 'Selected JSON does not match the requested data type.'
+                'message': LanguageService.translate_current('SETTINGS_BACKUP.INVALID_IMPORT_FILE')
             }), 400
 
         return jsonify({
             'status': 'imported',
             'type': data_type,
-            'label': SettingsTransferTypes.label(data_type)
+            'label': LanguageService.translate_current(SettingsTransferTypes.label_key(data_type))
         })
+
+    @staticmethod
+    def _favourite_tag_payload(tag: FavouriteTag) -> dict[str, Any]:
+        """Returns a tag with its built-in name translated for presentation."""
+        payload = tag.to_dict()
+        if (
+            tag.id == FavouriteTag.DEFAULT_TAG_ID
+            and tag.name == FavouriteTag.DEFAULT_NAME_KEY
+        ):
+            payload[FavouriteTag.FIELD_NAME] = LanguageService.translate_current(FavouriteTag.DEFAULT_NAME_KEY)
+        return payload
 
     def get_favourites(self):
         settings = self._settings_storage.load()
-        tags = {tag.id: tag.to_dict() for tag in settings.favourite_tags}
+        tags = {
+            tag.id: self._favourite_tag_payload(tag)
+            for tag in settings.favourite_tags
+        }
 
         return jsonify({
             'status': 'ok',
@@ -172,7 +199,10 @@ class SettingsController(BaseController):
         required = ('source_key', 'name', 'tag_id', 'latitude', 'longitude', 'place_data')
 
         if not isinstance(data, dict) or any(key not in data for key in required):
-            return jsonify({'status': 'error', 'message': 'Invalid favourite data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITES_VIEW.INVALID_DATA')
+            }), 400
 
         settings = self._settings_storage.load()
         tag_ids = {tag.id for tag in settings.favourite_tags}
@@ -189,7 +219,10 @@ class SettingsController(BaseController):
         try:
             favourite = FavouritePlace.from_dict(payload)
         except (TypeError, ValueError):
-            return jsonify({'status': 'error', 'message': 'Invalid favourite coordinates.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITES_VIEW.INVALID_COORDINATES')
+            }), 400
 
         if (
             not favourite.source_key
@@ -201,7 +234,10 @@ class SettingsController(BaseController):
             or not (-90 <= favourite.latitude <= 90)
             or not (-180 <= favourite.longitude <= 180)
         ):
-            return jsonify({'status': 'error', 'message': 'Invalid favourite data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITES_VIEW.INVALID_DATA')
+            }), 400
 
         settings.favourites = [
             item for item in settings.favourites
@@ -215,7 +251,7 @@ class SettingsController(BaseController):
             'status': 'ok',
             'favourite': {
                 **favourite.to_dict(),
-                'tag': tag.to_dict() if tag else None
+                'tag': self._favourite_tag_payload(tag) if tag else None
             }
         })
 
@@ -224,7 +260,10 @@ class SettingsController(BaseController):
         remaining = [item for item in settings.favourites if item.id != favourite_id]
 
         if len(remaining) == len(settings.favourites):
-            return jsonify({'status': 'error', 'message': 'Favourite not found.'}), 404
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITES_VIEW.NOT_FOUND')
+            }), 404
 
         settings.favourites = remaining
         self._settings_storage.save(settings)
@@ -236,7 +275,10 @@ class SettingsController(BaseController):
 
         return jsonify({
             'status': 'ok',
-            'tags': FavouriteTag.to_dict_list(settings.favourite_tags)
+            'tags': [
+                self._favourite_tag_payload(tag)
+                for tag in settings.favourite_tags
+            ]
         })
 
     def save_favourite_tag(self):
@@ -244,7 +286,10 @@ class SettingsController(BaseController):
         required = ('name', 'icon')
 
         if not isinstance(data, dict) or any(key not in data for key in required):
-            return jsonify({'status': 'error', 'message': 'Invalid favourite tag data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITE_TAGS_VIEW.INVALID_DATA')
+            }), 400
 
         payload = {
             **data,
@@ -254,27 +299,45 @@ class SettingsController(BaseController):
         try:
             tag = FavouriteTag.from_dict(payload)
         except (TypeError, ValueError):
-            return jsonify({'status': 'error', 'message': 'Invalid favourite tag data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITE_TAGS_VIEW.INVALID_DATA')
+            }), 400
 
         if not tag.id or not tag.name.strip() or not tag.icon or len(tag.icon) > 16:
-            return jsonify({'status': 'error', 'message': 'Invalid favourite tag data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITE_TAGS_VIEW.INVALID_DATA')
+            }), 400
+
+        if (
+            tag.id == FavouriteTag.DEFAULT_TAG_ID
+            and tag.name == LanguageService.translate_current(FavouriteTag.DEFAULT_NAME_KEY)
+        ):
+            tag.name = FavouriteTag.DEFAULT_NAME_KEY
 
         settings = self._settings_storage.load()
         settings.favourite_tags = [item for item in settings.favourite_tags if item.id != tag.id]
         settings.favourite_tags.append(tag)
         self._settings_storage.save(settings)
 
-        return jsonify({'status': 'ok', 'tag': tag.to_dict()})
+        return jsonify({'status': 'ok', 'tag': self._favourite_tag_payload(tag)})
 
     def delete_favourite_tag(self, tag_id: str):
         if tag_id == FavouriteTag.DEFAULT_TAG_ID:
-            return jsonify({'status': 'error', 'message': 'Default tag cannot be deleted.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITE_TAGS_VIEW.DEFAULT_DELETE_FORBIDDEN')
+            }), 400
 
         settings = self._settings_storage.load()
         remaining = [item for item in settings.favourite_tags if item.id != tag_id]
 
         if len(remaining) == len(settings.favourite_tags):
-            return jsonify({'status': 'error', 'message': 'Favourite tag not found.'}), 404
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('FAVOURITE_TAGS_VIEW.NOT_FOUND')
+            }), 404
 
         for favourite in settings.favourites:
             if favourite.tag_id == tag_id:
@@ -304,7 +367,10 @@ class SettingsController(BaseController):
         data = request.get_json(silent=True) or {}
 
         if not isinstance(data, dict):
-            return jsonify({'status': 'error', 'message': 'Invalid car profile data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('CAR_PROFILES_VIEW.INVALID_DATA')
+            }), 400
 
         profile_id = str(data.get('id') or uuid4().hex)
         existing = next((
@@ -320,10 +386,16 @@ class SettingsController(BaseController):
         try:
             profile = CarProfile.from_dict(payload)
         except (TypeError, ValueError):
-            return jsonify({'status': 'error', 'message': 'Invalid car profile data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('CAR_PROFILES_VIEW.INVALID_DATA')
+            }), 400
 
         if not profile.brand.strip() and not profile.model.strip() and not profile.name.strip():
-            return jsonify({'status': 'error', 'message': 'Car profile requires at least name, brand or model.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('CAR_PROFILES_VIEW.REQUIRES_IDENTITY')
+            }), 400
 
         settings = self._settings_storage.load()
         settings.car_profiles = [item for item in settings.car_profiles if item.id != profile.id]
@@ -347,7 +419,10 @@ class SettingsController(BaseController):
         settings = self._settings_storage.load()
 
         if profile_id and not any(profile.id == profile_id for profile in settings.car_profiles):
-            return jsonify({'status': 'error', 'message': 'Car profile not found.'}), 404
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('CAR_PROFILES_VIEW.NOT_FOUND')
+            }), 404
 
         settings.active_car_profile_id = profile_id
         self._settings_storage.save(settings)
@@ -369,7 +444,10 @@ class SettingsController(BaseController):
         remaining = [item for item in settings.car_profiles if item.id != profile_id]
 
         if len(remaining) == len(settings.car_profiles):
-            return jsonify({'status': 'error', 'message': 'Car profile not found.'}), 404
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('CAR_PROFILES_VIEW.NOT_FOUND')
+            }), 404
 
         settings.car_profiles = remaining
 
@@ -395,7 +473,10 @@ class SettingsController(BaseController):
         data = request.get_json(silent=True) or {}
 
         if not isinstance(data, dict):
-            return jsonify({'status': 'error', 'message': 'Invalid route data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('ROUTE_ERROR.INVALID_ROUTE_DATA')
+            }), 400
 
         route_id = str(data.get('id') or uuid4().hex)
         existing = next((
@@ -411,7 +492,10 @@ class SettingsController(BaseController):
         try:
             route = SavedRoute.from_dict(payload)
         except (TypeError, ValueError):
-            return jsonify({'status': 'error', 'message': 'Invalid route data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('ROUTE_ERROR.INVALID_ROUTE_DATA')
+            }), 400
 
         if (
             not route.id
@@ -424,7 +508,10 @@ class SettingsController(BaseController):
             or not isfinite(route.duration)
             or route.duration < 0
         ):
-            return jsonify({'status': 'error', 'message': 'Invalid route data.'}), 400
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('ROUTE_ERROR.INVALID_ROUTE_DATA')
+            }), 400
 
         for point in route.points:
             if (
@@ -434,7 +521,10 @@ class SettingsController(BaseController):
                 or not (-90 <= point.latitude <= 90)
                 or not (-180 <= point.longitude <= 180)
             ):
-                return jsonify({'status': 'error', 'message': 'Invalid route point data.'}), 400
+                return jsonify({
+                    'status': 'error',
+                    'message': LanguageService.translate_current('ROUTE_ERROR.INVALID_ROUTE_POINT_DATA')
+                }), 400
 
         settings = self._settings_storage.load()
         settings.routes = [item for item in settings.routes if item.id != route.id]
@@ -451,7 +541,10 @@ class SettingsController(BaseController):
         remaining = [item for item in settings.routes if item.id != route_id]
 
         if len(remaining) == len(settings.routes):
-            return jsonify({'status': 'error', 'message': 'Route not found.'}), 404
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('ROUTE_ERROR.ROUTE_NOT_FOUND')
+            }), 404
 
         settings.routes = remaining
         self._settings_storage.save(settings)

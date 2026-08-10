@@ -1,10 +1,10 @@
 <section class="public-transport-panel__view" data-public-transport-panel-view="lines">
     <div class="public-transport-panel__provider">
         <label>
-            <span>Przewoźnik</span>
-            <select data-public-transport-panel-provider aria-label="Przewoźnik">
+            <span>{{ t('PUBLIC_TRANSPORT_VIEW.CARRIER') }}</span>
+            <select data-public-transport-panel-provider aria-label="{{ t('PUBLIC_TRANSPORT_VIEW.CARRIER') }}">
                 {% for group in provider_groups %}
-                    <optgroup label="{{ group.region | title }}">
+                    <optgroup label="{{ group.region }}">
                         {% for provider in group.providers %}
                             <option value="{{ provider.id }}"
                                     data-icon="{{ provider.icon }}"
@@ -18,18 +18,18 @@
             </select>
         </label>
         <label>
-            <span>Szukaj linii</span>
+            <span>{{ t('PUBLIC_TRANSPORT_LINES.SEARCH_LINES') }}</span>
             <span class="public-transport-panel__search">
                 <i data-lucide="search" aria-hidden="true"></i>
-                <input type="search" data-public-transport-panel-search placeholder="Wpisz numer linii" autocomplete="off">
+                <input type="search" data-public-transport-panel-search placeholder="{{ t('PUBLIC_TRANSPORT_LINES.ENTER_LINE_NUMBER') }}" autocomplete="off">
             </span>
         </label>
     </div>
     <div class="public-transport-panel__empty" data-public-transport-panel-empty hidden>
         <i data-lucide="database" aria-hidden="true"></i>
-        <strong>Brak pobranych danych</strong>
-        <span>Pobierz dane przewoźnika, aby wyświetlić linie i rozkłady.</span>
-        <button type="button" data-public-transport-panel-update>Aktualizuj</button>
+        <strong>{{ t('PANEL_PUBLIC_TRANSPORT.NO_DOWNLOADED_DATA') }}</strong>
+        <span>{{ t('PANEL_PUBLIC_TRANSPORT.DOWNLOAD_CARRIER_DATA') }}</span>
+        <button type="button" data-public-transport-panel-update>{{ t('COMMON.UPDATE') }}</button>
     </div>
     <div data-public-transport-panel-lines></div>
 </section>

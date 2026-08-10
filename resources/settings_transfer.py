@@ -21,11 +21,11 @@ class SettingsTransferTypes:
     FAVOURITES_FILE_NAME: ClassVar[str] = 'travel_manager_favourites_{timestamp}.json'
     CARS_FILE_NAME: ClassVar[str] = 'travel_manager_cars_{timestamp}.json'
 
-    # Label declarations
-    FUEL_COSTS_LABEL: ClassVar[str] = 'Ceny paliwa'
-    ROUTES_LABEL: ClassVar[str] = 'Trasy'
-    FAVOURITES_LABEL: ClassVar[str] = 'Ulubione i Tagi'
-    CARS_LABEL: ClassVar[str] = 'Samochody'
+    # Translation key declarations
+    FUEL_COSTS_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.FUEL_COSTS'
+    ROUTES_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.ROUTES'
+    FAVOURITES_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.FAVOURITES'
+    CARS_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.CARS'
 
     VALUES: ClassVar[tuple[str, ...]] = (FUEL_COSTS, ROUTES, FAVOURITES, CARS)
 
@@ -51,14 +51,14 @@ class SettingsTransferTypes:
         return template.format(timestamp=timestamp)
 
     @classmethod
-    def label(cls, data_type: str) -> str:
-        """Returns the display label for a transfer type."""
+    def label_key(cls, data_type: str) -> str:
+        """Returns the translation key for a transfer type label."""
         if data_type == cls.FUEL_COSTS:
-            return cls.FUEL_COSTS_LABEL
+            return cls.FUEL_COSTS_LABEL_KEY
         if data_type == cls.ROUTES:
-            return cls.ROUTES_LABEL
+            return cls.ROUTES_LABEL_KEY
         if data_type == cls.FAVOURITES:
-            return cls.FAVOURITES_LABEL
+            return cls.FAVOURITES_LABEL_KEY
         if data_type == cls.CARS:
-            return cls.CARS_LABEL
+            return cls.CARS_LABEL_KEY
         raise ValueError('Unsupported settings transfer type.')
