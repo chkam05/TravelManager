@@ -15,7 +15,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         const supported = Array.from(languageSelect.options).some(
             (option) => option.value === value
         );
-        languageSelect.value = supported ? value : 'en_US';
+        languageSelect.value = supported ? value : languageSelect.options[0]?.value;
     };
 
     fetch('/api/settings/ui', {

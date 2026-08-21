@@ -384,16 +384,14 @@ document.addEventListener('travel-manager:views-ready', () => {
         description.className = 'settings-view__control';
         const select = document.createElement('select');
         select.className = 'settings-view__select';
-        [
-            ['en_US', window.i18n.t('SETTINGS_APPLICATION.LANGUAGE_ENGLISH')],
-            ['pl_PL', window.i18n.t('SETTINGS_APPLICATION.LANGUAGE_POLISH')]
-        ].forEach(([value, label]) => {
+        window.i18n.languages.forEach(({ locale, labelKey }) => {
             const option = document.createElement('option');
-            option.value = value;
-            option.textContent = label;
+            option.value = locale;
+            option.textContent = window.i18n.t(labelKey);
             select.append(option);
         });
-        select.value = language || 'en_US';
+        const supported = window.i18n.languages.some(({ locale }) => locale === language);
+        select.value = supported ? language : window.i18n.languages[0]?.locale;
         select.addEventListener('change', async () => {
             const saved = await patchUiSettings({ language: select.value });
             if (saved) window.location.reload();

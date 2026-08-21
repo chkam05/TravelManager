@@ -2,33 +2,39 @@ from __future__ import annotations
 
 import json
 import re
-from pathlib import Path
 from threading import RLock
 from typing import Any, ClassVar, Mapping
 
 from flask import current_app, g, has_app_context
+
+from resources.language_definitions import (
+    DEFAULT_LANGUAGE,
+    LANGUAGE_DEFINITIONS,
+    normalize_language,
+)
+from resources.language_enum import Language
 
 
 class LanguageService:
     """Loads grouped translations and resolves the current request language."""
 
     EXTENSION_KEY: ClassVar[str] = 'travel_manager_language_service'
-    DEFAULT_LOCALE: ClassVar[str] = 'en_US'
-    SUPPORTED_LOCALES: ClassVar[tuple[str, ...]] = ('en_US', 'pl_PL')
+    DEFAULT_LOCALE: ClassVar[str] = DEFAULT_LANGUAGE.value
+    SUPPORTED_LOCALES: ClassVar[tuple[str, ...]] = tuple(
+        language.value for language in LANGUAGE_DEFINITIONS
+    )
     KEY_PATTERN: ClassVar[re.Pattern[str]] = re.compile(
         r'^[A-Z][A-Z0-9_]*(?:\.[A-Z][A-Z0-9_]*)+$'
     )
 
-    def __init__(self, language_directory: str | Path):
-        self._language_directory = Path(language_directory).resolve()
+    def __init__(self):
         self._catalogs: dict[str, dict[str, Any]] = {}
         self._lock = RLock()
 
     @classmethod
     def normalize_locale(cls, locale: object) -> str:
         """Returns a supported locale or the application fallback locale."""
-        value = str(locale or '').strip()
-        return value if value in cls.SUPPORTED_LOCALES else cls.DEFAULT_LOCALE
+        return normalize_language(locale).value
 
     @classmethod
     def is_valid_key(cls, key: object) -> bool:
@@ -70,7 +76,8 @@ class LanguageService:
             if cached is not None:
                 return cached
 
-            path = self._language_directory / f'{normalized}.json'
+            language = Language(normalized)
+            path = LANGUAGE_DEFINITIONS[language]
             with path.open('r', encoding='utf-8') as language_file:
                 catalog = json.load(language_file)
 

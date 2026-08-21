@@ -1,0 +1,2 @@
+- Randomowe generowanie trasy (punkt start/stop; obszar km. od punktu start/stop; długość tray w km.)
+- Widok mobilny (każdy widok jako osobna kopiona file_name.mobile.html/.css)

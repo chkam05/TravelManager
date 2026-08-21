@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Any, ClassVar, Dict, List
 
 from core.data.base_data_model import BaseDataModel
+from resources.language_definitions import DEFAULT_LANGUAGE, normalize_language
 
 
 @dataclass
@@ -41,7 +42,7 @@ class UiSettings(BaseDataModel):
     _DEFAULT_ROUTE_TOLL_ROADS_ENABLED: ClassVar[bool] = True
     _DEFAULT_MOVE_TO_NETWORK: ClassVar[bool] = False
     _DEFAULT_OPEN_HOME_ON_STARTUP: ClassVar[bool] = True
-    _DEFAULT_LANGUAGE: ClassVar[str] = 'en_US'
+    _DEFAULT_LANGUAGE: ClassVar[str] = DEFAULT_LANGUAGE.value
 
     # Field name declarations
     FIELD_LAYER_FAVOURITE_VISIBLE_TAG_IDS: ClassVar[str] = 'layer_favourite_visible_tag_ids'
@@ -324,11 +325,9 @@ class UiSettings(BaseDataModel):
                 d.get(cls.FIELD_OPEN_HOME_ON_STARTUP, cls._DEFAULT_OPEN_HOME_ON_STARTUP),
                 cls._DEFAULT_OPEN_HOME_ON_STARTUP
             ),
-            language=(
-                str(d.get(cls.FIELD_LANGUAGE, cls._DEFAULT_LANGUAGE))
-                if str(d.get(cls.FIELD_LANGUAGE, cls._DEFAULT_LANGUAGE)) in ('pl_PL', 'en_US')
-                else cls._DEFAULT_LANGUAGE
-            )
+            language=normalize_language(
+                d.get(cls.FIELD_LANGUAGE, cls._DEFAULT_LANGUAGE)
+            ).value
         )
 
     def to_dict(self) -> Dict[str, Any]:

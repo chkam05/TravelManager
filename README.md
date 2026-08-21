@@ -240,7 +240,7 @@ Dynamic translation key patterns are tracked by the reserved-key registry expect
 python3 utils/languages_manager.py
 ```
 
-To add a locale, create a complete `<locale>.json` catalogue, register it in both `core/language_service.py` and `assets/js/i18n.js`, and add it to the language selectors.
+To add a locale, add it to `resources/language_enum.py`, register its catalogue path in `resources/language_definitions.py`, and provide its `SETTINGS_APPLICATION.LANGUAGE_<ENUM_NAME>` label in every catalogue. The backend passes the resulting definitions to the browser and language selectors automatically.
 
 ### Tests
 

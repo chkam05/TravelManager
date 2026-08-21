@@ -12,6 +12,8 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from core.language_service import LanguageService
+from resources.language_definitions import LANGUAGE_DEFINITIONS
+from resources.language_enum import Language
 
 
 class DuplicateLanguageKeyError(ValueError):
@@ -21,7 +23,6 @@ class DuplicateLanguageKeyError(ValueError):
 class LanguagesManager:
     """Validates language catalogs and their references in application sources."""
 
-    LANGUAGE_DIRECTORY: ClassVar[Path] = PROJECT_ROOT / 'assets' / 'languages'
     RESERVED_KEYS_PATH: ClassVar[Path] = PROJECT_ROOT / 'doc' / 'i18n_reserved_keys.txt'
     REFERENCE_PATTERN: ClassVar[re.Pattern[str]] = re.compile(
         r'''['"]([A-Z][A-Z0-9_]*(?:\.[A-Z][A-Z0-9_]*)+)['"]'''
@@ -79,6 +80,7 @@ class LanguagesManager:
                 continue
             text = path.read_text(encoding='utf-8', errors='ignore')
             result.update(cls.REFERENCE_PATTERN.findall(text))
+        result.update(language.label_key for language in LANGUAGE_DEFINITIONS)
         return result
 
     @classmethod
@@ -97,8 +99,8 @@ class LanguagesManager:
         errors: list[str] = []
         catalogs: dict[str, dict[str, str]] = {}
 
-        for locale in LanguageService.SUPPORTED_LOCALES:
-            path = cls.LANGUAGE_DIRECTORY / f'{locale}.json'
+        for language, path in LANGUAGE_DEFINITIONS.items():
+            locale = language.value
             try:
                 catalog = cls.load_catalog(path)
                 LanguageService._validate_catalog(catalog, locale)
@@ -196,7 +198,7 @@ class LanguagesManager:
 
         catalogs = {
             locale: cls.flatten(
-                cls.load_catalog(cls.LANGUAGE_DIRECTORY / f'{locale}.json')
+                cls.load_catalog(LANGUAGE_DEFINITIONS[Language(locale)])
             )
             for locale in LanguageService.SUPPORTED_LOCALES
         }

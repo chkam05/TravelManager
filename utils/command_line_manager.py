@@ -5,8 +5,8 @@ import sys
 from collections.abc import Sequence
 from typing import ClassVar
 
-from config import PROJECT_ROOT
 from core.language_service import LanguageService
+from resources.language_enum import Language
 from storage.settings_storage import SettingsStorage
 from utils.network_utils import NetworkUtils
 
@@ -15,12 +15,9 @@ class CommandLineManager:
     """Builds and validates the command line interface."""
 
     LANGUAGE_LOCALES: ClassVar[dict[str, str]] = {
-        'EN': 'en_US',
-        'PL': 'pl_PL'
+        language.cli_code: language.value for language in Language
     }
-    _LANGUAGE_SERVICE: ClassVar[LanguageService] = LanguageService(
-        PROJECT_ROOT / 'assets' / 'languages'
-    )
+    _LANGUAGE_SERVICE: ClassVar[LanguageService] = LanguageService()
 
     @classmethod
     def language_locale(cls, language: str | None) -> str | None:

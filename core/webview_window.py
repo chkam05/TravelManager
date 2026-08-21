@@ -30,7 +30,7 @@ class WebViewWindow(WebViewWindowInterface):
     ):
         self._url = url
         self._settings_storage = settings_storage
-        self._language_service = LanguageService(PROJECT_ROOT / 'assets' / 'languages')
+        self._language_service = LanguageService()
         self._forced_locale = (
             self._language_service.normalize_locale(forced_locale)
             if forced_locale is not None

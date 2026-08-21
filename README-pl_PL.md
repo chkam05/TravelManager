@@ -240,7 +240,7 @@ Dynamiczne wzorce kluczy są śledzone przez rejestr oczekiwany w `doc/i18n_rese
 python3 utils/languages_manager.py
 ```
 
-Aby dodać język, utwórz kompletny katalog `<locale>.json`, zarejestruj go w `core/language_service.py` i `assets/js/i18n.js`, a następnie dodaj do selektorów języka.
+Aby dodać język, dodaj go w `resources/language_enum.py`, zarejestruj ścieżkę katalogu w `resources/language_definitions.py` i umieść etykietę `SETTINGS_APPLICATION.LANGUAGE_<NAZWA_ENUMU>` w każdym katalogu. Backend automatycznie przekazuje definicje do przeglądarki i selektorów języka.
 
 ### Testy
 

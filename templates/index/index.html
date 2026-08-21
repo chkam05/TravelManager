@@ -112,7 +112,7 @@
         </main>
     </div>
 
-    <script>window.TRAVEL_MANAGER_LANGUAGE = {{ language|tojson }};</script>
+    <script>window.TRAVEL_MANAGER_I18N = {{ {'locale': language, 'languages': languages}|tojson }};</script>
     <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/lucide/lucide.min.js') }}"></script>

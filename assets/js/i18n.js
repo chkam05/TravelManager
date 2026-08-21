@@ -1,11 +1,17 @@
 (function () {
     'use strict';
 
-    const DEFAULT_LOCALE = 'en_US';
-    const SUPPORTED_LOCALES = new Set(['en_US', 'pl_PL']);
+    const configuration = window.TRAVEL_MANAGER_I18N || {};
+    const languageDefinitions = Array.isArray(configuration.languages)
+        ? configuration.languages
+        : [];
+    const DEFAULT_LOCALE = languageDefinitions[0]?.locale || '';
+    const catalogUrls = new Map(languageDefinitions.map(
+        ({ locale, catalog_url: catalogUrl }) => [locale, catalogUrl]
+    ));
     const KEY_PATTERN = /^[A-Z][A-Z0-9_]*(?:\.[A-Z][A-Z0-9_]*)+$/;
-    const requestedLocale = String(window.TRAVEL_MANAGER_LANGUAGE || '');
-    const locale = SUPPORTED_LOCALES.has(requestedLocale) ? requestedLocale : DEFAULT_LOCALE;
+    const requestedLocale = String(configuration.locale || '');
+    const locale = catalogUrls.has(requestedLocale) ? requestedLocale : DEFAULT_LOCALE;
     const catalogs = new Map();
     const missingWarnings = new Set();
     let loaded = false;
@@ -27,7 +33,9 @@
     );
 
     const loadCatalog = async (catalogLocale) => {
-        const response = await fetch(`/assets/languages/${catalogLocale}.json`, {
+        const catalogUrl = catalogUrls.get(catalogLocale);
+        if (!catalogUrl) throw new Error(`Unknown language catalog: ${catalogLocale}`);
+        const response = await fetch(catalogUrl, {
             cache: 'no-cache',
             headers: { 'Accept': 'application/json' }
         });
@@ -58,6 +66,10 @@
 
     window.i18n = Object.freeze({
         locale,
+        languages: Object.freeze(languageDefinitions.map(({ locale: value, label_key: labelKey }) => Object.freeze({
+            locale: value,
+            labelKey
+        }))),
         ready,
         has(key) {
             if (!KEY_PATTERN.test(key)) return false;
