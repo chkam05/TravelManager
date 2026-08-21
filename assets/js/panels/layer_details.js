@@ -13,6 +13,22 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     let tags = [];
     let selectedFavouriteTagIds = null;
+    const customLayersList = panel.querySelector('[data-custom-layer-toggles]');
+    const renderCustomLayers = async () => {
+        if (!customLayersList || !window.travelManagerCustomLayers) return;
+        const layers = await window.travelManagerCustomLayers.list();
+        const stored = JSON.parse(localStorage.getItem('travel-manager-visible-custom-layers') || 'null');
+        const visible = Array.isArray(stored) ? new Set(stored) : new Set(layers.map(item => item.id));
+        customLayersList.replaceChildren();
+        layers.forEach(item => {
+            const label = document.createElement('label'); label.className = 'layer-details-panel__option';
+            const input = document.createElement('input'); input.type = 'checkbox'; input.checked = visible.has(item.id);
+            const text = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = item.name; text.append(strong);
+            input.onchange = () => { input.checked ? visible.add(item.id) : visible.delete(item.id); localStorage.setItem('travel-manager-visible-custom-layers', JSON.stringify([...visible])); document.dispatchEvent(new CustomEvent('travel-manager:custom-layer-visibility-changed', {detail:{ids:[...visible]}})); };
+            label.append(input,text); customLayersList.append(label);
+        });
+        document.dispatchEvent(new CustomEvent('travel-manager:custom-layer-visibility-changed', {detail:{ids:[...visible]}}));
+    };
 
     const favouritesToggle = overlayInputs.find((input) => input.dataset.layerToggle === 'layer_favourites_enabled');
 
@@ -255,4 +271,6 @@ document.addEventListener('travel-manager:views-ready', () => {
         close,
         open
     };
+    document.addEventListener('travel-manager:custom-layers-changed', renderCustomLayers);
+    renderCustomLayers();
 });

@@ -27,6 +27,8 @@ class Menu:
         MenuItem('bus-front', 'MAIN_MENU.PUBLIC_TRANSPORT', 'MAIN_MENU.PUBLIC_TRANSPORT_DESCRIPTION', 'view:public-transport', 3, 10),
         MenuItem('route', 'MAIN_MENU.ROUTES', 'MAIN_MENU.ROUTES_DESCRIPTION', 'view:my-routes', 2, 10),
         MenuItem('navigation', 'MAIN_MENU.NEW_ROUTE', 'MAIN_MENU.NEW_ROUTE_DESCRIPTION', 'action:new-route', 2, 10),
+        MenuItem('layers', 'MAIN_MENU.NEW_LAYER', 'MAIN_MENU.NEW_LAYER_DESCRIPTION', 'action:new-layer', 2, 10),
+        MenuItem('list-tree', 'MAIN_MENU.LAYERS', 'MAIN_MENU.LAYERS_DESCRIPTION', 'view:layers', 1, 11),
         MenuItem('star', 'MAIN_MENU.FAVOURITES', 'MAIN_MENU.FAVOURITES_DESCRIPTION', 'view:favourites', 1, 10),
         MenuItem('fuel', 'MAIN_MENU.FUEL', 'MAIN_MENU.FUEL_DESCRIPTION', 'view:fuel-cost', 2, 11),
         MenuItem('car', 'MAIN_MENU.CARS', 'MAIN_MENU.CARS_DESCRIPTION', 'view:car-profiles', 2, 11),
@@ -37,13 +39,13 @@ class Menu:
 
     HOME_ITEM_ORDER: ClassVar[tuple[str, ...]] = (
         'view:map', 'view:favourites', 'view:favourites-tags',
-        'action:new-route', 'view:my-routes', 'view:car-profiles', 'view:fuel-cost',
+        'action:new-route', 'action:new-layer', 'view:my-routes', 'view:layers', 'view:car-profiles', 'view:fuel-cost',
         'view:public-transport', 'view:settings', 'view:information'
     )
 
     MENU_ITEM_ORDER: ClassVar[tuple[str, ...]] = (
         'view:home', 'view:map', 'view:public-transport', 'view:my-routes',
-        'action:new-route', 'view:favourites', 'view:fuel-cost', 'view:car-profiles',
+        'action:new-route', 'action:new-layer', 'view:favourites', 'view:layers', 'view:fuel-cost', 'view:car-profiles',
         'view:favourites-tags', 'view:settings', 'view:information'
     )
 

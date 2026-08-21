@@ -48,6 +48,10 @@
     "ROUTES_DESCRIPTION": "Otwieraj i edytuj zapisane trasy.",
     "NEW_ROUTE": "Tworzenie trasy",
     "NEW_ROUTE_DESCRIPTION": "Zaplanuj nową trasę i oblicz jej koszty.",
+    "NEW_LAYER": "Tworzenie warstwy",
+    "NEW_LAYER_DESCRIPTION": "Rysuj własne linie, trasy i obszary.",
+    "LAYERS": "Warstwy",
+    "LAYERS_DESCRIPTION": "Zarządzaj własnymi warstwami mapy.",
     "FAVOURITES": "Ulubione",
     "FAVOURITES_DESCRIPTION": "Przeglądaj zapisane miejsca.",
     "FUEL": "Ceny paliw",
@@ -61,6 +65,8 @@
     "INFORMATION": "Informacje",
     "INFORMATION_DESCRIPTION": "Sprawdź wersję i informacje o aplikacji."
   },
+  "LAYERS_VIEW": {"TITLE": "Własne warstwy", "ADD": "Nowa warstwa", "EMPTY": "Nie utworzono jeszcze żadnej warstwy."},
+  "LAYER_EDITOR": {"DRAWING": "Rysowanie", "DRAW_LINE": "Rysuj prostą", "DRAW_ROUTE": "Rysuj trasę", "DRAW_AREA": "Rysuj obszar", "SPLIT": "Podziel", "FINISH_DRAWING": "Zakończ rysowanie", "WIDTH": "Grubość", "COLOR": "Kolor", "ELEMENTS": "Elementy", "CUSTOM_LAYERS": "Własne warstwy", "RENAME": "Zmień nazwę", "NEW_LAYER": "Nowa warstwa {number}", "LAYER_NAME": "Nazwa warstwy", "UNSAVED_TITLE": "Odrzucić zmiany?", "UNSAVED_TEXT": "Warstwa zawiera niezapisane zmiany.", "DELETE_TITLE": "Usunąć warstwę?", "DELETE_TEXT": "Tej operacji nie można cofnąć."},
   "COMMON": {
     "SAVE": "Zapisz",
     "CANCEL": "Anuluj",

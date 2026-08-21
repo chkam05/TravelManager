@@ -13,6 +13,7 @@ from models.settings.saved_route import SavedRoute
 from models.settings.public_transport_cache import PublicTransportCache
 from models.settings.window_settings import WindowSettings
 from models.settings.appearance import Appearance
+from models.settings.custom_layer import CustomLayer
 
 
 @dataclass
@@ -37,6 +38,7 @@ class SettingsDataModel(BaseDataModel):
     FIELD_UI: ClassVar[str] = 'ui'
     FIELD_WINDOW: ClassVar[str] = 'window'
     FIELD_APPEARANCE: ClassVar[str] = 'appearance'
+    FIELD_CUSTOM_LAYERS: ClassVar[str] = 'custom_layers'
 
     # Fields
     active_car_profile_id: str | None
@@ -52,6 +54,7 @@ class SettingsDataModel(BaseDataModel):
     ui: UiSettings | None
     window: WindowSettings | None
     appearance: Appearance | None
+    custom_layers: List[CustomLayer]
 
     #region Serialization
 
@@ -99,6 +102,7 @@ class SettingsDataModel(BaseDataModel):
         ui = d.get(cls.FIELD_UI, {})
         window = d.get(cls.FIELD_WINDOW, {})
         appearance = d.get(cls.FIELD_APPEARANCE, {})
+        custom_layers = d.get(cls.FIELD_CUSTOM_LAYERS, [])
         tags = FavouriteTag.from_dict_list(favourite_tags if isinstance(favourite_tags, list) else [])
         has_default_tag = any(tag.id == FavouriteTag.DEFAULT_TAG_ID for tag in tags)
 
@@ -139,7 +143,8 @@ class SettingsDataModel(BaseDataModel):
             selected_public_transport_provider=selected_public_transport_provider,
             ui=UiSettings.from_dict(ui),
             window=WindowSettings.from_dict(window),
-            appearance=Appearance.from_dict(appearance)
+            appearance=Appearance.from_dict(appearance),
+            custom_layers=CustomLayer.from_dict_list(custom_layers if isinstance(custom_layers, list) else [])
         )
     
     def to_dict(self) -> Dict[str, Any]:
@@ -160,7 +165,8 @@ class SettingsDataModel(BaseDataModel):
             self.FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDER: self.selected_public_transport_provider,
             self.FIELD_UI: self.ui.to_dict() if self.ui else UiSettings.from_dict({}).to_dict(),
             self.FIELD_WINDOW: self.window.to_dict() if self.window else WindowSettings.from_dict({}).to_dict(),
-            self.FIELD_APPEARANCE: self.appearance.to_dict() if self.appearance else Appearance.from_dict({}).to_dict()
+            self.FIELD_APPEARANCE: self.appearance.to_dict() if self.appearance else Appearance.from_dict({}).to_dict(),
+            self.FIELD_CUSTOM_LAYERS: self.to_dict_list(self.custom_layers)
         }
 
     #endregion Serialization

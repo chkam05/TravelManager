@@ -48,6 +48,10 @@
     "ROUTES_DESCRIPTION": "Open and edit saved routes.",
     "NEW_ROUTE": "Plan route",
     "NEW_ROUTE_DESCRIPTION": "Plan a new route and calculate its costs.",
+    "NEW_LAYER": "Create layer",
+    "NEW_LAYER_DESCRIPTION": "Draw your own lines, routes and areas.",
+    "LAYERS": "Layers",
+    "LAYERS_DESCRIPTION": "Manage custom map layers.",
     "FAVOURITES": "Favourites",
     "FAVOURITES_DESCRIPTION": "Browse saved places.",
     "FUEL": "Fuel prices",
@@ -61,6 +65,8 @@
     "INFORMATION": "Information",
     "INFORMATION_DESCRIPTION": "View the version and application information."
   },
+  "LAYERS_VIEW": {"TITLE": "Custom layers", "ADD": "New layer", "EMPTY": "No custom layers yet."},
+  "LAYER_EDITOR": {"DRAWING": "Drawing", "DRAW_LINE": "Draw line", "DRAW_ROUTE": "Draw route", "DRAW_AREA": "Draw area", "SPLIT": "Split", "FINISH_DRAWING": "Finish drawing", "WIDTH": "Width", "COLOR": "Color", "ELEMENTS": "Elements", "CUSTOM_LAYERS": "Custom Layers", "RENAME": "Rename", "NEW_LAYER": "New layer {number}", "LAYER_NAME": "Layer name", "UNSAVED_TITLE": "Discard changes?", "UNSAVED_TEXT": "This layer has unsaved changes.", "DELETE_TITLE": "Delete layer?", "DELETE_TEXT": "This operation cannot be undone."},
   "COMMON": {
     "SAVE": "Save",
     "CANCEL": "Cancel",

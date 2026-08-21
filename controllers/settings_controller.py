@@ -14,6 +14,7 @@ from models.settings.car_profile import CarProfile
 from models.settings.favourite_place import FavouritePlace
 from models.settings.favourite_tag import FavouriteTag
 from models.settings.saved_route import SavedRoute
+from models.settings.custom_layer import CustomLayer
 from resources.settings_transfer import SettingsTransferTypes
 from resources.public_transport.public_transport_providers import PublicTransportProviders
 from storage.settings_storage import SettingsStorage
@@ -50,8 +51,41 @@ class SettingsController(BaseController):
         self.add_url_rule('/api/routes', view_func=self.get_routes, methods=['GET'])
         self.add_url_rule('/api/routes', view_func=self.save_route, methods=['POST'])
         self.add_url_rule('/api/routes/<route_id>', view_func=self.delete_route, methods=['DELETE'])
+        self.add_url_rule('/api/custom-layers', view_func=self.get_custom_layers, methods=['GET'])
+        self.add_url_rule('/api/custom-layers', view_func=self.save_custom_layer, methods=['POST'])
+        self.add_url_rule('/api/custom-layers/<layer_id>', view_func=self.delete_custom_layer, methods=['DELETE'])
 
     # --- ENDPOINTS ---
+
+    def get_custom_layers(self):
+        settings = self._settings_storage.load()
+        return jsonify({'status': 'ok', 'layers': [item.to_dict() for item in settings.custom_layers]})
+
+    def save_custom_layer(self):
+        data = request.get_json(silent=True) or {}
+        if not isinstance(data, dict) or not str(data.get('name', '')).strip():
+            return jsonify({'status': 'error', 'message': 'Invalid layer data'}), 400
+        data = {**data, 'id': str(data.get('id') or uuid4().hex)}
+        try:
+            layer = CustomLayer.from_dict(data)
+        except (TypeError, ValueError):
+            return jsonify({'status': 'error', 'message': 'Invalid layer data'}), 400
+        if any(e.type not in ('line', 'route', 'area') or len(e.points) < 2 for e in layer.elements):
+            return jsonify({'status': 'error', 'message': 'Invalid layer element data'}), 400
+        settings = self._settings_storage.load()
+        settings.custom_layers = [item for item in settings.custom_layers if item.id != layer.id]
+        settings.custom_layers.append(layer)
+        self._settings_storage.save(settings)
+        return jsonify({'status': 'ok', 'layer': layer.to_dict()})
+
+    def delete_custom_layer(self, layer_id: str):
+        settings = self._settings_storage.load()
+        remaining = [item for item in settings.custom_layers if item.id != layer_id]
+        if len(remaining) == len(settings.custom_layers):
+            return jsonify({'status': 'error', 'message': 'Layer not found'}), 404
+        settings.custom_layers = remaining
+        self._settings_storage.save(settings)
+        return jsonify({'status': 'ok'})
 
     def get_ui_settings(self):
         settings = self._settings_storage.load()

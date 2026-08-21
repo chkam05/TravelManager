@@ -208,7 +208,21 @@ document.addEventListener('travel-manager:views-ready', () => {
     const mapDataLayer = L.layerGroup();
     const favouritesLayer = L.layerGroup();
     const routePointsLayer = L.layerGroup().addTo(map);
+    const customLayersLayer = L.layerGroup().addTo(map);
+    let visibleCustomLayerIds = null;
     let routeGeometryLayer = null;
+
+    const renderCustomLayers = async () => {
+        if (!window.travelManagerCustomLayers) return;
+        const layers = await window.travelManagerCustomLayers.list();
+        customLayersLayer.clearLayers();
+        layers.filter(item => !visibleCustomLayerIds || visibleCustomLayerIds.has(item.id)).forEach(item => {
+            (item.elements || []).forEach(element => {
+                const options = {color: element.color || '#1F6FAE', weight: Number(element.width) || 4, interactive: false, fillOpacity: .22};
+                (element.type === 'area' ? L.polygon(element.points, options) : L.polyline(element.points, options)).addTo(customLayersLayer);
+            });
+        });
+    };
 
     const appearanceColor = (property, fallback) => (
         getComputedStyle(document.body).getPropertyValue(property).trim() || fallback
@@ -1079,6 +1093,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     });
 
     map.on('click', (event) => {
+        if (window.travelManagerLayerEditor?.isDrawing()) return;
         showPlaceFromCoordinates(event.latlng.lat, event.latlng.lng);
     });
 
@@ -1105,6 +1120,8 @@ document.addEventListener('travel-manager:views-ready', () => {
     document.addEventListener('travel-manager:layers-changed', (event) => {
         applyLayerState(event.detail || {});
     });
+    document.addEventListener('travel-manager:custom-layers-changed', renderCustomLayers);
+    document.addEventListener('travel-manager:custom-layer-visibility-changed', event => { visibleCustomLayerIds = new Set(event.detail?.ids || []); renderCustomLayers(); });
 
     document.addEventListener('travel-manager:favourites-changed', (event) => {
         renderFavourites(event.detail?.favourites || []);
@@ -1420,4 +1437,5 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     window.travelManagerFavourites?.list().then(renderFavourites).catch(() => {});
+    renderCustomLayers();
 });

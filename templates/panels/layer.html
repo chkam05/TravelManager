@@ -1,0 +1,49 @@
+<aside class="layer-panel" id="layer-panel" aria-live="polite" aria-hidden="true">
+    <div class="layer-panel__grabber" aria-hidden="true"></div>
+    <div class="layer-panel__body">
+        <header class="layer-panel__header">
+            <h2 class="layer-panel__title" data-layer-title></h2>
+            <button class="layer-panel__close" type="button" data-layer-close aria-label="{{ t('COMMON.CLOSE') }}"></button>
+        </header>
+
+        <div class="layer-panel__drawing-toolbar" role="toolbar" aria-label="{{ t('LAYER_EDITOR.DRAWING') }}">
+            <button class="layer-panel__tool" type="button" data-draw="line" title="{{ t('LAYER_EDITOR.DRAW_LINE') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_LINE') }}"><i data-lucide="pencil-line" aria-hidden="true"></i></button>
+            <button class="layer-panel__tool" type="button" data-draw="route" title="{{ t('LAYER_EDITOR.DRAW_ROUTE') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_ROUTE') }}"><i data-lucide="waypoints" aria-hidden="true"></i></button>
+            <button class="layer-panel__tool" type="button" data-draw="area" title="{{ t('LAYER_EDITOR.DRAW_AREA') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_AREA') }}">
+                <svg class="lucide lucide-vector-square" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect width="4" height="4" x="3" y="3" rx="1"></rect>
+                    <rect width="4" height="4" x="17" y="3" rx="1"></rect>
+                    <rect width="4" height="4" x="3" y="17" rx="1"></rect>
+                    <rect width="4" height="4" x="17" y="17" rx="1"></rect>
+                    <path d="M7 5h10M5 7v10M19 7v10M7 19h10"></path>
+                </svg>
+            </button>
+            <span class="layer-panel__toolbar-separator" aria-hidden="true"></span>
+            <button class="layer-panel__tool" type="button" data-layer-split title="{{ t('LAYER_EDITOR.SPLIT') }}" aria-label="{{ t('LAYER_EDITOR.SPLIT') }}"><i data-lucide="git-commit-horizontal" aria-hidden="true"></i></button>
+            <button class="layer-panel__tool layer-panel__tool--danger" type="button" data-element-delete title="{{ t('COMMON.DELETE') }}" aria-label="{{ t('COMMON.DELETE') }}"><i data-lucide="map-pin-minus" aria-hidden="true"></i></button>
+        </div>
+
+        <div class="layer-panel__style-toolbar">
+            <label class="layer-panel__style-control">
+                <span class="layer-panel__style-label">{{ t('LAYER_EDITOR.WIDTH') }}</span>
+                <span class="layer-panel__unit-input"><input data-layer-width type="number" min="1" max="20" value="4"><span>px</span></span>
+            </label>
+            <label class="layer-panel__style-control">
+                <span class="layer-panel__style-label">{{ t('LAYER_EDITOR.COLOR') }}</span>
+                <button class="layer-panel__color" data-layer-color type="button" style="--color:#1F6FAE" aria-label="{{ t('LAYER_EDITOR.COLOR') }}"><span aria-hidden="true"></span></button>
+            </label>
+            <button class="layer-panel__finish" type="button" data-draw-finish hidden><i data-lucide="check" aria-hidden="true"></i><span>{{ t('LAYER_EDITOR.FINISH_DRAWING') }}</span></button>
+        </div>
+
+        <div class="layer-panel__elements" data-layer-elements aria-live="polite"></div>
+
+        <footer class="layer-panel__footer">
+            <button class="layer-panel__button layer-panel__button--primary" type="button" data-layer-save><i data-lucide="save" aria-hidden="true"></i><span>{{ t('COMMON.SAVE') }}</span></button>
+            <button class="layer-panel__button" type="button" data-layer-cancel><span>{{ t('COMMON.CANCEL') }}</span></button>
+        </footer>
+    </div>
+    <div class="layer-panel__menu" data-layer-element-menu role="menu" aria-hidden="true">
+        <button type="button" role="menuitem" data-element-menu-rename><i data-lucide="pencil" aria-hidden="true"></i><span>{{ t('LAYER_EDITOR.RENAME') }}</span></button>
+        <button class="layer-panel__menu-danger" type="button" role="menuitem" data-element-menu-delete><i data-lucide="trash-2" aria-hidden="true"></i><span>{{ t('COMMON.DELETE') }}</span></button>
+    </div>
+</aside>
