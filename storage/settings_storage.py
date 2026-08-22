@@ -9,6 +9,7 @@ from models.settings_transfer.cars_transfer_data_model import CarsTransferDataMo
 from models.settings_transfer.favourites_transfer_data_model import FavouritesTransferDataModel
 from models.settings_transfer.fuel_costs_transfer_data_model import FuelCostsTransferDataModel
 from models.settings_transfer.routes_transfer_data_model import RoutesTransferDataModel
+from models.settings_transfer.layers_transfer_data_model import LayersTransferDataModel
 from models.settings_data_model import SettingsDataModel
 from models.settings.public_transport_cache import PublicTransportCache
 from models.public_transport.public_transport_announcement import PublicTransportAnnouncement
@@ -168,6 +169,13 @@ class SettingsStorage(BaseJsonStorage):
         )
         return self._serialize_transfer_model(model)
 
+    def export_layers(self) -> str:
+        """Serializes custom layers."""
+        settings = self.load()
+        return self._serialize_transfer_model(
+            LayersTransferDataModel(layers=list(settings.custom_layers))
+        )
+
     def import_fuel_costs(self, plaintext: str) -> None:
         """Deserializes fuel cost JSON text and updates application settings."""
         data = self._deserialize_transfer_text(plaintext)
@@ -251,6 +259,28 @@ class SettingsStorage(BaseJsonStorage):
         settings = self.load()
         settings.active_car_profile_id = active_car_profile_id
         settings.car_profiles = transfer.car_profiles
+        self.save(settings)
+
+    def import_layers(self, plaintext: str) -> None:
+        """Deserializes and replaces custom layers."""
+        data = self._deserialize_transfer_text(plaintext)
+        if isinstance(data, list):
+            data = {LayersTransferDataModel.FIELD_LAYERS: data}
+        if not isinstance(data, dict) or not isinstance(
+            data.get(LayersTransferDataModel.FIELD_LAYERS), list
+        ):
+            raise ValueError('Invalid layers data.')
+
+        transfer = LayersTransferDataModel.from_dict(data)
+        if any(
+            not layer.id or not layer.name.strip()
+            or any(element.type not in ('line', 'route', 'area') or len(element.points) < 2 for element in layer.elements)
+            for layer in transfer.layers
+        ):
+            raise ValueError('Invalid layers data.')
+
+        settings = self.load()
+        settings.custom_layers = transfer.layers
         self.save(settings)
 
     @staticmethod

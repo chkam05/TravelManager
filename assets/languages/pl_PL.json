@@ -65,8 +65,8 @@
     "INFORMATION": "Informacje",
     "INFORMATION_DESCRIPTION": "Sprawdź wersję i informacje o aplikacji."
   },
-  "LAYERS_VIEW": {"TITLE": "Własne warstwy", "ADD": "Nowa warstwa", "EMPTY": "Nie utworzono jeszcze żadnej warstwy."},
-  "LAYER_EDITOR": {"DRAWING": "Rysowanie", "DRAW_LINE": "Rysuj prostą", "DRAW_ROUTE": "Rysuj trasę", "DRAW_AREA": "Rysuj obszar", "SPLIT": "Podziel", "FINISH_DRAWING": "Zakończ rysowanie", "WIDTH": "Grubość", "COLOR": "Kolor", "ELEMENTS": "Elementy", "CUSTOM_LAYERS": "Własne warstwy", "RENAME": "Zmień nazwę", "NEW_LAYER": "Nowa warstwa {number}", "LAYER_NAME": "Nazwa warstwy", "UNSAVED_TITLE": "Odrzucić zmiany?", "UNSAVED_TEXT": "Warstwa zawiera niezapisane zmiany.", "DELETE_TITLE": "Usunąć warstwę?", "DELETE_TEXT": "Tej operacji nie można cofnąć."},
+  "LAYERS_VIEW": {"TITLE": "Własne warstwy", "ADD": "Nowa warstwa", "EMPTY": "Nie utworzono jeszcze żadnej warstwy.", "SEARCH": "Szukaj warstwy", "SORT": "Sortuj", "ASCENDING": "Rosnąco", "DESCENDING": "Malejąco", "NO_RESULTS": "Brak warstw pasujących do wyszukiwania.", "ELEMENT_COUNT": "Liczba elementów: {count}", "CLOSE_CURVE": "Zamknij krzywą", "SHOW_TITLE": "Pokaż tytuł", "ICON": "Ikona warstwy", "ICON_SELECTION": "Wybór ikony warstwy"},
+  "LAYER_EDITOR": {"DRAWING": "Rysowanie", "DRAW_LINE": "Rysuj prostą", "DRAW_CURVE": "Rysuj krzywą", "DRAW_ROUTE": "Rysuj trasę", "DRAW_AREA": "Rysuj obszar", "SPLIT": "Podziel", "TOGGLE_CURVE": "Przełącz prostą/krzywą", "FINISH_DRAWING": "Zakończ rysowanie", "WIDTH": "Grubość", "LINE_TYPE": "Rodzaj", "STYLE_SOLID": "Ciągła", "STYLE_DASHED": "Kreskowana", "STYLE_DOTTED": "Kropkowana", "STYLE_DOUBLE": "Podwójna", "STYLE_DASH_DOT": "Kreska-kropka", "COLOR": "Kolor", "COLORS": "Kolory", "LINE": "Linia", "BACKGROUND": "Tło", "LINE_COLOR": "Kolor linii", "BACKGROUND_COLOR": "Kolor tła", "LENGTH_METRES": "Długość {value} m.", "AREA_METRES": "Pole {value} m²", "LENGTH_VALUE": "Długość {value} {unit}.", "AREA_VALUE": "Pole {value} {unit}", "ELEMENTS": "Elementy", "CUSTOM_LAYERS": "Własne warstwy", "RENAME": "Zmień nazwę", "NEW_LAYER": "Nowa warstwa {number}", "LAYER_NAME": "Nazwa warstwy", "UNSAVED_TITLE": "Odrzucić zmiany?", "UNSAVED_TEXT": "Warstwa zawiera niezapisane zmiany.", "DELETE_TITLE": "Usunąć warstwę?", "DELETE_TEXT": "Tej operacji nie można cofnąć."},
   "COMMON": {
     "SAVE": "Zapisz",
     "CANCEL": "Anuluj",
@@ -148,8 +148,9 @@
     "TITLE": "Wybierz kolor",
     "SATURATION_AND_BRIGHTNESS": "Wybierz nasycenie i jasność koloru",
     "HUE": "Barwa",
-    "ADD_COLOR": "Dodaj kolor",
-    "INVALID_HEX": "Wpisz kolor w formacie #RRGGBB."
+    "ADD_COLOR": "Wybierz",
+    "ALPHA": "Przezroczystość",
+    "INVALID_HEX": "Wpisz kolor w formacie #RRGGBB lub #RRGGBBAA."
   },
   "DIALOG_DOWNLOAD_STATUS": {
     "TITLE": "Aktualizacja komunikacji miejskiej",
@@ -443,17 +444,23 @@
     "LANGUAGE_POLISH": "Polski",
     "LANGUAGE_ENGLISH": "Angielski",
     "STARTUP": "Uruchamianie",
-    "DESCRIPTION": "Ustawienia sposobu udostępniania aplikacji.",
+    "MAIN_SETTINGS": "Ustawienia główne",
+    "DESCRIPTION": "Język, uruchamianie i dostępność aplikacji w sieci.",
     "NETWORK": "Udostępnianie w sieci",
-    "NETWORK_DESCRIPTION": "Po ponownym uruchomieniu aplikacja użyje adresu IPv4 aktywnej karty sieciowej. Włączaj tę opcję tylko w zaufanej sieci.",
+    "NETWORK_DESCRIPTION": "Skonfiguruj język, ekran startowy i udostępnianie aplikacji w zaufanej sieci.",
     "MOVE_TO_NETWORK": "Przenieś do sieci",
-    "OPEN_HOME": "Po uruchomieniu otwórz Stronę Startową"
+    "OPEN_HOME": "Po uruchomieniu otwórz Stronę Startową",
+    "LAYERS": "Warstwy",
+    "LAYERS_DESCRIPTION": "Wybierz jednostki używane do prezentowania długości i pola figur.",
+    "LENGTH_UNIT": "Jednostka długości",
+    "AREA_UNIT": "Jednostka pola"
   },
   "RES_SETTINGS_TRANSFER": {
     "FUEL_COSTS": "Ceny paliwa",
     "ROUTES": "Trasy",
     "FAVOURITES": "Ulubione i tagi",
-    "CARS": "Samochody"
+    "CARS": "Samochody",
+    "LAYERS": "Warstwy"
   },
   "RES_COLOR_PRESET": {
     "GOLD_YELLOW": "Żółtozłoty",

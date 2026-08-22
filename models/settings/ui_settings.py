@@ -42,6 +42,8 @@ class UiSettings(BaseDataModel):
     _DEFAULT_ROUTE_TOLL_ROADS_ENABLED: ClassVar[bool] = True
     _DEFAULT_MOVE_TO_NETWORK: ClassVar[bool] = False
     _DEFAULT_OPEN_HOME_ON_STARTUP: ClassVar[bool] = True
+    _DEFAULT_LAYER_LENGTH_UNIT: ClassVar[str] = 'm'
+    _DEFAULT_LAYER_AREA_UNIT: ClassVar[str] = 'm2'
     _DEFAULT_LANGUAGE: ClassVar[str] = DEFAULT_LANGUAGE.value
 
     # Field name declarations
@@ -77,6 +79,8 @@ class UiSettings(BaseDataModel):
     FIELD_ROUTE_TOLL_ROADS_ENABLED: ClassVar[str] = 'route_toll_roads_enabled'
     FIELD_MOVE_TO_NETWORK: ClassVar[str] = 'move_to_network'
     FIELD_OPEN_HOME_ON_STARTUP: ClassVar[str] = 'open_home_on_startup'
+    FIELD_LAYER_LENGTH_UNIT: ClassVar[str] = 'layer_length_unit'
+    FIELD_LAYER_AREA_UNIT: ClassVar[str] = 'layer_area_unit'
     FIELD_LANGUAGE: ClassVar[str] = 'language'
 
     # Fields
@@ -112,6 +116,8 @@ class UiSettings(BaseDataModel):
     route_toll_roads_enabled: bool
     move_to_network: bool
     open_home_on_startup: bool
+    layer_length_unit: str
+    layer_area_unit: str
     language: str
 
     #region Serialization
@@ -325,6 +331,16 @@ class UiSettings(BaseDataModel):
                 d.get(cls.FIELD_OPEN_HOME_ON_STARTUP, cls._DEFAULT_OPEN_HOME_ON_STARTUP),
                 cls._DEFAULT_OPEN_HOME_ON_STARTUP
             ),
+            layer_length_unit=(
+                str(d.get(cls.FIELD_LAYER_LENGTH_UNIT, cls._DEFAULT_LAYER_LENGTH_UNIT))
+                if str(d.get(cls.FIELD_LAYER_LENGTH_UNIT, cls._DEFAULT_LAYER_LENGTH_UNIT)) in ('mm', 'cm', 'm', 'km')
+                else cls._DEFAULT_LAYER_LENGTH_UNIT
+            ),
+            layer_area_unit=(
+                str(d.get(cls.FIELD_LAYER_AREA_UNIT, cls._DEFAULT_LAYER_AREA_UNIT))
+                if str(d.get(cls.FIELD_LAYER_AREA_UNIT, cls._DEFAULT_LAYER_AREA_UNIT)) in ('mm2', 'cm2', 'm2', 'km2')
+                else cls._DEFAULT_LAYER_AREA_UNIT
+            ),
             language=normalize_language(
                 d.get(cls.FIELD_LANGUAGE, cls._DEFAULT_LANGUAGE)
             ).value
@@ -365,6 +381,8 @@ class UiSettings(BaseDataModel):
             self.FIELD_ROUTE_TOLL_ROADS_ENABLED: self.route_toll_roads_enabled,
             self.FIELD_MOVE_TO_NETWORK: self.move_to_network,
             self.FIELD_OPEN_HOME_ON_STARTUP: self.open_home_on_startup,
+            self.FIELD_LAYER_LENGTH_UNIT: self.layer_length_unit,
+            self.FIELD_LAYER_AREA_UNIT: self.layer_area_unit,
             self.FIELD_LANGUAGE: self.language
         }
 

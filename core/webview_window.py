@@ -293,6 +293,8 @@ class WebViewWindow(WebViewWindowInterface):
             return self._settings_storage.export_favourites_and_tags()
         if data_type == SettingsTransferTypes.CARS:
             return self._settings_storage.export_cars()
+        if data_type == SettingsTransferTypes.LAYERS:
+            return self._settings_storage.export_layers()
         raise ValueError('Unsupported export data type.')
 
     def _import_settings_text(self, data_type: str, plaintext: str) -> None:
@@ -308,6 +310,9 @@ class WebViewWindow(WebViewWindowInterface):
             return
         if data_type == SettingsTransferTypes.CARS:
             self._settings_storage.import_cars(plaintext)
+            return
+        if data_type == SettingsTransferTypes.LAYERS:
+            self._settings_storage.import_layers(plaintext)
             return
         raise ValueError('Unsupported import data type.')
 

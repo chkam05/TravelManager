@@ -13,20 +13,58 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     let tags = [];
     let selectedFavouriteTagIds = null;
+    let customLayersRenderId = 0;
     const customLayersList = panel.querySelector('[data-custom-layer-toggles]');
     const renderCustomLayers = async () => {
-        if (!customLayersList || !window.travelManagerCustomLayers) return;
-        const layers = await window.travelManagerCustomLayers.list();
-        const stored = JSON.parse(localStorage.getItem('travel-manager-visible-custom-layers') || 'null');
-        const visible = Array.isArray(stored) ? new Set(stored) : new Set(layers.map(item => item.id));
+        if (!customLayersList) return;
+        const renderId = ++customLayersRenderId;
+        let layers = [];
+        try {
+            const response = await fetch('/api/custom-layers', {
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+            layers = (await response.json())?.layers || [];
+            if (renderId !== customLayersRenderId) return;
+        } catch (error) {
+            if (renderId !== customLayersRenderId) return;
+            customLayersList.replaceChildren();
+            const empty = document.createElement('p');
+            empty.className = 'layer-details-panel__empty';
+            empty.textContent = t('LAYERS_VIEW.EMPTY');
+            customLayersList.append(empty);
+            return;
+        }
+        let stored = null;
+        try {
+            stored = JSON.parse(localStorage.getItem('travel-manager-custom-layer-visibility') || 'null');
+        } catch (error) {
+            localStorage.removeItem('travel-manager-custom-layer-visibility');
+        }
+        if (!stored || Array.isArray(stored) || typeof stored !== 'object') {
+            stored = {};
+        }
+        const visibility = Object.fromEntries(layers.map(item => [item.id, stored[item.id] !== false]));
+        localStorage.setItem('travel-manager-custom-layer-visibility', JSON.stringify(visibility));
+        const visible = new Set(layers.filter(item => visibility[item.id]).map(item => item.id));
         customLayersList.replaceChildren();
+        if (!layers.length) {
+            const empty = document.createElement('p');
+            empty.className = 'layer-details-panel__empty';
+            empty.textContent = t('LAYERS_VIEW.EMPTY');
+            customLayersList.append(empty);
+        }
         layers.forEach(item => {
-            const label = document.createElement('label'); label.className = 'layer-details-panel__option';
+            const row = document.createElement('div'); row.className = 'layer-details-panel__option layer-details-panel__custom-option';
             const input = document.createElement('input'); input.type = 'checkbox'; input.checked = visible.has(item.id);
-            const text = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = item.name; text.append(strong);
-            input.onchange = () => { input.checked ? visible.add(item.id) : visible.delete(item.id); localStorage.setItem('travel-manager-visible-custom-layers', JSON.stringify([...visible])); document.dispatchEvent(new CustomEvent('travel-manager:custom-layer-visibility-changed', {detail:{ids:[...visible]}})); };
-            label.append(input,text); customLayersList.append(label);
+            const text = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = [item.icon, item.name].filter(Boolean).join(' '); text.append(strong);
+            const edit = document.createElement('button'); edit.className = 'layer-details-panel__custom-edit'; edit.type = 'button'; edit.title = t('COMMON.EDIT'); edit.setAttribute('aria-label', t('COMMON.EDIT')); edit.innerHTML = '<i data-lucide="pencil" aria-hidden="true"></i>';
+            input.onchange = () => { visibility[item.id] = input.checked; input.checked ? visible.add(item.id) : visible.delete(item.id); localStorage.setItem('travel-manager-custom-layer-visibility', JSON.stringify(visibility)); document.dispatchEvent(new CustomEvent('travel-manager:custom-layer-visibility-changed', {detail:{ids:[...visible]}})); };
+            row.onclick = event => { if (event.target.closest('button') || event.target === input) return; input.click(); };
+            edit.onclick = () => { close(); window.travelManagerLayerEditor?.open(item); };
+            row.append(input,text,edit); customLayersList.append(row);
         });
+        window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
         document.dispatchEvent(new CustomEvent('travel-manager:custom-layer-visibility-changed', {detail:{ids:[...visible]}}));
     };
 

@@ -1,4 +1,19 @@
 <section class="layers-view">
-  <header class="layers-view__header"><button class="app-view__back-button" data-app-back-to-map type="button"><i data-lucide="arrow-left"></i></button><h2>{{ t('LAYERS_VIEW.TITLE') }}</h2><button class="layers-view__add" data-layer-add type="button"><i data-lucide="plus"></i>{{ t('LAYERS_VIEW.ADD') }}</button></header>
-  <div class="layers-view__list" data-layers-list aria-live="polite"></div>
+    <header class="layers-view__header">
+        <button class="app-view__back-button" data-app-back-to-map type="button" aria-label="{{ t('COMMON.BACK') }}"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
+        <form class="layers-view__search" id="layers-search" role="search" aria-label="{{ t('LAYERS_VIEW.SEARCH') }}">
+            <input class="layers-view__search-input" id="layers-search-input" type="search" placeholder="{{ t('LAYERS_VIEW.SEARCH') }}" aria-label="{{ t('LAYERS_VIEW.SEARCH') }}">
+            <button class="layers-view__search-button" type="submit"><i data-lucide="search" aria-hidden="true"></i><span>{{ t('COMMON.SEARCH') }}</span></button>
+        </form>
+        <div class="layers-view__spacer"></div>
+        <button class="layers-view__add" data-layer-add type="button"><i data-lucide="plus" aria-hidden="true"></i><span>{{ t('LAYERS_VIEW.ADD') }}</span></button>
+        <div class="layers-view__sort">
+            <button class="layers-view__sort-button" id="layers-sort-button" type="button" aria-haspopup="menu" aria-expanded="false"><i data-lucide="arrow-up-down" aria-hidden="true"></i><span>{{ t('LAYERS_VIEW.SORT') }}</span></button>
+            <div class="layers-view__sort-menu" id="layers-sort-menu" role="menu" aria-hidden="true">
+                <button type="button" role="menuitem" data-sort-direction="asc">{{ t('LAYERS_VIEW.ASCENDING') }}</button>
+                <button type="button" role="menuitem" data-sort-direction="desc">{{ t('LAYERS_VIEW.DESCENDING') }}</button>
+            </div>
+        </div>
+    </header>
+    <div class="layers-view__list" data-layers-list aria-live="polite"></div>
 </section>

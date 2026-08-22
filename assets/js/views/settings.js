@@ -5,8 +5,9 @@ document.addEventListener('travel-manager:views-ready', () => {
     const routeTollsGroup = document.querySelector('[data-settings-group="route-tolls"]');
     const publicTransportGroup = document.querySelector('[data-settings-group="public-transport"]');
     const applicationGroup = document.querySelector('[data-settings-group="application"]');
+    const layerUnitsGroup = document.querySelector('[data-settings-group="layer-units"]');
 
-    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationGroup) {
+    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationGroup || !layerUnitsGroup) {
         return;
     }
 
@@ -18,7 +19,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         { id: 'fuel_costs', label: t('RES_SETTINGS_TRANSFER.FUEL_COSTS') },
         { id: 'routes', label: t('RES_SETTINGS_TRANSFER.ROUTES') },
         { id: 'favourites', label: t('RES_SETTINGS_TRANSFER.FAVOURITES') },
-        { id: 'cars', label: t('RES_SETTINGS_TRANSFER.CARS') }
+        { id: 'cars', label: t('RES_SETTINGS_TRANSFER.CARS') },
+        { id: 'layers', label: t('RES_SETTINGS_TRANSFER.LAYERS') }
     ];
     const dataTransferMenu = document.createElement('div');
     dataTransferMenu.className = 'settings-view__context-menu';
@@ -109,6 +111,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (dataType === 'favourites') {
             await window.travelManagerFavourites?.listTags(true);
             await window.travelManagerFavourites?.list(true);
+            return;
+        }
+
+        if (dataType === 'layers') {
+            document.dispatchEvent(new CustomEvent('travel-manager:custom-layers-changed'));
             return;
         }
 
@@ -401,6 +408,32 @@ document.addEventListener('travel-manager:views-ready', () => {
         group.append(row);
     };
 
+    const addSelectSetting = (group, label, field, value, options) => {
+        const row = document.createElement('div');
+        row.className = 'settings-view__value settings-view__value--control';
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.className = 'settings-view__control';
+        const select = document.createElement('select');
+        select.className = 'settings-view__select';
+        options.forEach(({ value: optionValue, label: optionLabel }) => {
+            const option = document.createElement('option');
+            option.value = optionValue;
+            option.textContent = optionLabel;
+            select.append(option);
+        });
+        select.value = options.some((option) => option.value === value) ? value : options[0].value;
+        select.addEventListener('change', () => {
+            const payload = { [field]: select.value };
+            schedulePatch(payload);
+            document.dispatchEvent(new CustomEvent('travel-manager:ui-settings-changed', { detail: payload }));
+        });
+        description.append(select);
+        row.append(term, description);
+        group.append(row);
+    };
+
     const addPercentSliderSetting = (group, label, field, value, options = {}) => {
         const row = document.createElement('div');
         row.className = 'settings-view__value settings-view__value--control';
@@ -545,6 +578,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         routeTollsGroup.replaceChildren();
         publicTransportGroup.replaceChildren();
         applicationGroup.replaceChildren();
+        layerUnitsGroup.replaceChildren();
         routeFuelMainInput = null;
         routeFuelDependentRows = [];
 
@@ -572,6 +606,21 @@ document.addEventListener('travel-manager:views-ready', () => {
                 t('SETTINGS_APPLICATION.OPEN_HOME'),
                 'open_home_on_startup',
                 settings.open_home_on_startup === true
+            );
+
+            addSelectSetting(
+                layerUnitsGroup,
+                t('SETTINGS_APPLICATION.LENGTH_UNIT'),
+                'layer_length_unit',
+                settings.layer_length_unit,
+                ['mm', 'cm', 'm', 'km'].map((unit) => ({ value: unit, label: unit }))
+            );
+            addSelectSetting(
+                layerUnitsGroup,
+                t('SETTINGS_APPLICATION.AREA_UNIT'),
+                'layer_area_unit',
+                settings.layer_area_unit,
+                ['mm2', 'cm2', 'm2', 'km2'].map((unit) => ({ value: unit, label: unit.replace('2', '²') }))
             );
 
             addBooleanSetting(

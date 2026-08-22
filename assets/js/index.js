@@ -15,6 +15,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     let notificationTimer = null;
     const carButtonViews = new Set(['map', 'car-profiles']);
 
+    const renderLocalLucideFallbacks = () => {
+        document.querySelectorAll('[data-lucide="layers-plus"]').forEach((element) => {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', `${element.className || ''} lucide lucide-layers-plus`.trim());
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('stroke-width', '1.7');
+            svg.setAttribute('stroke-linecap', 'round');
+            svg.setAttribute('stroke-linejoin', 'round');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.innerHTML = '<path d="m12 2 9 5-9 5-9-5 9-5Z"></path><path d="m3 12 9 5 4-2.22"></path><path d="m3 17 9 5 3-1.67"></path><path d="M19 15v6"></path><path d="M16 18h6"></path>';
+            element.replaceWith(svg);
+        });
+    };
+
+    renderLocalLucideFallbacks();
     window.lucide?.createIcons({
         attrs: {
             'stroke-width': 1.7
@@ -239,6 +256,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.dispatchEvent(new CustomEvent('travel-manager:views-ready'));
+    renderLocalLucideFallbacks();
     window.lucide?.createIcons({
         attrs: {
             'stroke-width': 1.7

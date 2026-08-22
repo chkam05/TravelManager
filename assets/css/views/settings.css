@@ -84,6 +84,12 @@
     display: none;
 }
 
+.settings-view__tab-panel,
+.settings-view__group,
+.appearance-settings {
+    background: transparent;
+}
+
 .settings-view__group {
     display: grid;
     gap: 12px;

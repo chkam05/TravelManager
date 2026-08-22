@@ -65,8 +65,8 @@
     "INFORMATION": "Information",
     "INFORMATION_DESCRIPTION": "View the version and application information."
   },
-  "LAYERS_VIEW": {"TITLE": "Custom layers", "ADD": "New layer", "EMPTY": "No custom layers yet."},
-  "LAYER_EDITOR": {"DRAWING": "Drawing", "DRAW_LINE": "Draw line", "DRAW_ROUTE": "Draw route", "DRAW_AREA": "Draw area", "SPLIT": "Split", "FINISH_DRAWING": "Finish drawing", "WIDTH": "Width", "COLOR": "Color", "ELEMENTS": "Elements", "CUSTOM_LAYERS": "Custom Layers", "RENAME": "Rename", "NEW_LAYER": "New layer {number}", "LAYER_NAME": "Layer name", "UNSAVED_TITLE": "Discard changes?", "UNSAVED_TEXT": "This layer has unsaved changes.", "DELETE_TITLE": "Delete layer?", "DELETE_TEXT": "This operation cannot be undone."},
+  "LAYERS_VIEW": {"TITLE": "Custom layers", "ADD": "New layer", "EMPTY": "No custom layers yet.", "SEARCH": "Search layers", "SORT": "Sort", "ASCENDING": "Ascending", "DESCENDING": "Descending", "NO_RESULTS": "No layers match your search.", "ELEMENT_COUNT": "Elements: {count}", "CLOSE_CURVE": "Close curve", "SHOW_TITLE": "Show title", "ICON": "Layer icon", "ICON_SELECTION": "Layer icon selection"},
+  "LAYER_EDITOR": {"DRAWING": "Drawing", "DRAW_LINE": "Draw line", "DRAW_CURVE": "Draw curve", "DRAW_ROUTE": "Draw route", "DRAW_AREA": "Draw area", "SPLIT": "Split", "TOGGLE_CURVE": "Toggle line/curve", "FINISH_DRAWING": "Finish drawing", "WIDTH": "Width", "LINE_TYPE": "Type", "STYLE_SOLID": "Solid", "STYLE_DASHED": "Dashed", "STYLE_DOTTED": "Dotted", "STYLE_DOUBLE": "Double", "STYLE_DASH_DOT": "Dash-dot", "COLOR": "Color", "COLORS": "Colors", "LINE": "Line", "BACKGROUND": "Background", "LINE_COLOR": "Line color", "BACKGROUND_COLOR": "Background color", "LENGTH_METRES": "Length {value} m.", "AREA_METRES": "Area {value} m²", "LENGTH_VALUE": "Length {value} {unit}.", "AREA_VALUE": "Area {value} {unit}", "ELEMENTS": "Elements", "CUSTOM_LAYERS": "Custom Layers", "RENAME": "Rename", "NEW_LAYER": "New layer {number}", "LAYER_NAME": "Layer name", "UNSAVED_TITLE": "Discard changes?", "UNSAVED_TEXT": "This layer has unsaved changes.", "DELETE_TITLE": "Delete layer?", "DELETE_TEXT": "This operation cannot be undone."},
   "COMMON": {
     "SAVE": "Save",
     "CANCEL": "Cancel",
@@ -148,8 +148,9 @@
     "TITLE": "Choose a colour",
     "SATURATION_AND_BRIGHTNESS": "Choose colour saturation and brightness",
     "HUE": "Hue",
-    "ADD_COLOR": "Add colour",
-    "INVALID_HEX": "Enter a colour in #RRGGBB format."
+    "ADD_COLOR": "Select",
+    "ALPHA": "Alpha",
+    "INVALID_HEX": "Enter a colour in #RRGGBB or #RRGGBBAA format."
   },
   "DIALOG_DOWNLOAD_STATUS": {
     "TITLE": "Public transport update",
@@ -443,17 +444,23 @@
     "LANGUAGE_POLISH": "Polish",
     "LANGUAGE_ENGLISH": "English",
     "STARTUP": "Startup",
-    "DESCRIPTION": "Settings controlling how the application is made available.",
+    "MAIN_SETTINGS": "Main settings",
+    "DESCRIPTION": "Language, startup behavior, and network availability.",
     "NETWORK": "Network access",
-    "NETWORK_DESCRIPTION": "After restarting, the application will use the IPv4 address of the active network adapter. Enable this option only on a trusted network.",
+    "NETWORK_DESCRIPTION": "Configure the language, startup screen, and application access on a trusted network.",
     "MOVE_TO_NETWORK": "Make available on network",
-    "OPEN_HOME": "Open Home after startup"
+    "OPEN_HOME": "Open Home after startup",
+    "LAYERS": "Layers",
+    "LAYERS_DESCRIPTION": "Choose the units used to display shape lengths and areas.",
+    "LENGTH_UNIT": "Length unit",
+    "AREA_UNIT": "Area unit"
   },
   "RES_SETTINGS_TRANSFER": {
     "FUEL_COSTS": "Fuel prices",
     "ROUTES": "Routes",
     "FAVOURITES": "Favourites and tags",
-    "CARS": "Cars"
+    "CARS": "Cars",
+    "LAYERS": "Layers"
   },
   "RES_COLOR_PRESET": {
     "GOLD_YELLOW": "Gold Yellow",
