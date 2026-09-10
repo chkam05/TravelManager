@@ -112,6 +112,10 @@
     padding: 18px;
 }
 
+.public-transport-lines {
+    --public-transport-line-tile-min-width: 92px;
+}
+
 .public-transport-lines__group,
 .public-transport-stops__city,
 .public-transport-line-stop__day,
@@ -177,7 +181,10 @@
 
 .public-transport-lines__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(min(100%, var(--public-transport-line-tile-width, var(--public-transport-line-tile-min-width))), 1fr)
+    );
     gap: 9px;
     padding: 14px;
 }
@@ -186,6 +193,7 @@
     display: grid;
     place-items: center;
     gap: 6px;
+    min-width: 0;
     min-height: 78px;
     padding: 9px;
     border-width: 1px;
@@ -196,8 +204,35 @@
 }
 
 .public-transport-lines__number {
+    display: grid;
+    gap: 2px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: 1.08rem;
     font-weight: 950;
+    text-align: center;
+}
+
+.public-transport-lines__number strong {
+    font: inherit;
+}
+
+.public-transport-lines__train-name {
+    font-size: .78rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.public-transport-lines__direction {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    font-size: .72rem;
+    font-weight: 750;
+    line-height: 1.2;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .public-transport-lines__badges {
@@ -285,13 +320,15 @@
 }
 
 .public-transport-stops__platform-actions {
-    display: grid;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 6px;
     margin-left: auto;
 }
 
 .public-transport-stops__platform-actions button {
-    width: 100%;
+    width: auto;
     margin-left: 0 !important;
 }
 
@@ -616,6 +653,69 @@ button.public-transport-line-pill {
     min-width: 0;
 }
 
+.public-transport-realtime__scheduled {
+    display: block;
+    text-decoration: line-through;
+    opacity: 0.65;
+}
+
+.public-transport-realtime--cancelled {
+    text-decoration: line-through;
+}
+
+.public-transport-background-download {
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: min(360px, calc(100vw - 36px));
+    padding: 8px 12px 8px 8px;
+    border: 1px solid var(--border-subtle, currentColor);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--surface-background, #fff) 88%, transparent);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 26px #0003;
+    font-size: .82rem;
+    font-weight: 800;
+}
+
+.public-transport-background-download[hidden] { display: none; }
+.public-transport-background-download__icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--border-subtle, currentColor);
+    border-radius: 10px;
+}
+
+.public-transport-background-download__icon svg {
+    width: 21px;
+    height: 21px;
+    animation: download-status-spin 900ms linear infinite;
+}
+
+.public-transport-view__loading-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.public-transport-view__loading-actions[hidden] { display: none; }
+
+.public-transport-view__loading-actions button {
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+}
+
 .public-transport-ride__summary {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -877,6 +977,54 @@ button.public-transport-line-pill {
     width: 100%;
 }
 
+.public-transport-search--sortable {
+    grid-template-columns: minmax(0, 1fr) 40px auto;
+    gap: 6px;
+}
+
+.public-transport-search--sortable button:last-child {
+    width: auto;
+    padding: 0 11px;
+    border-radius: 8px;
+}
+
+.public-transport-line-sort-menu {
+    position: fixed;
+    z-index: 3500;
+    display: grid;
+    gap: 2px;
+    min-width: 190px;
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    background: var(--surface-background);
+    box-shadow: 0 12px 30px var(--shadow-color);
+}
+
+.public-transport-line-sort-menu[hidden] {
+    display: none;
+}
+
+.public-transport-line-sort-menu button {
+    min-height: 36px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 750;
+    text-align: left;
+    cursor: pointer;
+}
+
+.public-transport-line-sort-menu button:hover,
+.public-transport-line-sort-menu button:focus,
+.public-transport-line-sort-menu button[aria-checked="true"] {
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
 .public-transport-search input {
     min-width: 0;
     height: 38px;
@@ -964,6 +1112,10 @@ button.public-transport-line-pill {
     gap: 10px;
 }
 
+.public-transport-carriers__region[hidden] {
+    display: none;
+}
+
 .public-transport-carriers__region-heading {
     margin: 0;
     font-size: 0.85rem;
@@ -1008,6 +1160,7 @@ button.public-transport-line-pill {
 }
 
 .public-transport-carriers__tile {
+    position: relative;
     display: grid;
     grid-template-columns: 50px minmax(0, 1fr) 20px;
     align-items: center;
@@ -1035,9 +1188,49 @@ button.public-transport-line-pill {
     height: 25px;
 }
 
-.public-transport-carriers__tile > span:nth-child(2) {
+.public-transport-carriers__tile > span:nth-child(3) {
     display: grid;
     gap: 4px;
+}
+
+.public-transport-carriers__selection {
+    display: none;
+}
+
+.public-transport-carriers--selecting .public-transport-carriers__selection {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border: 2px solid currentColor;
+    border-radius: 6px;
+    opacity: .45;
+}
+
+.public-transport-carriers--selecting .public-transport-carriers__selection svg {
+    display: none;
+    width: 15px;
+    height: 15px;
+}
+
+.public-transport-carriers--selecting .public-transport-carriers__tile--selected {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+}
+
+.public-transport-carriers--selecting .public-transport-carriers__tile--selected .public-transport-carriers__selection {
+    opacity: 1;
+}
+
+.public-transport-carriers--selecting .public-transport-carriers__tile--selected .public-transport-carriers__selection svg {
+    display: block;
+}
+
+.public-transport-carriers--selecting .public-transport-carriers__tile > svg:last-child {
+    visibility: hidden;
 }
 
 .public-transport-carriers__capabilities {
@@ -1331,18 +1524,41 @@ button.public-transport-line-pill {
 
 .public-transport-stops__lines {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 74px);
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(min(100%, var(--public-transport-stop-line-width, 104px)), 1fr)
+    );
 }
 
 .public-transport-stops__lines .public-transport-line-pill {
-    width: 74px;
-    min-width: 74px;
-    height: 36px;
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    height: auto;
     padding: 4px 7px;
 }
 
 .public-transport-stops__lines .public-transport-line-pill svg {
     flex: 0 0 18px;
+}
+
+.public-transport-line-pill__identity {
+    display: grid;
+    gap: 1px;
+    min-width: 0;
+    text-align: center;
+}
+
+.public-transport-line-pill__identity strong,
+.public-transport-line-pill__identity small {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.public-transport-line-pill__identity small {
+    font-size: .72rem;
+    font-weight: 750;
+    line-height: 1.1;
 }
 
 .public-transport-stop-lines__list article {
@@ -1354,37 +1570,91 @@ button.public-transport-line-pill {
 
 .public-transport-stop-lines__list article > header {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
+    gap: 10px;
     padding: 12px 14px;
     border-bottom-width: 1px;
     border-bottom-style: solid;
 }
 
-.public-transport-stop-lines__list article > header > .public-transport-stop-lines__header-actions {
-    display: inline-flex;
+.public-transport-stop-lines__primary {
+    display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    gap: 7px;
-    justify-self: end;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 0;
 }
 
-.public-transport-stop-lines__list article > header > div {
+.public-transport-stop-lines__primary > .public-transport-line-pill {
+    box-sizing: border-box;
+    flex: 0 1 auto;
+    min-width: 0;
+    height: 36px;
+    min-height: 36px;
+    max-width: 100%;
+    padding: 3px 10px;
+    overflow: hidden;
+}
+
+.public-transport-stop-lines__primary > .public-transport-stop-lines__header-actions {
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    flex-wrap: nowrap;
+    gap: 7px;
+    flex: 0 0 auto;
+    height: 36px;
+    margin-left: auto;
+}
+
+.public-transport-stop-lines__primary .public-transport-line-pill__identity {
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+.public-transport-stop-lines__primary .public-transport-line-pill__identity strong,
+.public-transport-stop-lines__primary .public-transport-line-pill__identity small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.public-transport-stop-lines__details {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+
+.public-transport-stop-lines__direction {
     display: grid;
     gap: 2px;
 }
 
-.public-transport-stop-lines__list article > header > div span {
+.public-transport-stop-lines__direction > span {
+    font-size: .68rem;
+    font-weight: 850;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.public-transport-stop-lines__direction > strong {
+    overflow-wrap: anywhere;
+    font-size: .95rem;
+}
+
+.public-transport-stop-lines__summary {
     font-size: 0.76rem;
     font-weight: 750;
 }
 
 .public-transport-stop-lines__header-actions > button {
+    box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     gap: 7px;
     min-height: 36px;
+    height: 36px;
     padding: 0 11px;
     border-width: 1px;
     border-style: solid;
@@ -1470,12 +1740,7 @@ button.public-transport-line-pill {
 
 @media (max-width: 600px) {
 .public-transport-stop-lines__list article > header {
-    grid-template-columns: auto minmax(0, 1fr);
-}
-
-.public-transport-stop-lines__list article > header > .public-transport-stop-lines__header-actions {
-    grid-column: 2;
-    justify-self: end;
+    grid-template-columns: 1fr;
 }
 
 .public-transport-stop-lines__content {

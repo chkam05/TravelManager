@@ -22,6 +22,9 @@ class PublicTransportRideStop(BaseDataModel):
     FIELD_CITY: ClassVar[str] = 'city'
     FIELD_LATITUDE: ClassVar[str] = 'latitude'
     FIELD_LONGITUDE: ClassVar[str] = 'longitude'
+    FIELD_SCHEDULED_DEPARTURE_TIME: ClassVar[str] = 'scheduled_departure_time'
+    FIELD_DELAY_MINUTES: ClassVar[str] = 'delay_minutes'
+    FIELD_CANCELLED: ClassVar[str] = 'cancelled'
 
     # Fields
     stop: str
@@ -33,6 +36,9 @@ class PublicTransportRideStop(BaseDataModel):
     city: PublicTransportCity
     latitude: float | None
     longitude: float | None
+    scheduled_departure_time: time | None = None
+    delay_minutes: int | None = None
+    cancelled: bool = False
 
     #region Serialization
 
@@ -49,7 +55,11 @@ class PublicTransportRideStop(BaseDataModel):
             distance_sum=max(0.0, float(d.get(cls.FIELD_DISTANCE_SUM) or 0.0)),
             city=PublicTransportCity.from_dict(city if isinstance(city, dict) else {}),
             latitude=parse_coordinate(d.get(cls.FIELD_LATITUDE), -90, 90),
-            longitude=parse_coordinate(d.get(cls.FIELD_LONGITUDE), -180, 180)
+            longitude=parse_coordinate(d.get(cls.FIELD_LONGITUDE), -180, 180),
+            scheduled_departure_time=parse_time(d.get(cls.FIELD_SCHEDULED_DEPARTURE_TIME)),
+            delay_minutes=(int(d[cls.FIELD_DELAY_MINUTES])
+                           if d.get(cls.FIELD_DELAY_MINUTES) is not None else None),
+            cancelled=bool(d.get(cls.FIELD_CANCELLED, False))
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -66,7 +76,13 @@ class PublicTransportRideStop(BaseDataModel):
             self.FIELD_DISTANCE_SUM: self.distance_sum,
             self.FIELD_CITY: self.city.to_dict(),
             self.FIELD_LATITUDE: self.latitude,
-            self.FIELD_LONGITUDE: self.longitude
+            self.FIELD_LONGITUDE: self.longitude,
+            self.FIELD_SCHEDULED_DEPARTURE_TIME: (
+                self.scheduled_departure_time.isoformat(timespec='minutes')
+                if self.scheduled_departure_time else None
+            ),
+            self.FIELD_DELAY_MINUTES: self.delay_minutes,
+            self.FIELD_CANCELLED: self.cancelled
         }
 
     #endregion Serialization

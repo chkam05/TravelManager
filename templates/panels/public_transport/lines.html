@@ -8,6 +8,7 @@
                         {% for provider in group.providers %}
                             <option value="{{ provider.id }}"
                                     data-icon="{{ provider.icon }}"
+                                    data-mode="{{ provider.mode }}"
                                     data-description="{{ provider.description }}"
                                     data-show-route-map="{{ 'true' if provider.show_route_map else 'false' }}"
                                     data-approximate-route-map="{{ 'true' if provider.approximate_route_map else 'false' }}"
@@ -22,6 +23,7 @@
             <span class="public-transport-panel__search">
                 <i data-lucide="search" aria-hidden="true"></i>
                 <input type="search" data-public-transport-panel-search placeholder="{{ t('PUBLIC_TRANSPORT_LINES.ENTER_LINE_NUMBER') }}" autocomplete="off">
+                <button type="button" data-public-transport-panel-line-sort aria-haspopup="menu" aria-expanded="false" aria-label="{{ t('PUBLIC_TRANSPORT_LINES.SORT') }}" title="{{ t('PUBLIC_TRANSPORT_LINES.SORT') }}"><i data-lucide="arrow-up-down" aria-hidden="true"></i></button>
             </span>
         </label>
     </div>

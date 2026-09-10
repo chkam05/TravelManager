@@ -44,6 +44,8 @@
     "MAP_DESCRIPTION": "Browse the map and selected places.",
     "PUBLIC_TRANSPORT": "Public transport",
     "PUBLIC_TRANSPORT_DESCRIPTION": "Browse lines, stops, and timetables.",
+    "RAILWAYS": "Railways",
+    "RAILWAYS_DESCRIPTION": "Browse trains, stations, and railway timetables.",
     "ROUTES": "My routes",
     "ROUTES_DESCRIPTION": "Open and edit saved routes.",
     "NEW_ROUTE": "Plan route",
@@ -66,7 +68,7 @@
     "INFORMATION_DESCRIPTION": "View the version and application information."
   },
   "LAYERS_VIEW": {"TITLE": "Custom layers", "ADD": "New layer", "EMPTY": "No custom layers yet.", "SEARCH": "Search layers", "SORT": "Sort", "ASCENDING": "Ascending", "DESCENDING": "Descending", "NO_RESULTS": "No layers match your search.", "ELEMENT_COUNT": "Elements: {count}", "CLOSE_CURVE": "Close curve", "SHOW_TITLE": "Show title", "ICON": "Layer icon", "ICON_SELECTION": "Layer icon selection"},
-  "LAYER_EDITOR": {"DRAWING": "Drawing", "DRAW_LINE": "Draw line", "DRAW_CURVE": "Draw curve", "DRAW_ROUTE": "Draw route", "DRAW_AREA": "Draw area", "SPLIT": "Split", "TOGGLE_CURVE": "Toggle line/curve", "FINISH_DRAWING": "Finish drawing", "WIDTH": "Width", "LINE_TYPE": "Type", "STYLE_SOLID": "Solid", "STYLE_DASHED": "Dashed", "STYLE_DOTTED": "Dotted", "STYLE_DOUBLE": "Double", "STYLE_DASH_DOT": "Dash-dot", "COLOR": "Color", "COLORS": "Colors", "LINE": "Line", "BACKGROUND": "Background", "LINE_COLOR": "Line color", "BACKGROUND_COLOR": "Background color", "LENGTH_METRES": "Length {value} m.", "AREA_METRES": "Area {value} m²", "LENGTH_VALUE": "Length {value} {unit}.", "AREA_VALUE": "Area {value} {unit}", "ELEMENTS": "Elements", "CUSTOM_LAYERS": "Custom Layers", "RENAME": "Rename", "NEW_LAYER": "New layer {number}", "LAYER_NAME": "Layer name", "UNSAVED_TITLE": "Discard changes?", "UNSAVED_TEXT": "This layer has unsaved changes.", "DELETE_TITLE": "Delete layer?", "DELETE_TEXT": "This operation cannot be undone."},
+  "LAYER_EDITOR": {"SHOW_ON_MAP": "Show on map","SELECT_ALL": "Select all","DESELECT_ALL": "Deselect all","HIDE_SELECTED": "Hide selected shapes","LOCK_SELECTED": "Lock selected shapes","UNLOCK_SELECTED": "Unlock selected shapes","MORE_ACTIONS": "More actions","SNAP_TOGGLE": "Snapping","TOOLS_INFO": "Layer editing instructions","ADD_POINT": "Add point with note","NEW_POINT": "New point","POINT_ICON": "Icon (emoji or short text)","POINT_NOTE": "Note","IMPORT_ONE": "Import layer","EXPORT_ONE": "Export layer","EXPORT_FORMAT": "Export format","IMPORT_PREVIEW": "Add layer “{name}” containing {count} shapes? Existing layers will be preserved.","TRANSFER_FAILED": "Layer transfer failed. Check the file and retry. Lines and polygons without holes are supported; polygons with holes are unsupported. Limit: 10 MB.","TRANSFER_HINT": "JSON preserves editing data. GeoJSON and GPX approximate curves; GPX exports area outlines. Import creates one new layer.","MULTI_HINT": "Check several shapes to style, copy, delete or Shift-drag them together. Escape clears selection.","SELECT_SHAPE": "Select shape","COPY_SELECTED": "Copy selected shapes","DELETE_SELECTED": "Delete selected shapes","MOVE_SHAPE_HINT": "Shift + drag a segment to move the whole shape. Escape cancels the gesture.","SNAP_HINT": "Snapping: the yellow ring marks the target. Hold Alt while moving or clicking to bypass snapping.","HIDDEN": "Hidden","LOCKED": "Locked","SHOW_ELEMENT": "Show shape","HIDE_ELEMENT": "Hide shape","UNLOCK_ELEMENT": "Unlock shape","LOCK_ELEMENT": "Lock shape","DUPLICATE": "Duplicate", "COPY_SUFFIX": "copy","BACK_TO_SHAPES": "← Back to shapes (Esc)","POINTS": "Shape points","COORD_X": "X — longitude","COORD_Y": "Y — latitude","INVALID_COORDINATE": "Enter a valid coordinate: X from −180 to 180, Y from −90 to 90.","DRAWING": "Drawing", "DRAW_LINE": "Draw line", "DRAW_CURVE": "Draw curve", "DRAW_ROUTE": "Draw route", "DRAW_AREA": "Draw area", "SPLIT": "Split", "TOGGLE_CURVE": "Toggle line/curve", "FINISH_DRAWING": "Finish drawing", "WIDTH": "Width", "LINE_TYPE": "Type", "STYLE_SOLID": "Solid", "STYLE_DASHED": "Dashed", "STYLE_DOTTED": "Dotted", "STYLE_DOUBLE": "Double", "STYLE_DASH_DOT": "Dash-dot", "COLOR": "Color", "COLORS": "Colors", "LINE": "Line", "BACKGROUND": "Background", "LINE_COLOR": "Line color", "BACKGROUND_COLOR": "Background color", "LENGTH_METRES": "Length {value} m.", "AREA_METRES": "Area {value} m²", "LENGTH_VALUE": "Length {value} {unit}.", "AREA_VALUE": "Area {value} {unit}", "ELEMENTS": "Elements", "CUSTOM_LAYERS": "Custom Layers", "RENAME": "Rename", "NEW_LAYER": "New layer {number}", "LAYER_NAME": "Layer name", "UNSAVED_TITLE": "Unsaved changes", "UNSAVED_TEXT": "The layer or active drawing has unsaved changes. Save them before leaving?", "DELETE_TITLE": "Delete layer?", "DELETE_TEXT": "This operation cannot be undone.", "DISCARD": "Discard", "SAVING": "Saving…", "SAVED": "Layer saved.", "SAVED_WITH_CHANGES": "The submitted version was saved. Newer changes still need saving.", "SAVE_FAILED": "Could not save the layer. Your changes remain in the editor. Click Save to retry.", "INVALID_DRAWING": "Finish the drawing: a line needs at least two distinct points, and an area needs three.", "INVALID_DATA": "Cannot save the layer: check element coordinates, points, curves and styles.", "UNSAVED_STATUS": "Unsaved changes.", "PERIMETER_VALUE": "Perimeter {value} {unit}", "ELEMENT_ACTIONS": "Shape actions: {name}", "DRAW_HINT": "Click to add points. Enter: finish · Esc: cancel · Backspace: remove last point.", "CONTINUE_HINT": "Continue from the selected endpoint. Click the opposite endpoint to close the shape. Enter: finish · Esc: cancel · Backspace: remove last point.", "WIDTH_SAVE_FAILED": "Could not save the panel width. Resize the panel again to retry.", "LOAD_FAILED": "Could not load layers.", "RETRY": "Retry", "UNDO": "Undo (Ctrl/Cmd+Z)", "REDO": "Redo (Ctrl/Cmd+Shift+Z)", "SHOW_LAYER": "Show entire layer on map", "SHOW_SHAPE": "Show shape on map", "DRAFT_FAILED": "Could not read or save the recovery copy. Changes remain in the editor.", "RECOVER_TITLE": "Restore recovery copy?", "RECOVER_TEXT": "Unsaved work was found for “{name}”. Restore it in the editor or discard it. The saved layer will remain unchanged until you click Save.", "RESTORE": "Restore", "DRAFT_RESTORED": "Recovery copy restored. Review it before saving.", "TOOLS_TITLE": "Layer tools"},
   "COMMON": {
     "SAVE": "Save",
     "CANCEL": "Cancel",
@@ -107,6 +109,7 @@
     "INFORMATION": "Information",
     "MY_ROUTES": "My routes",
     "PUBLIC_TRANSPORT": "Public transport",
+    "RAILWAYS": "Railways",
     "SETTINGS": "Settings",
     "SEARCH_PLACE": "Search for a place",
     "SEARCH_OPTIONS": "Search options",
@@ -117,8 +120,10 @@
     "GROUP_MAP_DESCRIPTION": "Map and saved places.",
     "GROUP_TRAVEL": "Travel",
     "GROUP_TRAVEL_DESCRIPTION": "Route planning, cars, and travel costs.",
-    "GROUP_PUBLIC_TRANSPORT": "Public transport",
-    "GROUP_PUBLIC_TRANSPORT_DESCRIPTION": "Lines, stops, and timetables.",
+    "GROUP_PUBLIC_TRANSPORT": "Public transport and railways",
+    "GROUP_PUBLIC_TRANSPORT_DESCRIPTION": "Lines, stops, stations, and timetables.",
+    "TRAINS": "Trains",
+    "TRAINS_DESCRIPTION": "Browse railway operators, trains, and stations.",
     "GROUP_APPLICATION": "Settings and information",
     "GROUP_APPLICATION_DESCRIPTION": "Configuration and application information.",
     "OPEN_ON_STARTUP": "Open Home after startup",
@@ -164,7 +169,9 @@
     "UPDATING_ALL_PROVIDERS": "Updating all operators…",
     "UPDATING_PROVIDER": "Updating: {provider}",
     "FINISHED_WITH_ERRORS": "Update completed with errors",
-    "DOWNLOAD_FAILED": "Could not download data"
+    "DOWNLOAD_FAILED": "Could not download data",
+    "CONTINUE_IN_BACKGROUND": "Continue in background",
+    "CANCELLING": "Cancelling download…"
   },
   "COMPONENT_ROUTE_VARIANT": {
     "STANDARD_ROUTES": "Standard routes",
@@ -341,7 +348,7 @@
     "DESCRIPTION": "Options used for trip planning and application behaviour.",
     "CATEGORIES": "Settings categories",
     "TAB_APPEARANCE": "Appearance",
-    "TAB_ROUTES": "Routes",
+    "TAB_ROUTES": "Map",
     "TAB_PUBLIC_TRANSPORT": "Public transport",
     "TAB_BACKUP": "Backup",
     "TAB_APPLICATION": "Application",
@@ -388,8 +395,8 @@
     "SELECT_COLOR_FOR": "Select colour: {label}"
   },
   "SETTINGS_ROUTES": {
-    "TITLE": "Routes",
-    "DESCRIPTION": "Costs and options used when planning and summarising routes.",
+    "TITLE": "Map",
+    "DESCRIPTION": "Route planning, cost, and map layer options.",
     "TRAVEL_COSTS": "Travel costs",
     "TRAVEL_COSTS_DESCRIPTION": "Fuel prices used to summarise a route with the active car profile. Price data is downloaded in the Fuel prices view from the European Commission and, for Poland, AutoCentrum.",
     "TOLL_SECTIONS": "Toll sections",
@@ -454,6 +461,32 @@
     "LAYERS_DESCRIPTION": "Choose the units used to display shape lengths and areas.",
     "LENGTH_UNIT": "Length unit",
     "AREA_UNIT": "Area unit"
+  },
+  "SETTINGS_MEMORY": {
+    "TITLE": "Storage",
+    "DESCRIPTION": "Review stored data sizes and remove selected items.",
+    "PUBLIC_TRANSPORT": "Downloaded public transport data",
+    "PUBLIC_TRANSPORT_DESCRIPTION": "Local city and railway timetables available without downloading them again.",
+    "APPLICATION_DATA": "Application data",
+    "APPLICATION_DATA_DESCRIPTION": "User data grouped by application feature.",
+    "FUEL_PRICES": "Fuel prices",
+    "CARS": "Cars",
+    "ROUTES": "Routes",
+    "FAVOURITES": "Favourites and tags",
+    "LAYERS": "Layers",
+    "RAIL_SOURCE_POLISH_TRAINS": "Polish national railway timetable",
+    "RAIL_SOURCE_WKD": "Warsaw Commuter Railway",
+    "NO_DATA": "No stored data.",
+    "COLUMN_NAME": "Name",
+    "COLUMN_DATE": "Updated/created",
+    "COLUMN_SIZE": "Size",
+    "NO_DATE": "—",
+    "DELETE": "Delete data",
+    "DELETE_ITEM": "Delete data: {name}",
+    "DELETE_TITLE": "Delete stored data?",
+    "DELETE_CONFIRM": "The data “{name}” will be permanently deleted. Continue?",
+    "DELETE_FAILED": "Could not delete the data.",
+    "LOAD_FAILED": "Could not read storage usage."
   },
   "RES_SETTINGS_TRANSFER": {
     "FUEL_COSTS": "Fuel prices",
@@ -802,6 +835,7 @@
     "CAR_RENTAL": "Car rental"
   },
   "PUBLIC_TRANSPORT_VIEW": {
+    "BACKGROUND_DOWNLOAD": "Downloading public transport data in the background…",
     "TITLE": "Public transport",
     "LINES": "Lines",
     "STOPS": "Stops",
@@ -822,6 +856,7 @@
     "DOWNLOADING_ITEM": "Downloading “{item}”{position}{retry}…",
     "LOAD_VIEW_FAILED": "Could not load the view",
     "LOAD_DATA_FAILED": "Could not load data.",
+    "DOWNLOAD_CANCELLED": "The download was cancelled.",
     "HTTP_ERROR": "HTTP error {status}",
     "NOT_UPDATED_DETAILS": "Not updated: {errors}",
     "VARIANT_CODE": "V{index}"
@@ -831,6 +866,8 @@
     "SELECT_DESCRIPTION": "Select the operator whose timetables you want to browse.",
     "SEARCH_CARRIER": "Search operators…",
     "UPDATE_ALL": "Update all",
+    "SELECT": "Select",
+    "SELECT_ALL": "Select all",
     "MAP_FEATURES": "Map features",
     "ROUTE_ON_MAP": "Route on map",
     "APPROXIMATE_ROUTE_ON_MAP": "Route on map (approximate — straight lines between stops)",
@@ -840,6 +877,11 @@
   "PUBLIC_TRANSPORT_LINES": {
     "SEARCH_LINE": "Search lines…",
     "SEARCH_LINES": "Search lines",
+    "SORT": "Sort",
+    "SORT_NAME_ASC": "Name (ascending)",
+    "SORT_NAME_DESC": "Name (descending)",
+    "SORT_NUMBER_ASC": "Number (ascending)",
+    "SORT_NUMBER_DESC": "Number (descending)",
     "SEARCH_LINE_OR_DIRECTION": "Search lines or directions…",
     "ENTER_LINE_NUMBER": "Enter a line number",
     "LINE_NUMBER": "Line {line}",
@@ -870,10 +912,15 @@
     "STOP_TIMETABLE": "Stop timetable",
     "PLATFORM": "Platform",
     "PLATFORM_SUFFIX": " · platform {platform}",
+    "RAIL_PLATFORM_SUFFIX": " · platform {platform}",
     "PLATFORM_PREFIX": "Platform {platform} · ",
     "STOP_PLATFORM_NAME": "{city} {stop}, platform {platform}",
     "STOPS_COUNT": "{count} stops",
     "PLATFORMS_COUNT": "{count} platforms",
+    "RAIL_STATIONS_COUNT": "{count} stations",
+    "RAIL_PLATFORMS_COUNT": "{count} platforms",
+    "RAIL_PLATFORM": "Platform",
+    "RAIL_SHOW_PLATFORM": "Show platform",
     "DEPARTURES_COUNT": "{count} departures",
     "DIRECTIONS_COUNT": "{platform}{count} directions",
     "DAY_DATE": "Day {date}",
@@ -890,6 +937,7 @@
   },
   "PUBLIC_TRANSPORT_RIDE": {
     "STOP": "Stop",
+    "RAIL_STATION": "Station",
     "SHOW_RIDE": "Show trip",
     "RIDE_ROUTE": "Trip route",
     "DEPARTURE_DETAILS": "Departure {departure}{platform}",
@@ -903,12 +951,21 @@
     "MINUTES": "{value} min",
     "KILOMETRES": "{value} km",
     "SHOW_STOP_ON_MAP": "Show {stop} on map",
-    "NO_NEXT_STOPS": "No following stops."
+    "NO_NEXT_STOPS": "No following stops.",
+    "REALTIME_DATA": "Live updates",
+    "LAST_UPDATE": "Updated: {value}",
+    "STATUS": "Status",
+    "DELAY": "Delay {value} min",
+    "CANCELLED": "Cancelled",
+    "STOP_SKIPPED": "Stop skipped",
+    "ESTIMATED_POSITION": "Estimated position",
+    "DATA_EXPIRED": "Updates expired — showing the scheduled timetable"
   },
   "PUBLIC_TRANSPORT_SOURCES": {
     "DATA_SOURCES": "Data sources"
   },
   "PANEL_PUBLIC_TRANSPORT": {
+    "TRANSPORT_MODE": "Transport mode",
     "VEHICLES": "Public transport vehicles",
     "SHOW_VEHICLES_ON_MAP": "Show vehicles on map",
     "SHOW_STOP_ON_MAP": "Show stop on map",
@@ -1507,7 +1564,23 @@
     "SWINOUJSCIE_ATTRIBUTION_1": "KA Świnoujście / konwersja GTFS: Mikołaj Kuranowski (CC0)",
     "WEJHEROWO_NAME": "Wejherowo",
     "WEJHEROWO_DESCRIPTION": "MZK Wejherowo (GTFS)",
-    "WEJHEROWO_ATTRIBUTION_1": "MZK Wejherowo / konwersja GTFS: Mikołaj Kuranowski (CC0)"
+    "WEJHEROWO_ATTRIBUTION_1": "MZK Wejherowo / konwersja GTFS: Mikołaj Kuranowski (CC0)",
+    "RAIL_PKP_INTERCITY_NAME": "PKP Intercity",
+    "RAIL_POLREGIO_NAME": "POLREGIO",
+    "RAIL_ARRIVA_NAME": "Arriva RP",
+    "RAIL_KD_NAME": "Koleje Dolnośląskie",
+    "RAIL_KMAL_NAME": "Koleje Małopolskie",
+    "RAIL_KM_NAME": "Koleje Mazowieckie",
+    "RAIL_KS_NAME": "Koleje Śląskie",
+    "RAIL_KW_NAME": "Koleje Wielkopolskie",
+    "RAIL_LKA_NAME": "Łódzka Kolej Aglomeracyjna",
+    "RAIL_SKM_TRICITY_NAME": "PKP SKM Tricity",
+    "RAIL_REGIOJET_NAME": "RegioJet",
+    "RAIL_LEO_EXPRESS_NAME": "Leo Express",
+    "RAIL_SKM_WARSAW_NAME": "SKM Warsaw",
+    "RAIL_WKD_NAME": "Warsaw Commuter Railway",
+    "RAIL_DESCRIPTION": "Railway GTFS timetable",
+    "RAIL_ATTRIBUTION_1": "GTFS: Mikołaj Kuranowski / operator data"
   },
   "RES_PUBLIC_TRANSPORT_REGION": {
     "LOWER_SILESIAN": "dolnośląskie",
@@ -1525,7 +1598,9 @@
     "WEST_POMERANIAN": "zachodniopomorskie",
     "LODZ": "łódzkie",
     "SILESIAN": "śląskie",
-    "HOLY_CROSS": "świętokrzyskie"
+    "HOLY_CROSS": "świętokrzyskie",
+    "RAIL": "Rail",
+    "RAIL_MAIN": "National and long-distance"
   },
   "RES_PUBLIC_TRANSPORT_TYPE": {
     "BUS": "Bus",
@@ -1565,6 +1640,11 @@
     "GZM_STOP_NOT_FOUND": "The stop was not found in the GZM GTFS data.",
     "GZM_TRIP_NOT_FOUND": "The trip was not found in the GZM GTFS data.",
     "GZM_TRIP_HAS_NO_STOPS": "The GZM GTFS trip contains no stops.",
+    "RAIL_SCHEDULE_UNAVAILABLE": "The railway timetable from source {source} is not available locally.",
+    "RAIL_SCHEDULE_RANGE_UNKNOWN": "The validity range of the railway timetable from source {source} could not be determined.",
+    "RAIL_SCHEDULE_DATE_OUTSIDE_RANGE": "Date {date} is outside the railway timetable range ({start}–{end}).",
+    "RAIL_SCHEDULE_DATE_UNAVAILABLE": "The railway timetable contains no services for {date}.",
+    "RAIL_SCHEDULE_STALE": "The downloaded railway timetable is stale; its validity ended on {end}.",
     "REQUIRED_GTFS_FILE_MISSING": "The required GTFS file is missing: {file}."
   },
   "PUBLIC_TRANSPORT_VEHICLE_STATUS": {
@@ -1592,6 +1672,7 @@
     "GTFS_ARCHIVE_LIST": "GTFS archive list: {provider}",
     "GTFS_FEED": "GTFS: {feed}",
     "PROCESSING_GTFS": "Processing GTFS: {feed}",
+    "GTFS_REALTIME": "Downloading trip updates: {feed}",
     "LIVE_VEHICLES": "Live vehicles: {feed}",
     "PROVIDER_TIMETABLE": "Timetable: {provider}",
     "CITY_STOPS": "Stops: {city}",

@@ -8,7 +8,8 @@
             <h3 class="public-transport-carriers__region-heading">{{ group.region }}</h3>
             <div class="public-transport-carriers__grid">
                 {% for provider in group.providers %}
-                    <button class="public-transport-carriers__tile" type="button" data-public-transport-provider="{{ provider.id }}" data-public-transport-filter-item data-search="{{ provider.name }} {{ provider.description }}">
+                    <button class="public-transport-carriers__tile" type="button" data-public-transport-provider="{{ provider.id }}" data-public-transport-mode="{{ provider.mode }}" data-public-transport-update-source="{{ provider.update_source }}" data-public-transport-filter-item data-search="{{ provider.name }} {{ provider.description }}">
+                        <span class="public-transport-carriers__selection" aria-hidden="true"><i data-lucide="check"></i></span>
                         <span class="public-transport-carriers__icon">
                             <i data-lucide="{{ provider.icon }}" aria-hidden="true"></i>
                         </span>

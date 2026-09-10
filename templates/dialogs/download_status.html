@@ -8,7 +8,9 @@
         <progress value="0" max="1" data-download-status-progress hidden></progress>
         <span data-download-status-text>{{ t('DIALOG_DOWNLOAD_STATUS.PREPARING_DATA') }}</span>
     </div>
-    <footer class="download-status__footer" hidden data-download-status-footer>
-        <button type="button" data-download-status-close>{{ t('COMMON.CLOSE') }}</button>
+    <footer class="download-status__footer" data-download-status-footer>
+        <button type="button" data-download-status-background>{{ t('DIALOG_DOWNLOAD_STATUS.CONTINUE_IN_BACKGROUND') }}</button>
+        <button type="button" data-download-status-cancel>{{ t('COMMON.CANCEL') }}</button>
+        <button type="button" data-download-status-close hidden>{{ t('COMMON.CLOSE') }}</button>
     </footer>
 </section>

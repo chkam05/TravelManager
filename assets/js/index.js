@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navigationButtons = document.querySelectorAll('[data-navigation-view]');
     let activeCarProfile = null;
     let currentView = appShell?.dataset.currentView || 'map';
+    let previousPublicTransportView = currentView === 'home' ? 'home' : 'map';
     let notificationTimer = null;
     const carButtonViews = new Set(['map', 'car-profiles']);
 
@@ -126,7 +127,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         element.innerHTML = await response.text();
     };
 
-    const showView = (viewName) => {
+    let currentPublicTransportMode = 'city';
+
+    const showView = (viewName, options = {}) => {
         const target = document.querySelector(`[data-app-view="${viewName}"]`);
 
         if (!target) {
@@ -139,12 +142,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             view.hidden = !active;
         });
 
+        if (
+            viewName === 'public-transport'
+            && ['city', 'rail'].includes(options.publicTransportMode)
+        ) {
+            currentPublicTransportMode = options.publicTransportMode;
+        }
+
         navigationButtons.forEach((button) => {
-            const active = button.dataset.navigationView === viewName;
+            const buttonMode = button.dataset.publicTransportMode || '';
+            const active = button.dataset.navigationView === viewName
+                && (!buttonMode || buttonMode === currentPublicTransportMode);
             button.classList.toggle('side-menu__item--active', active);
             button.setAttribute('aria-current', active ? 'page' : 'false');
         });
 
+        if (viewName === 'public-transport' && currentView !== 'public-transport') {
+            previousPublicTransportView = ['home', 'map'].includes(currentView)
+                ? currentView
+                : 'map';
+        }
         currentView = viewName;
         appShell.dataset.currentView = viewName;
 
@@ -157,7 +174,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         document.dispatchEvent(new CustomEvent('travel-manager:app-view-changed', {
-            detail: { view: viewName }
+            detail: {
+                view: viewName,
+                publicTransportMode: currentPublicTransportMode
+            }
         }));
 
         return true;
@@ -188,7 +208,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const viewButton = event.target.closest('[data-navigation-view]');
 
         if (viewButton) {
-            showView(viewButton.dataset.navigationView);
+            showView(viewButton.dataset.navigationView, {
+                publicTransportMode: viewButton.dataset.publicTransportMode
+            });
             return;
         }
 
@@ -263,7 +285,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    window.travelManagerNavigation = { showView };
+    const leavePublicTransport = () => showView(previousPublicTransportView || 'map');
+    window.travelManagerNavigation = { showView, leavePublicTransport };
 
     document.addEventListener('travel-manager:car-profiles-changed', (event) => {
         activeCarProfile = event.detail?.activeCarProfile || null;

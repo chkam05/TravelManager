@@ -17,12 +17,14 @@ class PublicTransportDirection(BaseDataModel):
     FIELD_CITIES: ClassVar[str] = 'cities'
     FIELD_STOPS: ClassVar[str] = 'stops'
     FIELD_ROUTE: ClassVar[str] = 'route'
+    FIELD_ROUTE_IS_APPROXIMATE: ClassVar[str] = 'route_is_approximate'
 
     # Fields
     name: str
     cities: List[PublicTransportCity]
     stops: List[PublicTransportDirectionStop]
     route: List[PublicTransportCoordinate] = field(default_factory=list)
+    route_is_approximate: bool = False
 
     #region Serialization
 
@@ -40,6 +42,9 @@ class PublicTransportDirection(BaseDataModel):
             ),
             route=PublicTransportCoordinate.from_dict_list(
                 route if isinstance(route, list) else []
+            ),
+            route_is_approximate=bool(
+                d.get(cls.FIELD_ROUTE_IS_APPROXIMATE, False)
             )
         )
 
@@ -49,7 +54,8 @@ class PublicTransportDirection(BaseDataModel):
             self.FIELD_NAME: self.name,
             self.FIELD_CITIES: self.to_dict_list(self.cities),
             self.FIELD_STOPS: self.to_dict_list(self.stops),
-            self.FIELD_ROUTE: self.to_dict_list(self.route)
+            self.FIELD_ROUTE: self.to_dict_list(self.route),
+            self.FIELD_ROUTE_IS_APPROXIMATE: self.route_is_approximate
         }
 
     #endregion Serialization

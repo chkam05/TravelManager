@@ -7,6 +7,7 @@
         </form>
         <div class="layers-view__spacer"></div>
         <button class="layers-view__add" data-layer-add type="button"><i data-lucide="plus" aria-hidden="true"></i><span>{{ t('LAYERS_VIEW.ADD') }}</span></button>
+        <button class="layers-view__add" data-layer-import type="button"><i data-lucide="upload"></i><span>{{ t('LAYER_EDITOR.IMPORT_ONE') }}</span></button>
         <div class="layers-view__sort">
             <button class="layers-view__sort-button" id="layers-sort-button" type="button" aria-haspopup="menu" aria-expanded="false"><i data-lucide="arrow-up-down" aria-hidden="true"></i><span>{{ t('LAYERS_VIEW.SORT') }}</span></button>
             <div class="layers-view__sort-menu" id="layers-sort-menu" role="menu" aria-hidden="true">
@@ -15,5 +16,6 @@
             </div>
         </div>
     </header>
+    <p class="layers-view__transfer-hint">{{ t('LAYER_EDITOR.TRANSFER_HINT') }}</p>
     <div class="layers-view__list" data-layers-list aria-live="polite"></div>
 </section>

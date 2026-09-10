@@ -78,14 +78,15 @@ class WebViewWindow(WebViewWindowInterface):
     def _on_window_closing(self, window: Any) -> None:
         """Persists the current native window geometry."""
         try:
-            settings = self._settings_storage.load()
-            settings.window = WindowSettings(
-                height=window.height,
-                x=window.x,
-                y=window.y,
-                width=window.width
-            )
-            self._settings_storage.save(settings)
+            with self._settings_storage.transaction():
+                settings = self._settings_storage.load()
+                settings.window = WindowSettings(
+                    height=window.height,
+                    x=window.x,
+                    y=window.y,
+                    width=window.width
+                )
+                self._settings_storage.save(settings)
         except Exception:
             return
 
@@ -127,6 +128,39 @@ class WebViewWindow(WebViewWindowInterface):
 
         webbrowser.open_new(url)
         return {'status': 'opened'}
+
+    def save_layer_file(self, text: str, filename: str) -> dict:
+        """Save a complete layer through the native file chooser."""
+        window = self._active_window()
+        if not window:
+            return {'status': 'error'}
+        suffix = Path(filename).suffix.lower()
+        if suffix not in ('.json', '.geojson', '.gpx'):
+            return {'status': 'error'}
+        selected = self._selected_path(window.create_file_dialog(
+            webview.FileDialog.SAVE, save_filename=Path(filename).name,
+            file_types=(f'Layer (*{suffix})',)))
+        if not selected:
+            return {'status': 'cancelled'}
+        path = Path(selected)
+        if path.suffix.lower() != suffix:
+            path = path.with_suffix(suffix)
+        path.write_text(text, encoding='utf-8')
+        return {'status': 'saved'}
+
+    def read_layer_file(self) -> dict:
+        window = self._active_window()
+        if not window:
+            return {'status': 'error'}
+        selected = self._selected_path(window.create_file_dialog(
+            webview.FileDialog.OPEN, allow_multiple=False,
+            file_types=('Layers (*.json;*.geojson;*.gpx)',)))
+        if not selected:
+            return {'status': 'cancelled'}
+        path = Path(selected)
+        if path.stat().st_size > 10 * 1024 * 1024:
+            return {'status': 'error'}
+        return {'status': 'ok', 'text': path.read_text(encoding='utf-8-sig'), 'filename': path.name}
 
     def save_place_data(self, data: dict, filename: str = 'place-data.json') -> dict[str, str]:
         """Opens a save dialog and persists selected map element data as JSON."""

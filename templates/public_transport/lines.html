@@ -24,8 +24,20 @@
             </header>
             <div class="public-transport-lines__grid" id="public-transport-lines-group-{{ loop.index0 }}">
                 {% for line in group.lines %}
-                    <button class="public-transport-lines__tile{% if line.updated %} public-transport-lines__tile--updated{% endif %}" type="button" data-public-transport-action="line" data-url="{{ line.url }}" data-public-transport-filter-item data-search="{{ line.line }}">
-                        <span class="public-transport-lines__number">{{ line.line }}</span>
+                    {% set sort_parts = line.line.split(' · ', 1) %}
+                    <button class="public-transport-lines__tile{% if line.updated %} public-transport-lines__tile--updated{% endif %}" type="button" data-public-transport-action="line" data-url="{{ line.url }}" data-line-number="{{ sort_parts[0] }}" data-line-name="{{ line.sort_name }}" data-public-transport-filter-item data-search="{{ line.line }} {{ line.direction }}">
+                        <span class="public-transport-lines__number">
+                            {% if line.type.value == 'train' and ' · ' in line.line %}
+                                {% set train_parts = line.line.split(' · ', 1) %}
+                                <strong class="public-transport-lines__train-number">{{ train_parts[0] }}</strong>
+                                <small class="public-transport-lines__train-name">{{ train_parts[1] }}</small>
+                            {% else %}
+                                <strong>{{ line.line }}</strong>
+                            {% endif %}
+                        </span>
+                        {% if line.type.value == 'train' and line.direction %}
+                            <small class="public-transport-lines__direction" title="{{ line.direction }}">{{ line.direction }}</small>
+                        {% endif %}
                         <span class="public-transport-lines__badges">
                             {% if line.free_of_charge %}
                                 <span class="public-transport-badge public-transport-badge--free">{{ t('PUBLIC_TRANSPORT_LINES.FREE_OF_CHARGE') }}</span>

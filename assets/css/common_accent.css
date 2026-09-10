@@ -141,7 +141,6 @@ body :is(
     .my-routes-view__item,
     .fuel-cost-view__item,
     .home-view__tile,
-    .public-transport-stops__item,
     .public-transport-stop-lines__list article
 ):hover {
     border-color: color-mix(in srgb, var(--accent-color) 45%, var(--border-color));
@@ -359,7 +358,6 @@ body :is(
     .my-routes-view__item,
     .fuel-cost-view__item,
     .home-view__tile,
-    .public-transport-stops__item,
     .public-transport-stop-lines__list article
 ):is(:hover, :focus-visible, :focus-within) {
     border-color: var(--accent-color);
@@ -374,7 +372,6 @@ body :is(
     .my-routes-view__item,
     .fuel-cost-view__item,
     .home-view__tile,
-    .public-transport-stops__item,
     .public-transport-stop-lines__list article
 ):is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p) {
     color: var(--accent-color);

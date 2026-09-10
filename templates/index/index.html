@@ -84,7 +84,7 @@
                     {% if not loop.first %}<div class="side-menu__separator" role="separator"></div>{% endif %}
                     {% for item in section['items'] %}
                         {% set navigation_type, navigation_target = item.url.split(':', 1) %}
-                        <button class="side-menu__item{% if item.url == 'view:' ~ initial_view %} side-menu__item--active{% endif %}" {% if navigation_type == 'view' %}data-navigation-view="{{ navigation_target }}"{% else %}data-navigation-action="{{ navigation_target }}"{% endif %} type="button">
+                        <button class="side-menu__item{% if item.url == 'view:' ~ initial_view %} side-menu__item--active{% endif %}" {% if navigation_type == 'view' %}data-navigation-view="{{ navigation_target }}"{% elif navigation_type == 'transport' %}data-navigation-view="public-transport" data-public-transport-mode="{{ navigation_target }}"{% else %}data-navigation-action="{{ navigation_target }}"{% endif %} type="button">
                             <i class="side-menu__icon" data-lucide="{{ item.icon }}" aria-hidden="true"></i>
                             <span>{{ t(item.name_key) }}</span>
                         </button>
@@ -139,6 +139,11 @@
     <script src="{{ url_for('static', filename='js/favourites.js') }}"></script>
     <script src="{{ url_for('static', filename='js/car_profiles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/routes.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/geometry.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/renderer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/store.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/editor_state.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/draft.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/legend_details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/layer_details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/layer.js') }}"></script>
@@ -148,6 +153,9 @@
     <script src="{{ url_for('static', filename='js/panels/place_details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/components/route_variant_dropdown.js') }}"></script>
     <script src="{{ url_for('static', filename='js/components/public_transport_provider_dropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/public_transport_requests.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/public_transport_line_tiles.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/public_transport_line_sort.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/public_transport.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/public_transport_vehicle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/favourites.js') }}"></script>

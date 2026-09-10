@@ -1,0 +1,4 @@
+route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color
+IC_TEST,IC,IC,Test overnight relation,2,002664,FFFFFF
+PR_TEST,PR,R,Test regional relation,2,EE1C25,FFFFFF
+WKD_TEST,0,WKD,Test WKD relation,2,990099,FFFFFF

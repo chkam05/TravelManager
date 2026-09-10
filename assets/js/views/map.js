@@ -213,107 +213,12 @@ document.addEventListener('travel-manager:views-ready', () => {
     let editingCustomLayerId = null;
     let routeGeometryLayer = null;
 
-    const customLayerGeometry = (element) => {
-        const points = element.points || [];
-        const count = element.type === 'area' ? points.length : Math.max(0, points.length - 1);
-        const geometry = [];
-        for (let index = 0; index < count; index += 1) {
-            const start = points[index];
-            const end = points[(index + 1) % points.length];
-            const segment = element.segments?.[index];
-            const sampled = [];
-            if (segment?.type === 'curve' && segment.control1 && segment.control2) {
-                for (let step = 0; step <= 24; step += 1) {
-                    const t = step / 24;
-                    const u = 1 - t;
-                    sampled.push([
-                        u ** 3 * start[0] + 3 * u * u * t * segment.control1[0] + 3 * u * t * t * segment.control2[0] + t ** 3 * end[0],
-                        u ** 3 * start[1] + 3 * u * u * t * segment.control1[1] + 3 * u * t * t * segment.control2[1] + t ** 3 * end[1]
-                    ]);
-                }
-            } else {
-                sampled.push(start, end);
-            }
-            geometry.push(...sampled.slice(index ? 1 : 0));
-        }
-        return geometry;
-    };
-
-    const customLayerTitlePosition = (geometry, closed) => {
-        if (!geometry.length) return null;
-        if (closed && geometry.length >= 3) {
-            let twiceArea = 0;
-            let latitudeSum = 0;
-            let longitudeSum = 0;
-            geometry.forEach((point, index) => {
-                const next = geometry[(index + 1) % geometry.length];
-                const cross = point[1] * next[0] - next[1] * point[0];
-                twiceArea += cross;
-                longitudeSum += (point[1] + next[1]) * cross;
-                latitudeSum += (point[0] + next[0]) * cross;
-            });
-            if (Math.abs(twiceArea) > 1e-12) {
-                return [latitudeSum / (3 * twiceArea), longitudeSum / (3 * twiceArea)];
-            }
-        }
-        if (geometry.length === 1) return geometry[0];
-        const lengths = [];
-        let total = 0;
-        for (let index = 1; index < geometry.length; index += 1) {
-            const length = map.distance(geometry[index - 1], geometry[index]);
-            lengths.push(length);
-            total += length;
-        }
-        let travelled = 0;
-        for (let index = 0; index < lengths.length; index += 1) {
-            if (travelled + lengths[index] >= total / 2) {
-                const ratio = lengths[index] ? (total / 2 - travelled) / lengths[index] : 0;
-                return [
-                    geometry[index][0] + (geometry[index + 1][0] - geometry[index][0]) * ratio,
-                    geometry[index][1] + (geometry[index + 1][1] - geometry[index][1]) * ratio
-                ];
-            }
-            travelled += lengths[index];
-        }
-        return geometry[geometry.length - 1];
-    };
-
-    const addCustomLayerTitle = (item, element, geometry) => {
-        if (!item.show_title) return;
-        const position = customLayerTitlePosition(geometry, element.type === 'area');
-        if (!position) return;
-        const content = document.createElement('span');
-        content.className = 'map-panel__custom-layer-title-content';
-        content.textContent = [item.icon, element.name || item.name].filter(Boolean).join(' ');
-        L.tooltip({ permanent: true, direction: 'center', className: 'map-panel__custom-layer-title', interactive: false })
-            .setLatLng(position)
-            .setContent(content)
-            .addTo(customLayersLayer);
-    };
-
-    const renderCustomLayers = async () => {
-        if (!window.travelManagerCustomLayers) return;
-        const layers = await window.travelManagerCustomLayers.list();
-        customLayersLayer.clearLayers();
-        layers.filter(item => (
-            item.id !== editingCustomLayerId
+    const renderCustomLayers = window.travelManagerLayerRenderer.createCollection(
+        customLayersLayer,
+        map,
+        item => item.id !== editingCustomLayerId
             && (!visibleCustomLayerIds || visibleCustomLayerIds.has(item.id))
-        )).forEach(item => {
-            (item.elements || []).forEach(element => {
-                const lineStyle = element.line_style || 'solid';
-                const dashArray = lineStyle === 'dashed' ? '12 8'
-                    : lineStyle === 'dotted' ? '1 8'
-                    : lineStyle === 'dash-dot' ? '12 7 2 7' : null;
-                const options = {color: element.color || '#1F6FAE', weight: lineStyle === 'double' ? (Number(element.width) || 4) + 4 : Number(element.width) || 4, dashArray, lineCap: lineStyle === 'dotted' ? 'round' : 'butt', fillColor: element.background_color || '#1F6FAE38', interactive: false, fillOpacity: 1};
-                const geometry = customLayerGeometry(element);
-                (element.type === 'area' ? L.polygon(geometry, options) : L.polyline(geometry, options)).addTo(customLayersLayer);
-                if (lineStyle === 'double') {
-                    L.polyline(geometry, {color: appearanceColor('--surface-background', '#fff'), weight: Math.max(1, (Number(element.width) || 4) - 1), interactive: false}).addTo(customLayersLayer);
-                }
-                addCustomLayerTitle(item, element, geometry);
-            });
-        });
-    };
+    );
 
     const appearanceColor = (property, fallback) => (
         getComputedStyle(document.body).getPropertyValue(property).trim() || fallback

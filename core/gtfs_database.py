@@ -1,6 +1,6 @@
 from __future__ import annotations
 import csv
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from io import BytesIO, TextIOWrapper
 from pathlib import Path
 import sqlite3
@@ -28,8 +28,28 @@ class GtfsDatabase:
     """Builds a compact relational cache from one or more static GTFS feeds."""
 
     _BATCH_SIZE: ClassVar[int] = 5000
-    _SCHEMA_VERSION: ClassVar[str] = '3'
+    _SCHEMA_VERSION: ClassVar[str] = '4'
+    _READABLE_SCHEMA_VERSIONS: ClassVar[frozenset[str]] = frozenset({'3', '4'})
     _SCHEMA: ClassVar[str] = """
+        CREATE TABLE agencies (
+            feed_id TEXT NOT NULL,
+            agency_id TEXT NOT NULL,
+            name TEXT NOT NULL,
+            url TEXT NOT NULL,
+            timezone TEXT NOT NULL,
+            language TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            PRIMARY KEY (feed_id, agency_id)
+        );
+        CREATE TABLE feed_info (
+            feed_id TEXT PRIMARY KEY,
+            publisher_name TEXT NOT NULL,
+            publisher_url TEXT NOT NULL,
+            language TEXT NOT NULL,
+            version TEXT NOT NULL,
+            start_date TEXT NOT NULL,
+            end_date TEXT NOT NULL
+        );
         CREATE TABLE routes (
             feed_id TEXT NOT NULL,
             route_id TEXT NOT NULL,
@@ -54,6 +74,11 @@ class GtfsDatabase:
             parent_station TEXT NOT NULL,
             platform_code TEXT NOT NULL,
             url TEXT NOT NULL,
+            location_type INTEGER NOT NULL,
+            timezone TEXT NOT NULL,
+            wheelchair_boarding INTEGER NOT NULL,
+            stop_access INTEGER NOT NULL,
+            country TEXT NOT NULL,
             PRIMARY KEY (feed_id, stop_id)
         );
         CREATE TABLE trips (
@@ -67,6 +92,10 @@ class GtfsDatabase:
             shape_id TEXT NOT NULL,
             wheelchair_accessible INTEGER NOT NULL,
             block_id TEXT NOT NULL,
+            bikes_allowed INTEGER NOT NULL,
+            category_code TEXT NOT NULL,
+            train_number TEXT NOT NULL,
+            train_name TEXT NOT NULL,
             PRIMARY KEY (feed_id, trip_id)
         );
         CREATE TABLE stop_times (
@@ -81,6 +110,8 @@ class GtfsDatabase:
             drop_off_type INTEGER NOT NULL,
             shape_dist_traveled REAL,
             timepoint INTEGER,
+            platform TEXT NOT NULL,
+            track TEXT NOT NULL,
             PRIMARY KEY (feed_id, trip_id, stop_sequence)
         ) WITHOUT ROWID;
         CREATE TABLE calendar (
@@ -171,6 +202,8 @@ class GtfsDatabase:
     _INDEXES: ClassVar[str] = """
         CREATE INDEX idx_routes_short_name
             ON routes(short_name);
+        CREATE INDEX idx_routes_agency
+            ON routes(feed_id, agency_id, route_id);
         CREATE INDEX idx_stops_name
             ON stops(name);
         CREATE INDEX idx_trips_route
@@ -181,6 +214,8 @@ class GtfsDatabase:
             ON stop_times(feed_id, stop_id, trip_id);
         CREATE INDEX idx_calendar_dates_date
             ON calendar_dates(feed_id, service_date, service_id);
+        CREATE INDEX idx_stops_parent
+            ON stops(feed_id, parent_station, platform_code);
         CREATE INDEX idx_trip_extensions_variant
             ON trip_extensions(feed_id, trip_id, variant_code);
     """
@@ -249,7 +284,8 @@ class GtfsDatabase:
                     'INSERT INTO metadata(key, value) VALUES (?, ?)',
                     (
                         ('coverage_from', coverage_from.isoformat()),
-                        ('coverage_to', coverage_to.isoformat())
+                        ('coverage_to', coverage_to.isoformat()),
+                        ('built_at', datetime.now(timezone.utc).isoformat())
                     )
                 )
                 connection.commit()
@@ -272,6 +308,38 @@ class GtfsDatabase:
     ) -> None:
         """Imports all relevant files from one GTFS ZIP archive."""
         with ZipFile(BytesIO(payload)) as archive:
+            cls._insert_rows(
+                connection,
+                archive,
+                'agency.txt',
+                'INSERT INTO agencies VALUES (?, ?, ?, ?, ?, ?, ?)',
+                lambda row: (
+                    feed_id,
+                    cls._value(row, 'agency_id'),
+                    cls._value(row, 'agency_name'),
+                    cls._value(row, 'agency_url'),
+                    cls._value(row, 'agency_timezone'),
+                    cls._value(row, 'agency_lang'),
+                    cls._value(row, 'agency_phone')
+                ),
+                required=False
+            )
+            cls._insert_rows(
+                connection,
+                archive,
+                'feed_info.txt',
+                'INSERT INTO feed_info VALUES (?, ?, ?, ?, ?, ?, ?)',
+                lambda row: (
+                    feed_id,
+                    cls._value(row, 'feed_publisher_name'),
+                    cls._value(row, 'feed_publisher_url'),
+                    cls._value(row, 'feed_lang'),
+                    cls._value(row, 'feed_version'),
+                    cls._value(row, 'feed_start_date'),
+                    cls._value(row, 'feed_end_date')
+                ),
+                required=False
+            )
             cls._insert_rows(
                 connection,
                 archive,
@@ -300,7 +368,7 @@ class GtfsDatabase:
                 'stops.txt',
                 """
                     INSERT INTO stops VALUES (
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                     )
                 """,
                 lambda row: (
@@ -313,7 +381,12 @@ class GtfsDatabase:
                     cls._float(row, 'stop_lon'),
                     cls._value(row, 'parent_station'),
                     cls._value(row, 'platform_code'),
-                    cls._value(row, 'stop_url')
+                    cls._value(row, 'stop_url'),
+                    cls._integer(row, 'location_type'),
+                    cls._value(row, 'stop_timezone'),
+                    cls._integer(row, 'wheelchair_boarding'),
+                    cls._integer(row, 'stop_access'),
+                    cls._value(row, 'country')
                 )
             )
             cls._insert_rows(
@@ -402,7 +475,11 @@ class GtfsDatabase:
                     shape_id,
                     cls._integer(row, 'wheelchair_accessible'),
                     cls._value(row, 'block_id')
-                    or cls._value(row, 'brigade_id')
+                    or cls._value(row, 'brigade_id'),
+                    cls._integer(row, 'bikes_allowed'),
+                    cls._value(row, 'plk_category_code'),
+                    cls._value(row, 'plk_train_number'),
+                    cls._value(row, 'plk_train_name')
                 )
 
             cls._insert_rows(
@@ -411,7 +488,7 @@ class GtfsDatabase:
                 'trips.txt',
                 """
                     INSERT INTO trips VALUES (
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                     )
                 """,
                 trip_row
@@ -422,7 +499,7 @@ class GtfsDatabase:
                 'stop_times.txt',
                 """
                     INSERT INTO stop_times VALUES (
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                     )
                 """,
                 lambda row: (
@@ -438,7 +515,9 @@ class GtfsDatabase:
                         cls._integer(row, 'pickup_type'),
                         cls._integer(row, 'drop_off_type'),
                         cls._float(row, 'shape_dist_traveled'),
-                        cls._optional_integer(row, 'timepoint')
+                        cls._optional_integer(row, 'timepoint'),
+                        cls._value(row, 'platform'),
+                        cls._value(row, 'track')
                     )
                     if cls._value(row, 'trip_id') in active_trip_ids
                     else None
@@ -694,7 +773,8 @@ class GtfsDatabase:
                 for key, value in rows
             }
             return bool(
-                metadata.get('schema_version') == GtfsDatabase._SCHEMA_VERSION
+                metadata.get('schema_version')
+                in GtfsDatabase._READABLE_SCHEMA_VERSIONS
                 and date.fromisoformat(metadata['coverage_to']) >= required_date
             )
         except (KeyError, OSError, sqlite3.Error, ValueError):
@@ -715,10 +795,67 @@ class GtfsDatabase:
                 connection.close()
             return bool(
                 row
-                and str(row[0]) == GtfsDatabase._SCHEMA_VERSION
+                and str(row[0]) in GtfsDatabase._READABLE_SCHEMA_VERSIONS
             )
         except (OSError, sqlite3.Error):
             return False
+
+    @staticmethod
+    def metadata(path: Path) -> dict[str, str]:
+        """Returns cache metadata, or an empty mapping for an invalid cache."""
+        if not path.exists():
+            return {}
+        try:
+            connection = sqlite3.connect(path)
+            try:
+                rows = connection.execute(
+                    'SELECT key, value FROM metadata'
+                ).fetchall()
+            finally:
+                connection.close()
+            return {str(key): str(value) for key, value in rows}
+        except (OSError, sqlite3.Error):
+            return {}
+
+    @staticmethod
+    def service_range(
+        connection: sqlite3.Connection,
+        feed_id: str
+    ) -> tuple[date, date] | None:
+        """Returns declared or calendar-derived validity for one feed."""
+        row = connection.execute(
+            """
+                SELECT start_date, end_date FROM feed_info
+                WHERE feed_id = ?
+            """,
+            (feed_id,)
+        ).fetchone()
+        candidates = tuple(row) if row else ('', '')
+        if not all(candidates):
+            row = connection.execute(
+                """
+                    SELECT MIN(value), MAX(value)
+                    FROM (
+                        SELECT start_date AS value FROM calendar
+                        WHERE feed_id = ? AND start_date <> ''
+                        UNION ALL
+                        SELECT end_date AS value FROM calendar
+                        WHERE feed_id = ? AND end_date <> ''
+                        UNION ALL
+                        SELECT service_date AS value FROM calendar_dates
+                        WHERE feed_id = ?
+                    )
+                """,
+                (feed_id, feed_id, feed_id)
+            ).fetchone()
+            candidates = tuple(row) if row else ('', '')
+        try:
+            return tuple(
+                datetime.strptime(str(value), '%Y%m%d').date()
+                for value in candidates
+            )
+        except (TypeError, ValueError):
+            return None
 
     @staticmethod
     def active_service_ids(

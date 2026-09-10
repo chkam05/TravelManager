@@ -2,6 +2,7 @@
     <div class="layer-panel__grabber" data-layer-panel-grabber aria-hidden="true"></div>
     <div class="layer-panel__body">
         <header class="layer-panel__header">
+            <button class="layer-panel__tool" type="button" data-layer-back hidden title="{{ t('LAYER_EDITOR.BACK_TO_SHAPES') }}" aria-label="{{ t('LAYER_EDITOR.BACK_TO_SHAPES') }}"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
             <h2 class="layer-panel__title" data-layer-title></h2>
             <div class="layer-panel__header-actions">
                 <button class="layer-panel__header-button" type="button" data-layer-edit-name title="{{ t('LAYER_EDITOR.RENAME') }}" aria-label="{{ t('LAYER_EDITOR.RENAME') }}"><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -11,58 +12,74 @@
             </div>
         </header>
 
-        <div class="layer-panel__drawing-toolbar" role="toolbar" aria-label="{{ t('LAYER_EDITOR.DRAWING') }}">
-            <button class="layer-panel__tool" type="button" data-draw="line" title="{{ t('LAYER_EDITOR.DRAW_LINE') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_LINE') }}"><i data-lucide="pencil-line" aria-hidden="true"></i></button>
-            <button class="layer-panel__tool" type="button" data-draw="curve" title="{{ t('LAYER_EDITOR.DRAW_CURVE') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_CURVE') }}"><i data-lucide="spline" aria-hidden="true"></i></button>
-            <button class="layer-panel__tool" type="button" data-draw="route" title="{{ t('LAYER_EDITOR.DRAW_ROUTE') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_ROUTE') }}"><i data-lucide="waypoints" aria-hidden="true"></i></button>
-            <button class="layer-panel__tool" type="button" data-draw="area" title="{{ t('LAYER_EDITOR.DRAW_AREA') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_AREA') }}">
-                <svg class="lucide lucide-vector-square" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect width="4" height="4" x="3" y="3" rx="1"></rect>
-                    <rect width="4" height="4" x="17" y="3" rx="1"></rect>
-                    <rect width="4" height="4" x="3" y="17" rx="1"></rect>
-                    <rect width="4" height="4" x="17" y="17" rx="1"></rect>
-                    <path d="M7 5h10M5 7v10M19 7v10M7 19h10"></path>
-                </svg>
-            </button>
-            <button class="layer-panel__tool" type="button" data-layer-close-curve title="{{ t('LAYERS_VIEW.CLOSE_CURVE') }}" aria-label="{{ t('LAYERS_VIEW.CLOSE_CURVE') }}" disabled>
-                <svg class="lucide lucide-minimize-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 10 7-7"></path><path d="M20 10h-6V4"></path><path d="m3 21 7-7"></path><path d="M4 14h6v6"></path></svg>
-            </button>
-            <span class="layer-panel__toolbar-separator" aria-hidden="true"></span>
-            <button class="layer-panel__tool" type="button" data-layer-split title="{{ t('LAYER_EDITOR.SPLIT') }}" aria-label="{{ t('LAYER_EDITOR.SPLIT') }}" disabled><i data-lucide="git-commit-horizontal" aria-hidden="true"></i></button>
-            <button class="layer-panel__tool" type="button" data-layer-toggle-curve title="{{ t('LAYER_EDITOR.TOGGLE_CURVE') }}" aria-label="{{ t('LAYER_EDITOR.TOGGLE_CURVE') }}" disabled></button>
-            <button class="layer-panel__tool layer-panel__tool--danger" type="button" data-element-delete title="{{ t('COMMON.DELETE') }}" aria-label="{{ t('COMMON.DELETE') }}" disabled><i data-lucide="map-pin-minus" aria-hidden="true"></i></button>
-        </div>
-
-        <div class="layer-panel__style-toolbar">
-            <label class="layer-panel__style-control">
-                <span class="layer-panel__style-label">{{ t('LAYER_EDITOR.WIDTH') }}</span>
-                <span class="layer-panel__unit-input"><input data-layer-width type="number" min="1" max="20" value="4"><span>px</span></span>
-            </label>
-            <label class="layer-panel__style-control layer-panel__type-control">
-                <span class="layer-panel__style-label">{{ t('LAYER_EDITOR.LINE_TYPE') }}</span>
-                <select data-layer-line-style>
-                    <option value="solid">{{ t('LAYER_EDITOR.STYLE_SOLID') }}</option>
-                    <option value="dashed">{{ t('LAYER_EDITOR.STYLE_DASHED') }}</option>
-                    <option value="dotted">{{ t('LAYER_EDITOR.STYLE_DOTTED') }}</option>
-                    <option value="double">{{ t('LAYER_EDITOR.STYLE_DOUBLE') }}</option>
-                    <option value="dash-dot">{{ t('LAYER_EDITOR.STYLE_DASH_DOT') }}</option>
-                </select>
-            </label>
-            <div class="layer-panel__colors">
-                <span class="layer-panel__style-label">{{ t('LAYER_EDITOR.COLORS') }}</span>
-                <div class="layer-panel__color-buttons">
-                    <button class="layer-panel__color" data-layer-color type="button" style="--color:#1F6FAE" aria-label="{{ t('LAYER_EDITOR.LINE_COLOR') }}"><span class="layer-panel__color-swatch" aria-hidden="true"></span><span>{{ t('LAYER_EDITOR.LINE') }}</span></button>
-                    <button class="layer-panel__color" data-layer-background-color type="button" style="--color:#1F6FAE38" aria-label="{{ t('LAYER_EDITOR.BACKGROUND_COLOR') }}"><span class="layer-panel__color-swatch" aria-hidden="true"></span><span>{{ t('LAYER_EDITOR.BACKGROUND') }}</span></button>
-                </div>
-            </div>
-            <button class="layer-panel__finish" type="button" data-draw-finish hidden><i data-lucide="check" aria-hidden="true"></i><span>{{ t('LAYER_EDITOR.FINISH_DRAWING') }}</span></button>
-        </div>
-
+        <p class="layer-panel__status" data-layer-status role="status" aria-live="polite" hidden></p>
+        <p data-layer-hint hidden></p>
+        <div class="layer-panel__context-actions"><button type="button" class="layer-panel__tool" data-group-all aria-label="{{ t('LAYER_EDITOR.SELECT_ALL') }}" title="{{ t('LAYER_EDITOR.SELECT_ALL') }}"><i data-lucide="list-checks"></i></button><span class="layer-panel__toolbar-separator" aria-hidden="true"></span><button class="layer-panel__tool" type="button" data-group-copy disabled aria-label="{{ t('LAYER_EDITOR.COPY_SELECTED') }}" title="{{ t('LAYER_EDITOR.COPY_SELECTED') }}"><i data-lucide="copy"></i></button><button type="button" class="layer-panel__tool" data-group-hide aria-label="{{ t('LAYER_EDITOR.HIDE_SELECTED') }}" title="{{ t('LAYER_EDITOR.HIDE_SELECTED') }}"><i data-lucide="eye-off"></i></button><button type="button" class="layer-panel__tool" data-group-lock aria-label="{{ t('LAYER_EDITOR.LOCK_SELECTED') }}" title="{{ t('LAYER_EDITOR.LOCK_SELECTED') }}"><i data-lucide="lock"></i></button><span class="layer-panel__toolbar-separator" aria-hidden="true"></span><button class="layer-panel__tool" type="button" data-group-delete disabled aria-label="{{ t('LAYER_EDITOR.DELETE_SELECTED') }}" title="{{ t('LAYER_EDITOR.DELETE_SELECTED') }}"><i data-lucide="trash-2"></i></button><button class="layer-panel__finish" type="button" data-draw-finish hidden><i data-lucide="check" aria-hidden="true"></i><span>{{ t('LAYER_EDITOR.FINISH_DRAWING') }}</span></button></div>
         <div class="layer-panel__elements" data-layer-elements aria-live="polite"></div>
-
     </div>
     <div class="layer-panel__menu" data-layer-element-menu role="menu" aria-hidden="true">
+        <button type="button" role="menuitem" data-element-menu-fit><i data-lucide="scan" aria-hidden="true"></i><span>{{ t('LAYER_EDITOR.SHOW_ON_MAP') }}</span></button>
+        <span class="layer-menu-separator" role="separator"></span>
+        <button type="button" role="menuitem" data-element-menu-duplicate><i data-lucide="copy" aria-hidden="true"></i><span>{{ t('LAYER_EDITOR.DUPLICATE') }}</span></button>
+        <button type="button" role="menuitem" data-element-menu-hidden></button>
         <button type="button" role="menuitem" data-element-menu-rename><i data-lucide="pencil" aria-hidden="true"></i><span>{{ t('LAYER_EDITOR.RENAME') }}</span></button>
+        <button type="button" role="menuitem" data-element-menu-locked></button>
+        <span class="layer-menu-separator" role="separator"></span>
         <button class="layer-panel__menu-danger" type="button" role="menuitem" data-element-menu-delete><i data-lucide="trash-2" aria-hidden="true"></i><span>{{ t('COMMON.DELETE') }}</span></button>
     </div>
+</aside>
+
+<aside class="layer-tools-panel" id="layer-tools-panel" aria-labelledby="layer-tools-title" aria-hidden="true" inert>
+    <header class="layer-tools-panel__header">
+        <span class="layer-tools-panel__icon" aria-hidden="true"><i data-lucide="pencil-ruler"></i></span>
+        <h2 id="layer-tools-title">{{ t('LAYER_EDITOR.TOOLS_TITLE') }}</h2>
+    </header>
+    <div class="layer-panel__drawing-toolbar" role="toolbar" aria-label="{{ t('LAYER_EDITOR.DRAWING') }}">
+        <button class="layer-panel__tool" type="button" data-layer-undo disabled title="{{ t('LAYER_EDITOR.UNDO') }}" aria-label="{{ t('LAYER_EDITOR.UNDO') }}"><i data-lucide="undo-2" aria-hidden="true"></i></button>
+        <button class="layer-panel__tool" type="button" data-layer-redo disabled title="{{ t('LAYER_EDITOR.REDO') }}" aria-label="{{ t('LAYER_EDITOR.REDO') }}"><i data-lucide="redo-2" aria-hidden="true"></i></button>
+        <button class="layer-panel__tool" type="button" data-layer-fit disabled title="{{ t('LAYER_EDITOR.SHOW_LAYER') }}" aria-label="{{ t('LAYER_EDITOR.SHOW_LAYER') }}"><i data-lucide="scan" aria-hidden="true"></i></button>
+        <span class="layer-panel__toolbar-separator" aria-hidden="true"></span>
+        <button class="layer-panel__tool" type="button" data-draw="point" title="{{ t('LAYER_EDITOR.ADD_POINT') }}" aria-label="{{ t('LAYER_EDITOR.ADD_POINT') }}"><i data-lucide="map-pin-plus"></i></button>
+        <button class="layer-panel__tool" type="button" data-draw="line" title="{{ t('LAYER_EDITOR.DRAW_LINE') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_LINE') }}"><i data-lucide="pencil-line" aria-hidden="true"></i></button>
+        <button class="layer-panel__tool" type="button" data-draw="curve" title="{{ t('LAYER_EDITOR.DRAW_CURVE') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_CURVE') }}"><i data-lucide="spline" aria-hidden="true"></i></button>
+        <button class="layer-panel__tool" type="button" data-draw="route" title="{{ t('LAYER_EDITOR.DRAW_ROUTE') }}" aria-label="{{ t('LAYER_EDITOR.DRAW_ROUTE') }}"><i data-lucide="waypoints" aria-hidden="true"></i></button>
+        <span class="layer-panel__toolbar-separator" aria-hidden="true"></span>
+        <button class="layer-panel__tool" type="button" data-layer-close-curve title="{{ t('LAYERS_VIEW.CLOSE_CURVE') }}" aria-label="{{ t('LAYERS_VIEW.CLOSE_CURVE') }}" disabled>
+            <svg class="lucide lucide-minimize-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 10 7-7"></path><path d="M20 10h-6V4"></path><path d="m3 21 7-7"></path><path d="M4 14h6v6"></path></svg>
+        </button>
+        <span class="layer-panel__toolbar-separator" aria-hidden="true"></span>
+        <button class="layer-panel__tool" type="button" data-layer-split title="{{ t('LAYER_EDITOR.SPLIT') }}" aria-label="{{ t('LAYER_EDITOR.SPLIT') }}" disabled><i data-lucide="git-commit-horizontal" aria-hidden="true"></i></button>
+        <button class="layer-panel__tool" type="button" data-layer-toggle-curve title="{{ t('LAYER_EDITOR.TOGGLE_CURVE') }}" aria-label="{{ t('LAYER_EDITOR.TOGGLE_CURVE') }}" disabled></button>
+        <span class="layer-panel__toolbar-separator" aria-hidden="true"></span>
+        <button class="layer-panel__tool layer-panel__tool--danger" type="button" data-element-delete title="{{ t('COMMON.DELETE') }}" aria-label="{{ t('COMMON.DELETE') }}" disabled><i data-lucide="map-pin-minus" aria-hidden="true"></i></button>
+        <span class="layer-panel__toolbar-separator" aria-hidden="true"></span>
+        <button class="layer-panel__tool" type="button" data-layer-snap aria-pressed="true" title="{{ t('LAYER_EDITOR.SNAP_TOGGLE') }}" aria-label="{{ t('LAYER_EDITOR.SNAP_TOGGLE') }}"><i data-lucide="magnet" aria-hidden="true"></i></button>
+        <button class="layer-panel__tool" type="button" data-layer-info title="{{ t('LAYER_EDITOR.TOOLS_INFO') }}" aria-label="{{ t('LAYER_EDITOR.TOOLS_INFO') }}"><i data-lucide="info" aria-hidden="true"></i></button>
+    </div>
+    <div class="layer-panel__style-toolbar">
+        <label class="layer-panel__style-control">
+            <span class="layer-panel__style-label">{{ t('LAYER_EDITOR.WIDTH') }}</span>
+            <span class="layer-panel__unit-input"><input data-layer-width type="number" min="1" max="20" value="4"><span>px</span></span>
+        </label>
+        <label class="layer-panel__style-control layer-panel__type-control">
+            <span class="layer-panel__style-label">{{ t('LAYER_EDITOR.LINE_TYPE') }}</span>
+            <select data-layer-line-style>
+                <option value="solid">{{ t('LAYER_EDITOR.STYLE_SOLID') }}</option>
+                <option value="dashed">{{ t('LAYER_EDITOR.STYLE_DASHED') }}</option>
+                <option value="dotted">{{ t('LAYER_EDITOR.STYLE_DOTTED') }}</option>
+                <option value="double">{{ t('LAYER_EDITOR.STYLE_DOUBLE') }}</option>
+                <option value="dash-dot">{{ t('LAYER_EDITOR.STYLE_DASH_DOT') }}</option>
+            </select>
+        </label>
+        <div class="layer-panel__colors">
+            <span class="layer-panel__style-label">{{ t('LAYER_EDITOR.COLORS') }}</span>
+            <div class="layer-panel__color-buttons">
+                <button class="layer-panel__color" data-layer-color type="button" style="--color:#1F6FAE" aria-label="{{ t('LAYER_EDITOR.LINE_COLOR') }}"><span class="layer-panel__color-swatch" aria-hidden="true"></span><span>{{ t('LAYER_EDITOR.LINE') }}</span></button>
+                <button class="layer-panel__color" data-layer-background-color type="button" style="--color:#1F6FAE38" aria-label="{{ t('LAYER_EDITOR.BACKGROUND_COLOR') }}"><span class="layer-panel__color-swatch" aria-hidden="true"></span><span>{{ t('LAYER_EDITOR.BACKGROUND') }}</span></button>
+            </div>
+        </div>
+
+    </div>
+
+
 </aside>

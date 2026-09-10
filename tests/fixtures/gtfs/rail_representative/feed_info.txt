@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_version,feed_start_date,feed_end_date
+TravelManager tests,https://example.invalid/rail,pl,synthetic-1,20200101,20991231

@@ -1,10 +1,13 @@
 from __future__ import annotations
 import json
+import threading
+from contextlib import contextmanager
 from typing import Any, ClassVar, Dict, Iterable, List
 
 from config import SETTINGS_DIR, SETTINGS_FILE_NAME
 from core.data.base_data_model import BaseDataModel
 from models.settings.favourite_tag import FavouriteTag
+from models.settings.custom_layer import CustomLayer
 from models.settings_transfer.cars_transfer_data_model import CarsTransferDataModel
 from models.settings_transfer.favourites_transfer_data_model import FavouritesTransferDataModel
 from models.settings_transfer.fuel_costs_transfer_data_model import FuelCostsTransferDataModel
@@ -22,9 +25,17 @@ class SettingsStorage(BaseJsonStorage):
     """Storage for application settings."""
 
     _LEGACY_TRANSFER_FIELD_DATA: ClassVar[str] = 'data'
+    _settings_lock: ClassVar[threading.RLock] = threading.RLock()
 
     def __init__(self) -> None:
         super().__init__(SETTINGS_DIR, SETTINGS_FILE_NAME)
+        self._lock = self._settings_lock
+
+    @contextmanager
+    def transaction(self):
+        """Serialize a complete read-modify-write across settings instances."""
+        with self._lock:
+            yield
 
     def load(self) -> SettingsDataModel:
         """Loads application settings from JSON."""
@@ -193,10 +204,11 @@ class SettingsStorage(BaseJsonStorage):
                 exchange_rates=migrated.exchange_rates
             )
 
-        settings = self.load()
-        settings.fuel_data = transfer.fuel_data
-        settings.exchange_rates = transfer.exchange_rates
-        self.save(settings)
+        with self.transaction():
+            settings = self.load()
+            settings.fuel_data = transfer.fuel_data
+            settings.exchange_rates = transfer.exchange_rates
+            self.save(settings)
 
     def import_routes(self, plaintext: str) -> None:
         """Deserializes saved route JSON text and updates application settings."""
@@ -211,9 +223,10 @@ class SettingsStorage(BaseJsonStorage):
             raise ValueError('Invalid routes data.')
 
         transfer = RoutesTransferDataModel.from_dict(data)
-        settings = self.load()
-        settings.routes = transfer.routes
-        self.save(settings)
+        with self.transaction():
+            settings = self.load()
+            settings.routes = transfer.routes
+            self.save(settings)
 
     def import_favourites_and_tags(self, plaintext: str) -> None:
         """Deserializes favourites JSON text and updates application settings."""
@@ -232,10 +245,11 @@ class SettingsStorage(BaseJsonStorage):
             if favourite.tag_id not in tag_ids:
                 favourite.tag_id = FavouriteTag.DEFAULT_TAG_ID
 
-        settings = self.load()
-        settings.favourite_tags = tags
-        settings.favourites = transfer.favourites
-        self.save(settings)
+        with self.transaction():
+            settings = self.load()
+            settings.favourite_tags = tags
+            settings.favourites = transfer.favourites
+            self.save(settings)
 
     def import_cars(self, plaintext: str) -> None:
         """Deserializes car profile JSON text and updates application settings."""
@@ -256,10 +270,11 @@ class SettingsStorage(BaseJsonStorage):
         if active_car_profile_id not in car_profile_ids:
             active_car_profile_id = None
 
-        settings = self.load()
-        settings.active_car_profile_id = active_car_profile_id
-        settings.car_profiles = transfer.car_profiles
-        self.save(settings)
+        with self.transaction():
+            settings = self.load()
+            settings.active_car_profile_id = active_car_profile_id
+            settings.car_profiles = transfer.car_profiles
+            self.save(settings)
 
     def import_layers(self, plaintext: str) -> None:
         """Deserializes and replaces custom layers."""
@@ -271,17 +286,14 @@ class SettingsStorage(BaseJsonStorage):
         ):
             raise ValueError('Invalid layers data.')
 
-        transfer = LayersTransferDataModel.from_dict(data)
-        if any(
-            not layer.id or not layer.name.strip()
-            or any(element.type not in ('line', 'route', 'area') or len(element.points) < 2 for element in layer.elements)
-            for layer in transfer.layers
-        ):
-            raise ValueError('Invalid layers data.')
+        layers = [CustomLayer.from_payload(item) for item in data['layers']]
+        if len({layer.id for layer in layers}) != len(layers):
+            raise ValueError('Duplicate layer id.')
 
-        settings = self.load()
-        settings.custom_layers = transfer.layers
-        self.save(settings)
+        with self.transaction():
+            settings = self.load()
+            settings.custom_layers = layers
+            self.save(settings)
 
     @staticmethod
     def _serialize_transfer_model(model: BaseDataModel) -> str:

@@ -20,19 +20,20 @@ document.addEventListener('travel-manager:views-ready', () => {
         const renderId = ++customLayersRenderId;
         let layers = [];
         try {
-            const response = await fetch('/api/custom-layers', {
-                headers: { 'Accept': 'application/json' }
-            });
-            if (!response.ok) throw new Error(`Request failed: ${response.status}`);
-            layers = (await response.json())?.layers || [];
+            layers = await window.travelManagerCustomLayers.list();
             if (renderId !== customLayersRenderId) return;
         } catch (error) {
             if (renderId !== customLayersRenderId) return;
             customLayersList.replaceChildren();
-            const empty = document.createElement('p');
-            empty.className = 'layer-details-panel__empty';
-            empty.textContent = t('LAYERS_VIEW.EMPTY');
-            customLayersList.append(empty);
+            const message = document.createElement('p');
+            message.className = 'layer-details-panel__empty';
+            message.setAttribute('role', 'alert');
+            message.textContent = t('LAYER_EDITOR.LOAD_FAILED');
+            const retry = document.createElement('button');
+            retry.type = 'button';
+            retry.textContent = t('LAYER_EDITOR.RETRY');
+            retry.onclick = () => document.dispatchEvent(new CustomEvent('travel-manager:custom-layers-changed'));
+            customLayersList.append(message, retry);
             return;
         }
         let stored = null;
@@ -56,7 +57,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
         layers.forEach(item => {
             const row = document.createElement('div'); row.className = 'layer-details-panel__option layer-details-panel__custom-option';
-            const input = document.createElement('input'); input.type = 'checkbox'; input.checked = visible.has(item.id);
+            const input = document.createElement('input'); input.type = 'checkbox'; input.setAttribute('aria-label', item.name); input.checked = visible.has(item.id);
             const text = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = [item.icon, item.name].filter(Boolean).join(' '); text.append(strong);
             const edit = document.createElement('button'); edit.className = 'layer-details-panel__custom-edit'; edit.type = 'button'; edit.title = t('COMMON.EDIT'); edit.setAttribute('aria-label', t('COMMON.EDIT')); edit.innerHTML = '<i data-lucide="pencil" aria-hidden="true"></i>';
             input.onchange = () => { visibility[item.id] = input.checked; input.checked ? visible.add(item.id) : visible.delete(item.id); localStorage.setItem('travel-manager-custom-layer-visibility', JSON.stringify(visibility)); document.dispatchEvent(new CustomEvent('travel-manager:custom-layer-visibility-changed', {detail:{ids:[...visible]}})); };

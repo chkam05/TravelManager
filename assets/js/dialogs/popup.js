@@ -47,7 +47,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (event.target === layer && resolveResult) finish();
     });
     document.addEventListener('keydown', (event) => {
-        if ((event.key === 'Escape' || event.key === 'Enter') && resolveResult) finish();
+        if ((event.key === 'Escape' || event.key === 'Enter') && resolveResult) {event.preventDefault();event.stopImmediatePropagation();finish();}
     });
 
     window.travelManagerDialogs = {

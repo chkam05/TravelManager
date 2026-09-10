@@ -22,21 +22,39 @@
         </div>
     </section>
 
-    <section class="settings-view__section" aria-labelledby="settings-view-application-layers-title" data-settings-section>
+ </div>
+
+<div class="settings-view__group" data-settings-memory>
+    <header class="settings-view__group-header">
+        <h3>{{ t('SETTINGS_MEMORY.TITLE') }}</h3>
+        <p>{{ t('SETTINGS_MEMORY.DESCRIPTION') }}</p>
+    </header>
+    <section class="settings-view__section" aria-labelledby="settings-memory-transport-title" data-settings-section>
         <div class="settings-view__titlebar">
-            <i class="settings-view__section-icon" data-lucide="layers" aria-hidden="true"></i>
+            <i class="settings-view__section-icon" data-lucide="database" aria-hidden="true"></i>
             <div class="settings-view__title-text">
-                <h4 id="settings-view-application-layers-title">{{ t('SETTINGS_APPLICATION.LAYERS') }}</h4>
+                <h4 id="settings-memory-transport-title">{{ t('SETTINGS_MEMORY.PUBLIC_TRANSPORT') }}</h4>
             </div>
             <button class="settings-view__collapse-button" type="button" aria-label="{{ t('SETTINGS_VIEW.COLLAPSE_GROUP') }}" aria-expanded="true" data-settings-collapse>
                 <i data-lucide="chevron-up" aria-hidden="true"></i>
             </button>
             <div class="settings-view__description">
-                <p>{{ t('SETTINGS_APPLICATION.LAYERS_DESCRIPTION') }}</p>
+                <p>{{ t('SETTINGS_MEMORY.PUBLIC_TRANSPORT_DESCRIPTION') }}</p>
             </div>
         </div>
         <div class="settings-view__section-content" data-settings-section-content>
-            <dl class="settings-view__values" data-settings-group="layer-units"></dl>
+            <div class="settings-view__memory-list" data-settings-memory-list="public_transport"></div>
+        </div>
+    </section>
+    <section class="settings-view__section" aria-labelledby="settings-memory-application-title" data-settings-section>
+        <div class="settings-view__titlebar">
+            <i class="settings-view__section-icon" data-lucide="hard-drive" aria-hidden="true"></i>
+            <div class="settings-view__title-text"><h4 id="settings-memory-application-title">{{ t('SETTINGS_MEMORY.APPLICATION_DATA') }}</h4></div>
+            <button class="settings-view__collapse-button" type="button" aria-label="{{ t('SETTINGS_VIEW.COLLAPSE_GROUP') }}" aria-expanded="true" data-settings-collapse><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+            <div class="settings-view__description"><p>{{ t('SETTINGS_MEMORY.APPLICATION_DATA_DESCRIPTION') }}</p></div>
+        </div>
+        <div class="settings-view__section-content" data-settings-section-content>
+            <div class="settings-view__memory-list" data-settings-memory-list="application"></div>
         </div>
     </section>
 </div>

@@ -1,6 +1,7 @@
 from __future__ import annotations
 from contextlib import contextmanager
 from contextvars import ContextVar
+from concurrent.futures import CancelledError
 from time import sleep
 from typing import Callable, ClassVar, Iterator, TypeVar
 
@@ -21,6 +22,9 @@ class PublicTransportDownloadProgress:
         'public_transport_progress_callback',
         default=None
     )
+    _CANCELLED: ClassVar[ContextVar[Callable[[], bool] | None]] = ContextVar(
+        'public_transport_cancelled_callback', default=None
+    )
 
     def __new__(cls):
         """Prevents creating instances of this shared utility class."""
@@ -30,17 +34,33 @@ class PublicTransportDownloadProgress:
 
     @classmethod
     @contextmanager
-    def bind(cls, callback: ProgressCallback) -> Iterator[None]:
+    def bind(
+        cls,
+        callback: ProgressCallback,
+        cancelled: Callable[[], bool] | None = None
+    ) -> Iterator[None]:
         """Binds a progress receiver to the current request context."""
         token = cls._CALLBACK.set(callback)
+        cancel_token = cls._CANCELLED.set(cancelled)
         try:
             yield
         finally:
+            cls._CANCELLED.reset(cancel_token)
             cls._CALLBACK.reset(token)
 
     #endregion Context
 
     #region Progress and retry
+
+    @classmethod
+    def current_callback(cls) -> ProgressCallback | None:
+        """Returns the receiver bound to the current request context."""
+        return cls._CALLBACK.get()
+
+    @classmethod
+    def current_cancelled(cls) -> Callable[[], bool] | None:
+        """Returns cancellation state bound to the current operation."""
+        return cls._CANCELLED.get()
 
     @classmethod
     def report(
@@ -81,6 +101,8 @@ class PublicTransportDownloadProgress:
             cls.report(item, current, total, attempt, attempts)
             try:
                 return operation()
+            except CancelledError:
+                raise
             except Exception as error:
                 last_error = error
                 if attempt < attempts:

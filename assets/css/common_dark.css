@@ -75,7 +75,7 @@ body[data-theme="dark"] :is(
     .search-results-panel,
     .public-transport-panel,
     [role="dialog"]
-) :is([class$="__group"], [class$="__group-title"]) {
+) :is([class$="__group"]:not(.settings-view__group), [class$="__group-title"]) {
     background: var(--surface-background);
 }
 
@@ -174,14 +174,12 @@ body:not([data-theme="dark"]) :is(
 }
 
 /* Expanding a public-transport card must not select or recolour the card. */
-body .public-transport-stops__item:is(:hover, :focus-visible, :focus-within),
 body .public-transport-stop-lines__list article:is(:hover, :focus-visible, :focus-within) {
     border-color: var(--border-color);
     background: var(--surface-background);
     color: var(--text-primary);
 }
 
-body .public-transport-stops__item:is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p),
 body .public-transport-stop-lines__list article:is(:hover, :focus-visible, :focus-within) :is(span, strong, small, svg, i, h2, h3, p) {
     color: inherit;
 }
@@ -2685,17 +2683,17 @@ body {
 
 .header__title,
 .public-transport-panel__header h2,
-:is([class$="-panel"], [class$="-dialog"], [class$="-editor"], [role="dialog"])
+:is([class$="-panel"]:not(.settings-view__tab-panel), [class$="-dialog"], [class$="-editor"], [role="dialog"])
     :is(h1, h2, h3, h4, [class$="__title"], [class$="__group-title"], [class$="__section-title"]) {
     color: var(--text-primary);
 }
 
-:is([class$="-panel"], [class$="-dialog"], [class$="-editor"], [role="dialog"])
-    :is([class$="__group"], [class$="__group-title"]) {
+:is([class$="-panel"]:not(.settings-view__tab-panel), [class$="-dialog"], [class$="-editor"], [role="dialog"])
+    :is([class$="__group"]:not(.settings-view__group), [class$="__group-title"]) {
     background: var(--surface-background);
 }
 
-:is([class$="-panel"], [class$="-dialog"], [class$="-editor"], [role="dialog"]) {
+:is([class$="-panel"]:not(.settings-view__tab-panel), [class$="-dialog"], [class$="-editor"], [role="dialog"]) {
     background: var(--surface-background);
 }
 
