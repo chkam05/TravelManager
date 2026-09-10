@@ -1,25 +1,15 @@
 .appearance-settings {
     display: grid;
-    gap: 30px;
+    gap: 12px;
+    margin: 0 0 28px;
 }
 
 .appearance-settings__section {
-    display: grid;
-    gap: 16px;
-    padding: 18px;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 12px;
+    display: block;
 }
 
-.appearance-settings__section > header h3 {
-    margin: 0;
-    font-size: 1.16rem;
-}
-
-.appearance-settings__section > header p {
-    margin: 5px 0 0;
-    line-height: 1.45;
+.appearance-settings__section-content {
+    padding-top: 14px;
 }
 
 .appearance-settings__theme-grid {

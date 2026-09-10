@@ -12,4 +12,4 @@
 6. [ ] Widok mobilny
    - Jeżeli się nie da dostosować CSS, to widok może być zduplikowany jako `{view_name}.mobile.html/.css/.js`
 7. [ ] OFFLINE
-8. [ ] Widok techniczny GTFS (ile jest pobranych, ile zajmują, możliwość ich usuwania)
+8. [X] Widok techniczny GTFS (ile jest pobranych, ile zajmują, możliwość ich usuwania)

@@ -163,7 +163,7 @@
 
 .public-transport-panel__close {
     position: relative;
-    grid-column: 6;
+    grid-column: 7;
     grid-row: 1;
     width: 30px;
     height: 30px;

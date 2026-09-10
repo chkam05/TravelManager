@@ -1,5 +1,8 @@
 document.addEventListener('travel-manager:views-ready', () => {
     const t = window.i18n.t;
+    const view = document.querySelector('[data-app-view="settings"]');
+    const settingsBody = view?.querySelector('.settings-view__body');
+    const appContent = document.querySelector('#content');
     const travelCostsGroup = document.querySelector('[data-settings-group="travel-costs"]');
     const routeFuelGroup = document.querySelector('[data-settings-group="route-fuel"]');
     const routeTollsGroup = document.querySelector('[data-settings-group="route-tolls"]');
@@ -37,6 +40,12 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     let activeTransferButton = null;
     let pendingBrowserImportType = null;
+
+    const resetScrollPosition = () => {
+        settingsBody?.scrollTo?.({ top: 0, left: 0 });
+        if (view) view.scrollTop = 0;
+        appContent?.scrollTo?.({ top: 0, left: 0 });
+    };
 
     const addValue = (group, label, value) => {
         const row = document.createElement('div');
@@ -845,6 +854,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     document.addEventListener('travel-manager:app-view-changed', (event) => {
         if (event.detail?.view === 'settings') {
+            resetScrollPosition();
+            window.requestAnimationFrame(resetScrollPosition);
             loadSettings();
         }
     });
@@ -934,5 +945,6 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
     });
 
+    resetScrollPosition();
     loadSettings();
 });

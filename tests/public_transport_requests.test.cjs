@@ -226,3 +226,23 @@ test('settings containers remain transparent without cards or shadows', () => {
         assert.match(source(theme), /\[class\$="-panel"\]:not\(\.settings-view__tab-panel\)/);
     }
 });
+
+test('appearance settings use the shared settings section structure', () => {
+    const template = source('templates/views/settings/appearance.html');
+    assert.match(template, /class="appearance-settings__section settings-view__section"/);
+    assert.equal((template.match(/data-settings-section/g) || []).length, 10);
+    assert.equal((template.match(/data-settings-collapse/g) || []).length, 5);
+    assert.match(template, /class="settings-view__group-header"/);
+});
+
+test('opening settings resets every relevant scroll container', () => {
+    const settings = source('assets/js/views/settings.js');
+    assert.match(settings, /const resetScrollPosition = \(\) => \{[\s\S]*settingsBody\?\.scrollTo\?\.\(\{ top: 0, left: 0 \}\);[\s\S]*view\.scrollTop = 0;[\s\S]*appContent\?\.scrollTo\?\.\(\{ top: 0, left: 0 \}\);/);
+    assert.match(settings, /event\.detail\?\.view === 'settings'[\s\S]*resetScrollPosition\(\);[\s\S]*requestAnimationFrame\(resetScrollPosition\)/);
+});
+
+test('public transport stop-map and close actions occupy separate header columns', () => {
+    const styles = source('assets/css/panels/public_transport.css');
+    assert.match(styles, /\[data-public-transport-panel-stop-map\] \{\s*grid-column: 6;/);
+    assert.match(styles, /\.public-transport-panel__close \{[\s\S]*?grid-column: 7;[\s\S]*?grid-row: 1;/);
+});

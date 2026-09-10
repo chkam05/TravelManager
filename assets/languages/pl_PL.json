@@ -358,6 +358,8 @@
     "INVALID_JSON_BODY": "Nieprawidłowa treść JSON."
   },
   "SETTINGS_APPEARANCE": {
+    "TITLE": "Wygląd",
+    "DESCRIPTION": "Motyw, kolory interfejsu oraz elementów wyświetlanych na mapie.",
     "THEME": "Motyw",
     "THEME_DESCRIPTION": "Wybierz jasny albo ciemny wariant interfejsu.",
     "APPLICATION_THEME": "Motyw aplikacji",

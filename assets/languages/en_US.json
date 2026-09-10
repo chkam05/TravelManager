@@ -358,6 +358,8 @@
     "INVALID_JSON_BODY": "Invalid JSON body."
   },
   "SETTINGS_APPEARANCE": {
+    "TITLE": "Appearance",
+    "DESCRIPTION": "Theme and colours used by the interface and map elements.",
     "THEME": "Theme",
     "THEME_DESCRIPTION": "Choose a light or dark interface theme.",
     "APPLICATION_THEME": "Application theme",

@@ -1682,11 +1682,6 @@ body {
 }
 
 /* Source: views/appearance.css */
-.appearance-settings__section {
-    border-color: var(--border-color);
-    background: var(--surface-background);
-}
-
 .appearance-settings__section > header h3 {
     color: var(--text-primary);
 }
