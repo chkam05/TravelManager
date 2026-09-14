@@ -246,3 +246,14 @@ test('public transport stop-map and close actions occupy separate header columns
     assert.match(styles, /\[data-public-transport-panel-stop-map\] \{\s*grid-column: 6;/);
     assert.match(styles, /\.public-transport-panel__close \{[\s\S]*?grid-column: 7;[\s\S]*?grid-row: 1;/);
 });
+
+test('settings place map before combined storage and backup, with memory outside application', () => {
+    const settings = source('templates/views/settings.html');
+    const application = source('templates/views/settings/application.html');
+    const backup = source('templates/views/settings/backup.html');
+    const mapTab = settings.indexOf('id="settings-tab-routes"');
+    const backupTab = settings.indexOf('id="settings-tab-backup"');
+    assert.ok(mapTab >= 0 && backupTab > mapTab);
+    assert.doesNotMatch(application, /data-settings-memory/);
+    assert.match(backup, /views\/settings\/memory\.html/);
+});
