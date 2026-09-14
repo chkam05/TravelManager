@@ -33,6 +33,7 @@ class PublicTransportLineStopTimetable(BaseDataModel):
     FIELD_DATES: ClassVar[str] = 'dates'
     FIELD_LATITUDE: ClassVar[str] = 'latitude'
     FIELD_LONGITUDE: ClassVar[str] = 'longitude'
+    FIELD_STOP_LINES_URL: ClassVar[str] = 'stop_lines_url'
 
     # Fields
     line: str
@@ -45,6 +46,7 @@ class PublicTransportLineStopTimetable(BaseDataModel):
     dates: Dict[date, str]
     latitude: float | None
     longitude: float | None
+    stop_lines_url: str = ''
 
     #region Serialization
 
@@ -77,7 +79,8 @@ class PublicTransportLineStopTimetable(BaseDataModel):
             timetable=parsed_timetable,
             dates=parse_date_url_map(d.get(cls.FIELD_DATES)),
             latitude=parse_coordinate(d.get(cls.FIELD_LATITUDE), -90, 90),
-            longitude=parse_coordinate(d.get(cls.FIELD_LONGITUDE), -180, 180)
+            longitude=parse_coordinate(d.get(cls.FIELD_LONGITUDE), -180, 180),
+            stop_lines_url=str(d.get(cls.FIELD_STOP_LINES_URL) or '')
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -95,7 +98,8 @@ class PublicTransportLineStopTimetable(BaseDataModel):
             },
             self.FIELD_DATES: serialize_date_url_map(self.dates),
             self.FIELD_LATITUDE: self.latitude,
-            self.FIELD_LONGITUDE: self.longitude
+            self.FIELD_LONGITUDE: self.longitude,
+            self.FIELD_STOP_LINES_URL: self.stop_lines_url
         }
 
     #endregion Serialization

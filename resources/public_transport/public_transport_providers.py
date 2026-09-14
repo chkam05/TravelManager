@@ -40,6 +40,8 @@ from utils.public_transport.szczecin_downloader import SzczecinDownloader
 from utils.public_transport.bydgoszcz_downloader import BydgoszczDownloader
 from utils.public_transport.torun_downloader import TorunDownloader
 from utils.public_transport.wroclaw_downloader import WroclawDownloader
+from utils.public_transport.rail_downloader import RAIL_DOWNLOADERS
+from resources.public_transport.rail_gtfs_sources import RailGtfsSources
 
 
 class PublicTransportProviders:
@@ -1013,6 +1015,15 @@ class PublicTransportProviders:
         options = [
             {
                 'id': provider_id,
+                'mode': 'rail' if provider_id.startswith('rail_') else 'city',
+                'update_source': next(
+                    (
+                        mapping.source_id
+                        for mapping in RailGtfsSources.PROVIDERS
+                        if mapping.provider_id == provider_id
+                    ),
+                    provider_id
+                ),
                 'name': LanguageService.translate_current(cls.NAME_KEYS[provider_id]),
                 'description': LanguageService.translate_current(cls.DESCRIPTION_KEYS[provider_id]),
                 'icon': str(provider[cls.FIELD_ICON]),
@@ -1059,7 +1070,16 @@ class PublicTransportProviders:
         return sorted(
             options,
             key=lambda option: (
-                _sort_key(option['region']),
+                0 if option['id'].startswith('rail_') else 1,
+                (
+                    next(
+                        index
+                        for index, mapping in enumerate(RailGtfsSources.PROVIDERS)
+                        if mapping.provider_id == option['id']
+                    )
+                    if option['id'].startswith('rail_')
+                    else _sort_key(option['region'])
+                ),
                 _sort_key(str(option['name']))
             )
         )
@@ -1098,3 +1118,71 @@ class PublicTransportProviders:
                 'PUBLIC_TRANSPORT_ERROR.INVALID_URL'
             )
         return url
+
+
+def _register_rail_providers() -> None:
+    """Adds railway providers without disturbing the municipal registry order."""
+    registry = PublicTransportProviders
+    registry.REGION_KEYS['rail_main'] = 'RES_PUBLIC_TRANSPORT_REGION.RAIL_MAIN'
+    rail_regions = {
+        'rail_pkp_intercity': 'rail_main',
+        'rail_polregio': 'rail_main',
+        'rail_regiojet': 'rail_main',
+        'rail_leo_express': 'rail_main',
+        'rail_arriva': 'kujawsko-pomorskie',
+        'rail_kd': 'dolnośląskie',
+        'rail_kmal': 'małopolskie',
+        'rail_km': 'mazowieckie',
+        'rail_skm_warsaw': 'mazowieckie',
+        'rail_wkd': 'mazowieckie',
+        'rail_ks': 'śląskie',
+        'rail_kw': 'wielkopolskie',
+        'rail_lka': 'łódzkie',
+        'rail_skm_tricity': 'pomorskie'
+    }
+    capabilities = {
+        registry.CAPABILITY_SHOW_PLATFORMS: True,
+        registry.CAPABILITY_SHOW_STOP_MAP: True,
+        registry.CAPABILITY_SHOW_RIDE_MAP: True,
+        registry.CAPABILITY_SHOW_RIDE_DISTANCES: True,
+        registry.CAPABILITY_SHOW_VEHICLE_DETAILS: True,
+        registry.CAPABILITY_SHOW_HIGH_FLOOR: False,
+        registry.CAPABILITY_SHOW_STOP_DEPARTURES: True,
+        registry.CAPABILITY_SHOW_RIDE: True,
+        registry.CAPABILITY_SHOW_ROUTE_MAP: True,
+        registry.CAPABILITY_SHOW_VEHICLE_POSITIONS: False,
+        registry.CAPABILITY_CACHE_ANNOUNCEMENTS: False,
+        registry.CAPABILITY_DIRECTION_SELECTOR_LABEL: (
+            'PUBLIC_TRANSPORT_LINES.ROUTE_VARIANT'
+        ),
+        'rail_terminology': True
+    }
+    for mapping in RailGtfsSources.PROVIDERS:
+        constant = mapping.provider_id.upper()
+        setattr(registry, constant, mapping.provider_id)
+        registry.NAME_KEYS[mapping.provider_id] = (
+            f'RES_PUBLIC_TRANSPORT_PROVIDER.{constant}_NAME'
+        )
+        registry.DESCRIPTION_KEYS[mapping.provider_id] = (
+            'RES_PUBLIC_TRANSPORT_PROVIDER.RAIL_DESCRIPTION'
+        )
+        registry.ATTRIBUTION_KEYS[mapping.provider_id] = (
+            'RES_PUBLIC_TRANSPORT_PROVIDER.RAIL_ATTRIBUTION_1',
+        )
+        registry.REGIONS[mapping.provider_id] = rail_regions[mapping.provider_id]
+        source = RailGtfsSources.SOURCES[mapping.source_id]
+        registry.VALUES[mapping.provider_id] = {
+            registry.FIELD_NAME: mapping.display_name,
+            registry.FIELD_DESCRIPTION: 'Kolejowy rozkład GTFS',
+            registry.FIELD_ICON: 'train-front',
+            registry.FIELD_DOWNLOADER: RAIL_DOWNLOADERS[mapping.provider_id],
+            registry.FIELD_CAPABILITIES: dict(capabilities),
+            registry.FIELD_SETTINGS_CACHE: False,
+            registry.FIELD_ATTRIBUTIONS: [{
+                'name': 'GTFS: Mikołaj Kuranowski / dane przewoźników',
+                'url': source.schedule_url
+            }]
+        }
+
+
+_register_rail_providers()

@@ -12,9 +12,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navigationButtons = document.querySelectorAll('[data-navigation-view]');
     let activeCarProfile = null;
     let currentView = appShell?.dataset.currentView || 'map';
+    let previousPublicTransportView = currentView === 'home' ? 'home' : 'map';
     let notificationTimer = null;
     const carButtonViews = new Set(['map', 'car-profiles']);
 
+    const renderLocalLucideFallbacks = () => {
+        document.querySelectorAll('[data-lucide="layers-plus"]').forEach((element) => {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', `${element.className || ''} lucide lucide-layers-plus`.trim());
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('stroke-width', '1.7');
+            svg.setAttribute('stroke-linecap', 'round');
+            svg.setAttribute('stroke-linejoin', 'round');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.innerHTML = '<path d="m12 2 9 5-9 5-9-5 9-5Z"></path><path d="m3 12 9 5 4-2.22"></path><path d="m3 17 9 5 3-1.67"></path><path d="M19 15v6"></path><path d="M16 18h6"></path>';
+            element.replaceWith(svg);
+        });
+    };
+
+    renderLocalLucideFallbacks();
     window.lucide?.createIcons({
         attrs: {
             'stroke-width': 1.7
@@ -109,7 +127,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         element.innerHTML = await response.text();
     };
 
-    const showView = (viewName) => {
+    let currentPublicTransportMode = 'city';
+
+    const showView = (viewName, options = {}) => {
         const target = document.querySelector(`[data-app-view="${viewName}"]`);
 
         if (!target) {
@@ -122,12 +142,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             view.hidden = !active;
         });
 
+        if (
+            viewName === 'public-transport'
+            && ['city', 'rail'].includes(options.publicTransportMode)
+        ) {
+            currentPublicTransportMode = options.publicTransportMode;
+        }
+
         navigationButtons.forEach((button) => {
-            const active = button.dataset.navigationView === viewName;
+            const buttonMode = button.dataset.publicTransportMode || '';
+            const active = button.dataset.navigationView === viewName
+                && (!buttonMode || buttonMode === currentPublicTransportMode);
             button.classList.toggle('side-menu__item--active', active);
             button.setAttribute('aria-current', active ? 'page' : 'false');
         });
 
+        if (viewName === 'public-transport' && currentView !== 'public-transport') {
+            previousPublicTransportView = ['home', 'map'].includes(currentView)
+                ? currentView
+                : 'map';
+        }
         currentView = viewName;
         appShell.dataset.currentView = viewName;
 
@@ -140,7 +174,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         document.dispatchEvent(new CustomEvent('travel-manager:app-view-changed', {
-            detail: { view: viewName }
+            detail: {
+                view: viewName,
+                publicTransportMode: currentPublicTransportMode
+            }
         }));
 
         return true;
@@ -171,7 +208,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const viewButton = event.target.closest('[data-navigation-view]');
 
         if (viewButton) {
-            showView(viewButton.dataset.navigationView);
+            showView(viewButton.dataset.navigationView, {
+                publicTransportMode: viewButton.dataset.publicTransportMode
+            });
             return;
         }
 
@@ -180,6 +219,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (actionButton?.dataset.navigationAction === 'new-route') {
             showView('map');
             await window.travelManagerRouteDetailsPanel?.startNewRoute();
+        } else if (actionButton?.dataset.navigationAction === 'new-layer') {
+            showView('map');
+            window.travelManagerLayerEditor?.open();
         }
     });
 
@@ -236,13 +278,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.dispatchEvent(new CustomEvent('travel-manager:views-ready'));
+    renderLocalLucideFallbacks();
     window.lucide?.createIcons({
         attrs: {
             'stroke-width': 1.7
         }
     });
 
-    window.travelManagerNavigation = { showView };
+    const leavePublicTransport = () => showView(previousPublicTransportView || 'map');
+    window.travelManagerNavigation = { showView, leavePublicTransport };
 
     document.addEventListener('travel-manager:car-profiles-changed', (event) => {
         activeCarProfile = event.detail?.activeCarProfile || null;

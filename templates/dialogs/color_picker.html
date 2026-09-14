@@ -9,15 +9,20 @@
             <span>{{ t('DIALOG_COLOR_PICKER.HUE') }}</span>
             <input type="range" min="0" max="359" value="207" data-color-picker-hue>
         </label>
+        <label class="color-picker-dialog__alpha">
+            <span>{{ t('DIALOG_COLOR_PICKER.ALPHA') }}</span>
+            <input type="range" min="0" max="255" value="255" data-color-picker-alpha-slider>
+        </label>
         <div class="color-picker-dialog__preview" data-color-picker-preview></div>
         <label class="component-inputbox">
             <span>HEX</span>
-            <input type="text" maxlength="7" value="#1F6FAE" data-color-picker-hex autocomplete="off" spellcheck="false">
+            <input type="text" maxlength="9" value="#1F6FAE" data-color-picker-hex autocomplete="off" spellcheck="false">
         </label>
         <div class="color-picker-dialog__rgb">
             <label class="component-inputbox"><span>R</span><input type="number" min="0" max="255" data-color-picker-r></label>
             <label class="component-inputbox"><span>G</span><input type="number" min="0" max="255" data-color-picker-g></label>
             <label class="component-inputbox"><span>B</span><input type="number" min="0" max="255" data-color-picker-b></label>
+            <label class="component-inputbox"><span>A</span><input type="number" min="0" max="255" data-color-picker-a></label>
         </div>
     </div>
     <footer class="color-picker-dialog__footer">

@@ -69,6 +69,7 @@
 
 .yesno-dialog__footer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 10px;
     padding: 14px 20px;
@@ -87,3 +88,7 @@
     font-weight: 700;
     cursor: pointer;
 }
+
+.yesno-dialog__description{white-space:pre-line;max-height:55vh;overflow-y:auto}
+.yesno-dialog__button[hidden]{display:none}
+.yesno-dialog__choice{display:block;width:100%;margin-top:12px;padding:8px;color:var(--text-primary);background:var(--control-background);border:1px solid var(--border-strong);border-radius:6px}

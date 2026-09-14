@@ -113,3 +113,19 @@
 .public-transport-vehicle-marker--selected {
     filter: drop-shadow(0 0 3px var(--accent-color)) drop-shadow(0 0 6px var(--accent-color)) drop-shadow(0 4px 7px var(--shadow-color));
 }
+.map-panel__custom-layer-title.leaflet-tooltip {
+    padding: 5px 9px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface-translucent);
+    color: var(--text-primary);
+    box-shadow: 0 4px 14px var(--shadow-color);
+    font: inherit;
+    font-weight: 800;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.map-panel__custom-layer-title.leaflet-tooltip::before {
+    display: none;
+}

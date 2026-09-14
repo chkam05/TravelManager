@@ -3,7 +3,12 @@ document.addEventListener('travel-manager:views-ready', () => {
     const locale = window.i18n.locale.replace('_', '-');
     const view = document.querySelector('[data-app-view="public-transport"]');
     const content = view?.querySelector('#public-transport-content');
+    const appContent = document.querySelector('#content');
     const headers = Array.from(view?.querySelectorAll('[data-public-transport-header]') || []);
+    const lineSort = window.travelManagerPublicTransportLineSort?.enhance(
+        view?.querySelector('[data-public-transport-line-sort]'),
+        () => content
+    );
 
     if (!view || !content || !headers.length) {
         return;
@@ -17,13 +22,16 @@ document.addEventListener('travel-manager:views-ready', () => {
         ])
     );
     const state = {
+        transportMode: 'city',
         provider: '',
         current: { screen: 'carriers', url: '' },
         history: [],
         root: 'lines',
         request: null,
         progressTimer: null,
-        loading: false
+        loading: false,
+        selectingProviders: false,
+        selectedProviders: new Set()
     };
 
     const normalize = (value) => String(value || '')
@@ -59,6 +67,10 @@ document.addEventListener('travel-manager:views-ready', () => {
                     <progress value="0" max="1" data-public-transport-progress hidden></progress>
                     <span data-public-transport-progress-text>${t('PUBLIC_TRANSPORT_VIEW.PREPARING_DATA')}</span>
                 </div>
+                <div class="public-transport-view__loading-actions" data-public-transport-download-actions hidden>
+                    <button type="button" data-public-transport-download-background>${t('DIALOG_DOWNLOAD_STATUS.CONTINUE_IN_BACKGROUND')}</button>
+                    <button type="button" data-public-transport-download-cancel>${t('COMMON.CANCEL')}</button>
+                </div>
             </div>
         `;
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
@@ -78,7 +90,15 @@ document.addEventListener('travel-manager:views-ready', () => {
             const progress = await response.json();
             const bar = content.querySelector('[data-public-transport-progress]');
             const text = content.querySelector('[data-public-transport-progress-text]');
+            const actions = content.querySelector('[data-public-transport-download-actions]');
             const hasMultipleItems = progress.total > 1;
+
+            if (actions) {
+                actions.hidden = !(
+                    progress.status === 'downloading'
+                    && Boolean(progress.item)
+                );
+            }
 
             if (bar) {
                 bar.hidden = !hasMultipleItems;
@@ -91,10 +111,11 @@ document.addEventListener('travel-manager:views-ready', () => {
             }
 
             if (text && progress.status === 'downloading') {
+                const byteProgress = progress.total > 100000;
                 const position = progress.total > 0
                     ? t('PUBLIC_TRANSPORT_VIEW.DOWNLOAD_POSITION', {
-                        current: progress.current,
-                        total: progress.total
+                        current: byteProgress ? `${(progress.current / 1048576).toFixed(1)} MB` : progress.current,
+                        total: byteProgress ? `${(progress.total / 1048576).toFixed(1)} MB` : progress.total
                     })
                     : '';
                 const retry = progress.attempt > 1
@@ -103,12 +124,15 @@ document.addEventListener('travel-manager:views-ready', () => {
                         maximum: progress.max_attempts
                     })
                     : '';
+                const processingPrefix = t('DOWNLOAD_STATUS.PROCESSING_GTFS', { feed: '' });
                 text.textContent = progress.item
-                    ? t('PUBLIC_TRANSPORT_VIEW.DOWNLOADING_ITEM', {
+                    ? (progress.item.startsWith(processingPrefix)
+                        ? `${progress.item}${position}${retry}`
+                        : t('PUBLIC_TRANSPORT_VIEW.DOWNLOADING_ITEM', {
                         item: progress.item,
                         position,
                         retry
-                    })
+                    }))
                     : t('PUBLIC_TRANSPORT_VIEW.PREPARING_DATA');
             }
         } catch (error) {
@@ -128,7 +152,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         try {
-            return new URL(String(url || '')).searchParams.get('data') || '';
+            const parameters = new URL(String(url || '')).searchParams;
+            return parameters.get('date') || parameters.get('data') || '';
         } catch (error) {
             return '';
         }
@@ -156,7 +181,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         const icon = document.createElement('i');
-        icon.dataset.lucide = metadata.type === 'tram' ? 'tram-front' : 'bus';
+        icon.dataset.lucide = metadata.type === 'tram'
+            ? 'tram-front'
+            : ['train', 'metro'].includes(metadata.type) ? 'train-front' : 'bus';
         icon.setAttribute('aria-hidden', 'true');
         const number = document.createElement('strong');
         number.textContent = metadata.line || '';
@@ -220,7 +247,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (details) {
             if (screen === 'line-stop') {
                 const platform = metadata.show_platforms
-                    ? t('PUBLIC_TRANSPORT_STOPS.PLATFORM_SUFFIX', {
+                    ? t(state.provider.startsWith('rail_')
+                        ? 'PUBLIC_TRANSPORT_STOPS.RAIL_PLATFORM_SUFFIX'
+                        : 'PUBLIC_TRANSPORT_STOPS.PLATFORM_SUFFIX', {
                         platform: metadata.platform || '—'
                     })
                     : '';
@@ -420,6 +449,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         updateHeader(screen);
         initializeDetailSidebar();
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
+        if (screen === 'lines') lineSort?.apply();
         if (screen === 'line-stop') {
             window.requestAnimationFrame(fitDepartureTiles);
         }
@@ -464,9 +494,8 @@ document.addEventListener('travel-manager:views-ready', () => {
             state.history.push(state.current);
         }
 
+        window.travelManagerPublicTransportRequests?.setForeground(state.request, false);
         state.current = next;
-        state.request?.abort();
-        state.request = new AbortController();
         state.loading = true;
         clearProgressTimer();
         showHeader(screen);
@@ -484,23 +513,26 @@ document.addEventListener('travel-manager:views-ready', () => {
         pollDownloadProgress();
 
         try {
-            const response = await fetch(`${endpoint(screen)}${params.size ? `?${params}` : ''}`, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                signal: state.request.signal
+            const task = window.travelManagerPublicTransportRequests.request({
+                provider: state.provider, screen, url, refresh
             });
-            const html = await response.text();
+            state.request = task.key;
+            window.travelManagerPublicTransportRequests.setForeground(task.key, true);
+            const html = await task.promise;
 
             if (state.current !== next) {
-                return;
+                return false;
             }
 
             state.loading = false;
             clearProgressTimer();
             content.innerHTML = html;
             enhanceFragment(screen);
+            window.travelManagerSizePublicTransportLineTiles?.(content);
+            return true;
         } catch (error) {
-            if (error.name === 'AbortError') {
-                return;
+            if (state.current !== next) {
+                return false;
             }
 
             state.loading = false;
@@ -518,23 +550,31 @@ document.addEventListener('travel-manager:views-ready', () => {
             `;
             content.querySelector('[data-public-transport-error-message]').textContent = error.message;
             enhanceFragment(screen);
+            return false;
         }
     };
 
     const showCarriers = () => {
-        state.request?.abort();
+        window.travelManagerPublicTransportRequests?.setForeground(state.request, false);
+        state.request = null;
         state.loading = false;
         clearProgressTimer();
         state.provider = '';
         state.current = { screen: 'carriers', url: '' };
         state.history = [];
         content.innerHTML = carrierMarkup;
+        applyTransportMode(state.transportMode);
         showHeader('carriers');
+        setProviderSelectionMode(false);
+        content.scrollTo({ top: 0, left: 0 });
+        view.scrollTop = 0;
+        appContent?.scrollTo({ top: 0, left: 0 });
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
 
     const showSources = () => {
-        state.request?.abort();
+        window.travelManagerPublicTransportRequests?.setForeground(state.request, false);
+        state.request = null;
         state.loading = false;
         clearProgressTimer();
         state.provider = '';
@@ -545,47 +585,117 @@ document.addEventListener('travel-manager:views-ready', () => {
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
 
-    const refreshAllProviders = async (button) => {
-        const providers = Array.from(
-            content.querySelectorAll('[data-public-transport-provider]')
-        ).map((tile) => ({
-            id: tile.dataset.publicTransportProvider,
-            name: tile.querySelector('strong')?.textContent?.trim()
-                || tile.dataset.publicTransportProvider
-        }));
+    const allProviderTiles = () => Array.from(
+        content.querySelectorAll('[data-public-transport-provider]')
+    );
+
+    const providerTiles = () => allProviderTiles().filter(
+        (tile) => tile.dataset.publicTransportMode === state.transportMode
+    );
+
+    function applyTransportMode(mode) {
+        state.transportMode = mode === 'rail' ? 'rail' : 'city';
+        allProviderTiles().forEach((tile) => {
+            tile.hidden = tile.dataset.publicTransportMode !== state.transportMode;
+        });
+        syncCarrierRegions();
+        const title = document.querySelector('[data-public-transport-app-title]');
+        if (title) {
+            title.textContent = t(
+                state.transportMode === 'rail'
+                    ? 'HEADER.RAILWAYS'
+                    : 'HEADER.PUBLIC_TRANSPORT'
+            );
+        }
+    }
+
+    function syncCarrierRegions() {
+        content.querySelectorAll('.public-transport-carriers__region').forEach((region) => {
+            region.hidden = !region.querySelector(
+                `[data-public-transport-mode="${state.transportMode}"]:not([hidden])`
+            );
+        });
+    }
+
+    const syncProviderSelection = () => {
+        providerTiles().forEach((tile) => {
+            const selected = state.selectedProviders.has(
+                tile.dataset.publicTransportProvider
+            );
+            tile.classList.toggle('public-transport-carriers__tile--selected', selected);
+            tile.setAttribute('aria-pressed', String(selected));
+        });
+        const update = view.querySelector('[data-public-transport-update-selected]');
+        if (update) update.disabled = state.selectedProviders.size === 0;
+    };
+
+    const setProviderSelectionMode = (enabled) => {
+        state.selectingProviders = Boolean(enabled);
+        state.selectedProviders.clear();
+        content.querySelector('.public-transport-carriers')?.classList.toggle(
+            'public-transport-carriers--selecting', state.selectingProviders
+        );
+        view.querySelector('[data-public-transport-select-providers]')?.toggleAttribute('hidden', state.selectingProviders);
+        view.querySelector('[data-public-transport-sources]')?.toggleAttribute('hidden', state.selectingProviders);
+        view.querySelector('[data-public-transport-select-all]')?.toggleAttribute('hidden', !state.selectingProviders);
+        view.querySelector('[data-public-transport-update-selected]')?.toggleAttribute('hidden', !state.selectingProviders);
+        view.querySelector('[data-public-transport-cancel-selection]')?.toggleAttribute('hidden', !state.selectingProviders);
+        syncProviderSelection();
+        window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
+    };
+
+    const refreshProviders = async (providers, button) => {
+        providers = Array.from(providers.reduce((sources, tile) => {
+            const source = tile.dataset.publicTransportUpdateSource
+                || tile.dataset.publicTransportProvider;
+            if (!sources.has(source)) {
+                sources.set(source, {
+                    id: tile.dataset.publicTransportProvider,
+                    source,
+                    name: tile.querySelector('strong')?.textContent?.trim()
+                        || tile.dataset.publicTransportProvider
+                });
+            }
+            return sources;
+        }, new Map()).values());
 
         if (!providers.length || button.disabled) {
             return;
         }
 
         const errors = [];
+        let background = false;
+        let cancelled = false;
+        const moveToBackground = () => { background = true; };
+        const cancelBatch = () => { cancelled = true; };
+        window.addEventListener('travel-manager:public-transport-download-background', moveToBackground);
+        window.addEventListener('travel-manager:public-transport-download-cancel', cancelBatch);
         button.disabled = true;
         window.travelManagerDownloadStatus?.showAll(providers.length);
 
         for (const [index, provider] of providers.entries()) {
+            if (cancelled) break;
             window.travelManagerDownloadStatus?.updateAll(
                 provider.id,
                 provider.name,
                 index + 1
             );
             try {
-                const response = await fetch(
-                    `/api/public-transport/${encodeURIComponent(provider.id)}/lines?refresh=1`,
-                    { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
-                );
-                if (!response.ok) {
-                    const html = await response.text();
-                    const documentFragment = new DOMParser().parseFromString(html, 'text/html');
-                    const message = documentFragment.querySelector('p')?.textContent?.trim();
-                    throw new Error(message || t('PUBLIC_TRANSPORT_VIEW.HTTP_ERROR', {
-                        status: response.status
-                    }));
-                }
+                const task = window.travelManagerPublicTransportRequests.request({
+                    provider: provider.id,
+                    screen: 'lines',
+                    refresh: true
+                });
+                window.travelManagerPublicTransportRequests.setForeground(task.key, !background);
+                await task.promise;
             } catch (error) {
+                if (cancelled) break;
                 errors.push(`${provider.name}: ${error.message}`);
             }
         }
 
+        window.removeEventListener('travel-manager:public-transport-download-background', moveToBackground);
+        window.removeEventListener('travel-manager:public-transport-download-cancel', cancelBatch);
         button.disabled = false;
         window.travelManagerDownloadStatus?.finish(
             errors.length
@@ -594,6 +704,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 })
                 : ''
         );
+        setProviderSelectionMode(false);
     };
 
     const loadRoot = (root) => {
@@ -620,8 +731,12 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         items.forEach((item) => {
             const value = normalize(item.dataset.search);
-            item.hidden = !words.every((word) => value.includes(word));
+            const outsideMode = item.dataset.publicTransportMode
+                && item.dataset.publicTransportMode !== state.transportMode;
+            item.hidden = outsideMode || !words.every((word) => value.includes(word));
         });
+
+        if (screen === 'carriers') syncCarrierRegions();
 
         const groupSelector = screen === 'lines'
             ? '.public-transport-lines__group'
@@ -821,10 +936,33 @@ document.addEventListener('travel-manager:views-ready', () => {
     });
 
     view.addEventListener('click', (event) => {
-        const refreshAll = event.target.closest('[data-public-transport-refresh-all]');
+        const selectProviders = event.target.closest('[data-public-transport-select-providers]');
+        if (selectProviders) {
+            setProviderSelectionMode(true);
+            return;
+        }
 
-        if (refreshAll) {
-            refreshAllProviders(refreshAll);
+        if (event.target.closest('[data-public-transport-select-all]')) {
+            providerTiles().forEach((tile) => state.selectedProviders.add(
+                tile.dataset.publicTransportProvider
+            ));
+            syncProviderSelection();
+            return;
+        }
+
+        const updateSelected = event.target.closest('[data-public-transport-update-selected]');
+        if (updateSelected) {
+            refreshProviders(
+                providerTiles().filter((tile) => state.selectedProviders.has(
+                    tile.dataset.publicTransportProvider
+                )),
+                updateSelected
+            );
+            return;
+        }
+
+        if (event.target.closest('[data-public-transport-cancel-selection]')) {
+            setProviderSelectionMode(false);
             return;
         }
 
@@ -836,6 +974,16 @@ document.addEventListener('travel-manager:views-ready', () => {
         const provider = event.target.closest('[data-public-transport-provider]');
 
         if (provider) {
+            if (state.selectingProviders) {
+                const providerId = provider.dataset.publicTransportProvider;
+                if (state.selectedProviders.has(providerId)) {
+                    state.selectedProviders.delete(providerId);
+                } else {
+                    state.selectedProviders.add(providerId);
+                }
+                syncProviderSelection();
+                return;
+            }
             state.provider = provider.dataset.publicTransportProvider;
             state.root = 'lines';
             state.history = [];
@@ -856,7 +1004,11 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         if (event.target.closest('[data-public-transport-refresh]')) {
-            loadScreen(state.current.screen, state.current.url, false, true);
+            window.travelManagerDownloadStatus?.show(state.provider, 'view');
+            loadScreen(state.current.screen, state.current.url, false, true)
+                .then((loaded) => window.travelManagerDownloadStatus?.finish(
+                    loaded ? '' : t('PUBLIC_TRANSPORT_VIEW.LOAD_DATA_FAILED')
+                ));
             return;
         }
 
@@ -926,6 +1078,17 @@ document.addEventListener('travel-manager:views-ready', () => {
             return;
         }
 
+        if (event.target.closest('[data-public-transport-download-background]')) {
+            window.travelManagerPublicTransportRequests?.backgroundProvider(state.provider);
+            window.travelManagerNavigation?.leavePublicTransport();
+            return;
+        }
+
+        if (event.target.closest('[data-public-transport-download-cancel]')) {
+            fetch(`${endpoint('cancel')}`, { method: 'POST' }).finally(showCarriers);
+            return;
+        }
+
         if (event.target.closest('[data-public-transport-retry]')) {
             loadScreen(state.current.screen, state.current.url, false);
             return;
@@ -978,4 +1141,24 @@ document.addEventListener('travel-manager:views-ready', () => {
     });
 
     showHeader('carriers');
+    applyTransportMode(state.transportMode);
+    content.scrollTo({ top: 0, left: 0 });
+    view.scrollTop = 0;
+    appContent?.scrollTo({ top: 0, left: 0 });
+    document.addEventListener('travel-manager:app-view-changed', (event) => {
+        if (event.detail?.view !== 'public-transport') return;
+        const nextMode = event.detail?.publicTransportMode === 'rail' ? 'rail' : 'city';
+        if (nextMode !== state.transportMode || state.current.screen !== 'carriers') {
+            state.transportMode = nextMode;
+            showCarriers();
+        } else {
+            applyTransportMode(nextMode);
+        }
+        appContent?.scrollTo({ top: 0, left: 0 });
+    });
+    window.addEventListener('travel-manager:public-transport-download-background', (event) => {
+        if (event.detail?.origin === 'view') {
+            window.travelManagerNavigation?.leavePublicTransport();
+        }
+    });
 });

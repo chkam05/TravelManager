@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/map.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/favourites.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/favourites_tags.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/views/layers.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/car_profiles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/my_routes.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/fuel_cost.css') }}">
@@ -25,6 +26,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/views/appearance.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/legend_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/layer_details.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/layer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/place_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/route_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/car_details.css') }}">
@@ -43,6 +45,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/public_transport_announcement.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/download_status.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/color_picker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/layer_name_editor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common_light.css') }}" data-theme-stylesheet="light"{% if appearance.theme != 'light' %} disabled{% endif %}>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common_dark.css') }}" data-theme-stylesheet="dark"{% if appearance.theme != 'dark' %} disabled{% endif %}>
@@ -66,6 +69,7 @@
                 {% include 'headers/car_profiles.html' %}
                 {% include 'headers/favourites_tags.html' %}
                 {% include 'headers/favourites.html' %}
+                {% include 'headers/layers.html' %}
                 {% include 'headers/my_routes.html' %}
                 {% include 'headers/fuel_cost.html' %}
                 {% include 'headers/public_transport.html' %}
@@ -80,7 +84,7 @@
                     {% if not loop.first %}<div class="side-menu__separator" role="separator"></div>{% endif %}
                     {% for item in section['items'] %}
                         {% set navigation_type, navigation_target = item.url.split(':', 1) %}
-                        <button class="side-menu__item{% if item.url == 'view:' ~ initial_view %} side-menu__item--active{% endif %}" {% if navigation_type == 'view' %}data-navigation-view="{{ navigation_target }}"{% else %}data-navigation-action="{{ navigation_target }}"{% endif %} type="button">
+                        <button class="side-menu__item{% if item.url == 'view:' ~ initial_view %} side-menu__item--active{% endif %}" {% if navigation_type == 'view' %}data-navigation-view="{{ navigation_target }}"{% elif navigation_type == 'transport' %}data-navigation-view="public-transport" data-public-transport-mode="{{ navigation_target }}"{% else %}data-navigation-action="{{ navigation_target }}"{% endif %} type="button">
                             <i class="side-menu__icon" data-lucide="{{ item.icon }}" aria-hidden="true"></i>
                             <span>{{ t(item.name_key) }}</span>
                         </button>
@@ -91,6 +95,7 @@
         <div id="place-details-panel-container" data-panel-url="{{ url_for('ViewController.place_details_panel') }}"></div>
         <div id="legend-details-panel-container" data-panel-url="{{ url_for('ViewController.legend_details_panel') }}"></div>
         <div id="layer-details-panel-container" data-panel-url="{{ url_for('ViewController.layer_details_panel') }}"></div>
+        <div id="layer-panel-container" data-panel-url="{{ url_for('ViewController.layer_panel') }}"></div>
         <div id="route-details-panel-container" data-panel-url="{{ url_for('ViewController.route_details_panel') }}"></div>
         <div id="car-details-panel-container" data-panel-url="{{ url_for('ViewController.car_details_panel') }}"></div>
         <div id="search-results-panel-container" data-panel-url="{{ url_for('ViewController.search_results_panel') }}"></div>
@@ -103,6 +108,7 @@
             <section class="app-view{% if initial_view == 'map' %} app-view--active{% endif %}" data-app-view="map" data-view-url="{{ url_for('ViewController.map_view') }}"{% if initial_view != 'map' %} hidden{% endif %}></section>
             <section class="app-view" data-app-view="favourites" data-view-url="{{ url_for('ViewController.favourites_view') }}" hidden></section>
             <section class="app-view" data-app-view="favourites-tags" data-view-url="{{ url_for('ViewController.favourites_tags_view') }}" hidden></section>
+            <section class="app-view" data-app-view="layers" data-view-url="{{ url_for('ViewController.layers_view') }}" hidden></section>
             <section class="app-view" data-app-view="car-profiles" data-view-url="{{ url_for('ViewController.car_profiles_view') }}" hidden></section>
             <section class="app-view" data-app-view="my-routes" data-view-url="{{ url_for('ViewController.my_routes_view') }}" hidden></section>
             <section class="app-view" data-app-view="fuel-cost" data-view-url="{{ url_for('ViewController.fuel_cost_view') }}" hidden></section>
@@ -129,21 +135,32 @@
     <script src="{{ url_for('static', filename='js/dialogs/public_transport_announcement.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/download_status.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/color_picker.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dialogs/layer_name_editor.js') }}"></script>
     <script src="{{ url_for('static', filename='js/favourites.js') }}"></script>
     <script src="{{ url_for('static', filename='js/car_profiles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/routes.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/geometry.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/renderer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/store.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/editor_state.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers/draft.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/legend_details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/layer_details.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/panels/layer.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/route_details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/car_details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/search_results.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/place_details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/components/route_variant_dropdown.js') }}"></script>
     <script src="{{ url_for('static', filename='js/components/public_transport_provider_dropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/public_transport_requests.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/public_transport_line_tiles.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/public_transport_line_sort.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/public_transport.js') }}"></script>
     <script src="{{ url_for('static', filename='js/panels/public_transport_vehicle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/favourites.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/favourites_tags.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/views/layers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/car_profiles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/my_routes.js') }}"></script>
     <script src="{{ url_for('static', filename='js/views/fuel_cost.js') }}"></script>

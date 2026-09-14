@@ -219,3 +219,32 @@
     font-size: 0.86rem;
     font-weight: 750;
 }
+
+.layer-details-panel__custom-option {
+    grid-template-columns: auto minmax(0, 1fr) 34px;
+}
+
+.layer-details-panel__custom-edit {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    border-color: var(--border-color);
+    background: var(--control-background);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.layer-details-panel__custom-edit:hover,
+.layer-details-panel__custom-edit:focus-visible {
+    background: var(--control-hover);
+}
+
+.layer-details-panel__custom-edit svg {
+    width: 16px;
+    height: 16px;
+}

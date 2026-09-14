@@ -1,102 +1,18 @@
-document.addEventListener('travel-manager:views-ready', () => {
-    const layer = document.querySelector('#dialog-layer');
-    const dialog = document.querySelector('#color-picker-dialog');
-    const canvas = dialog?.querySelector('[data-color-picker-canvas]');
-    const hueInput = dialog?.querySelector('[data-color-picker-hue]');
-    const hexInput = dialog?.querySelector('[data-color-picker-hex]');
-    const redInput = dialog?.querySelector('[data-color-picker-r]');
-    const greenInput = dialog?.querySelector('[data-color-picker-g]');
-    const blueInput = dialog?.querySelector('[data-color-picker-b]');
-    const preview = dialog?.querySelector('[data-color-picker-preview]');
-    const cancelButtons = dialog?.querySelectorAll('[data-color-picker-cancel]');
-    const context = canvas?.getContext('2d');
-    let hue = 207;
-    let saturation = 0.72;
-    let value = 0.68;
-    let resolveResult = null;
-
-    if (!layer || !dialog || !canvas || !context || !hueInput || !hexInput || !redInput || !greenInput || !blueInput || !preview || !cancelButtons?.length) return;
-
-    const clamp = (number, min, max) => Math.min(max, Math.max(min, Number(number) || 0));
-    const rgbToHex = (red, green, blue) => `#${[red, green, blue].map((item) => clamp(Math.round(item), 0, 255).toString(16).padStart(2, '0')).join('').toUpperCase()}`;
-    const hexToRgb = (hex) => {
-        const match = /^#?([0-9a-f]{6})$/i.exec(String(hex || '').trim());
-        if (!match) return null;
-        const valueNumber = Number.parseInt(match[1], 16);
-        return { red: valueNumber >> 16, green: (valueNumber >> 8) & 255, blue: valueNumber & 255 };
-    };
-    const hsvToRgb = (h, s, v) => {
-        const chroma = v * s;
-        const part = (h / 60) % 6;
-        const x = chroma * (1 - Math.abs((part % 2) - 1));
-        const offset = v - chroma;
-        const values = part < 1 ? [chroma, x, 0] : part < 2 ? [x, chroma, 0] : part < 3 ? [0, chroma, x] : part < 4 ? [0, x, chroma] : part < 5 ? [x, 0, chroma] : [chroma, 0, x];
-        return values.map((item) => Math.round((item + offset) * 255));
-    };
-    const rgbToHsv = (red, green, blue) => {
-        const r = red / 255; const g = green / 255; const b = blue / 255;
-        const max = Math.max(r, g, b); const min = Math.min(r, g, b); const delta = max - min;
-        let nextHue = 0;
-        if (delta && max === r) nextHue = 60 * (((g - b) / delta) % 6);
-        else if (delta && max === g) nextHue = 60 * (((b - r) / delta) + 2);
-        else if (delta) nextHue = 60 * (((r - g) / delta) + 4);
-        return { hue: (nextHue + 360) % 360, saturation: max ? delta / max : 0, value: max };
-    };
-    const drawCanvas = () => {
-        const width = canvas.width; const height = canvas.height;
-        context.fillStyle = `hsl(${hue}, 100%, 50%)`;
-        context.fillRect(0, 0, width, height);
-        const white = context.createLinearGradient(0, 0, width, 0);
-        white.addColorStop(0, '#fff'); white.addColorStop(1, 'rgba(255,255,255,0)');
-        context.fillStyle = white; context.fillRect(0, 0, width, height);
-        const black = context.createLinearGradient(0, 0, 0, height);
-        black.addColorStop(0, 'rgba(0,0,0,0)'); black.addColorStop(1, '#000');
-        context.fillStyle = black; context.fillRect(0, 0, width, height);
-        const x = saturation * width; const y = (1 - value) * height;
-        context.beginPath(); context.arc(x, y, 7, 0, Math.PI * 2);
-        context.lineWidth = 3; context.strokeStyle = '#fff'; context.stroke();
-        context.beginPath(); context.arc(x, y, 9, 0, Math.PI * 2);
-        context.lineWidth = 1; context.strokeStyle = '#20242a'; context.stroke();
-    };
-    const syncFromHsv = () => {
-        const [red, green, blue] = hsvToRgb(hue, saturation, value);
-        const hex = rgbToHex(red, green, blue);
-        hexInput.value = hex; redInput.value = red; greenInput.value = green; blueInput.value = blue;
-        hueInput.value = String(Math.round(hue)); preview.style.background = hex; drawCanvas();
-    };
-    const syncFromRgb = () => {
-        const red = clamp(redInput.value, 0, 255); const green = clamp(greenInput.value, 0, 255); const blue = clamp(blueInput.value, 0, 255);
-        redInput.value = red; greenInput.value = green; blueInput.value = blue;
-        const hsv = rgbToHsv(red, green, blue); hue = hsv.hue; saturation = hsv.saturation; value = hsv.value;
-        syncFromHsv();
-    };
-    const setHex = (hex) => {
-        const rgb = hexToRgb(hex); if (!rgb) return false;
-        redInput.value = rgb.red; greenInput.value = rgb.green; blueInput.value = rgb.blue; syncFromRgb(); return true;
-    };
-    const pickCanvas = (event) => {
-        const bounds = canvas.getBoundingClientRect();
-        saturation = clamp((event.clientX - bounds.left) / bounds.width, 0, 1);
-        value = 1 - clamp((event.clientY - bounds.top) / bounds.height, 0, 1);
-        syncFromHsv();
-    };
-    const finish = (result) => {
-        dialog.setAttribute('aria-hidden', 'true'); layer.classList.remove('dialog-layer--open'); layer.setAttribute('aria-hidden', 'true');
-        const resolve = resolveResult; resolveResult = null; resolve?.(result);
-    };
-    const show = (initialColor = '#1F6FAE') => {
-        if (resolveResult) resolveResult(null);
-        setHex(initialColor); dialog.setAttribute('aria-hidden', 'false'); layer.classList.add('dialog-layer--open'); layer.setAttribute('aria-hidden', 'false');
-        return new Promise((resolve) => { resolveResult = resolve; window.requestAnimationFrame(() => hexInput.focus()); });
-    };
-
-    hueInput.addEventListener('input', () => { hue = clamp(hueInput.value, 0, 359); syncFromHsv(); });
-    hexInput.addEventListener('input', () => { if (setHex(hexInput.value)) hexInput.setCustomValidity(''); else hexInput.setCustomValidity(window.i18n.t('DIALOG_COLOR_PICKER.INVALID_HEX')); });
-    [redInput, greenInput, blueInput].forEach((input) => input.addEventListener('input', syncFromRgb));
-    canvas.addEventListener('pointerdown', (event) => { canvas.setPointerCapture(event.pointerId); pickCanvas(event); });
-    canvas.addEventListener('pointermove', (event) => { if (canvas.hasPointerCapture(event.pointerId)) pickCanvas(event); });
-    dialog.addEventListener('submit', (event) => { event.preventDefault(); if (setHex(hexInput.value)) finish(hexInput.value.toUpperCase()); });
-    cancelButtons.forEach((button) => button.addEventListener('click', () => finish(null)));
-    layer.addEventListener('click', (event) => { if (event.target === layer && resolveResult) finish(null); });
-    window.travelManagerColorPicker = { show };
+document.addEventListener('travel-manager:views-ready',()=>{
+ const layer=document.querySelector('#dialog-layer'),dialog=document.querySelector('#color-picker-dialog'),canvas=dialog?.querySelector('[data-color-picker-canvas]'),hueInput=dialog?.querySelector('[data-color-picker-hue]'),alphaSlider=dialog?.querySelector('[data-color-picker-alpha-slider]'),hexInput=dialog?.querySelector('[data-color-picker-hex]'),redInput=dialog?.querySelector('[data-color-picker-r]'),greenInput=dialog?.querySelector('[data-color-picker-g]'),blueInput=dialog?.querySelector('[data-color-picker-b]'),alphaInput=dialog?.querySelector('[data-color-picker-a]'),preview=dialog?.querySelector('[data-color-picker-preview]'),cancelButtons=dialog?.querySelectorAll('[data-color-picker-cancel]'),context=canvas?.getContext('2d');
+ if(!layer||!dialog||!canvas||!context||!hueInput||!alphaSlider||!hexInput||!redInput||!greenInput||!blueInput||!alphaInput||!preview||!cancelButtons?.length)return;
+ let hue=207,saturation=.72,value=.68,alpha=255,resolveResult=null,includeAlpha=false;
+ const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number(n)||0)),byteHex=n=>clamp(Math.round(n),0,255).toString(16).padStart(2,'0').toUpperCase();
+ const rgbaToHex=(r,g,b,a,withAlpha=includeAlpha||a<255)=>`#${byteHex(r)}${byteHex(g)}${byteHex(b)}${withAlpha?byteHex(a):''}`;
+ const hexToRgba=hex=>{const match=/^#?([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(String(hex||'').trim());if(!match)return null;const n=Number.parseInt(match[1],16);return{red:n>>16,green:(n>>8)&255,blue:n&255,alpha:match[2]?Number.parseInt(match[2],16):255,hasAlpha:Boolean(match[2])}};
+ const hsvToRgb=(h,s,v)=>{const c=v*s,p=(h/60)%6,x=c*(1-Math.abs((p%2)-1)),m=v-c,a=p<1?[c,x,0]:p<2?[x,c,0]:p<3?[0,c,x]:p<4?[0,x,c]:p<5?[x,0,c]:[c,0,x];return a.map(item=>Math.round((item+m)*255))};
+ const rgbToHsv=(red,green,blue)=>{const r=red/255,g=green/255,b=blue/255,max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;let h=0;if(d&&max===r)h=60*(((g-b)/d)%6);else if(d&&max===g)h=60*(((b-r)/d)+2);else if(d)h=60*(((r-g)/d)+4);return{hue:(h+360)%360,saturation:max?d/max:0,value:max}};
+ const draw=()=>{const w=canvas.width,h=canvas.height;context.fillStyle=`hsl(${hue},100%,50%)`;context.fillRect(0,0,w,h);const white=context.createLinearGradient(0,0,w,0);white.addColorStop(0,'#fff');white.addColorStop(1,'rgba(255,255,255,0)');context.fillStyle=white;context.fillRect(0,0,w,h);const black=context.createLinearGradient(0,0,0,h);black.addColorStop(0,'rgba(0,0,0,0)');black.addColorStop(1,'#000');context.fillStyle=black;context.fillRect(0,0,w,h);const x=saturation*w,y=(1-value)*h;context.beginPath();context.arc(x,y,7,0,Math.PI*2);context.lineWidth=3;context.strokeStyle='#fff';context.stroke();context.beginPath();context.arc(x,y,9,0,Math.PI*2);context.lineWidth=1;context.strokeStyle='#20242a';context.stroke()};
+ const sync=()=>{const [r,g,b]=hsvToRgb(hue,saturation,value);redInput.value=r;greenInput.value=g;blueInput.value=b;alphaInput.value=alpha;alphaSlider.value=alpha;hueInput.value=Math.round(hue);hexInput.value=rgbaToHex(r,g,b,alpha);preview.style.background=`rgba(${r},${g},${b},${alpha/255})`;alphaSlider.style.background=`linear-gradient(to right,rgba(${r},${g},${b},0),rgb(${r},${g},${b}))`;draw()};
+ const syncRgb=()=>{const r=clamp(redInput.value,0,255),g=clamp(greenInput.value,0,255),b=clamp(blueInput.value,0,255);alpha=clamp(alphaInput.value,0,255);const hsv=rgbToHsv(r,g,b);hue=hsv.hue;saturation=hsv.saturation;value=hsv.value;sync()};
+ const setHex=hex=>{const rgba=hexToRgba(hex);if(!rgba)return false;includeAlpha=rgba.hasAlpha;alpha=rgba.alpha;redInput.value=rgba.red;greenInput.value=rgba.green;blueInput.value=rgba.blue;alphaInput.value=rgba.alpha;syncRgb();return true};
+ const pick=event=>{const bounds=canvas.getBoundingClientRect();saturation=clamp((event.clientX-bounds.left)/bounds.width,0,1);value=1-clamp((event.clientY-bounds.top)/bounds.height,0,1);sync()};
+ const finish=result=>{dialog.setAttribute('aria-hidden','true');layer.classList.remove('dialog-layer--open');layer.setAttribute('aria-hidden','true');const resolve=resolveResult;resolveResult=null;resolve?.(result)};
+ const show=(initialColor='#1F6FAE')=>{if(resolveResult)resolveResult(null);includeAlpha=/^#[0-9a-f]{8}$/i.test(initialColor);setHex(initialColor);dialog.setAttribute('aria-hidden','false');layer.classList.add('dialog-layer--open');layer.setAttribute('aria-hidden','false');return new Promise(resolve=>{resolveResult=resolve;requestAnimationFrame(()=>hexInput.focus())})};
+ hueInput.oninput=()=>{hue=clamp(hueInput.value,0,359);sync()};alphaSlider.oninput=()=>{alpha=clamp(alphaSlider.value,0,255);includeAlpha=true;sync()};alphaInput.oninput=()=>{alpha=clamp(alphaInput.value,0,255);includeAlpha=true;sync()};hexInput.oninput=()=>{if(setHex(hexInput.value))hexInput.setCustomValidity('');else hexInput.setCustomValidity(window.i18n.t('DIALOG_COLOR_PICKER.INVALID_HEX'))};[redInput,greenInput,blueInput].forEach(input=>input.oninput=syncRgb);canvas.onpointerdown=event=>{canvas.setPointerCapture(event.pointerId);pick(event)};canvas.onpointermove=event=>{if(canvas.hasPointerCapture(event.pointerId))pick(event)};dialog.onsubmit=event=>{event.preventDefault();const rgba=hexToRgba(hexInput.value);if(rgba)finish(rgbaToHex(rgba.red,rgba.green,rgba.blue,rgba.alpha,includeAlpha))};cancelButtons.forEach(button=>button.onclick=()=>finish(null));layer.addEventListener('pointerdown',event=>{if(event.target===layer&&resolveResult)finish(null)});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&resolveResult){event.preventDefault();event.stopImmediatePropagation();finish(null)}});window.travelManagerColorPicker={show};
 });

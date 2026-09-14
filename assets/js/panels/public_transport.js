@@ -17,6 +17,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     const allLinesButton = panel?.querySelector('[data-public-transport-panel-all-lines]');
     const emptyState = panel?.querySelector('[data-public-transport-panel-empty]');
     const updateButton = panel?.querySelector('[data-public-transport-panel-update]');
+    const modeButtons = Array.from(panel?.querySelectorAll('[data-public-transport-panel-mode]') || []);
+    const lineSort = window.travelManagerPublicTransportLineSort?.enhance(
+        panel?.querySelector('[data-public-transport-panel-line-sort]'),
+        () => view('lines')
+    );
 
     if (!panel || !content || !providerSelect || !title || !backButton || !mapButton || !closeButton) return;
 
@@ -30,7 +35,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         stopVisible: false, vehiclesVisible: false,
         vehicleBackgroundUpdates: false, vehicleUpdateInterval: 15,
         vehicleTimer: null, vehicleRequestActive: false,
-        lineMetadata: null, lineUrl: ''
+        lineMetadata: null, lineUrl: '', requestKey: null, transportMode: 'city',
+        providersByMode: { city: '', rail: '' }
     };
     const view = (screen = state.screen) => content.querySelector(`[data-public-transport-panel-view="${screen}"]`);
     const endpoint = (screen) => `/api/public-transport/${state.provider}/${screen}`;
@@ -38,8 +44,31 @@ document.addEventListener('travel-manager:views-ready', () => {
         method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
     }).catch(() => {});
     const saveProvider = (provider) => fetch('/api/settings/public-transport', {
-        method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider })
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider, mode: state.transportMode })
     }).catch(() => {});
+    const providerMode = (provider) => String(provider || '').startsWith('rail_') ? 'rail' : 'city';
+    const applyTransportMode = (mode, selectFirst = false) => {
+        state.transportMode = mode === 'rail' ? 'rail' : 'city';
+        modeButtons.forEach((button) => {
+            const active = button.dataset.publicTransportPanelMode === state.transportMode;
+            button.classList.toggle('public-transport-panel__mode-button--active', active);
+            button.setAttribute('aria-checked', String(active));
+        });
+        providerDropdown?.setMode(state.transportMode);
+        const current = providerSelect.selectedOptions[0];
+        if (selectFirst || !current || (current.dataset.mode || 'city') !== state.transportMode) {
+            const preferred = state.providersByMode[state.transportMode];
+            const first = Array.from(providerSelect.options).find(
+                (option) => option.value === preferred
+                    && (option.dataset.mode || 'city') === state.transportMode
+            ) || Array.from(providerSelect.options).find(
+                (option) => (option.dataset.mode || 'city') === state.transportMode
+            );
+            if (first) providerSelect.value = first.value;
+        }
+        providerDropdown?.sync();
+    };
     const metadataFrom = (fragment) => {
         try { return JSON.parse(fragment.querySelector('[data-public-transport-metadata]')?.textContent || '{}'); }
         catch (error) { return {}; }
@@ -228,6 +257,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         host.hidden = false;
         searchInput.closest('label').hidden = false;
         searchInput.value = '';
+        window.travelManagerSizePublicTransportLineTiles?.(content);
+        lineSort?.apply();
     };
     const renderNoData = () => {
         state.screen = 'lines'; state.url = ''; state.history = []; state.metadata = {};
@@ -337,16 +368,23 @@ document.addEventListener('travel-manager:views-ready', () => {
         state.url = url;
         status(t('PUBLIC_TRANSPORT_VIEW.LOADING_DATA'));
         updateHeader();
+        const identity = JSON.stringify([state.provider, screen, url, Boolean(refresh)]);
+        window.travelManagerPublicTransportRequests?.setForeground(state.requestKey, false);
         try {
-            const params = new URLSearchParams();
-            if (url) params.set('url', url);
-            if (refresh) params.set('refresh', '1');
-            const response = await fetch(`${endpoint(screen)}${params.size ? `?${params}` : ''}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-            if (!response.ok) throw new Error(t('PUBLIC_TRANSPORT_VIEW.LOAD_DATA_FAILED'));
+            const task = window.travelManagerPublicTransportRequests.request({
+                provider: state.provider, screen, url, refresh
+            });
+            state.requestKey = task.key;
+            window.travelManagerPublicTransportRequests.setForeground(task.key, true);
+            const html = await task.promise;
+            if (identity !== JSON.stringify([state.provider, state.screen, state.url, Boolean(refresh)])) return false;
             const fragment = document.createElement('div');
-            fragment.innerHTML = await response.text();
+            fragment.innerHTML = html;
             state.fragment = fragment; state.metadata = metadataFrom(fragment); render(); return true;
-        } catch (error) { status(error.message); return false; }
+        } catch (error) {
+            if (identity === JSON.stringify([state.provider, state.screen, state.url, Boolean(refresh)])) status(error.message);
+            return false;
+        }
     }
     const showCurrentRoute = () => {
         const metadata = state.lineMetadata || {};
@@ -365,7 +403,9 @@ document.addEventListener('travel-manager:views-ready', () => {
     const open = async (options = {}) => {
         panel.classList.add('public-transport-panel--open'); panel.setAttribute('aria-hidden', 'false');
         window.travelManagerLegendDetailsPanel?.close(); window.travelManagerLayerDetailsPanel?.close();
+        if (window.travelManagerDownloadStatus?.reopen('panel')) return;
         state.provider = options.provider || state.provider || providerSelect.value;
+        applyTransportMode(options.mode || providerMode(state.provider));
         if ([...providerSelect.options].some((option) => option.value === state.provider)) providerSelect.value = state.provider;
         providerDropdown?.sync();
         saveProvider(state.provider); state.history = []; clearRoute(); clearStop(); clearVehicles();
@@ -401,16 +441,25 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
     };
     const close = () => {
+        window.travelManagerPublicTransportRequests?.setForeground(state.requestKey, false);
         panel.classList.remove('public-transport-panel--open'); panel.setAttribute('aria-hidden', 'true');
         clearRoute(); clearStop(); clearVehicles();
         state.lineMetadata = null; state.lineUrl = '';
     };
     providerSelect.addEventListener('change', () => {
-        state.provider = providerSelect.value; saveProvider(state.provider); state.history = []; clearRoute(); clearStop(); clearVehicles();
+        state.provider = providerSelect.value;
+        state.providersByMode[state.transportMode] = state.provider;
+        saveProvider(state.provider); state.history = []; clearRoute(); clearStop(); clearVehicles();
         hasLocalData().then((available) => available ? load('lines') : renderNoData());
     });
+    modeButtons.forEach((button) => button.addEventListener('click', () => {
+        const mode = button.dataset.publicTransportPanelMode;
+        if (mode === state.transportMode) return;
+        applyTransportMode(mode, true);
+        providerSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    }));
     updateButton?.addEventListener('click', async () => {
-        window.travelManagerDownloadStatus?.show(state.provider);
+        window.travelManagerDownloadStatus?.show(state.provider, 'panel');
         try {
             const loaded = await load('lines', '', false, true);
             if (!loaded) {
@@ -483,8 +532,15 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (state.vehiclesVisible) { clearVehicles(); return; }
         await refreshVehicles(false);
     });
-    allLinesButton?.addEventListener('click', () => load('stop-lines', state.url, true));
+    allLinesButton?.addEventListener('click', () => load(
+        'stop-lines',
+        state.metadata.stop_lines_url || state.url,
+        true
+    ));
     closeButton.addEventListener('click', close);
+    window.addEventListener('travel-manager:public-transport-download-background', (event) => {
+        if (event.detail?.origin === 'panel') close();
+    });
 
     // Prevent panel content from scrolling while a select dropdown is being scrolled.
     content.addEventListener('wheel', (event) => {
@@ -510,8 +566,23 @@ document.addEventListener('travel-manager:views-ready', () => {
         state.vehicleUpdateInterval = Math.min(120, Math.max(5, Number(data?.ui?.public_transport_vehicle_update_interval) || 15));
         return fetch('/api/settings/public-transport');
     }).then((response) => response.json()).then((data) => {
-        const provider = String(data?.provider || '');
-        if ([...providerSelect.options].some((option) => option.value === provider)) providerSelect.value = provider;
+        state.providersByMode = {
+            city: String(data?.providers?.city || ''),
+            rail: String(data?.providers?.rail || '')
+        };
+        const rememberedMode = data?.mode === 'rail' ? 'rail' : 'city';
+        const provider = String(
+            state.providersByMode[rememberedMode] || data?.provider || ''
+        );
+        if ([...providerSelect.options].some((option) => option.value === provider)) {
+            providerSelect.value = provider;
+        } else {
+            const firstCity = Array.from(providerSelect.options).find(
+                (option) => (option.dataset.mode || 'city') === 'city'
+            );
+            if (firstCity) providerSelect.value = firstCity.value;
+        }
+        applyTransportMode(rememberedMode);
         providerDropdown?.sync();
         state.provider = providerSelect.value;
     }).catch(() => { state.provider = providerSelect.value; });

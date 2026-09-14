@@ -6,9 +6,21 @@ document.addEventListener('travel-manager:views-ready', () => {
     const icon = document.querySelector('#yesno-dialog-icon');
     const yesButton = dialog?.querySelector('[data-dialog-result="yes"]');
     const noButton = dialog?.querySelector('[data-dialog-result="no"]');
+    const cancelButton = dialog?.querySelector('[data-dialog-result="cancel"]');
     let resolveResult = null;
+    let unsaved = false;
+    let choiceInput = null;
 
-    if (!layer || !dialog || !title || !description || !icon || !yesButton || !noButton) {
+    if (
+        !layer ||
+        !dialog ||
+        !title ||
+        !description ||
+        !icon ||
+        !yesButton ||
+        !noButton ||
+        !cancelButton
+    ) {
         return;
     }
 
@@ -18,16 +30,53 @@ document.addEventListener('travel-manager:views-ready', () => {
         layer.setAttribute('aria-hidden', 'true');
         const resolve = resolveResult;
         resolveResult = null;
-        resolve?.(result);
+        const choice = choiceInput;
+        choiceInput = null;
+        resolve?.(choice ? (result === true ? choice.value : null) : result);
     };
 
-    const show = ({ title: nextTitle, description: nextDescription, icon: nextIcon = 'warning' }) => {
+    const show = ({
+        title: nextTitle,
+        description: nextDescription,
+        icon: nextIcon = 'warning',
+        saveDiscardCancel = false,
+        yesLabel = null,
+        noLabel = null,
+        information = false,
+        choices = null,
+    }) => {
         if (resolveResult) {
-            resolveResult(false);
+            resolveResult(unsaved ? 'cancel' : false);
         }
 
-        title.textContent = nextTitle || window.i18n.t('DIALOG_YES_NO.CONFIRMATION');
+        unsaved = saveDiscardCancel;
+        yesButton.textContent =
+            yesLabel || window.i18n.t(unsaved ? 'COMMON.SAVE' : 'COMMON.YES');
+        noButton.textContent =
+            noLabel ||
+            window.i18n.t(unsaved ? 'LAYER_EDITOR.DISCARD' : 'COMMON.NO');
+        cancelButton.hidden = !unsaved;
+        noButton.hidden = information;
+        title.textContent =
+            nextTitle || window.i18n.t('DIALOG_YES_NO.CONFIRMATION');
         description.textContent = nextDescription || '';
+        choiceInput = null;
+        if (choices) {
+            choiceInput = document.createElement('select');
+            choiceInput.className = 'yesno-dialog__choice';
+            choiceInput.setAttribute(
+                'aria-label',
+                nextDescription || nextTitle
+            );
+            choices.forEach(([value, label]) => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = label;
+                choiceInput.append(option);
+            });
+            choiceInput.value = choices[0][0];
+            description.append(choiceInput);
+        }
         icon.className = `yesno-dialog__icon yesno-dialog__icon--${nextIcon}`;
         dialog.setAttribute('aria-hidden', 'false');
         layer.classList.add('dialog-layer--open');
@@ -35,22 +84,42 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         return new Promise((resolve) => {
             resolveResult = resolve;
-            window.requestAnimationFrame(() => noButton.focus());
+            window.requestAnimationFrame(() =>
+                (information
+                    ? yesButton
+                    : unsaved
+                      ? cancelButton
+                      : noButton
+                ).focus()
+            );
         });
     };
 
-    yesButton.addEventListener('click', () => finish(true));
-    noButton.addEventListener('click', () => finish(false));
+    yesButton.addEventListener('click', () => finish(unsaved ? 'save' : true));
+    noButton.addEventListener('click', () =>
+        finish(unsaved ? 'discard' : false)
+    );
+    cancelButton.addEventListener('click', () => finish('cancel'));
     layer.addEventListener('click', (event) => {
         if (event.target === layer && resolveResult) {
-            finish(false);
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            finish(unsaved ? 'cancel' : false);
         }
     });
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && resolveResult) {
-            finish(false);
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            finish(unsaved ? 'cancel' : false);
         }
     });
 
-    window.travelManagerDialogs = { yesNo: show };
+    window.travelManagerDialogs = {
+        ...(window.travelManagerDialogs || {}),
+        yesNo: show,
+        choose: show,
+        saveDiscardCancel: (options) =>
+            show({ ...options, saveDiscardCancel: true }),
+    };
 });

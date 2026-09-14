@@ -208,7 +208,17 @@ document.addEventListener('travel-manager:views-ready', () => {
     const mapDataLayer = L.layerGroup();
     const favouritesLayer = L.layerGroup();
     const routePointsLayer = L.layerGroup().addTo(map);
+    const customLayersLayer = L.layerGroup().addTo(map);
+    let visibleCustomLayerIds = null;
+    let editingCustomLayerId = null;
     let routeGeometryLayer = null;
+
+    const renderCustomLayers = window.travelManagerLayerRenderer.createCollection(
+        customLayersLayer,
+        map,
+        item => item.id !== editingCustomLayerId
+            && (!visibleCustomLayerIds || visibleCustomLayerIds.has(item.id))
+    );
 
     const appearanceColor = (property, fallback) => (
         getComputedStyle(document.body).getPropertyValue(property).trim() || fallback
@@ -1079,6 +1089,8 @@ document.addEventListener('travel-manager:views-ready', () => {
     });
 
     map.on('click', (event) => {
+        if (window.travelManagerLayerEditor?.isDrawing()) return;
+        if (window.travelManagerLayerEditor?.clearSelectionOnMapClick?.()) return;
         showPlaceFromCoordinates(event.latlng.lat, event.latlng.lng);
     });
 
@@ -1105,6 +1117,12 @@ document.addEventListener('travel-manager:views-ready', () => {
     document.addEventListener('travel-manager:layers-changed', (event) => {
         applyLayerState(event.detail || {});
     });
+    document.addEventListener('travel-manager:custom-layers-changed', renderCustomLayers);
+    document.addEventListener('travel-manager:custom-layer-editing-changed', event => {
+        editingCustomLayerId = event.detail?.id || null;
+        renderCustomLayers();
+    });
+    document.addEventListener('travel-manager:custom-layer-visibility-changed', event => { visibleCustomLayerIds = new Set(event.detail?.ids || []); renderCustomLayers(); });
 
     document.addEventListener('travel-manager:favourites-changed', (event) => {
         renderFavourites(event.detail?.favourites || []);
@@ -1420,4 +1438,5 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     window.travelManagerFavourites?.list().then(renderFavourites).catch(() => {});
+    renderCustomLayers();
 });

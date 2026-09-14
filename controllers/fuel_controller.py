@@ -49,10 +49,11 @@ class FuelController(BaseController):
     ) -> None:
         """Persists typed fuel and exchange rate models in settings."""
         storage = SettingsStorage()
-        settings = storage.load()
-        settings.fuel_data = fuel_data
-        settings.exchange_rates = exchange_rates
-        storage.save(settings)
+        with storage.transaction():
+            settings = storage.load()
+            settings.fuel_data = fuel_data
+            settings.exchange_rates = exchange_rates
+            storage.save(settings)
 
     @staticmethod
     def _now_iso() -> str:
@@ -396,19 +397,20 @@ class FuelController(BaseController):
             payload.get(SettingsDataModel.FIELD_SELECTED_EXCHANGE_RATE) or ''
         ).strip().upper()
         storage = SettingsStorage()
-        settings = storage.load()
-        available_rates = self._rate_payload(settings.exchange_rates)
+        with storage.transaction():
+            settings = storage.load()
+            available_rates = self._rate_payload(settings.exchange_rates)
 
-        if selected_exchange_rate == 'ORIGINAL':
-            selected_exchange_rate = SettingsDataModel.DEFAULT_SELECTED_EXCHANGE_RATE
-        elif selected_exchange_rate not in available_rates:
-            return jsonify({
-                'status': 'error',
-                'message': LanguageService.translate_current('FUEL_COST_VIEW.UNSUPPORTED_EXCHANGE_RATE')
-            }), 400
+            if selected_exchange_rate == 'ORIGINAL':
+                selected_exchange_rate = SettingsDataModel.DEFAULT_SELECTED_EXCHANGE_RATE
+            elif selected_exchange_rate not in available_rates:
+                return jsonify({
+                    'status': 'error',
+                    'message': LanguageService.translate_current('FUEL_COST_VIEW.UNSUPPORTED_EXCHANGE_RATE')
+                }), 400
 
-        settings.selected_exchange_rate = selected_exchange_rate
-        storage.save(settings)
+            settings.selected_exchange_rate = selected_exchange_rate
+            storage.save(settings)
 
         return jsonify({
             'status': 'ok',

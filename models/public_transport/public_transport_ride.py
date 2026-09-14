@@ -29,6 +29,11 @@ class PublicTransportRide(BaseDataModel):
     FIELD_VEHICLE_TYPE: ClassVar[str] = 'vehicle_type'
     FIELD_LATITUDE: ClassVar[str] = 'latitude'
     FIELD_LONGITUDE: ClassVar[str] = 'longitude'
+    FIELD_SCHEDULED_DEPARTURE_TIME: ClassVar[str] = 'scheduled_departure_time'
+    FIELD_DELAY_MINUTES: ClassVar[str] = 'delay_minutes'
+    FIELD_CANCELLED: ClassVar[str] = 'cancelled'
+    FIELD_REALTIME_UPDATED_AT: ClassVar[str] = 'realtime_updated_at'
+    FIELD_REALTIME_STALE: ClassVar[str] = 'realtime_stale'
 
     # Fields
     line: str
@@ -42,6 +47,11 @@ class PublicTransportRide(BaseDataModel):
     vehicle_type: str
     latitude: float | None
     longitude: float | None
+    scheduled_departure_time: time | None = None
+    delay_minutes: int | None = None
+    cancelled: bool = False
+    realtime_updated_at: str = ''
+    realtime_stale: bool = False
 
     #region Serialization
 
@@ -69,7 +79,13 @@ class PublicTransportRide(BaseDataModel):
             carrier=str(d.get(cls.FIELD_CARRIER) or ''),
             vehicle_type=str(d.get(cls.FIELD_VEHICLE_TYPE) or ''),
             latitude=parse_coordinate(d.get(cls.FIELD_LATITUDE), -90, 90),
-            longitude=parse_coordinate(d.get(cls.FIELD_LONGITUDE), -180, 180)
+            longitude=parse_coordinate(d.get(cls.FIELD_LONGITUDE), -180, 180),
+            scheduled_departure_time=parse_time(d.get(cls.FIELD_SCHEDULED_DEPARTURE_TIME)),
+            delay_minutes=(int(d[cls.FIELD_DELAY_MINUTES])
+                           if d.get(cls.FIELD_DELAY_MINUTES) is not None else None),
+            cancelled=bool(d.get(cls.FIELD_CANCELLED, False)),
+            realtime_updated_at=str(d.get(cls.FIELD_REALTIME_UPDATED_AT) or ''),
+            realtime_stale=bool(d.get(cls.FIELD_REALTIME_STALE, False))
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -88,7 +104,15 @@ class PublicTransportRide(BaseDataModel):
             self.FIELD_CARRIER: self.carrier,
             self.FIELD_VEHICLE_TYPE: self.vehicle_type,
             self.FIELD_LATITUDE: self.latitude,
-            self.FIELD_LONGITUDE: self.longitude
+            self.FIELD_LONGITUDE: self.longitude,
+            self.FIELD_SCHEDULED_DEPARTURE_TIME: (
+                self.scheduled_departure_time.isoformat(timespec='minutes')
+                if self.scheduled_departure_time else None
+            ),
+            self.FIELD_DELAY_MINUTES: self.delay_minutes,
+            self.FIELD_CANCELLED: self.cancelled,
+            self.FIELD_REALTIME_UPDATED_AT: self.realtime_updated_at,
+            self.FIELD_REALTIME_STALE: self.realtime_stale
         }
 
     #endregion Serialization

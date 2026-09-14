@@ -9,6 +9,7 @@
         'longitude': timetable.longitude,
         'show_stop_map': capabilities.show_stop_map,
         'show_platforms': capabilities.show_platforms,
+        'stop_lines_url': timetable.stop_lines_url,
         'dates': date_options
     }|tojson }}</script>
 
@@ -33,8 +34,10 @@
                     </header>
                     <div class="public-transport-line-stop__departures" id="public-transport-day-{{ loop.index0 }}">
                         {% for departure in day.departures %}
-                            <button type="button"{% if capabilities.show_ride and departure.url %} data-public-transport-action="ride" data-url="{{ departure.url }}" title="{{ t('PUBLIC_TRANSPORT_RIDE.SHOW_RIDE') }}"{% endif %}{% if not capabilities.show_ride or not departure.url %} disabled{% endif %}>
-                                <span>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</span>
+                            <button type="button"{% if capabilities.show_ride and departure.url %} data-public-transport-action="ride" data-url="{{ departure.url }}" title="{{ t('PUBLIC_TRANSPORT_RIDE.SHOW_RIDE') }}{% if departure.realtime_updated_at %} · {{ t('PUBLIC_TRANSPORT_RIDE.LAST_UPDATE', value=departure.realtime_updated_at) }}{% endif %}"{% endif %}{% if not capabilities.show_ride or not departure.url %} disabled{% endif %}>
+                                <span{% if departure.cancelled %} class="public-transport-realtime--cancelled"{% endif %}>{{ departure.departure_time.strftime('%H:%M') if departure.departure_time else '—' }}</span>
+                                {% if departure.scheduled_departure_time %}<small class="public-transport-realtime__scheduled">{{ departure.scheduled_departure_time.strftime('%H:%M') }}</small>{% endif %}
+                                {% if departure.cancelled %}<small>{{ t('PUBLIC_TRANSPORT_RIDE.CANCELLED') }}</small>{% elif departure.delay_minutes is not none %}<small>{{ t('PUBLIC_TRANSPORT_RIDE.DELAY', value=departure.delay_minutes) }}</small>{% elif departure.realtime_stale %}<small>{{ t('PUBLIC_TRANSPORT_RIDE.DATA_EXPIRED') }}</small>{% endif %}
                                 {% if departure.variant or (capabilities.show_high_floor and departure.is_high_floor) %}
                                     <span class="public-transport-line-stop__departure-meta">
                                         {% if departure.variant %}<small title="{{ departure.variant }}">{{ variant_codes.get(departure.variant, departure.variant) }}</small>{% endif %}

@@ -52,7 +52,7 @@
 
 .public-transport-panel__header {
     display: grid;
-    grid-template-columns: auto minmax(0,1fr) auto auto auto auto;
+    grid-template-columns: auto minmax(0,1fr) auto auto auto auto auto;
     align-items: center;
     gap: 8px;
     min-height: 56px;
@@ -75,15 +75,50 @@
 }
 
 .public-transport-panel__header [data-public-transport-panel-map] {
-    grid-column: 3;
-}
-
-.public-transport-panel__header [data-public-transport-panel-vehicles] {
     grid-column: 4;
 }
 
-.public-transport-panel__header [data-public-transport-panel-stop-map] {
+.public-transport-panel__header [data-public-transport-panel-vehicles] {
     grid-column: 5;
+}
+
+.public-transport-panel__header [data-public-transport-panel-stop-map] {
+    grid-column: 6;
+}
+
+.public-transport-panel__mode {
+    display: grid;
+    grid-column: 3;
+    grid-template-columns: repeat(2, 30px);
+    padding: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-radius: 9px;
+    background: var(--surface-muted);
+}
+
+.public-transport-panel__mode-button {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+}
+
+.public-transport-panel__mode-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.public-transport-panel__mode-button--active {
+    background: var(--accent-soft);
+    color: var(--accent-color);
 }
 
 .public-transport-panel__icon-button {
@@ -128,7 +163,7 @@
 
 .public-transport-panel__close {
     position: relative;
-    grid-column: 6;
+    grid-column: 7;
     grid-row: 1;
     width: 30px;
     height: 30px;
@@ -192,10 +227,12 @@
 
 .public-transport-panel__search {
     position: relative;
-    display: block;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 38px;
+    gap: 6px;
 }
 
-.public-transport-panel__search svg {
+.public-transport-panel__search > svg {
     position: absolute;
     top: 50%;
     left: 10px;
@@ -216,6 +253,24 @@
     font: inherit;
 }
 
+.public-transport-panel__search button {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface-muted);
+    color: inherit;
+    cursor: pointer;
+}
+
+.public-transport-panel__search button svg {
+    width: 17px;
+    height: 17px;
+}
+
 .public-transport-panel__controls {
     display: grid;
     gap: 10px;
@@ -223,8 +278,11 @@
 }
 
 .public-transport-panel .public-transport-lines__grid {
-    grid-template-columns: repeat(auto-fill,minmax(52px,1fr));
     gap: 6px;
+}
+
+.public-transport-panel .public-transport-lines {
+    --public-transport-line-tile-min-width: 72px;
 }
 
 .public-transport-panel .public-transport-lines__tile {
@@ -234,8 +292,19 @@
     overflow: hidden;
 }
 
+.public-transport-panel .public-transport-lines__tile:has(.public-transport-lines__direction) {
+    min-height: 58px;
+}
+
+.public-transport-panel .public-transport-lines__direction {
+    font-size: .68rem;
+}
+
 .public-transport-panel .public-transport-lines__number {
+    max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: .9rem;
+    text-align: center;
 }
 
 .public-transport-panel .public-transport-lines__badges {

@@ -4,9 +4,10 @@
             <i data-lucide="arrow-left" aria-hidden="true"></i>
         </button>
     </div>
-    <form class="public-transport-header__center public-transport-search" data-public-transport-search="lines">
+    <form class="public-transport-header__center public-transport-search public-transport-search--sortable" data-public-transport-search="lines">
         <input type="search" placeholder="{{ t('PUBLIC_TRANSPORT_LINES.SEARCH_LINE') }}" autocomplete="off" aria-label="{{ t('PUBLIC_TRANSPORT_LINES.SEARCH_LINE') }}">
         <button type="submit" aria-label="{{ t('COMMON.SEARCH') }}"><i data-lucide="search" aria-hidden="true"></i></button>
+        <button type="button" data-public-transport-line-sort aria-haspopup="menu" aria-expanded="false" aria-label="{{ t('PUBLIC_TRANSPORT_LINES.SORT') }}" title="{{ t('PUBLIC_TRANSPORT_LINES.SORT') }}"><i data-lucide="arrow-up-down" aria-hidden="true"></i><span>{{ t('PUBLIC_TRANSPORT_LINES.SORT') }}</span></button>
     </form>
     <div class="public-transport-header__right">
         <button class="public-transport-header__button" type="button" data-public-transport-refresh>

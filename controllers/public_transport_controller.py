@@ -1,7 +1,9 @@
 from __future__ import annotations
 from collections import defaultdict
+import re
+from concurrent.futures import CancelledError
 from datetime import date
-from threading import Lock
+from threading import Event, Lock
 from time import monotonic
 from typing import Any, Callable, ClassVar
 from urllib.parse import parse_qs, urlparse
@@ -12,6 +14,7 @@ from core.api.base_controller import BaseController
 from core.language_service import LanguageService
 from resources.public_transport.public_transport_messages import (
     PublicTransportValueError,
+    PublicTransportMessage,
     resolve_public_transport_message,
 )
 from resources.public_transport.public_transport_providers import PublicTransportProviders
@@ -19,6 +22,8 @@ from resources.public_transport.public_transport_translation import PublicTransp
 from resources.public_transport.public_transport_type import PublicTransportType
 from storage.settings_storage import SettingsStorage
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
+from utils.public_transport.rail_gtfs_cache import RailGtfsCache
+from resources.public_transport.rail_gtfs_sources import RailGtfsSources
 
 
 class PublicTransportController(BaseController):
@@ -34,6 +39,7 @@ class PublicTransportController(BaseController):
         )
         self._cache: dict[str, tuple[float, Any]] = {}
         self._download_progress: dict[str, dict[str, Any]] = {}
+        self._download_cancellations: dict[str, Event] = {}
         self._cache_lock = Lock()
         super().__init__()
 
@@ -51,6 +57,16 @@ class PublicTransportController(BaseController):
         self.add_url_rule(
             '/api/public-transport/<provider_id>/progress',
             view_func=self.download_progress,
+            methods=['GET']
+        )
+        self.add_url_rule(
+            '/api/public-transport/<provider_id>/cancel',
+            view_func=self.cancel_download,
+            methods=['POST']
+        )
+        self.add_url_rule(
+            '/api/public-transport/pending-downloads',
+            view_func=self.pending_downloads,
             methods=['GET']
         )
         self.add_url_rule(
@@ -132,6 +148,31 @@ class PublicTransportController(BaseController):
             }))
         return jsonify(progress)
 
+    def cancel_download(self, provider_id: str):
+        """Requests cancellation without deleting a resumable partial file."""
+        try:
+            PublicTransportProviders.downloader(provider_id)
+        except ValueError as error:
+            return jsonify({'error': resolve_public_transport_message(error)}), 400
+        with self._cache_lock:
+            cancellation = self._download_cancellations.get(provider_id)
+        if cancellation:
+            cancellation.set()
+        return jsonify({'status': 'cancelling' if cancellation else 'idle'})
+
+    def pending_downloads(self):
+        """Returns one provider per interrupted physical railway source."""
+        providers = []
+        for source_id in RailGtfsSources.SOURCES:
+            if not RailGtfsCache.has_partial_download(source_id):
+                continue
+            mapping = next(
+                item for item in RailGtfsSources.PROVIDERS
+                if item.source_id == source_id
+            )
+            providers.append(mapping.provider_id)
+        return jsonify({'providers': providers})
+
     def availability(self, provider_id: str):
         """Returns whether the provider already has persistent local data."""
         try:
@@ -159,6 +200,10 @@ class PublicTransportController(BaseController):
                 line=model,
                 route_points=self._line_route_points(model),
                 routes_by_direction=self._line_routes_by_direction(model),
+                route_is_approximate=any(
+                    direction.route_is_approximate
+                    for direction in model.directions
+                ),
                 date_options=self._date_options(model.dates),
                 city_name=self._city_name,
                 vehicle_feed=(parse_qs(urlparse(url).query).get('feed') or [''])[0],
@@ -293,6 +338,11 @@ class PublicTransportController(BaseController):
 
     def _render(self, provider_id: str, renderer: Callable):
         """Runs a provider renderer and returns a consistent error fragment."""
+        cancellation = Event()
+        language_service = LanguageService.registered()
+        locale = LanguageService.current_locale()
+        with self._cache_lock:
+            self._download_cancellations[provider_id] = cancellation
         self._set_download_progress(
             provider_id,
             'downloading',
@@ -308,10 +358,21 @@ class PublicTransportController(BaseController):
             attempt: int,
             max_attempts: int
         ) -> None:
+            if cancellation.is_set():
+                raise CancelledError(f'{provider_id} download cancelled')
+            resolved_item = (
+                language_service.translate(
+                    item.key,
+                    locale=locale,
+                    parameters=dict(item.parameters)
+                )
+                if isinstance(item, PublicTransportMessage)
+                else str(item)
+            )
             self._set_download_progress(
                 provider_id,
                 'downloading',
-                resolve_public_transport_message(item),
+                resolved_item,
                 current,
                 total,
                 attempt,
@@ -320,7 +381,7 @@ class PublicTransportController(BaseController):
 
         try:
             downloader = PublicTransportProviders.downloader(provider_id)
-            with PublicTransportDownloadProgress.bind(update):
+            with PublicTransportDownloadProgress.bind(update, cancellation.is_set):
                 result = renderer(downloader)
             self._set_download_progress(
                 provider_id,
@@ -330,6 +391,14 @@ class PublicTransportController(BaseController):
                 1
             )
             return result
+        except CancelledError:
+            message = language_service.translate(
+                'PUBLIC_TRANSPORT_ERROR.DOWNLOAD_CANCELLED', locale=locale
+            )
+            self._set_download_progress(provider_id, 'cancelled', message, 0, 0)
+            return render_template(
+                'public_transport/error.html', message=message
+            ), 499
         except ValueError as error:
             message = resolve_public_transport_message(error)
             self._set_download_progress(
@@ -356,6 +425,10 @@ class PublicTransportController(BaseController):
                 'public_transport/error.html',
                 message=message
             ), 502
+        finally:
+            with self._cache_lock:
+                if self._download_cancellations.get(provider_id) is cancellation:
+                    del self._download_cancellations[provider_id]
 
     def _render_url(self, provider_id: str, renderer: Callable):
         """Validates the requested provider URL before rendering details."""
@@ -662,7 +735,12 @@ class PublicTransportController(BaseController):
             {
                 'type': transport_type,
                 'label': PublicTransportTranslation.get(transport_type),
-                'lines': [line for line in lines if line.type == transport_type]
+                'lines': sorted(
+                    (line for line in lines if line.type == transport_type),
+                    key=lambda line: PublicTransportController._natural_line_key(
+                        line.line
+                    )
+                )
             }
             for transport_type in (
                 PublicTransportType.TRAM,
@@ -673,6 +751,15 @@ class PublicTransportController(BaseController):
             )
             if any(line.type == transport_type for line in lines)
         ]
+
+    @staticmethod
+    def _natural_line_key(value: str) -> tuple:
+        """Sorts numeric line segments by value instead of lexicographically."""
+        return tuple(
+            (0, int(part)) if part.isdigit() else (1, part.casefold())
+            for part in re.split(r'(\d+)', str(value))
+            if part
+        )
 
     @staticmethod
     def _stop_groups(stops) -> list[dict[str, Any]]:

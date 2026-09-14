@@ -14,20 +14,23 @@ class SettingsTransferTypes:
     ROUTES: ClassVar[str] = 'routes'
     FAVOURITES: ClassVar[str] = 'favourites'
     CARS: ClassVar[str] = 'cars'
+    LAYERS: ClassVar[str] = 'layers'
 
     # File name declarations
     FUEL_COSTS_FILE_NAME: ClassVar[str] = 'travel_manager_fuel_prices_{timestamp}.json'
     ROUTES_FILE_NAME: ClassVar[str] = 'travel_manager_rotes_{timestamp}.json'
     FAVOURITES_FILE_NAME: ClassVar[str] = 'travel_manager_favourites_{timestamp}.json'
     CARS_FILE_NAME: ClassVar[str] = 'travel_manager_cars_{timestamp}.json'
+    LAYERS_FILE_NAME: ClassVar[str] = 'travel_manager_layers_{timestamp}.json'
 
     # Translation key declarations
     FUEL_COSTS_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.FUEL_COSTS'
     ROUTES_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.ROUTES'
     FAVOURITES_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.FAVOURITES'
     CARS_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.CARS'
+    LAYERS_LABEL_KEY: ClassVar[str] = 'RES_SETTINGS_TRANSFER.LAYERS'
 
-    VALUES: ClassVar[tuple[str, ...]] = (FUEL_COSTS, ROUTES, FAVOURITES, CARS)
+    VALUES: ClassVar[tuple[str, ...]] = (FUEL_COSTS, ROUTES, FAVOURITES, CARS, LAYERS)
 
     @classmethod
     def is_supported(cls, data_type: str) -> bool:
@@ -46,6 +49,8 @@ class SettingsTransferTypes:
             template = cls.FAVOURITES_FILE_NAME
         elif data_type == cls.CARS:
             template = cls.CARS_FILE_NAME
+        elif data_type == cls.LAYERS:
+            template = cls.LAYERS_FILE_NAME
         else:
             raise ValueError('Unsupported settings transfer type.')
         return template.format(timestamp=timestamp)
@@ -61,4 +66,6 @@ class SettingsTransferTypes:
             return cls.FAVOURITES_LABEL_KEY
         if data_type == cls.CARS:
             return cls.CARS_LABEL_KEY
+        if data_type == cls.LAYERS:
+            return cls.LAYERS_LABEL_KEY
         raise ValueError('Unsupported settings transfer type.')

@@ -24,6 +24,7 @@ class ViewController(BaseController):
         self.add_url_rule('/api/views/map', view_func=self.map_view, methods=['GET'])
         self.add_url_rule('/api/views/favourites', view_func=self.favourites_view, methods=['GET'])
         self.add_url_rule('/api/views/favourites-tags', view_func=self.favourites_tags_view, methods=['GET'])
+        self.add_url_rule('/api/views/layers', view_func=self.layers_view, methods=['GET'])
         self.add_url_rule('/api/views/car-profiles', view_func=self.car_profiles_view, methods=['GET'])
         self.add_url_rule('/api/views/my-routes', view_func=self.my_routes_view, methods=['GET'])
         self.add_url_rule('/api/views/fuel-cost', view_func=self.fuel_cost_view, methods=['GET'])
@@ -32,6 +33,7 @@ class ViewController(BaseController):
         self.add_url_rule('/api/views/information', view_func=self.information_view, methods=['GET'])
         self.add_url_rule('/api/panels/legend-details', view_func=self.legend_details_panel, methods=['GET'])
         self.add_url_rule('/api/panels/layer-details', view_func=self.layer_details_panel, methods=['GET'])
+        self.add_url_rule('/api/panels/layer', view_func=self.layer_panel, methods=['GET'])
         self.add_url_rule('/api/panels/place-details', view_func=self.place_details_panel, methods=['GET'])
         self.add_url_rule('/api/panels/route-details', view_func=self.route_details_panel, methods=['GET'])
         self.add_url_rule('/api/panels/car-details', view_func=self.car_details_panel, methods=['GET'])
@@ -62,6 +64,9 @@ class ViewController(BaseController):
 
     def favourites_tags_view(self):
         return render_template('views/favourites_tags.html')
+
+    def layers_view(self):
+        return render_template('views/layers.html')
 
     def car_profiles_view(self):
         return render_template('views/car_profiles.html')
@@ -99,6 +104,9 @@ class ViewController(BaseController):
 
     def layer_details_panel(self):
         return render_template('panels/layer_details.html')
+
+    def layer_panel(self):
+        return render_template('panels/layer.html')
 
     def place_details_panel(self):
         return render_template('panels/place_details.html')

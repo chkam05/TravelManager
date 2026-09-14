@@ -355,6 +355,7 @@ body {
     gap: 4px;
     height: 100%;
     padding: 14px;
+    overflow-y: auto;
 }
 
 .side-menu__item {
@@ -380,6 +381,7 @@ body {
 }
 
 .side-menu__separator {
+    flex: 0 0 1px;
     height: 1px;
     margin: 8px 6px;
 }

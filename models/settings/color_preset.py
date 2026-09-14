@@ -26,12 +26,12 @@ class ColorPreset(BaseDataModel):
 
     @staticmethod
     def is_valid_code(value: Any) -> bool:
-        """Checks whether a value is a six-digit HEX color."""
-        return bool(re.fullmatch(r'#[0-9A-Fa-f]{6}', str(value or '').strip()))
+        """Checks whether a value is a HEX RGB or RGBA color."""
+        return bool(re.fullmatch(r'#[0-9A-Fa-f]{6}(?:[0-9A-Fa-f]{2})?', str(value or '').strip()))
 
     @classmethod
     def normalize_code(cls, value: Any) -> str:
-        """Returns an uppercase six-digit HEX color or the default color."""
+        """Returns an uppercase HEX RGB/RGBA color or the default color."""
         code = str(value or '').strip().upper()
         if cls.is_valid_code(code):
             return code

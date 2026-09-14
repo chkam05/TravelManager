@@ -1,0 +1,4 @@
+shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled
+SHAPE_NIGHT,52.000000,21.000000,0,0.0
+SHAPE_NIGHT,52.050000,21.050000,1,7.5
+SHAPE_NIGHT,52.100000,21.100000,2,15.5

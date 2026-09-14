@@ -1,12 +1,17 @@
 document.addEventListener('travel-manager:views-ready', () => {
     const t = window.i18n.t;
+    const view = document.querySelector('[data-app-view="settings"]');
+    const settingsBody = view?.querySelector('.settings-view__body');
+    const appContent = document.querySelector('#content');
     const travelCostsGroup = document.querySelector('[data-settings-group="travel-costs"]');
     const routeFuelGroup = document.querySelector('[data-settings-group="route-fuel"]');
     const routeTollsGroup = document.querySelector('[data-settings-group="route-tolls"]');
     const publicTransportGroup = document.querySelector('[data-settings-group="public-transport"]');
     const applicationGroup = document.querySelector('[data-settings-group="application"]');
+    const layerUnitsGroup = document.querySelector('[data-settings-group="layer-units"]');
+    const memoryLists = document.querySelectorAll('[data-settings-memory-list]');
 
-    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationGroup) {
+    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationGroup || !layerUnitsGroup) {
         return;
     }
 
@@ -18,7 +23,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         { id: 'fuel_costs', label: t('RES_SETTINGS_TRANSFER.FUEL_COSTS') },
         { id: 'routes', label: t('RES_SETTINGS_TRANSFER.ROUTES') },
         { id: 'favourites', label: t('RES_SETTINGS_TRANSFER.FAVOURITES') },
-        { id: 'cars', label: t('RES_SETTINGS_TRANSFER.CARS') }
+        { id: 'cars', label: t('RES_SETTINGS_TRANSFER.CARS') },
+        { id: 'layers', label: t('RES_SETTINGS_TRANSFER.LAYERS') }
     ];
     const dataTransferMenu = document.createElement('div');
     dataTransferMenu.className = 'settings-view__context-menu';
@@ -34,6 +40,12 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     let activeTransferButton = null;
     let pendingBrowserImportType = null;
+
+    const resetScrollPosition = () => {
+        settingsBody?.scrollTo?.({ top: 0, left: 0 });
+        if (view) view.scrollTop = 0;
+        appContent?.scrollTo?.({ top: 0, left: 0 });
+    };
 
     const addValue = (group, label, value) => {
         const row = document.createElement('div');
@@ -112,6 +124,11 @@ document.addEventListener('travel-manager:views-ready', () => {
             return;
         }
 
+        if (dataType === 'layers') {
+            document.dispatchEvent(new CustomEvent('travel-manager:custom-layers-changed'));
+            return;
+        }
+
         if (dataType === 'cars') {
             await window.travelManagerCarProfiles?.list(true);
         }
@@ -126,6 +143,109 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (popup) return popup({ type, title, message });
         window.console?.error(message);
         return Promise.resolve();
+    };
+
+    const formatBytes = (bytes) => {
+        const value = Math.max(0, Number(bytes) || 0);
+        if (value < 1024) return `${value} B`;
+        const units = ['KB', 'MB', 'GB'];
+        let scaled = value / 1024;
+        let unit = units[0];
+        for (let index = 1; index < units.length && scaled >= 1024; index += 1) {
+            scaled /= 1024;
+            unit = units[index];
+        }
+        const locale = window.i18n.locale?.replace('_', '-') || undefined;
+        return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(scaled)} ${unit}`;
+    };
+
+    const refreshAfterDelete = async (id) => {
+        if (id === 'fuel_costs') document.dispatchEvent(new CustomEvent('travel-manager:fuel-costs-changed'));
+        if (id === 'routes') await window.travelManagerRoutes?.list(true);
+        if (id === 'favourites') {
+            await window.travelManagerFavourites?.listTags(true);
+            await window.travelManagerFavourites?.list(true);
+        }
+        if (id === 'cars') await window.travelManagerCarProfiles?.list(true);
+        if (id === 'layers') document.dispatchEvent(new CustomEvent('travel-manager:custom-layers-changed'));
+    };
+
+    const loadStorageUsage = async () => {
+        if (!memoryLists.length) return;
+        const response = await fetch('/api/settings/storage', { headers: { Accept: 'application/json' } });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.message || t('SETTINGS_MEMORY.LOAD_FAILED'));
+        memoryLists.forEach((list) => {
+            const kind = list.dataset.settingsMemoryList;
+            const collator = new Intl.Collator(window.i18n.locale.replace('_', '-'), {
+                sensitivity: 'base', numeric: true
+            });
+            const items = [...(data[kind] || [])].sort((left, right) =>
+                collator.compare(left.name || '', right.name || '')
+            );
+            list.replaceChildren();
+            if (!items.length) {
+                const empty = document.createElement('p');
+                empty.className = 'settings-view__memory-empty';
+                empty.textContent = t('SETTINGS_MEMORY.NO_DATA');
+                list.append(empty);
+                return;
+            }
+            const header = document.createElement('div');
+            header.className = 'settings-view__memory-header';
+            [t('SETTINGS_MEMORY.COLUMN_NAME'), t('SETTINGS_MEMORY.COLUMN_DATE'), t('SETTINGS_MEMORY.COLUMN_SIZE')]
+                .forEach((label) => {
+                    const cell = document.createElement('span');
+                    cell.textContent = label;
+                    header.append(cell);
+                });
+            header.append(document.createElement('span'));
+            list.append(header);
+            items.forEach((item) => {
+                const row = document.createElement('div');
+                row.className = 'settings-view__memory-row';
+                const name = document.createElement('strong');
+                name.textContent = item.name;
+                const date = document.createElement('span');
+                date.className = 'settings-view__memory-date';
+                date.textContent = item.updated_at
+                    ? new Intl.DateTimeFormat(window.i18n.locale.replace('_', '-'), {
+                        dateStyle: 'medium', timeStyle: 'short'
+                    }).format(new Date(item.updated_at))
+                    : t('SETTINGS_MEMORY.NO_DATE');
+                const size = document.createElement('span');
+                size.className = 'settings-view__memory-size';
+                size.textContent = formatBytes(item.size);
+                const button = document.createElement('button');
+                button.className = 'settings-view__memory-delete';
+                button.type = 'button';
+                button.title = t('SETTINGS_MEMORY.DELETE');
+                button.setAttribute('aria-label', t('SETTINGS_MEMORY.DELETE_ITEM', { name: item.name }));
+                button.innerHTML = '<i data-lucide="trash-2" aria-hidden="true"></i>';
+                button.addEventListener('click', async () => {
+                    const accepted = await window.travelManagerDialogs?.yesNo({
+                        title: t('SETTINGS_MEMORY.DELETE_TITLE'),
+                        description: t('SETTINGS_MEMORY.DELETE_CONFIRM', { name: item.name }),
+                        icon: 'trash-2',
+                        yesLabel: t('COMMON.DELETE')
+                    });
+                    if (!accepted) return;
+                    button.disabled = true;
+                    const type = kind === 'application' ? 'application' : item.kind;
+                    const deletion = await fetch(`/api/settings/storage/${type}/${encodeURIComponent(item.id)}`, { method: 'DELETE', headers: { Accept: 'application/json' } });
+                    if (!deletion.ok) {
+                        button.disabled = false;
+                        showPopup(t('SETTINGS_MEMORY.DELETE_FAILED'), 'error');
+                        return;
+                    }
+                    await refreshAfterDelete(item.id);
+                    await loadStorageUsage();
+                });
+                row.append(name, date, size, button);
+                list.append(row);
+            });
+        });
+        window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
 
     const downloadJson = (payload, filename) => {
@@ -401,6 +521,32 @@ document.addEventListener('travel-manager:views-ready', () => {
         group.append(row);
     };
 
+    const addSelectSetting = (group, label, field, value, options) => {
+        const row = document.createElement('div');
+        row.className = 'settings-view__value settings-view__value--control';
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.className = 'settings-view__control';
+        const select = document.createElement('select');
+        select.className = 'settings-view__select';
+        options.forEach(({ value: optionValue, label: optionLabel }) => {
+            const option = document.createElement('option');
+            option.value = optionValue;
+            option.textContent = optionLabel;
+            select.append(option);
+        });
+        select.value = options.some((option) => option.value === value) ? value : options[0].value;
+        select.addEventListener('change', () => {
+            const payload = { [field]: select.value };
+            schedulePatch(payload);
+            document.dispatchEvent(new CustomEvent('travel-manager:ui-settings-changed', { detail: payload }));
+        });
+        description.append(select);
+        row.append(term, description);
+        group.append(row);
+    };
+
     const addPercentSliderSetting = (group, label, field, value, options = {}) => {
         const row = document.createElement('div');
         row.className = 'settings-view__value settings-view__value--control';
@@ -545,8 +691,12 @@ document.addEventListener('travel-manager:views-ready', () => {
         routeTollsGroup.replaceChildren();
         publicTransportGroup.replaceChildren();
         applicationGroup.replaceChildren();
+        layerUnitsGroup.replaceChildren();
         routeFuelMainInput = null;
         routeFuelDependentRows = [];
+        loadStorageUsage().catch(() => {
+            memoryLists.forEach((list) => { list.textContent = t('SETTINGS_MEMORY.LOAD_FAILED'); });
+        });
 
         try {
             const response = await fetch('/api/settings/ui', {
@@ -572,6 +722,21 @@ document.addEventListener('travel-manager:views-ready', () => {
                 t('SETTINGS_APPLICATION.OPEN_HOME'),
                 'open_home_on_startup',
                 settings.open_home_on_startup === true
+            );
+
+            addSelectSetting(
+                layerUnitsGroup,
+                t('SETTINGS_APPLICATION.LENGTH_UNIT'),
+                'layer_length_unit',
+                settings.layer_length_unit,
+                ['mm', 'cm', 'm', 'km'].map((unit) => ({ value: unit, label: unit }))
+            );
+            addSelectSetting(
+                layerUnitsGroup,
+                t('SETTINGS_APPLICATION.AREA_UNIT'),
+                'layer_area_unit',
+                settings.layer_area_unit,
+                ['mm2', 'cm2', 'm2', 'km2'].map((unit) => ({ value: unit, label: unit.replace('2', '²') }))
             );
 
             addBooleanSetting(
@@ -689,6 +854,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     document.addEventListener('travel-manager:app-view-changed', (event) => {
         if (event.detail?.view === 'settings') {
+            resetScrollPosition();
+            window.requestAnimationFrame(resetScrollPosition);
             loadSettings();
         }
     });
@@ -778,5 +945,6 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
     });
 
+    resetScrollPosition();
     loadSettings();
 });

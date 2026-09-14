@@ -76,7 +76,8 @@
 }
 
 .color-picker-dialog__canvas,
-.color-picker-dialog__hue {
+.color-picker-dialog__hue,
+.color-picker-dialog__alpha {
     grid-column: 1 / -1;
 }
 
@@ -88,7 +89,8 @@
     touch-action: none;
 }
 
-.color-picker-dialog__hue {
+.color-picker-dialog__hue,
+.color-picker-dialog__alpha {
     display: grid;
     gap: 6px;
     font-size: 0.78rem;
@@ -96,7 +98,8 @@
     text-transform: uppercase;
 }
 
-.color-picker-dialog__hue input {
+.color-picker-dialog__hue input,
+.color-picker-dialog__alpha input {
     width: 100%;
     height: 14px;
     margin: 0;
@@ -105,7 +108,8 @@
     border-radius: 999px;
 }
 
-.color-picker-dialog__hue input::-webkit-slider-thumb {
+.color-picker-dialog__hue input::-webkit-slider-thumb,
+.color-picker-dialog__alpha input::-webkit-slider-thumb {
     width: 20px;
     height: 20px;
     appearance: none;
@@ -125,6 +129,16 @@
 .color-picker-dialog__rgb {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
+}
+
+.color-picker-dialog__alpha {
+    color: var(--text-secondary);
+}
+
+.color-picker-dialog__alpha input::-webkit-slider-thumb {
+    border-color: var(--surface-background);
+    background: var(--text-primary);
+    box-shadow: 0 0 0 1px var(--shadow-color);
 }

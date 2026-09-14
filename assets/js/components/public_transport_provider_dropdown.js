@@ -9,6 +9,7 @@
                 value: option.value,
                 name: option.textContent.trim(),
                 description: option.dataset.description || '',
+                mode: option.dataset.mode || 'city',
                 icon: option.dataset.icon || 'bus-front',
                 route: option.dataset.showRouteMap === 'true',
                 vehicles: option.dataset.showVehiclePositions === 'true'
@@ -20,6 +21,7 @@
                 value: option.value,
                 name: option.textContent.trim(),
                 description: option.dataset.description || '',
+                mode: option.dataset.mode || 'city',
                 icon: option.dataset.icon || 'bus-front',
                 route: option.dataset.showRouteMap === 'true',
                 vehicles: option.dataset.showVehiclePositions === 'true'
@@ -110,6 +112,7 @@
             option.type = 'button';
             option.className = 'public-transport-provider-dropdown__option';
             option.dataset.value = item.value;
+            option.dataset.mode = item.mode;
             option.setAttribute('role', 'option');
             option.replaceChildren(...content(item));
             option.addEventListener('click', () => {
@@ -190,6 +193,29 @@
 
         const instance = {
             sync,
+            setMode: (mode) => {
+                Array.from(select.options).forEach((option) => {
+                    option.hidden = (option.dataset.mode || 'city') !== mode;
+                });
+                select.querySelectorAll('optgroup').forEach((group) => {
+                    group.hidden = !Array.from(group.querySelectorAll('option')).some(
+                        (option) => !option.hidden
+                    );
+                });
+                menu.querySelectorAll('[role="option"]').forEach((option) => {
+                    option.hidden = option.dataset.mode !== mode;
+                });
+                menu.querySelectorAll('.public-transport-provider-dropdown__group-label').forEach((heading) => {
+                    let sibling = heading.nextElementSibling;
+                    let hasVisibleOption = false;
+                    while (sibling && !sibling.classList.contains('public-transport-provider-dropdown__group-label')) {
+                        hasVisibleOption ||= sibling.matches('[role="option"]') && !sibling.hidden;
+                        sibling = sibling.nextElementSibling;
+                    }
+                    heading.hidden = !hasVisibleOption;
+                });
+                sync();
+            },
             destroy: () => {
                 document.removeEventListener('pointerdown', outside);
                 document.removeEventListener('keydown', escape);

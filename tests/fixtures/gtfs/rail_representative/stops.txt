@@ -1,0 +1,6 @@
+stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,platform_code,wheelchair_boarding,country
+CENTRAL,Test Central,52.000000,21.000000,1,,,1,PL
+CENTRAL_1,Test Central,52.000000,21.000000,0,CENTRAL,1,1,PL
+CENTRAL_2,Test Central,52.000000,21.000000,0,CENTRAL,2,1,PL
+TERMINUS,Test Terminus,52.100000,21.100000,1,,,1,DE
+TERMINUS_1,Test Terminus,52.100000,21.100000,0,TERMINUS,1,1,DE

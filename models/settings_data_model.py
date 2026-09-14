@@ -13,6 +13,7 @@ from models.settings.saved_route import SavedRoute
 from models.settings.public_transport_cache import PublicTransportCache
 from models.settings.window_settings import WindowSettings
 from models.settings.appearance import Appearance
+from models.settings.custom_layer import CustomLayer
 
 
 @dataclass
@@ -34,9 +35,12 @@ class SettingsDataModel(BaseDataModel):
     FIELD_ROUTES: ClassVar[str] = 'routes'
     FIELD_PUBLIC_TRANSPORT_CACHE: ClassVar[str] = 'public_transport_cache'
     FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDER: ClassVar[str] = 'selected_public_transport_provider'
+    FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDERS: ClassVar[str] = 'selected_public_transport_providers'
+    FIELD_SELECTED_PUBLIC_TRANSPORT_MODE: ClassVar[str] = 'selected_public_transport_mode'
     FIELD_UI: ClassVar[str] = 'ui'
     FIELD_WINDOW: ClassVar[str] = 'window'
     FIELD_APPEARANCE: ClassVar[str] = 'appearance'
+    FIELD_CUSTOM_LAYERS: ClassVar[str] = 'custom_layers'
 
     # Fields
     active_car_profile_id: str | None
@@ -49,9 +53,12 @@ class SettingsDataModel(BaseDataModel):
     routes: List[SavedRoute]
     public_transport_cache: Dict[str, PublicTransportCache]
     selected_public_transport_provider: str
+    selected_public_transport_providers: Dict[str, str]
+    selected_public_transport_mode: str
     ui: UiSettings | None
     window: WindowSettings | None
     appearance: Appearance | None
+    custom_layers: List[CustomLayer]
 
     #region Serialization
 
@@ -96,9 +103,28 @@ class SettingsDataModel(BaseDataModel):
         selected_public_transport_provider = str(
             d.get(cls.FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDER) or ''
         ).strip()
+        selected_public_transport_providers = d.get(
+            cls.FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDERS, {}
+        )
+        if not isinstance(selected_public_transport_providers, dict):
+            selected_public_transport_providers = {}
+        selected_public_transport_mode = str(
+            d.get(cls.FIELD_SELECTED_PUBLIC_TRANSPORT_MODE) or ''
+        ).strip()
+        legacy_mode = (
+            'rail' if selected_public_transport_provider.startswith('rail_')
+            else 'city'
+        )
+        if selected_public_transport_provider:
+            selected_public_transport_providers.setdefault(
+                legacy_mode, selected_public_transport_provider
+            )
+        if selected_public_transport_mode not in {'city', 'rail'}:
+            selected_public_transport_mode = legacy_mode
         ui = d.get(cls.FIELD_UI, {})
         window = d.get(cls.FIELD_WINDOW, {})
         appearance = d.get(cls.FIELD_APPEARANCE, {})
+        custom_layers = d.get(cls.FIELD_CUSTOM_LAYERS, [])
         tags = FavouriteTag.from_dict_list(favourite_tags if isinstance(favourite_tags, list) else [])
         has_default_tag = any(tag.id == FavouriteTag.DEFAULT_TAG_ID for tag in tags)
 
@@ -137,9 +163,16 @@ class SettingsDataModel(BaseDataModel):
                 if isinstance(value, dict)
             } if isinstance(public_transport_cache, dict) else {},
             selected_public_transport_provider=selected_public_transport_provider,
+            selected_public_transport_providers={
+                str(mode): str(provider)
+                for mode, provider in selected_public_transport_providers.items()
+                if mode in {'city', 'rail'}
+            },
+            selected_public_transport_mode=selected_public_transport_mode,
             ui=UiSettings.from_dict(ui),
             window=WindowSettings.from_dict(window),
-            appearance=Appearance.from_dict(appearance)
+            appearance=Appearance.from_dict(appearance),
+            custom_layers=CustomLayer.from_dict_list(custom_layers if isinstance(custom_layers, list) else [])
         )
     
     def to_dict(self) -> Dict[str, Any]:
@@ -158,9 +191,14 @@ class SettingsDataModel(BaseDataModel):
                 for carrier, cache in self.public_transport_cache.items()
             },
             self.FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDER: self.selected_public_transport_provider,
+            self.FIELD_SELECTED_PUBLIC_TRANSPORT_PROVIDERS: dict(
+                self.selected_public_transport_providers
+            ),
+            self.FIELD_SELECTED_PUBLIC_TRANSPORT_MODE: self.selected_public_transport_mode,
             self.FIELD_UI: self.ui.to_dict() if self.ui else UiSettings.from_dict({}).to_dict(),
             self.FIELD_WINDOW: self.window.to_dict() if self.window else WindowSettings.from_dict({}).to_dict(),
-            self.FIELD_APPEARANCE: self.appearance.to_dict() if self.appearance else Appearance.from_dict({}).to_dict()
+            self.FIELD_APPEARANCE: self.appearance.to_dict() if self.appearance else Appearance.from_dict({}).to_dict(),
+            self.FIELD_CUSTOM_LAYERS: self.to_dict_list(self.custom_layers)
         }
 
     #endregion Serialization

@@ -3,7 +3,7 @@
         <section class="public-transport-stops__city">
             <header class="public-transport-stops__city-header">
                 <h2>{{ group.city }}</h2>
-                <span>{{ t('PUBLIC_TRANSPORT_STOPS.STOPS_COUNT', count=group.stops|length) }}</span>
+                <span>{{ t('PUBLIC_TRANSPORT_STOPS.RAIL_STATIONS_COUNT' if capabilities.rail_terminology else 'PUBLIC_TRANSPORT_STOPS.STOPS_COUNT', count=group.stops|length) }}</span>
                 <button class="public-transport-collapse-button" type="button" aria-expanded="false" aria-controls="public-transport-city-{{ loop.index0 }}" data-public-transport-collapse>
                     <i data-lucide="chevron-up" aria-hidden="true"></i>
                     <span class="sr-only">{{ t('PUBLIC_TRANSPORT_STOPS.TOGGLE_CITY') }}</span>
@@ -18,7 +18,7 @@
                                 <strong>{{ stop.name }}</strong>
                                 <small>
                                     {% if capabilities.show_platforms %}
-                                        {{ t('PUBLIC_TRANSPORT_STOPS.PLATFORMS_COUNT', count=stop.platforms|length) }}
+                                        {{ t('PUBLIC_TRANSPORT_STOPS.RAIL_PLATFORMS_COUNT' if capabilities.rail_terminology else 'PUBLIC_TRANSPORT_STOPS.PLATFORMS_COUNT', count=stop.platforms|length) }}
                                     {% else %}
                                         {{ t('PUBLIC_TRANSPORT_STOPS.STOP_TIMETABLE') }}
                                     {% endif %}
@@ -32,7 +32,7 @@
                                     <header>
                                         <strong>
                                             {% if capabilities.show_platforms %}
-                                                <span class="public-transport-stops__platform-label">{{ t('PUBLIC_TRANSPORT_STOPS.PLATFORM') }}:</span>
+                                                <span class="public-transport-stops__platform-label">{{ t('PUBLIC_TRANSPORT_STOPS.RAIL_PLATFORM' if capabilities.rail_terminology else 'PUBLIC_TRANSPORT_STOPS.PLATFORM') }}:</span>
                                                 {{ platform.name or '—' }}
                                             {% else %}
                                                 {{ t('PUBLIC_TRANSPORT_STOPS.STOP_TIMETABLE') }}
@@ -40,7 +40,7 @@
                                         </strong>
                                         <div class="public-transport-stops__platform-actions">
                                             <button type="button" data-public-transport-action="stop-lines" data-url="{{ platform.url_all }}">
-                                                <span>{{ t('PUBLIC_TRANSPORT_STOPS.SHOW_PLATFORM') if capabilities.show_platforms else t('PUBLIC_TRANSPORT_STOPS.SHOW_DEPARTURES') }}</span>
+                                                <span>{{ t('PUBLIC_TRANSPORT_STOPS.RAIL_SHOW_PLATFORM' if capabilities.rail_terminology else 'PUBLIC_TRANSPORT_STOPS.SHOW_PLATFORM') if capabilities.show_platforms else t('PUBLIC_TRANSPORT_STOPS.SHOW_DEPARTURES') }}</span>
                                                 <i data-lucide="chevron-right" aria-hidden="true"></i>
                                             </button>
                                             {% if capabilities.show_stop_map %}
@@ -64,7 +64,15 @@
                                                     {% else %}
                                                         <i data-lucide="bus" aria-hidden="true"></i>
                                                     {% endif %}
-                                                    <span>{{ line.line }}</span>
+                                                    <span class="public-transport-line-pill__identity">
+                                                        {% if line.type.value == 'train' and ' · ' in line.line %}
+                                                            {% set train_parts = line.line.split(' · ', 1) %}
+                                                            <strong class="public-transport-line-pill__number">{{ train_parts[0] }}</strong>
+                                                            <small class="public-transport-line-pill__name">{{ train_parts[1] }}</small>
+                                                        {% else %}
+                                                            <strong class="public-transport-line-pill__number">{{ line.line }}</strong>
+                                                        {% endif %}
+                                                    </span>
                                                 </button>
                                             {% else %}
                                                 <span class="public-transport-stops__no-lines">{{ t('PUBLIC_TRANSPORT_LINES.NO_LINES_SHORT') }}</span>

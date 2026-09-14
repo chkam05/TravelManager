@@ -19,13 +19,15 @@
             <div><span>{{ t('PUBLIC_TRANSPORT_RIDE.VEHICLE_TYPE') }}</span><strong>{{ ride.vehicle_type or t('PUBLIC_TRANSPORT_VIEW.NO_DATA') }}</strong></div>
         {% endif %}
         <div><span>{{ t('PUBLIC_TRANSPORT_RIDE.NEXT_STOPS_COUNT') }}</span><strong>{{ ride.next_stops|length }}</strong></div>
+        {% if ride.realtime_updated_at %}<div><span>{{ t('PUBLIC_TRANSPORT_RIDE.REALTIME_DATA') }}</span><strong>{{ t('PUBLIC_TRANSPORT_RIDE.LAST_UPDATE', value=ride.realtime_updated_at) }}{% if ride.realtime_stale %} · {{ t('PUBLIC_TRANSPORT_RIDE.DATA_EXPIRED') }}{% endif %}</strong></div>{% endif %}
+        {% if ride.cancelled %}<div><span>{{ t('PUBLIC_TRANSPORT_RIDE.STATUS') }}</span><strong>{{ t('PUBLIC_TRANSPORT_RIDE.CANCELLED') }}</strong></div>{% elif ride.delay_minutes is not none %}<div><span>{{ t('PUBLIC_TRANSPORT_RIDE.STATUS') }}</span><strong>{{ t('PUBLIC_TRANSPORT_RIDE.DELAY', value=ride.delay_minutes) }}</strong></div>{% endif %}
     </section>
 
     <div class="public-transport-table-wrap">
         <table class="public-transport-table">
             <thead>
                 <tr>
-                    <th>{{ t('PUBLIC_TRANSPORT_RIDE.STOP') }}</th>
+                    <th>{{ t('PUBLIC_TRANSPORT_RIDE.RAIL_STATION' if capabilities.rail_terminology else 'PUBLIC_TRANSPORT_RIDE.STOP') }}</th>
                     <th>{{ t('PUBLIC_TRANSPORT_VIEW.DEPARTURE') }}</th>
                     <th>{{ t('PUBLIC_TRANSPORT_RIDE.SECTION_TIME') }}</th>
                     <th>{{ t('PUBLIC_TRANSPORT_RIDE.TOTAL_TIME') }}</th>
@@ -43,7 +45,11 @@
                             <span class="public-transport-table__city-marker" style="--public-transport-city-color: {{ stop.city.color }}"></span>
                             {{ stop.stop }}
                         </td>
-                        <td>{{ stop.departure_time.strftime('%H:%M') if stop.departure_time else '—' }}</td>
+                        <td>
+                            <span{% if stop.cancelled %} class="public-transport-realtime--cancelled"{% endif %}>{{ stop.departure_time.strftime('%H:%M') if stop.departure_time else '—' }}</span>
+                            {% if stop.scheduled_departure_time %}<small class="public-transport-realtime__scheduled">{{ stop.scheduled_departure_time.strftime('%H:%M') }}</small>{% endif %}
+                            {% if stop.cancelled %}<small>{{ t('PUBLIC_TRANSPORT_RIDE.STOP_SKIPPED') }}</small>{% elif stop.delay_minutes is not none %}<small>{{ t('PUBLIC_TRANSPORT_RIDE.DELAY', value=stop.delay_minutes) }}</small>{% endif %}
+                        </td>
                         <td>{{ t('PUBLIC_TRANSPORT_RIDE.MINUTES', value=stop.travel_time) }}</td>
                         <td>{{ t('PUBLIC_TRANSPORT_RIDE.MINUTES', value=stop.travel_time_sum) }}</td>
                         {% if capabilities.show_ride_distances %}

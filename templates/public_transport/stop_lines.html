@@ -16,28 +16,41 @@
             {% set variant_codes = row.variant_codes %}
             <article data-public-transport-filter-item data-search="{{ line.line }} {{ timetable.direction_name }}">
                 <header>
-                    <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}">
-                        {% if line.type.value == 'tram' %}<i data-lucide="tram-front" aria-hidden="true"></i>{% elif line.type.value in ['metro', 'train'] %}<i data-lucide="train-front" aria-hidden="true"></i>{% else %}<i data-lucide="bus" aria-hidden="true"></i>{% endif %}
-                        <strong>{{ line.line }}</strong>
-                    </button>
-                    <div>
-                        <strong>{{ timetable.direction_name or t('PUBLIC_TRANSPORT_LINES.NO_DIRECTION_DATA') }}</strong>
-                        {% if capabilities.show_stop_departures %}
-                            <span>{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else t('PUBLIC_TRANSPORT_VIEW.TIMETABLE') }} · {{ t('PUBLIC_TRANSPORT_STOPS.DEPARTURES_COUNT', count=timetable.departures|length) }}</span>
-                        {% else %}
-                            <span>{{ t('PUBLIC_TRANSPORT_LINES.LINE_ROUTE') }}</span>
-                        {% endif %}
-                    </div>
-                    <div class="public-transport-stop-lines__header-actions">
-                        <button type="button" data-public-transport-action="line" data-url="{{ line.url }}">
-                            <span>{{ t('PUBLIC_TRANSPORT_LINES.SHOW_LINE') }}</span>
-                            <i data-lucide="chevron-right" aria-hidden="true"></i>
+                    <div class="public-transport-stop-lines__primary">
+                        <button class="public-transport-line-pill public-transport-line-pill--{{ line.type.value }}" type="button" data-public-transport-action="line" data-url="{{ line.url }}">
+                            {% if line.type.value == 'tram' %}<i data-lucide="tram-front" aria-hidden="true"></i>{% elif line.type.value in ['metro', 'train'] %}<i data-lucide="train-front" aria-hidden="true"></i>{% else %}<i data-lucide="bus" aria-hidden="true"></i>{% endif %}
+                            <span class="public-transport-line-pill__identity">
+                                {% if line.type.value == 'train' and ' · ' in line.line %}
+                                    {% set train_parts = line.line.split(' · ', 1) %}
+                                    <strong class="public-transport-line-pill__number">{{ train_parts[0] }}</strong>
+                                    <small class="public-transport-line-pill__name">{{ train_parts[1] }}</small>
+                                {% else %}
+                                    <strong class="public-transport-line-pill__number">{{ line.line }}</strong>
+                                {% endif %}
+                            </span>
                         </button>
-                        {% if capabilities.show_stop_departures %}
-                            <button class="public-transport-collapse-button" type="button" aria-expanded="false" aria-controls="public-transport-stop-line-{{ loop.index0 }}" data-public-transport-collapse>
-                                <i data-lucide="chevron-up" aria-hidden="true"></i>
-                                <span class="sr-only">{{ t('PUBLIC_TRANSPORT_LINES.TOGGLE_LINE_DEPARTURES') }}</span>
+                        <div class="public-transport-stop-lines__header-actions">
+                            <button type="button" data-public-transport-action="line" data-url="{{ line.url }}">
+                                <span>{{ t('PUBLIC_TRANSPORT_LINES.SHOW_LINE') }}</span>
+                                <i data-lucide="chevron-right" aria-hidden="true"></i>
                             </button>
+                            {% if capabilities.show_stop_departures %}
+                                <button class="public-transport-collapse-button" type="button" aria-expanded="false" aria-controls="public-transport-stop-line-{{ loop.index0 }}" data-public-transport-collapse>
+                                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                                    <span class="sr-only">{{ t('PUBLIC_TRANSPORT_LINES.TOGGLE_LINE_DEPARTURES') }}</span>
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="public-transport-stop-lines__details">
+                        <div class="public-transport-stop-lines__direction">
+                            <span>{{ t('PUBLIC_TRANSPORT_VIEW.DIRECTION') }}</span>
+                            <strong>{{ timetable.direction_name or t('PUBLIC_TRANSPORT_LINES.NO_DIRECTION_DATA') }}</strong>
+                        </div>
+                        {% if capabilities.show_stop_departures %}
+                            <span class="public-transport-stop-lines__summary">{{ timetable.date.strftime('%d.%m.%Y') if timetable.date else t('PUBLIC_TRANSPORT_VIEW.TIMETABLE') }} · {{ t('PUBLIC_TRANSPORT_STOPS.DEPARTURES_COUNT', count=timetable.departures|length) }}</span>
+                        {% else %}
+                            <span class="public-transport-stop-lines__summary">{{ t('PUBLIC_TRANSPORT_LINES.LINE_ROUTE') }}</span>
                         {% endif %}
                     </div>
                 </header>
