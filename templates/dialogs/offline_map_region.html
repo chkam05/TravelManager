@@ -1,0 +1,19 @@
+<form class="offline-map-region" id="offline-map-region" role="dialog" aria-modal="true" aria-labelledby="offline-map-region-title" aria-hidden="true">
+    <header class="offline-map-region__header">
+        <h2 id="offline-map-region-title">{{ t('OFFLINE_MAP_REGION.TITLE') }}</h2>
+        <button class="offline-map-region__close" data-offline-map-region-close type="button" aria-label="{{ t('COMMON.CLOSE') }}"></button>
+    </header>
+    <div class="offline-map-region__content">
+        <p class="offline-map-region__description">{{ t('OFFLINE_MAP_REGION.DESCRIPTION') }}</p>
+        <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.CONTINENT') }}</span><select data-offline-map-continent></select></label>
+        <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.COUNTRY') }}</span><select data-offline-map-country></select></label>
+        <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.REGION') }}</span><select data-offline-map-region></select></label>
+        <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.MAX_ZOOM') }}</span><select data-offline-map-max-zoom><option value="12">12</option><option value="13">13</option><option value="14" selected>14</option></select></label>
+        <dl class="offline-map-region__summary" data-offline-map-summary></dl>
+        <p class="offline-map-region__status" data-offline-map-region-status aria-live="polite"></p>
+    </div>
+    <footer class="offline-map-region__footer">
+        <button class="offline-map-region__button" data-offline-map-region-close type="button">{{ t('COMMON.CANCEL') }}</button>
+        <button class="offline-map-region__button offline-map-region__button--primary" data-offline-map-region-submit type="submit">{{ t('OFFLINE_MAP_REGION.DOWNLOAD') }}</button>
+    </footer>
+</form>

@@ -8,6 +8,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     const layersButton = document.querySelector('[data-map-tool="layers"]');
     const locationButton = document.querySelector('[data-map-tool="location"]');
     const publicTransportButton = document.querySelector('[data-map-tool="public-transport"]');
+    const offlineTestButton = document.querySelector('[data-map-tool="offline-test"]');
     const placeDetailsPanel = window.travelManagerPlaceDetailsPanel;
     const routeDetailsPanel = window.travelManagerRouteDetailsPanel;
     let selectedMarker = null;
@@ -15,6 +16,10 @@ document.addEventListener('travel-manager:views-ready', () => {
     let mapDataLoading = false;
     let mapNotesLoading = false;
     let activeBaseLayer = null;
+    let lastOnlineBaseLayer = 'standard';
+    let offlineMapMode = 'online_only';
+    let offlineTestMode = false;
+    let offlineMapLoadError = '';
     let advancedSearchRequestId = 0;
     let favouritePlaces = [];
     let layerState = {
@@ -174,6 +179,12 @@ document.addEventListener('travel-manager:views-ready', () => {
         zoomControl: true
     }).setView([52.2297, 21.0122], 13);
 
+    const coverageWarning = document.createElement('div');
+    coverageWarning.className = 'map-offline-coverage-warning';
+    coverageWarning.setAttribute('role', 'status');
+    coverageWarning.hidden = true;
+    mapElement.parentElement?.append(coverageWarning);
+
     const baseLayers = {
         standard: {
             label: t('RES_MAP_LAYER.STANDARD'),
@@ -254,15 +265,28 @@ document.addEventListener('travel-manager:views-ready', () => {
         };
     };
 
-    const setBaseLayer = (id) => {
+    const setBaseLayer = (id, options = {}) => {
         const nextLayer = baseLayers[id] ? id : 'standard';
+
+        if (offlineTestMode && !baseLayers[nextLayer].offline) {
+            updateOfflineCoverageWarning();
+            return;
+        }
 
         if (activeBaseLayer && map.hasLayer(baseLayers[activeBaseLayer].layer)) {
             map.removeLayer(baseLayers[activeBaseLayer].layer);
         }
 
+        // VectorGrid does not implement raster tile overzoom. Above the
+        // package's native zoom Leaflet scales its canvas, blurring roads and
+        // magnifying point symbols. Keep the viewport within actual coverage.
+        map.setMaxZoom(baseLayers[nextLayer].layer.options.maxZoom || 19);
         activeBaseLayer = nextLayer;
+        if (!baseLayers[nextLayer].offline && !options.automatic) {
+            lastOnlineBaseLayer = nextLayer;
+        }
         baseLayers[activeBaseLayer].layer.addTo(map);
+        updateOfflineCoverageWarning();
 
         document.dispatchEvent(new CustomEvent('travel-manager:base-layer-changed', {
             detail: {
@@ -272,12 +296,131 @@ document.addEventListener('travel-manager:views-ready', () => {
         }));
     };
 
-    setBaseLayer('standard');
+    const shouldUseOfflineMap = () => offlineTestMode || offlineMapMode === 'prefer_offline'
+        || (offlineMapMode === 'offline_when_disconnected' && navigator.onLine === false);
 
-    getUiSettings().then((settings) => {
+    const containingOfflineMap = () => {
+        const candidates = Object.entries(baseLayers)
+            .filter(([, entry]) => entry.offline)
+            .map(([id, entry]) => ({ id, metadata: entry.layer.travelManagerOfflineMap }));
+        return window.travelManagerOfflineMapSelection?.smallestContaining(candidates, map.getCenter());
+    };
+
+    const selectAutomaticBaseLayer = () => {
+        if (!shouldUseOfflineMap()) {
+            if (baseLayers[activeBaseLayer]?.offline) {
+                setBaseLayer(lastOnlineBaseLayer, { automatic: true });
+            }
+            updateOfflineCoverageWarning();
+            return;
+        }
+        const center = map.getCenter();
+        const activeMetadata = baseLayers[activeBaseLayer]?.layer?.travelManagerOfflineMap;
+        if (window.travelManagerOfflineMapSelection?.contains(activeMetadata, center)) return;
+        const selected = containingOfflineMap();
+        if (selected) {
+            setBaseLayer(selected.id, { automatic: true });
+        } else if (!offlineTestMode && baseLayers[activeBaseLayer]?.offline) {
+            setBaseLayer(lastOnlineBaseLayer, { automatic: true });
+        }
+        updateOfflineCoverageWarning();
+    };
+
+    function updateOfflineCoverageWarning() {
+        const entry = baseLayers[activeBaseLayer];
+        const metadata = entry?.layer?.travelManagerOfflineMap;
+        if (!metadata || !Array.isArray(metadata.bounds)) {
+            coverageWarning.textContent = shouldUseOfflineMap()
+                ? (offlineMapLoadError || t('MAP_VIEW.OFFLINE_NO_COVERAGE')) : '';
+            coverageWarning.hidden = !coverageWarning.textContent;
+            return;
+        }
+        const [west, south, east, north] = metadata.bounds;
+        const packageBounds = L.latLngBounds([[south, west], [north, east]]);
+        const outside = !packageBounds.contains(map.getBounds());
+        coverageWarning.textContent = outside
+            ? t('MAP_VIEW.OFFLINE_OUTSIDE_COVERAGE', { name: metadata.name })
+            : '';
+        coverageWarning.hidden = !outside;
+    }
+
+    const loadOfflineBaseLayers = async () => {
+        if (!window.travelManagerOfflineMapLayer?.isSupported()) {
+            offlineMapLoadError = t('MAP_VIEW.OFFLINE_RENDERER_UNAVAILABLE');
+            updateOfflineCoverageWarning();
+            return [];
+        }
+        try {
+            const response = await getJson('/api/offline-maps');
+            offlineMapLoadError = '';
+            const maps = Array.isArray(response?.maps) ? response.maps : [];
+            const previousOfflineIds = Object.keys(baseLayers).filter((id) => baseLayers[id].offline);
+            const previousActiveLayer = activeBaseLayer;
+            if (previousOfflineIds.includes(activeBaseLayer)) setBaseLayer('standard');
+            previousOfflineIds.forEach((id) => {
+                if (map.hasLayer(baseLayers[id].layer)) map.removeLayer(baseLayers[id].layer);
+                delete baseLayers[id];
+            });
+            const collator = new Intl.Collator(
+                window.TRAVEL_MANAGER_I18N?.locale?.replace('_', '-') || undefined, {
+                sensitivity: 'base', numeric: true
+                }
+            );
+            const layers = [];
+            maps.slice().sort((a, b) => collator.compare(String(a.name || ''), String(b.name || '')))
+                .forEach((metadata) => {
+                    try {
+                        const id = `offline_${metadata.id}`;
+                        baseLayers[id] = {
+                            label: String(metadata.name || metadata.id),
+                            layer: window.travelManagerOfflineMapLayer.create(metadata),
+                            offline: true
+                        };
+                        layers.push({ id, label: baseLayers[id].label });
+                    } catch (error) {
+                        window.console?.error('Offline map could not be registered:', error);
+                        offlineMapLoadError = t('MAP_VIEW.OFFLINE_LOAD_FAILED');
+                    }
+                });
+            document.dispatchEvent(new CustomEvent('travel-manager:base-layers-changed', {
+                detail: { layers }
+            }));
+            if (offlineTestButton) offlineTestButton.disabled = layers.length === 0;
+            if (baseLayers[previousActiveLayer]) setBaseLayer(previousActiveLayer);
+            return layers;
+        } catch (error) {
+            window.console?.error('Offline map list could not be loaded:', error);
+            offlineMapLoadError = t('MAP_VIEW.OFFLINE_LOAD_FAILED');
+            updateOfflineCoverageWarning();
+            document.dispatchEvent(new CustomEvent('travel-manager:base-layers-changed', {
+                detail: { layers: [] }
+            }));
+            if (offlineTestButton) offlineTestButton.disabled = true;
+            return [];
+        }
+    };
+
+    const showOfflineMap = async (mapId) => {
+        const id = `offline_${String(mapId || '')}`;
+        if (!baseLayers[id]) await loadOfflineBaseLayers();
+        const entry = baseLayers[id];
+        const metadata = entry?.layer?.travelManagerOfflineMap;
+        if (!metadata) return false;
+        setBaseLayer(id);
+        layerState.map_base_layer = id;
+        patchUiSettings({map_base_layer: id});
+        const [west, south, east, north] = metadata.bounds;
+        map.fitBounds([[south, west], [north, east]], {padding: [30, 30]});
+        return true;
+    };
+
+    Promise.all([getUiSettings(), loadOfflineBaseLayers()]).then(([settings]) => {
         const view = getSavedMapView(settings);
         map.setView(view.center, view.zoom);
         applyLayerState(settings || {});
+    }).catch((error) => {
+        window.console?.error('Map initialization failed:', error);
+        setBaseLayer('standard');
     });
 
     const getBounds = () => {
@@ -929,6 +1072,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     function applyLayerState(nextState) {
+        offlineMapMode = [
+            'prefer_offline', 'offline_when_disconnected', 'online_only'
+        ].includes(nextState.offline_map_mode)
+            ? nextState.offline_map_mode
+            : offlineMapMode;
         layerState = {
             ...layerState,
             map_base_layer: nextState.map_base_layer || layerState.map_base_layer,
@@ -941,7 +1089,9 @@ document.addEventListener('travel-manager:views-ready', () => {
             layer_public_gps_traces_enabled: Boolean(nextState.layer_public_gps_traces_enabled)
         };
 
-        setBaseLayer(layerState.map_base_layer);
+        const selected = shouldUseOfflineMap() ? containingOfflineMap() : null;
+        setBaseLayer(selected?.id || layerState.map_base_layer, {automatic: Boolean(selected)});
+        selectAutomaticBaseLayer();
         renderFavourites();
         setLayerEnabled(favouritesLayer, layerState.layer_favourites_enabled);
         setLayerEnabled(mapNotesLayer, layerState.layer_map_notes_enabled);
@@ -1059,11 +1209,6 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
     };
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
     let saveMapViewTimeout = null;
 
     const saveMapView = () => {
@@ -1084,9 +1229,14 @@ document.addEventListener('travel-manager:views-ready', () => {
 
     map.on('moveend zoomend', () => {
         saveMapView();
+        selectAutomaticBaseLayer();
+        updateOfflineCoverageWarning();
         refreshMapNotesLayer();
         refreshMapDataLayer();
     });
+
+    window.addEventListener('online', selectAutomaticBaseLayer);
+    window.addEventListener('offline', selectAutomaticBaseLayer);
 
     map.on('click', (event) => {
         if (window.travelManagerLayerEditor?.isDrawing()) return;
@@ -1110,12 +1260,29 @@ document.addEventListener('travel-manager:views-ready', () => {
     });
 
     locationButton?.addEventListener('click', showCurrentLocation);
+    offlineTestButton?.addEventListener('click', () => {
+        if (!offlineTestMode && !containingOfflineMap()) {
+            coverageWarning.textContent = t('MAP_VIEW.OFFLINE_NO_COVERAGE');
+            coverageWarning.hidden = false;
+            return;
+        }
+        offlineTestMode = !offlineTestMode;
+        offlineTestButton.setAttribute('aria-pressed', String(offlineTestMode));
+        const label = t(offlineTestMode
+            ? 'MAP_VIEW.OFFLINE_TEST_DISABLE' : 'MAP_VIEW.OFFLINE_TEST_ENABLE');
+        offlineTestButton.setAttribute('aria-label', label);
+        offlineTestButton.querySelector('.map-toolbar__tooltip').textContent = label;
+        selectAutomaticBaseLayer();
+    });
     advancedSearchButton?.addEventListener('click', () => {
         window.travelManagerAdvancedSearch?.open(getSearchContext());
     });
 
     document.addEventListener('travel-manager:layers-changed', (event) => {
         applyLayerState(event.detail || {});
+    });
+    document.addEventListener('travel-manager:ui-settings-changed', (event) => {
+        if (event.detail?.offline_map_mode) applyLayerState(event.detail);
     });
     document.addEventListener('travel-manager:custom-layers-changed', renderCustomLayers);
     document.addEventListener('travel-manager:custom-layer-editing-changed', event => {
@@ -1434,7 +1601,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         clearPublicTransportVehicles,
         showPublicTransportRoute,
         showPublicTransportStop,
-        showPublicTransportVehicles
+        showPublicTransportVehicles,
+        refreshOfflineMaps: loadOfflineBaseLayers,
+        showOfflineMap
     };
 
     window.travelManagerFavourites?.list().then(renderFavourites).catch(() => {});

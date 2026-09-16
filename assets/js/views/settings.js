@@ -9,9 +9,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     const publicTransportGroup = document.querySelector('[data-settings-group="public-transport"]');
     const applicationGroup = document.querySelector('[data-settings-group="application"]');
     const layerUnitsGroup = document.querySelector('[data-settings-group="layer-units"]');
+    const offlineMapsGroup = document.querySelector('[data-settings-group="offline-maps"]');
     const memoryLists = document.querySelectorAll('[data-settings-memory-list]');
+    const offlineMapsList = document.querySelector('[data-settings-offline-maps]');
 
-    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationGroup || !layerUnitsGroup) {
+    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationGroup || !layerUnitsGroup || !offlineMapsGroup) {
         return;
     }
 
@@ -156,7 +158,10 @@ document.addEventListener('travel-manager:views-ready', () => {
             unit = units[index];
         }
         const locale = window.i18n.locale?.replace('_', '-') || undefined;
-        return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(scaled)} ${unit}`;
+        return `${new Intl.NumberFormat(locale, {
+            minimumFractionDigits: unit === 'GB' ? 2 : 0,
+            maximumFractionDigits: unit === 'GB' ? 2 : 1
+        }).format(scaled)} ${unit}`;
     };
 
     const refreshAfterDelete = async (id) => {
@@ -247,6 +252,84 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
+
+    const loadOfflineMaps = async () => {
+        if (!offlineMapsList) return;
+        const response = await fetch('/api/offline-maps', {headers: {Accept: 'application/json'}});
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(t('SETTINGS_MEMORY.LOAD_FAILED'));
+        const collator = new Intl.Collator(window.i18n.locale.replace('_', '-'), {sensitivity: 'base', numeric: true});
+        const maps = [...(data.maps || [])].sort((a, b) => collator.compare(a.name || '', b.name || ''));
+        offlineMapsList.replaceChildren();
+        if (!maps.length) {
+            const empty = document.createElement('p'); empty.className = 'settings-view__memory-empty';
+            empty.textContent = t('SETTINGS_MEMORY.NO_OFFLINE_MAPS'); offlineMapsList.append(empty); return;
+        }
+        const header = document.createElement('div'); header.className = 'settings-view__memory-header';
+        [t('SETTINGS_MEMORY.COLUMN_NAME'), t('SETTINGS_MEMORY.COLUMN_REGION'), t('SETTINGS_MEMORY.COLUMN_DATE'), t('SETTINGS_MEMORY.COLUMN_SIZE'), '']
+            .forEach((label) => { const cell = document.createElement('span'); cell.textContent = label; header.append(cell); });
+        offlineMapsList.append(header);
+        maps.forEach((item) => {
+            const row = document.createElement('div'); row.className = 'settings-view__memory-row';
+            const name = document.createElement('strong'); name.textContent = item.name;
+            const region = document.createElement('span'); region.textContent = item.region_name || item.region_id;
+            const date = document.createElement('span'); date.className = 'settings-view__memory-date';
+            date.textContent = item.source_updated_at
+                ? new Intl.DateTimeFormat(window.i18n.locale.replace('_', '-'), {dateStyle: 'medium'}).format(new Date(item.source_updated_at))
+                : t('SETTINGS_MEMORY.NO_DATE');
+            const size = document.createElement('span'); size.className = 'settings-view__memory-size'; size.textContent = formatBytes(item.size);
+            const actions = document.createElement('div'); actions.className = 'settings-view__memory-actions';
+            const action = (icon, label, handler) => {
+                const button = document.createElement('button'); button.className = 'settings-view__memory-delete';
+                button.type = 'button'; button.title = label; button.setAttribute('aria-label', `${label}: ${item.name}`);
+                button.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i>`; button.addEventListener('click', handler);
+                actions.append(button); return button;
+            };
+            action('map-pin', t('SETTINGS_MEMORY.SHOW_ON_MAP'), async () => {
+                const shown = await window.travelManagerMap?.showOfflineMap(item.id);
+                if (shown) window.travelManagerNavigation?.showView('map');
+            });
+            action('refresh-cw', t('COMMON.UPDATE'), () => document.dispatchEvent(
+                new CustomEvent('travel-manager:offline-map-update-requested', {detail: item})
+            ));
+            action('trash-2', t('SETTINGS_MEMORY.DELETE'), async (event) => {
+                const button = event.currentTarget;
+                const accepted = await window.travelManagerDialogs?.yesNo({
+                    title: t('SETTINGS_MEMORY.DELETE_MAP_TITLE'),
+                    description: t('SETTINGS_MEMORY.DELETE_CONFIRM', {name: item.name}),
+                    icon: 'trash-2', yesLabel: t('COMMON.DELETE')
+                });
+                if (!accepted) return;
+                button.disabled = true;
+                const deletion = await fetch(`/api/offline-maps/${encodeURIComponent(item.id)}`, {method: 'DELETE', headers: {Accept: 'application/json'}});
+                if (!deletion.ok) { button.disabled = false; showPopup(t('SETTINGS_MEMORY.DELETE_FAILED'), 'error'); return; }
+                await window.travelManagerMap?.refreshOfflineMaps();
+                await Promise.all([loadOfflineMaps(), loadStorageUsage()]);
+            });
+            row.append(name, region, date, size, actions); offlineMapsList.append(row);
+        });
+        window.lucide?.createIcons({attrs: {'stroke-width': 1.7}});
+    };
+
+    document.addEventListener('travel-manager:offline-map-job-finished', () => {
+        loadOfflineMaps().catch(() => {});
+        loadStorageUsage().catch(() => {});
+        window.travelManagerMap?.refreshOfflineMaps();
+    });
+    document.addEventListener('travel-manager:offline-map-update-requested', async (event) => {
+        const item = event.detail;
+        if (!item?.id) return;
+        try {
+            const response = await fetch(`/api/offline-maps/${encodeURIComponent(item.id)}/update`, {
+                method: 'POST', headers: {Accept: 'application/json'}
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(data.message || t('SETTINGS_MEMORY.UPDATE_MAP_FAILED'));
+            document.dispatchEvent(new CustomEvent('travel-manager:offline-map-job-started', {detail: data.job}));
+        } catch (error) {
+            showPopup(error.message || t('SETTINGS_MEMORY.UPDATE_MAP_FAILED'), 'error');
+        }
+    });
 
     const downloadJson = (payload, filename) => {
         const blob = new Blob(
@@ -692,11 +775,13 @@ document.addEventListener('travel-manager:views-ready', () => {
         publicTransportGroup.replaceChildren();
         applicationGroup.replaceChildren();
         layerUnitsGroup.replaceChildren();
+        offlineMapsGroup.replaceChildren();
         routeFuelMainInput = null;
         routeFuelDependentRows = [];
         loadStorageUsage().catch(() => {
             memoryLists.forEach((list) => { list.textContent = t('SETTINGS_MEMORY.LOAD_FAILED'); });
         });
+        loadOfflineMaps().catch(() => { if (offlineMapsList) offlineMapsList.textContent = t('SETTINGS_MEMORY.LOAD_FAILED'); });
 
         try {
             const response = await fetch('/api/settings/ui', {
@@ -730,6 +815,18 @@ document.addEventListener('travel-manager:views-ready', () => {
                 'layer_length_unit',
                 settings.layer_length_unit,
                 ['mm', 'cm', 'm', 'km'].map((unit) => ({ value: unit, label: unit }))
+            );
+
+            addSelectSetting(
+                offlineMapsGroup,
+                t('SETTINGS_OFFLINE_MAPS.MODE'),
+                'offline_map_mode',
+                settings.offline_map_mode,
+                [
+                    { value: 'prefer_offline', label: t('SETTINGS_OFFLINE_MAPS.PREFER_OFFLINE') },
+                    { value: 'offline_when_disconnected', label: t('SETTINGS_OFFLINE_MAPS.WHEN_DISCONNECTED') },
+                    { value: 'online_only', label: t('SETTINGS_OFFLINE_MAPS.ONLINE_ONLY') }
+                ]
             );
             addSelectSetting(
                 layerUnitsGroup,

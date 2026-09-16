@@ -40,6 +40,25 @@
         </div>
     </section>
 
+    <section class="settings-view__section" aria-labelledby="settings-view-offline-maps-title" data-settings-section>
+        <div class="settings-view__titlebar">
+            <i class="settings-view__section-icon" data-lucide="map" aria-hidden="true"></i>
+            <div class="settings-view__title-text"><h4 id="settings-view-offline-maps-title">{{ t('SETTINGS_OFFLINE_MAPS.TITLE') }}</h4></div>
+            <button class="settings-view__collapse-button" type="button" aria-label="{{ t('SETTINGS_VIEW.COLLAPSE_GROUP') }}" aria-expanded="true" data-settings-collapse><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+            <div class="settings-view__description"><p>{{ t('SETTINGS_OFFLINE_MAPS.DESCRIPTION') }}</p></div>
+        </div>
+        <div class="settings-view__section-content" data-settings-section-content>
+            <dl class="settings-view__values" data-settings-group="offline-maps"></dl>
+            <p class="settings-view__offline-note">{{ t('SETTINGS_OFFLINE_MAPS.LIMITATIONS') }}</p>
+            <div class="settings-view__transfer">
+                <button class="settings-view__action-button" type="button" data-offline-map-download>
+                    <i data-lucide="download" aria-hidden="true"></i>
+                    <span>{{ t('SETTINGS_OFFLINE_MAPS.DOWNLOAD') }}</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
     <section class="settings-view__section" aria-labelledby="settings-view-application-layers-title" data-settings-section>
         <div class="settings-view__titlebar">
             <i class="settings-view__section-icon" data-lucide="layers" aria-hidden="true"></i>

@@ -3,11 +3,12 @@ document.addEventListener('travel-manager:views-ready', () => {
     const panel = document.querySelector('#layer-details-panel');
     const closeButton = document.querySelector('[data-layer-details-panel-close]');
     const grabber = document.querySelector('[data-layer-details-panel-grabber]');
-    const baseLayerInputs = Array.from(document.querySelectorAll('[data-base-layer]'));
+    const offlineBaseLayers = panel?.querySelector('[data-offline-base-layers]');
+    const getBaseLayerInputs = () => Array.from(panel?.querySelectorAll('[data-base-layer]') || []);
     const overlayInputs = Array.from(document.querySelectorAll('[data-layer-toggle]'));
     const favouriteTagsList = document.querySelector('#layer-details-favourite-tags');
 
-    if (!panel || !closeButton || !baseLayerInputs.length || !overlayInputs.length) {
+    if (!panel || !closeButton || !getBaseLayerInputs().length || !overlayInputs.length) {
         return;
     }
 
@@ -76,7 +77,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         [input.dataset.layerToggle]: input.checked
     }), {
         layer_favourite_visible_tag_ids: selectedFavouriteTagIds,
-        map_base_layer: baseLayerInputs.find((input) => input.checked)?.dataset.baseLayer || 'standard'
+        map_base_layer: getBaseLayerInputs().find((input) => input.checked)?.dataset.baseLayer || 'standard'
     });
 
     const getSelectedTagIds = () => {
@@ -152,7 +153,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     const applyLayerState = (state) => {
-        baseLayerInputs.forEach((input) => {
+        getBaseLayerInputs().forEach((input) => {
             input.checked = input.dataset.baseLayer === (state.map_base_layer || 'standard');
         });
 
@@ -221,17 +222,43 @@ document.addEventListener('travel-manager:views-ready', () => {
         panel.setAttribute('aria-hidden', 'true');
     };
 
-    baseLayerInputs.forEach((input) => {
-        input.addEventListener('change', () => {
-            if (!input.checked || input.disabled) {
-                return;
-            }
+    panel.addEventListener('change', (event) => {
+        const input = event.target.closest?.('[data-base-layer]');
+        if (!input || !input.checked || input.disabled) return;
+        const state = getLayerState();
+        patchUiSettings(state);
+        document.dispatchEvent(new CustomEvent('travel-manager:layers-changed', { detail: state }));
+    });
 
-            const state = getLayerState();
-            patchUiSettings(state);
-            document.dispatchEvent(new CustomEvent('travel-manager:layers-changed', {
-                detail: state
-            }));
+    document.addEventListener('travel-manager:base-layers-changed', (event) => {
+        if (!offlineBaseLayers) return;
+        const activeId = getLayerState().map_base_layer;
+        const layers = Array.isArray(event.detail?.layers) ? event.detail.layers : [];
+        offlineBaseLayers.replaceChildren();
+        offlineBaseLayers.hidden = !layers.length;
+        layers.forEach((layer) => {
+            const label = document.createElement('label');
+            label.className = 'layer-details-panel__option';
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'map_base_layer';
+            input.dataset.baseLayer = layer.id;
+            input.checked = layer.id === activeId;
+            const text = document.createElement('span');
+            const title = document.createElement('strong');
+            const description = document.createElement('small');
+            title.textContent = layer.label;
+            description.textContent = t('RES_MAP_LAYER.OFFLINE_DESCRIPTION');
+            text.append(title, description);
+            label.append(input, text);
+            offlineBaseLayers.append(label);
+        });
+    });
+
+    document.addEventListener('travel-manager:base-layer-changed', (event) => {
+        const activeId = event.detail?.map_base_layer || 'standard';
+        getBaseLayerInputs().forEach((input) => {
+            input.checked = input.dataset.baseLayer === activeId;
         });
     });
 

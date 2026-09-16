@@ -1,0 +1,16 @@
+<section class="offline-map-progress" id="offline-map-progress" role="dialog" aria-modal="true" aria-labelledby="offline-map-progress-title" aria-hidden="true">
+    <header class="offline-map-progress__header"><h2 id="offline-map-progress-title">{{ t('OFFLINE_MAP_PROGRESS.TITLE') }}</h2></header>
+    <div class="offline-map-progress__content">
+        <span class="offline-map-progress__spinner" aria-hidden="true"></span>
+        <strong data-offline-map-progress-heading>{{ t('OFFLINE_MAP_PROGRESS.PREPARING') }}</strong>
+        <progress value="0" max="1" data-offline-map-progress-bar></progress>
+        <span class="offline-map-progress__indeterminate" data-offline-map-progress-indeterminate aria-hidden="true" hidden></span>
+        <span data-offline-map-progress-text></span>
+    </div>
+    <footer class="offline-map-progress__footer">
+        <button type="button" data-offline-map-progress-background>{{ t('OFFLINE_MAP_PROGRESS.BACKGROUND') }}</button>
+        <button type="button" data-offline-map-progress-cancel>{{ t('COMMON.CANCEL') }}</button>
+        <button type="button" data-offline-map-progress-retry hidden>{{ t('OFFLINE_MAP_PROGRESS.RETRY') }}</button>
+        <button type="button" data-offline-map-progress-close hidden>{{ t('COMMON.CLOSE') }}</button>
+    </footer>
+</section>

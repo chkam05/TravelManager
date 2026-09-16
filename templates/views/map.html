@@ -1,6 +1,10 @@
 <section class="map-panel" aria-label="{{ t('MAP_VIEW.MAP') }}">
     <div class="map-panel__map" id="map"></div>
     <div class="map-toolbar" aria-label="{{ t('MAP_VIEW.MAP_TOOLS') }}">
+        <button class="map-toolbar__button" data-map-tool="offline-test" type="button" aria-label="{{ t('MAP_VIEW.OFFLINE_TEST_ENABLE') }}" aria-pressed="false" disabled>
+            <i data-lucide="wifi-off" aria-hidden="true"></i>
+            <span class="map-toolbar__tooltip" role="tooltip">{{ t('MAP_VIEW.OFFLINE_TEST_ENABLE') }}</span>
+        </button>
         <button class="map-toolbar__button map-toolbar__button--public-transport" data-map-tool="public-transport" type="button" aria-label="{{ t('MAP_VIEW.PUBLIC_TRANSPORT') }}">
             <i data-lucide="bus-front" aria-hidden="true"></i>
             <span class="map-toolbar__tooltip" role="tooltip">{{ t('MAP_VIEW.PUBLIC_TRANSPORT') }}</span>

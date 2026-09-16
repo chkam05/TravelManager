@@ -32,6 +32,17 @@ Pole wyszukiwania pozwala znaleźć adres lub miejsce. Wyszukiwanie zaawansowane
 
 Panel warstw steruje mapą bazową, tagami ulubionych, notatkami OpenStreetMap, obiektami w bieżącym obszarze i publicznymi śladami GPS. Legenda objaśnia obsługiwane symbole, linie i obszary.
 
+### Mapy offline
+
+Regionalny podkład OpenStreetMap można pobrać w **Ustawienia → Mapa → Mapy
+offline**, a następnie wybierać automatycznie lub ręcznie w panelu warstw.
+Pobranymi pakietami, ich aktualizacją i usuwaniem zarządza sekcja **Pamięć i
+Kopia Zapasowa → Pobrane mapy**. Pierwsza wersja zapewnia offline wyłącznie
+podkład: wyszukiwanie, routing, Overpass, notatki OSM i aktualizacje transportu
+nadal wymagają internetu. Szczegółowa instrukcja, wymagania, szacunki zajętego
+miejsca oraz informacje o ODbL i użytych bibliotekach znajdują się w
+[dokumentacji map offline](doc/offline.md#instrukcja-użytkownika).
+
 ## Trasy i samochody
 
 Trasa może zawierać od 2 do 25 uporządkowanych punktów. Panel trasy obsługuje ruch pieszy, rowerowy i samochodowy, zmianę kolejności, odwracanie trasy, instrukcje przejazdu, zapis oraz opcję omijania dróg płatnych. Dla trasy samochodowej aktywny profil dostarcza rodzaj paliwa, pojemność zbiornika i spalanie potrzebne do szacowania kosztów oraz tankowań.
@@ -68,16 +79,16 @@ Dla nowej konfiguracji domyślnym językiem jest angielski, a po uruchomieniu ot
 
 Ustawienia są podzielone na:
 
-- **Wygląd** — jasny lub ciemny motyw, kolor akcentu, kolory trasy oraz osobne kolory znaczników autobusów, tramwajów, trolejbusów, metra i pociągów.
-- **Trasy** — waluta kosztów, domyślne dane cen i spalania, znaczniki tankowania oraz obsługa dróg płatnych.
-- **Komunikacja miejska** — aktualizacje pojazdów w tle i częstotliwość odświeżania.
-- **Kopia zapasowa** — import i eksport wybranych kategorii danych w formacie JSON.
 - **Aplikacja** — język, otwieranie Strony Głównej i tryb sieci lokalnej.
+- **Mapa** — koszty i opcje tras, tankowanie, drogi płatne, warstwy oraz mapy offline.
+- **Pamięć i Kopia Zapasowa** — pobrane dane i mapy, ich usuwanie oraz import i eksport danych JSON.
+- **Transport publiczny** — aktualizacje pojazdów w tle i częstotliwość odświeżania.
+- **Wygląd** — jasny lub ciemny motyw, kolor akcentu, kolory trasy oraz osobne kolory znaczników autobusów, tramwajów, trolejbusów, metra i pociągów.
 
 ## Wymagania
 
 - Python 3.10 lub nowszy przy uruchamianiu ze źródeł.
-- Dostęp do Internetu potrzebny do kafelków mapy, wyszukiwania miejsc, wyznaczania tras, aktualizacji paliw i walut oraz pobierania komunikacji miejskiej.
+- Dostęp do Internetu potrzebny do pobrania lub aktualizacji map offline, internetowych kafelków mapy, wyszukiwania miejsc, wyznaczania tras, aktualizacji paliw i walut oraz pobierania transportu publicznego.
 - Silnik WebView obsługiwany przez pywebview:
   - WebView2 albo obsługiwany backend Qt w Windows,
   - natywny WebKit w macOS,

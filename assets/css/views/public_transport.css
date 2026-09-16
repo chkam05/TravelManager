@@ -680,7 +680,14 @@ button.public-transport-line-pill {
     box-shadow: 0 8px 26px #0003;
     font-size: .82rem;
     font-weight: 800;
+    color: inherit;
+    text-align: left;
+    cursor: default;
 }
+
+button.public-transport-background-download { font: inherit; cursor: pointer; }
+.public-transport-background-download--offline { bottom: 18px; }
+.public-transport-background-download--offline.public-transport-background-download--stacked { bottom: 86px; }
 
 .public-transport-background-download[hidden] { display: none; }
 .public-transport-background-download__icon {

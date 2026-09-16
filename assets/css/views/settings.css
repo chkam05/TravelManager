@@ -306,6 +306,12 @@
 }
 .settings-view__memory-delete:hover { background: var(--control-hover); }
 .settings-view__memory-delete svg { width: 18px; height: 18px; }
+.settings-view__memory-list--offline-maps .settings-view__memory-header,
+.settings-view__memory-list--offline-maps .settings-view__memory-row {
+    grid-template-columns:minmax(180px,1fr) minmax(190px,.9fr) minmax(130px,.55fr) minmax(90px,.35fr) 134px;
+    min-width:820px;
+}
+.settings-view__memory-actions{display:flex;justify-content:flex-end;gap:7px}
 
 .settings-view__value,
 .information-view__row {
@@ -395,6 +401,14 @@
 .settings-view__hint {
     font-size: 0.88rem;
     font-weight: 700;
+}
+
+.settings-view__offline-note {
+    margin: 10px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.45;
 }
 
 .settings-view__fetch-button {

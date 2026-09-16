@@ -32,6 +32,17 @@ Use the search field to find an address or place. Advanced search can narrow res
 
 The layer panel controls the base map, favourite tags, OpenStreetMap notes, nearby map data, and public GPS traces. The legend explains supported symbols, lines, and areas.
 
+### Offline maps
+
+You can download a regional OpenStreetMap base map under **Settings → Map →
+Offline maps**, then select it automatically or manually from the layer panel.
+Installed packages can be displayed, updated, and removed under **Memory and
+Backup → Downloaded maps**. The first version makes only the base map available
+offline; search, routing, Overpass, OSM notes, and transport updates still need
+an internet connection. The Polish [offline-map documentation](doc/offline.md#instrukcja-użytkownika)
+contains the complete workflow, hardware and storage guidance, limitations,
+ODbL attribution, and dependency licence information.
+
 ## Routes and cars
 
 A route may contain from 2 to 25 ordered points. The route panel supports walking, cycling, and driving profiles, point reordering, route reversal, turn-by-turn steps, route saving, and an option to avoid toll roads. For car routes, the active car profile supplies fuel type, tank capacity, and consumption values used by cost and refuelling estimates.
@@ -68,16 +79,16 @@ English is used for a new configuration, and Home opens after startup by default
 
 Settings are divided into:
 
-- **Appearance** — light or dark theme, accent colour, route colours, and separate marker colours for buses, trams, trolleybuses, metro, and trains.
-- **Routes** — preferred cost currency, fuel-price and consumption defaults, refuelling markers, and toll-road routing.
-- **Public transport** — background vehicle updates and refresh interval.
-- **Backup** — JSON import and export for selected data categories.
 - **Application** — language, Home startup behaviour, and local-network mode.
+- **Map** — route costs and options, refuelling, toll roads, layers, and offline maps.
+- **Memory and Backup** — downloaded data and maps, deletion controls, and JSON import and export.
+- **Public transport** — background vehicle updates and refresh interval.
+- **Appearance** — light or dark theme, accent colour, route colours, and separate marker colours for buses, trams, trolleybuses, metro, and trains.
 
 ## Requirements
 
 - Python 3.10 or newer when running from source.
-- Internet access for map tiles, place search, route calculation, fuel and exchange-rate updates, and public transport downloads.
+- Internet access to download or update offline maps, load online map tiles, search for places, calculate routes, update fuel and exchange-rate data, and download public transport data.
 - A WebView backend supported by pywebview:
   - WebView2 or a supported Qt backend on Windows,
   - the native WebKit implementation on macOS,
