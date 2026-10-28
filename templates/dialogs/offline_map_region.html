@@ -8,7 +8,17 @@
         <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.CONTINENT') }}</span><select data-offline-map-continent></select></label>
         <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.COUNTRY') }}</span><select data-offline-map-country></select></label>
         <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.REGION') }}</span><select data-offline-map-region></select></label>
-        <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.MAX_ZOOM') }}</span><select data-offline-map-max-zoom><option value="12">12</option><option value="13">13</option><option value="14" selected>14</option></select></label>
+        <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.MAX_ZOOM') }}</span><select data-offline-map-max-zoom>
+            <option value="12">x12 - {{ t('OFFLINE_MAP_REGION.ZOOM_12') }}</option>
+            <option value="13">x13 - {{ t('OFFLINE_MAP_REGION.ZOOM_13') }}</option>
+            <option value="14" selected>x14 - {{ t('OFFLINE_MAP_REGION.ZOOM_14') }}</option>
+            <option value="15">x15 - {{ t('OFFLINE_MAP_REGION.ZOOM_15') }}</option>
+            <option value="16">x16 - {{ t('OFFLINE_MAP_REGION.ZOOM_16') }}</option>
+            <option value="17">x17 - {{ t('OFFLINE_MAP_REGION.ZOOM_17') }}</option>
+            <option value="18">x18 - {{ t('OFFLINE_MAP_REGION.ZOOM_18') }}</option>
+            <option value="19">x19 - {{ t('OFFLINE_MAP_REGION.ZOOM_19') }}</option>
+        </select></label>
+        <p class="offline-map-region__zoom-note" data-offline-map-zoom-note></p>
         <dl class="offline-map-region__summary" data-offline-map-summary></dl>
         <p class="offline-map-region__status" data-offline-map-region-status aria-live="polite"></p>
     </div>

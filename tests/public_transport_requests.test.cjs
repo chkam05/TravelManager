@@ -227,6 +227,22 @@ test('settings containers remain transparent without cards or shadows', () => {
     }
 });
 
+test('settings navigation stays single-line and controls use a right-hand column', () => {
+    const styles = source('assets/css/views/settings.css');
+    const template = source('templates/views/settings.html');
+    assert.doesNotMatch(template, /settings-view__navigation/);
+    assert.match(styles, /\.settings-view__toolbar \{\s*position: sticky;[\s\S]*z-index: 100;[\s\S]*top: 0;/);
+    assert.match(styles, /--settings-sticky-tabs-gap: 42px;/);
+    assert.match(styles, /\.settings-view__tabs \{\s*position: sticky;[\s\S]*z-index: 50;[\s\S]*top: calc\(var\(--settings-toolbar-height\) \+ var\(--settings-sticky-tabs-gap\)\);[\s\S]*align-self: start;/);
+    assert.match(styles, /\.settings-view__tab \{[\s\S]*grid-template-columns: 18px max-content;/);
+    assert.match(styles, /\.settings-view__tab span \{\s*white-space: nowrap;/);
+    assert.match(styles, /\.settings-view__body \{[\s\S]*padding: 42px clamp\(24px, 4vw, 64px\) 64px;/);
+    assert.match(styles, /\.settings-view__value \{\s*grid-template-columns: minmax\(0, 1fr\) 320px;/);
+    assert.match(styles, /\.settings-view__value > dd \{\s*grid-column: 2;\s*width: 100%;/);
+    assert.match(styles, /\.settings-view__control \.component-checkbox \{\s*margin-left: auto;/);
+    assert.match(styles, /\.settings-view__select \{[\s\S]*width: 100%;/);
+});
+
 test('appearance settings use the shared settings section structure', () => {
     const template = source('templates/views/settings/appearance.html');
     assert.match(template, /class="appearance-settings__section settings-view__section"/);
@@ -237,7 +253,7 @@ test('appearance settings use the shared settings section structure', () => {
 
 test('opening settings resets every relevant scroll container', () => {
     const settings = source('assets/js/views/settings.js');
-    assert.match(settings, /const resetScrollPosition = \(\) => \{[\s\S]*settingsBody\?\.scrollTo\?\.\(\{ top: 0, left: 0 \}\);[\s\S]*view\.scrollTop = 0;[\s\S]*appContent\?\.scrollTo\?\.\(\{ top: 0, left: 0 \}\);/);
+    assert.match(settings, /const resetScrollPosition = \(\) => \{[\s\S]*settingsScroller\?\.scrollTo\?\.\(\{ top: 0, left: 0 \}\);[\s\S]*settingsBody\?\.scrollTo\?\.\(\{ top: 0, left: 0 \}\);[\s\S]*view\.scrollTop = 0;[\s\S]*appContent\?\.scrollTo\?\.\(\{ top: 0, left: 0 \}\);/);
     assert.match(settings, /event\.detail\?\.view === 'settings'[\s\S]*resetScrollPosition\(\);[\s\S]*requestAnimationFrame\(resetScrollPosition\)/);
 });
 
@@ -247,13 +263,15 @@ test('public transport stop-map and close actions occupy separate header columns
     assert.match(styles, /\.public-transport-panel__close \{[\s\S]*?grid-column: 7;[\s\S]*?grid-row: 1;/);
 });
 
-test('settings place map before combined storage and backup, with memory outside application', () => {
+test('settings expose separate map, backup and memory views in the requested order', () => {
     const settings = source('templates/views/settings.html');
     const application = source('templates/views/settings/application.html');
     const backup = source('templates/views/settings/backup.html');
-    const mapTab = settings.indexOf('id="settings-tab-routes"');
+    const mapTab = settings.indexOf('id="settings-tab-map"');
     const backupTab = settings.indexOf('id="settings-tab-backup"');
-    assert.ok(mapTab >= 0 && backupTab > mapTab);
+    const memoryTab = settings.indexOf('id="settings-tab-memory"');
+    assert.ok(mapTab >= 0 && backupTab > mapTab && memoryTab > backupTab);
     assert.doesNotMatch(application, /data-settings-memory/);
-    assert.match(backup, /views\/settings\/memory\.html/);
+    assert.doesNotMatch(backup, /views\/settings\/memory\.html/);
+    assert.match(settings, /settings-panel-memory[\s\S]*views\/settings\/memory\.html/);
 });

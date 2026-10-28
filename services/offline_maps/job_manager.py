@@ -111,7 +111,9 @@ class OfflineMapJobManager:
 
         return self._create_job(selected_region_id, map_id, max_zoom, False)
 
-    def create_update(self, selected_map_id: str) -> OfflineMapJob:
+    def create_update(
+        self, selected_map_id: str, max_zoom: int | None = None
+    ) -> OfflineMapJob:
         self.start()
         selected_map_id = local_id(selected_map_id, 'map id')
         installed = next(
@@ -120,6 +122,10 @@ class OfflineMapJobManager:
         )
         if installed is None:
             raise ValueError('Mapa do aktualizacji nie jest zainstalowana.')
+        if max_zoom is None:
+            max_zoom = installed.max_zoom
+        if type(max_zoom) is not int or not 0 <= max_zoom <= 22:
+            raise ValueError('Nieprawidłowy maksymalny poziom przybliżenia.')
         if any(
             item.map_id == selected_map_id and item.status in self.ACTIVE_STATUSES
             for item in self._paths.jobs.load()
@@ -129,7 +135,7 @@ class OfflineMapJobManager:
         region = next((item for item in regions if item.id == installed.region_id), None)
         if region is None or not region.pbf_url:
             raise ValueError('Region nie jest dostępny do aktualizacji.')
-        return self._create_job(installed.region_id, selected_map_id, installed.max_zoom, True)
+        return self._create_job(installed.region_id, selected_map_id, max_zoom, True)
 
     def _create_job(
         self, selected_region_id: str, map_id: str, max_zoom: int,

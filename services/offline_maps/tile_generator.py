@@ -152,6 +152,10 @@ class OfflineMapTileGenerator:
                         if len(assignments) >= self.ASSIGNMENT_BATCH_SIZE:
                             tiles.assign(assignments)
                             assignments.clear()
+                            self._resources.ensure(
+                                self._resources.MINIMUM_FREE_BYTES,
+                                'przypisywanie kafelków',
+                            )
                     processed += 1
                 if assignments:
                     tiles.assign(assignments)
@@ -169,6 +173,11 @@ class OfflineMapTileGenerator:
         generated_layers: set[str] = set()
         for zoom, column, row in tiles.tile_coordinates():
             self._check_cancel(cancelled)
+            if completed % 1000 == 0:
+                self._resources.ensure(
+                    self._resources.MINIMUM_FREE_BYTES,
+                    'generowanie kafelków',
+                )
             tile_bounds = mercantile.bounds(column, row, zoom)
             mercator_bounds = mercantile.xy_bounds(column, row, zoom)
             layers: dict[str, list[dict]] = defaultdict(list)

@@ -36,8 +36,8 @@ Panel warstw steruje mapą bazową, tagami ulubionych, notatkami OpenStreetMap, 
 
 Regionalny podkład OpenStreetMap można pobrać w **Ustawienia → Mapa → Mapy
 offline**, a następnie wybierać automatycznie lub ręcznie w panelu warstw.
-Pobranymi pakietami, ich aktualizacją i usuwaniem zarządza sekcja **Pamięć i
-Kopia Zapasowa → Pobrane mapy**. Pierwsza wersja zapewnia offline wyłącznie
+Pobranymi pakietami, ich aktualizacją i usuwaniem zarządza sekcja **Pamięć →
+Pobrane mapy offline**. Pierwsza wersja zapewnia offline wyłącznie
 podkład: wyszukiwanie, routing, Overpass, notatki OSM i aktualizacje transportu
 nadal wymagają internetu. Szczegółowa instrukcja, wymagania, szacunki zajętego
 miejsca oraz informacje o ODbL i użytych bibliotekach znajdują się w
@@ -80,10 +80,12 @@ Dla nowej konfiguracji domyślnym językiem jest angielski, a po uruchomieniu ot
 Ustawienia są podzielone na:
 
 - **Aplikacja** — język, otwieranie Strony Głównej i tryb sieci lokalnej.
-- **Mapa** — koszty i opcje tras, tankowanie, drogi płatne, warstwy oraz mapy offline.
-- **Pamięć i Kopia Zapasowa** — pobrane dane i mapy, ich usuwanie oraz import i eksport danych JSON.
-- **Transport publiczny** — aktualizacje pojazdów w tle i częstotliwość odświeżania.
 - **Wygląd** — jasny lub ciemny motyw, kolor akcentu, kolory trasy oraz osobne kolory znaczników autobusów, tramwajów, trolejbusów, metra i pociągów.
+- **Mapa** — warstwy oraz mapy offline.
+- **Transport publiczny** — aktualizacje pojazdów w tle i częstotliwość odświeżania.
+- **Trasy i Podróże** — koszty podróży, tankowanie na trasie oraz drogi płatne.
+- **Kopia Zapasowa** — import i eksport danych JSON.
+- **Pamięć** — pobrane dane i mapy oraz ich usuwanie.
 
 ## Wymagania
 

@@ -201,7 +201,12 @@ class OfflineMapController(BaseController):
 
     def update_map(self, map_id: str):
         try:
-            job = self._jobs.create_update(map_id)
+            payload = request.get_json(silent=True)
+            if payload is not None and not isinstance(payload, dict):
+                raise ValueError('Nieprawidłowe dane zadania.')
+            job = self._jobs.create_update(
+                map_id, payload.get('max_zoom') if payload else None
+            )
         except (TypeError, ValueError) as error:
             return jsonify({'status': 'error', 'message': str(error)}), 400
         return jsonify({'status': 'queued', 'job': job.to_dict()}), 202

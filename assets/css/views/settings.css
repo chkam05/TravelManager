@@ -7,6 +7,18 @@
     min-height: 0;
 }
 
+.app-view[data-app-view="settings"] {
+    height: 100%;
+    overflow: hidden;
+}
+
+.settings-view {
+    --settings-toolbar-height: 67px;
+    --settings-sticky-tabs-gap: 42px;
+    display: block;
+    overflow-y: auto;
+}
+
 .settings-view__toolbar,
 .information-view__toolbar {
     display: flex;
@@ -18,18 +30,38 @@
 }
 
 .settings-view__toolbar {
+    position: sticky;
+    z-index: 100;
+    top: 0;
+    min-height: var(--settings-toolbar-height);
     justify-content: space-between;
 }
 
 .settings-view__body,
 .information-view__body {
     width: 100%;
-    padding: 42px max(24px, calc((100% - 980px) / 2)) 64px;
     overflow-y: auto;
 }
 
 .settings-view__body {
     background: var(--surface-muted);
+    padding: 42px clamp(24px, 4vw, 64px) 64px;
+    overflow: visible;
+}
+
+.information-view__body {
+    padding: 42px max(24px, calc((100% - 980px) / 2)) 64px;
+}
+
+.settings-view__layout {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.settings-view__panels {
+    min-width: 0;
 }
 
 .settings-view__header,
@@ -50,21 +82,26 @@
 }
 
 .settings-view__tabs {
-    display: flex;
-    gap: 6px;
-    margin: 0 0 24px;
-    padding: 5px;
-    overflow-x: auto;
+    position: sticky;
+    z-index: 50;
+    top: calc(var(--settings-toolbar-height) + var(--settings-sticky-tabs-gap));
+    align-self: start;
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 7px;
+    min-width: 250px;
     border-width: 1px;
     border-style: solid;
     border-radius: 10px;
 }
 
 .settings-view__tab {
-    display: inline-flex;
-    flex: 1 0 max-content;
+    display: grid;
+    grid-template-columns: 18px max-content;
+    width: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
     min-height: 42px;
     padding: 0 16px;
@@ -73,6 +110,16 @@
     font: inherit;
     font-weight: 800;
     cursor: pointer;
+}
+
+.settings-view__tab span {
+    white-space: nowrap;
+}
+
+.settings-view__nav-separator {
+    height: 1px;
+    margin: 5px 7px;
+    background: var(--border-color);
 }
 
 .settings-view__tab:focus-visible {
@@ -323,6 +370,10 @@
     border-top-style: solid;
 }
 
+.settings-view__value {
+    grid-template-columns: minmax(0, 1fr) 320px;
+}
+
 .settings-view__value:first-child {
     border-top: 0;
 }
@@ -335,6 +386,11 @@
     font-weight: 650;
 }
 
+.settings-view__value > dd {
+    grid-column: 2;
+    width: 100%;
+}
+
 .settings-view__value--control {
     align-items: center;
 }
@@ -344,6 +400,11 @@
     align-items: center;
     gap: 8px;
     min-width: 0;
+    width: 100%;
+}
+
+.settings-view__control .component-checkbox {
+    margin-left: auto;
 }
 
 .settings-view__control--fuel-type {
@@ -393,7 +454,7 @@
 }
 
 .settings-view__select {
-    width: 130px;
+    width: 100%;
     padding: 0 8px;
 }
 
@@ -453,6 +514,32 @@
     text-underline-offset: 3px;
 }
 
+@media (max-width: 900px) {
+.settings-view__tabs {
+    position: static;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.settings-view__tab {
+    width: auto;
+    flex-grow: 0;
+}
+
+.settings-view__layout {
+    display: block;
+}
+
+.settings-view__nav-separator {
+    width: 1px;
+    height: 28px;
+    margin: 7px 4px;
+    flex: 0 0 auto;
+}
+}
+
 @media (max-width: 640px) {
 .settings-view__body,
     .information-view__body {
@@ -464,18 +551,14 @@
     padding: 12px;
 }
 
-.settings-view__tabs {
-    justify-content: flex-start;
-}
-
-.settings-view__tab {
-    flex-grow: 0;
-}
-
 .settings-view__value,
     .information-view__row {
     grid-template-columns: 1fr;
     gap: 4px;
+}
+
+.settings-view__value > dd {
+    grid-column: 1;
 }
 
 .settings-view__control {

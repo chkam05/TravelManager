@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const {readFileSync} = require('node:fs');
 const vm = require('node:vm');
 
-const template = readFileSync('templates/views/settings/routes.html', 'utf8');
+const template = readFileSync('templates/views/settings/map.html', 'utf8');
 const settingsSource = readFileSync('assets/js/views/settings.js', 'utf8');
 const mapSource = readFileSync('assets/js/views/map.js', 'utf8');
 const dialogSource = readFileSync('assets/js/dialogs/offline_map_region.js', 'utf8');

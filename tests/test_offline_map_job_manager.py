@@ -150,6 +150,26 @@ class OfflineMapJobManagerTests(unittest.TestCase):
         self.assertTrue(current.is_update)
         self.assertTrue(manager.find(current.id).is_update)
 
+    def test_update_job_can_increase_zoom_without_replacing_installed_map_first(self):
+        installed = OfflineMap.from_dict({
+            'id': 'poland-map', 'region_id': 'poland', 'name': 'Poland',
+            'file_name': 'poland-map.mbtiles', 'size': 10,
+            'bounds': [14.0, 49.0, 24.0, 55.0], 'min_zoom': 0,
+            'max_zoom': 12, 'installed_at': NOW, 'source_updated_at': NOW,
+            'schema_version': 1,
+        })
+        self.paths.maps.save([installed])
+        manager = self.manager(CompletingDownloader(self.paths, delay=1))
+        manager.start = lambda: None
+
+        current = manager.create_update('poland-map', max_zoom=19)
+
+        self.assertEqual(current.max_zoom, 19)
+        self.assertTrue(current.is_update)
+        self.assertEqual(self.paths.maps.load()[0].max_zoom, 12)
+        with self.assertRaisesRegex(ValueError, 'przybliżenia'):
+            manager.create_update('poland-map', max_zoom=23)
+
     def test_cancel_is_persisted_even_before_worker_observes_it(self):
         downloader = CompletingDownloader(self.paths, delay=0.1)
         manager = self.manager(downloader)

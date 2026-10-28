@@ -1,19 +1,22 @@
 document.addEventListener('travel-manager:views-ready', () => {
     const t = window.i18n.t;
     const view = document.querySelector('[data-app-view="settings"]');
+    const settingsScroller = view?.querySelector('.settings-view');
     const settingsBody = view?.querySelector('.settings-view__body');
     const appContent = document.querySelector('#content');
     const travelCostsGroup = document.querySelector('[data-settings-group="travel-costs"]');
     const routeFuelGroup = document.querySelector('[data-settings-group="route-fuel"]');
     const routeTollsGroup = document.querySelector('[data-settings-group="route-tolls"]');
     const publicTransportGroup = document.querySelector('[data-settings-group="public-transport"]');
-    const applicationGroup = document.querySelector('[data-settings-group="application"]');
+    const applicationLanguageGroup = document.querySelector('[data-settings-group="application-language-region"]');
+    const applicationNetworkGroup = document.querySelector('[data-settings-group="application-network"]');
+    const applicationStartupGroup = document.querySelector('[data-settings-group="application-startup"]');
     const layerUnitsGroup = document.querySelector('[data-settings-group="layer-units"]');
     const offlineMapsGroup = document.querySelector('[data-settings-group="offline-maps"]');
     const memoryLists = document.querySelectorAll('[data-settings-memory-list]');
     const offlineMapsList = document.querySelector('[data-settings-offline-maps]');
 
-    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationGroup || !layerUnitsGroup || !offlineMapsGroup) {
+    if (!travelCostsGroup || !routeFuelGroup || !routeTollsGroup || !publicTransportGroup || !applicationLanguageGroup || !applicationNetworkGroup || !applicationStartupGroup || !layerUnitsGroup || !offlineMapsGroup) {
         return;
     }
 
@@ -44,6 +47,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     let pendingBrowserImportType = null;
 
     const resetScrollPosition = () => {
+        settingsScroller?.scrollTo?.({ top: 0, left: 0 });
         settingsBody?.scrollTo?.({ top: 0, left: 0 });
         if (view) view.scrollTop = 0;
         appContent?.scrollTo?.({ top: 0, left: 0 });
@@ -316,21 +320,6 @@ document.addEventListener('travel-manager:views-ready', () => {
         loadStorageUsage().catch(() => {});
         window.travelManagerMap?.refreshOfflineMaps();
     });
-    document.addEventListener('travel-manager:offline-map-update-requested', async (event) => {
-        const item = event.detail;
-        if (!item?.id) return;
-        try {
-            const response = await fetch(`/api/offline-maps/${encodeURIComponent(item.id)}/update`, {
-                method: 'POST', headers: {Accept: 'application/json'}
-            });
-            const data = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(data.message || t('SETTINGS_MEMORY.UPDATE_MAP_FAILED'));
-            document.dispatchEvent(new CustomEvent('travel-manager:offline-map-job-started', {detail: data.job}));
-        } catch (error) {
-            showPopup(error.message || t('SETTINGS_MEMORY.UPDATE_MAP_FAILED'), 'error');
-        }
-    });
-
     const downloadJson = (payload, filename) => {
         const blob = new Blob(
             [JSON.stringify(payload, null, 2)],
@@ -773,7 +762,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         routeFuelGroup.replaceChildren();
         routeTollsGroup.replaceChildren();
         publicTransportGroup.replaceChildren();
-        applicationGroup.replaceChildren();
+        applicationLanguageGroup.replaceChildren();
+        applicationNetworkGroup.replaceChildren();
+        applicationStartupGroup.replaceChildren();
         layerUnitsGroup.replaceChildren();
         offlineMapsGroup.replaceChildren();
         routeFuelMainInput = null;
@@ -794,16 +785,16 @@ document.addEventListener('travel-manager:views-ready', () => {
 
             const settings = (await response.json()).ui || {};
 
-            addLanguageSetting(applicationGroup, settings.language);
+            addLanguageSetting(applicationLanguageGroup, settings.language);
 
             addBooleanSetting(
-                applicationGroup,
+                applicationNetworkGroup,
                 t('SETTINGS_APPLICATION.MOVE_TO_NETWORK'),
                 'move_to_network',
                 settings.move_to_network === true
             );
             addBooleanSetting(
-                applicationGroup,
+                applicationStartupGroup,
                 t('SETTINGS_APPLICATION.OPEN_HOME'),
                 'open_home_on_startup',
                 settings.open_home_on_startup === true
@@ -936,11 +927,11 @@ document.addEventListener('travel-manager:views-ready', () => {
     tabs.forEach((tab, index) => {
         tab.addEventListener('click', () => activateTab(tab.dataset.settingsTab));
         tab.addEventListener('keydown', (event) => {
-            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
             event.preventDefault();
             let nextIndex = index;
-            if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
-            if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + tabs.length) % tabs.length;
+            if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % tabs.length;
             if (event.key === 'Home') nextIndex = 0;
             if (event.key === 'End') nextIndex = tabs.length - 1;
             activateTab(tabs[nextIndex].dataset.settingsTab, { focus: true });

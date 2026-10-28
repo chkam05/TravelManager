@@ -14,6 +14,15 @@ test('region dialog exposes hierarchical selectors and map metadata', () => {
     assert.match(source, /estimated_map_size/);
 });
 
+test('zoom choices explain proximity through level 19 and update accepts a new level', () => {
+    for (let level = 12; level <= 19; level += 1) {
+        assert.match(template, new RegExp(`<option value="${level}"[^>]*>x${level} -`));
+    }
+    assert.match(source, /zoomSelect\.value = String\(updatingMap\?\.max_zoom \|\| 14\)/);
+    assert.match(source, /max_zoom: Number\(zoomSelect\.value\)/);
+    assert.match(source, /Number\(zoomSelect\.value\) > 14 \? t\('OFFLINE_MAP_REGION.UNKNOWN'\)/);
+});
+
 test('preflight prevents duplicate and oversized downloads', () => {
     assert.match(source, /data\.installed/);
     assert.match(source, /data\.active_job/);
@@ -22,7 +31,7 @@ test('preflight prevents duplicate and oversized downloads', () => {
 });
 
 test('submitting starts one durable offline map job', () => {
-    assert.match(source, /fetch\('\/api\/offline-maps\/jobs'/);
+    assert.match(source, /: '\/api\/offline-maps\/jobs'/);
     assert.match(source, /region_id: regionSelect\.value/);
     assert.match(source, /travel-manager:offline-map-job-started/);
 });

@@ -19,9 +19,10 @@
 1. Otwórz **Ustawienia → Mapa → Mapy offline** i wybierz **Pobierz mapę**.
 2. Wskaż kontynent, kraj oraz dostępny region. Podział odzwierciedla katalog
    Geofabrik, dlatego liczba poziomów i rodzaj regionów różnią się między krajami.
-3. Wybierz maksymalny poziom przybliżenia. Wyższy poziom zapewnia więcej detali,
-   ale zwiększa czas generowania, zajęte miejsce i obciążenie komputera.
-4. Sprawdź rozmiar źródła, szacowany rozmiar wynikowy i ilość wolnego miejsca,
+3. Wybierz maksymalny poziom przybliżenia od **x12** (widok ogólny) do **x19**
+   (najbliższy widok). Wyższy numer oznacza większe zbliżenie, ale zwiększa
+   czas generowania, zajęte miejsce i obciążenie komputera.
+4. Sprawdź rozmiar źródła, dostępny szacunek wyniku i ilość wolnego miejsca,
    a następnie rozpocznij pobieranie.
 
 Po pobraniu pliku aplikacja lokalnie analizuje dane OSM, generuje kafelki
@@ -55,9 +56,10 @@ pozostałe funkcje aplikacji mogą nadal wykonywać żądania internetowe.
 
 ### Aktualizowanie i usuwanie
 
-Zainstalowane pakiety znajdują się w **Ustawienia → Pamięć i Kopia Zapasowa →
-Pobrane mapy**. Dla każdej mapy można użyć akcji **Pokaż na mapie**,
-**Aktualizuj** lub **Usuń**. Aktualizacja powstaje obok działającego pakietu;
+Zainstalowane pakiety znajdują się w **Ustawienia → Pamięć → Pobrane mapy
+offline**. Dla każdej mapy można użyć akcji **Pokaż na mapie**,
+**Aktualizuj** lub **Usuń**. Podczas aktualizacji można zmienić maksymalne
+przybliżenie, np. z x12 na x19. Aktualizacja powstaje obok działającego pakietu;
 dotychczasowa mapa pozostaje dostępna i jest zastępowana dopiero po pełnej
 walidacji nowej bazy. Nieudana aktualizacja nie usuwa sprawnej wersji. Usunięcie
 wymaga potwierdzenia i kasuje lokalny MBTiles, lecz nie usuwa innych danych
@@ -66,8 +68,10 @@ aplikacji.
 ### Rozmiar, czas i wymagania
 
 Rozmiar gotowej mapy zależy od powierzchni i gęstości danych regionu oraz
-wybranego maksymalnego przybliżenia. Wartość w dialogu jest szacunkiem, a nie
-gwarancją. Na czas przetwarzania potrzebne jest miejsce na pobrany PBF, dane
+wybranego maksymalnego przybliżenia. Wartość w dialogu dla x12–x14 jest
+zgrubnym szacunkiem, a nie gwarancją. Dla x15–x19 szacunek nie jest wyświetlany,
+bo nie da się go wiarygodnie wyliczyć z samego rozmiaru źródłowego PBF. Na czas
+przetwarzania potrzebne jest miejsce na pobrany PBF, dane
 robocze, kafelki i końcowy MBTiles. Kontrola wstępna wymaga bezpiecznego zapasu
 wynoszącego co najmniej około czterokrotności rozmiaru PBF; rzeczywiste zużycie
 może być większe dla gęstych obszarów i wysokiego zoomu.
@@ -185,7 +189,7 @@ opis nie stanowi porady prawnej.
 23. [X] Wskaźnik zadania działającego w tle
     Rozszerzyć istniejący mechanizm wskaźnika pobierania w tle tak, aby obsługiwał również mapy offline. Wskaźnik nie może kolidować z aktualizacją GTFS, ma obracać wyłącznie ikonę i po kliknięciu otwierać właściwy dialog. Powinien rozróżniać pobieranie danych od lokalnego generowania kafelków.
 
-24. [X] Lista map w „Pamięć i Kopia Zapasowa”
+24. [X] Lista map w „Pamięć”
     Dodać sekcję „Pobrane mapy” z tabelaryczną listą: nazwa, region, data aktualizacji, rozmiar i akcje. Dane mają być sortowane lokalnie według nazwy. Udostępnić „Pokaż na mapie”, „Aktualizuj” i „Usuń”. Usuwanie wymaga dialogu potwierdzenia, a po operacji lista i licznik zajętej pamięci muszą się odświeżyć.
 
 25. [X] Aktualizacja zainstalowanej mapy
