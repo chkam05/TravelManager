@@ -173,6 +173,7 @@ class OfflineMapCatalogService:
             'pbf_size': cls._optional_size(properties.get('pbf_size')),
             'source_updated_at': properties.get('timestamp') or '',
             'bounds': None,
+            'coverage': feature.get('geometry'),
             'children': [],
         })
 

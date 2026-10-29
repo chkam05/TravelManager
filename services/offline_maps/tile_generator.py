@@ -15,6 +15,7 @@ from services.offline_maps.errors import (
     OfflineMapTileGenerationError,
 )
 from services.offline_maps.resource_guard import OfflineMapResourceGuard
+from services.offline_maps.package_reuse import OfflineMapPackageReuse
 from storage.offline_maps import (
     OfflineMapFeatureStorage,
     OfflineMapPaths,
@@ -36,6 +37,7 @@ class OfflineMapTileGenerator:
     def __init__(self, paths: OfflineMapPaths):
         self._paths = paths
         self._resources = OfflineMapResourceGuard(paths.root)
+        self._reuse = OfflineMapPackageReuse(paths)
 
     def process(
         self,
@@ -55,9 +57,31 @@ class OfflineMapTileGenerator:
             bounds, feature_count = self._assign_tiles(
                 features, tiles, job, cancelled, progress
             )
+            reusable = self._reuse.reusable_maps(job)
+            coverages = {
+                region.id: region.coverage
+                for region in self._paths.catalog.load()[1]
+            }
+            try:
+                _copied, reused_layers = tiles.import_complete_tiles(
+                    [
+                        (
+                            self._paths.map_path(item.file_name),
+                            coverages[item.region_id],
+                        )
+                        for item in reusable
+                        if coverages.get(item.region_id) is not None
+                    ],
+                    job.max_zoom,
+                    cancelled,
+                )
+            except InterruptedError as error:
+                raise OfflineMapTileGenerationCancelled(
+                    'Ponowne użycie kafelków zostało anulowane.'
+                ) from error
             tile_count = tiles.assignment_count()
             self._report(job, 0, tile_count, progress, phase='encoding')
-            layer_ids = self._encode_tiles(
+            layer_ids = reused_layers | self._encode_tiles(
                 tiles, job, tile_count, cancelled, progress
             )
             generated_count, min_zoom, max_zoom = tiles.generated_stats()
@@ -148,6 +172,7 @@ class OfflineMapTileGenerator:
                         range(min_zoom, job.max_zoom + 1),
                         truncate=True,
                     ):
+                        self._check_cancel(cancelled)
                         assignments.append((tile.z, tile.x, tile.y, feature_id))
                         if len(assignments) >= self.ASSIGNMENT_BATCH_SIZE:
                             tiles.assign(assignments)
@@ -188,6 +213,7 @@ class OfflineMapTileGenerator:
             for osm_id, layer_id, geometry_wkb, properties, _priority in (
                 tiles.tile_features(zoom, column, row)
             ):
+                self._check_cancel(cancelled)
                 definition = OfflineMapLayers.BY_ID.get(layer_id)
                 if definition is None:
                     continue

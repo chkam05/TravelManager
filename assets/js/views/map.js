@@ -1283,6 +1283,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     });
     document.addEventListener('travel-manager:ui-settings-changed', (event) => {
         if (event.detail?.offline_map_mode) applyLayerState(event.detail);
+        if (event.detail?.offline_map_max_dynamic_zoom) loadOfflineBaseLayers();
     });
     document.addEventListener('travel-manager:custom-layers-changed', renderCustomLayers);
     document.addEventListener('travel-manager:custom-layer-editing-changed', event => {

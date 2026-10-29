@@ -7,6 +7,7 @@ import sqlite3
 from models.offline_maps import OfflineMap
 from models.offline_maps.validation import local_id
 from storage.offline_maps import OfflineMapPaths
+from services.offline_maps.on_demand_tiles import OfflineMapOnDemandTiles
 
 
 class OfflineMapTileReadError(RuntimeError):
@@ -18,10 +19,15 @@ class OfflineMapTileRepository:
 
     def __init__(self, paths: OfflineMapPaths):
         self._paths = paths
+        self._on_demand = OfflineMapOnDemandTiles(paths)
 
-    def get(self, map_id: str, zoom: int, column: int, row: int) -> bytes | None:
+    def get(
+        self, map_id: str, zoom: int, column: int, row: int,
+        maximum_zoom: int | None = None,
+    ) -> bytes | None:
         offline_map = self._registered_map(map_id)
-        self._validate_coordinates(offline_map, zoom, column, row)
+        maximum = offline_map.max_zoom if maximum_zoom is None else maximum_zoom
+        self._validate_coordinates(offline_map, zoom, column, row, maximum)
         path = self._paths.map_path(offline_map.file_name)
         if not path.is_file():
             raise OfflineMapTileReadError('Brak pliku zainstalowanej mapy offline.')
@@ -37,7 +43,14 @@ class OfflineMapTileRepository:
             raise OfflineMapTileReadError(
                 'Nie udało się odczytać bazy MBTiles.'
             ) from error
-        return bytes(result[0]) if result is not None else None
+        if result is not None:
+            return bytes(result[0])
+        if zoom > offline_map.max_zoom:
+            return self._on_demand.generate(
+                offline_map.id, offline_map.file_name,
+                zoom, column, row,
+            )
+        return None
 
     def _registered_map(self, map_id: str) -> OfflineMap:
         identifier = local_id(map_id, 'map id')
@@ -51,9 +64,15 @@ class OfflineMapTileRepository:
 
     @staticmethod
     def _validate_coordinates(
-        offline_map: OfflineMap, zoom: int, column: int, row: int
+        offline_map: OfflineMap, zoom: int, column: int, row: int,
+        maximum_zoom: int,
     ) -> None:
-        if type(zoom) is not int or not offline_map.min_zoom <= zoom <= offline_map.max_zoom:
+        if (
+            type(maximum_zoom) is not int
+            or not offline_map.max_zoom <= maximum_zoom <= 19
+            or type(zoom) is not int
+            or not offline_map.min_zoom <= zoom <= maximum_zoom
+        ):
             raise ValueError('Poziom przybliżenia jest poza zakresem mapy.')
         limit = 1 << zoom
         if (

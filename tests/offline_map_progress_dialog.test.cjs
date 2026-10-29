@@ -11,6 +11,12 @@ test('offline map progress covers every durable pipeline stage', () => {
         assert.match(source, new RegExp(`${stage}:`));
     }
     assert.match(template, /data-offline-map-progress-bar/);
+    assert.match(template, /data-offline-map-progress-steps/);
+    for (const label of ['STEP_DOWNLOADING', 'STEP_ANALYSING', 'STEP_BUILDING_TILES', 'STEP_OPTIMISING', 'STEP_FINALISING']) {
+        assert.match(source, new RegExp(label));
+    }
+    assert.match(source, /'✔'/);
+    assert.match(source, /'▶'/);
 });
 
 test('progress can continue in background and be cancelled', () => {
@@ -18,6 +24,9 @@ test('progress can continue in background and be cancelled', () => {
     assert.match(template, /data-offline-map-progress-cancel/);
     assert.match(source, /\/cancel`, \{method: 'POST'\}/);
     assert.match(source, /travel-manager:offline-map-job-background/);
+    assert.match(source, /job\.cancel_requested === true/);
+    assert.match(source, /CANCELLING_HEADING/);
+    assert.match(source, /OFFLINE_MAP_PROGRESS\.CANCELLING/);
 });
 
 test('a failed map job can be resumed from the progress dialog', () => {

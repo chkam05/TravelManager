@@ -6,7 +6,7 @@ const source = readFileSync('assets/js/dialogs/offline_map_region.js', 'utf8');
 const template = readFileSync('templates/dialogs/offline_map_region.html', 'utf8');
 
 test('region dialog exposes hierarchical selectors and map metadata', () => {
-    for (const hook of ['continent', 'country', 'region', 'max-zoom', 'summary']) {
+    for (const hook of ['continent', 'country', 'region', 'summary']) {
         assert.match(template, new RegExp(`data-offline-map-${hook}`));
     }
     assert.match(source, /\/api\/offline-maps\/catalog/);
@@ -14,13 +14,10 @@ test('region dialog exposes hierarchical selectors and map metadata', () => {
     assert.match(source, /estimated_map_size/);
 });
 
-test('zoom choices explain proximity through level 19 and update accepts a new level', () => {
-    for (let level = 12; level <= 19; level += 1) {
-        assert.match(template, new RegExp(`<option value="${level}"[^>]*>x${level} -`));
-    }
-    assert.match(source, /zoomSelect\.value = String\(updatingMap\?\.max_zoom \|\| 14\)/);
-    assert.match(source, /max_zoom: Number\(zoomSelect\.value\)/);
-    assert.match(source, /Number\(zoomSelect\.value\) > 14 \? t\('OFFLINE_MAP_REGION.UNKNOWN'\)/);
+test('download always requests the complete provider package without a detail selector', () => {
+    assert.doesNotMatch(template, /data-offline-map-max-zoom/);
+    assert.doesNotMatch(source, /max_zoom/);
+    assert.match(source, /JSON\.stringify\(updatingMap \? \{\} : \{region_id: regionSelect\.value\}\)/);
 });
 
 test('preflight prevents duplicate and oversized downloads', () => {

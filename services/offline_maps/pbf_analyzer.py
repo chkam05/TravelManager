@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import sqlite3
 from typing import Callable
 
 from models.offline_maps import OfflineMapJob
@@ -13,6 +14,7 @@ from services.offline_maps.errors import (
     OfflineMapAnalysisError,
 )
 from services.offline_maps.resource_guard import OfflineMapResourceGuard
+from services.offline_maps.package_reuse import OfflineMapPackageReuse
 from storage.offline_maps import OfflineMapFeatureStorage, OfflineMapPaths
 
 
@@ -25,6 +27,7 @@ class OfflineMapPbfAnalyzer:
     def __init__(self, paths: OfflineMapPaths):
         self._paths = paths
         self._resources = OfflineMapResourceGuard(paths.root)
+        self._reuse = OfflineMapPackageReuse(paths)
 
     def process(
         self,
@@ -44,6 +47,10 @@ class OfflineMapPbfAnalyzer:
         handler = None
         try:
             storage.create()
+            reused_maps = self._reuse.reusable_maps(job)
+            reused_features = storage.import_from(
+                self._paths.map_features_path(item.id) for item in reused_maps
+            )
             handler = self._create_handler(storage, job, cancelled, progress, source)
             handler.apply_file(
                 str(source),
@@ -55,7 +62,16 @@ class OfflineMapPbfAnalyzer:
             storage.metadata('stored_features', handler.stored)
             storage.metadata('source_size', source.stat().st_size)
             storage.metadata('schema_version', 1)
-            storage.finalize()
+            storage.metadata('reused_features', reused_features)
+            storage.metadata('reused_map_ids', [item.id for item in reused_maps])
+            try:
+                storage.finalize(cancelled)
+            except sqlite3.OperationalError as error:
+                if cancelled():
+                    raise OfflineMapAnalysisCancelled(
+                        'Analizowanie mapy zostało anulowane.'
+                    ) from error
+                raise
             self._report(job, handler.processed, handler.processed, progress)
             return 'building_tiles'
         except OfflineMapAnalysisCancelled:
@@ -129,6 +145,8 @@ class OfflineMapPbfAnalyzer:
                 if not polygon_layers and not point_layers:
                     return
                 osm_id = area.orig_id()
+                if storage.contains_reused_object(source_type, osm_id):
+                    return
                 try:
                     raw = factory.create_multipolygon(area)
                     geometry = self._geometry(raw)
@@ -170,6 +188,8 @@ class OfflineMapPbfAnalyzer:
             def _store(
                 self, osm_type, osm_id, geometry_type, tags, layers, builder
             ):
+                if storage.contains_reused_object(osm_type, osm_id):
+                    return
                 try:
                     geometry = self._geometry(builder())
                 except Exception:

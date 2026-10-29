@@ -4,6 +4,7 @@
     let bubble = null;
     let offlineBubble = null;
     let offlineJob = null;
+    const offlineTileTasks = new Map();
 
     const ensureBubble = () => {
         if (bubble) return bubble;
@@ -43,14 +44,36 @@
     const renderOffline = () => {
         const element = ensureOfflineBubble();
         const activeJob = offlineJob && ['queued', 'running'].includes(offlineJob.status);
-        element.hidden = !activeJob;
-        if (!activeJob) return;
-        const downloading = ['preparing', 'downloading'].includes(offlineJob.stage);
+        const generatingTiles = offlineTileTasks.size > 0;
+        element.hidden = !activeJob && !generatingTiles;
+        if (element.hidden) return;
+        const cancelling = offlineJob?.cancel_requested === true;
+        const downloading = activeJob && ['preparing', 'downloading'].includes(offlineJob.stage);
+        const tileTasks = [...offlineTileTasks.values()];
+        const preparingNeighbours = tileTasks.some(
+            (item) => item?.kind === 'neighbours'
+        );
+        const progressTasks = preparingNeighbours
+            ? tileTasks.filter((item) => item?.kind === 'neighbours')
+            : tileTasks;
+        const tileTotals = progressTasks.reduce((result, item) => ({
+            current: result.current + Math.max(0, Number(item.current) || 0),
+            total: result.total + Math.max(0, Number(item.total) || 0)
+        }), {current: 0, total: 0});
+        const tilePercent = tileTotals.total > 0
+            ? Math.min(100, Math.floor(100 * tileTotals.current / tileTotals.total))
+            : 0;
         element.querySelector('[data-background-download-text]').textContent = window.i18n?.t(
-            downloading
+            generatingTiles && !activeJob
+                ? preparingNeighbours
+                    ? 'OFFLINE_MAP_PROGRESS.BACKGROUND_NEIGHBOUR_TILES_PERCENT'
+                    : 'OFFLINE_MAP_PROGRESS.BACKGROUND_TILE_GENERATION_PERCENT'
+                : cancelling
+                ? 'OFFLINE_MAP_PROGRESS.BACKGROUND_CANCELLING'
+                : downloading
                 ? 'OFFLINE_MAP_PROGRESS.BACKGROUND_DOWNLOADING'
                 : 'OFFLINE_MAP_PROGRESS.BACKGROUND_GENERATING'
-        );
+        , {percent: tilePercent});
         element.setAttribute('aria-label', element.querySelector('[data-background-download-text]').textContent);
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
     };
@@ -108,6 +131,20 @@
     });
     document.addEventListener('travel-manager:offline-map-job-finished', () => {
         offlineJob = null; renderOffline();
+    });
+    const tileTaskKey = (detail = {}) => String(detail.id
+        || [detail.mapId, detail.zoom, detail.column, detail.row].join(':'));
+    document.addEventListener('travel-manager:offline-map-tiles-started', (event) => {
+        offlineTileTasks.set(tileTaskKey(event.detail), event.detail || {});
+        renderOffline(); render();
+    });
+    document.addEventListener('travel-manager:offline-map-tiles-progress', (event) => {
+        offlineTileTasks.set(tileTaskKey(event.detail), event.detail || {});
+        renderOffline(); render();
+    });
+    document.addEventListener('travel-manager:offline-map-tiles-finished', (event) => {
+        offlineTileTasks.delete(tileTaskKey(event.detail));
+        renderOffline(); render();
     });
 
     document.addEventListener('travel-manager:views-ready', async () => {

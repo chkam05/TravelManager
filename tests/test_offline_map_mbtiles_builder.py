@@ -48,6 +48,20 @@ class OfflineMapMbtilesBuilderTests(unittest.TestCase):
             'bounds': [18.0, 49.0, 20.0, 51.0], 'children': [],
         })])
         self.work = self.paths.job_work_path(self.current_job.id)
+        with closing(sqlite3.connect(self.work / 'features.sqlite3')) as connection:
+            connection.execute('''
+                CREATE TABLE features(
+                    id INTEGER PRIMARY KEY,
+                    min_lon REAL NOT NULL,
+                    max_lon REAL NOT NULL,
+                    min_lat REAL NOT NULL,
+                    max_lat REAL NOT NULL
+                )
+            ''')
+            connection.execute(
+                'INSERT INTO features VALUES (1, 18.0, 18.1, 50.0, 50.1)'
+            )
+            connection.commit()
 
     def _create_tiles(self, payload=None, coordinates=None):
         if payload is None:
@@ -103,6 +117,7 @@ class OfflineMapMbtilesBuilderTests(unittest.TestCase):
         self.assertEqual(installed[0].id, 'fixture-map')
         package = self.paths.map_path(installed[0].file_name)
         self.assertEqual(installed[0].size, package.stat().st_size)
+        self.assertTrue(self.paths.map_features_path(installed[0].id).is_file())
 
         with closing(sqlite3.connect(package)) as connection:
             metadata = dict(connection.execute(

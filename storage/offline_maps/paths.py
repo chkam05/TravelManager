@@ -66,10 +66,23 @@ class OfflineMapPaths:
             raise ValueError('Offline map package must use the MBTiles format.')
         return self._safe_child(self.maps_directory, file_name)
 
+    def map_features_path(self, map_id: str) -> Path:
+        identifier = local_id(map_id, 'map id')
+        return self._safe_child(
+            self.maps_directory, f'{identifier}.features.sqlite3'
+        )
+
     def delete_map_file(self, offline_map: OfflineMap) -> bool:
         path = self.map_path(offline_map.file_name)
         try:
             path.unlink()
+            return True
+        except FileNotFoundError:
+            return False
+
+    def delete_map_features(self, map_id: str) -> bool:
+        try:
+            self.map_features_path(map_id).unlink()
             return True
         except FileNotFoundError:
             return False

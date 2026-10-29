@@ -9,7 +9,7 @@ import unittest
 
 from flask import Flask
 import mapbox_vector_tile
-from shapely import Point
+from shapely import Point, to_wkb
 
 from controllers.offline_map_controller import OfflineMapController
 from models.offline_maps import OfflineMap
@@ -43,6 +43,7 @@ class OfflineMapTileApiTests(unittest.TestCase):
         self.compressed = gzip.compress(self.vector_tile, mtime=0)
         self._register_map('fixture-map', 'fixture.mbtiles')
         self._create_mbtiles('fixture.mbtiles')
+        self._create_feature_index('fixture-map')
 
     def _register_map(self, map_id, file_name):
         maps = self.paths.maps.load()
@@ -64,11 +65,37 @@ class OfflineMapTileApiTests(unittest.TestCase):
                     tile_row INTEGER, tile_data BLOB
                 )
             ''')
+            connection.execute('''
+                CREATE UNIQUE INDEX tile_index ON tiles(
+                    zoom_level, tile_column, tile_row
+                )
+            ''')
             # XYZ row 1 at zoom 2 is TMS row 2.
             connection.execute(
                 'INSERT INTO tiles VALUES (2, 2, 2, ?)',
                 (self.compressed,),
             )
+            connection.commit()
+
+    def _create_feature_index(self, map_id):
+        path = self.paths.map_features_path(map_id)
+        with closing(sqlite3.connect(path)) as connection:
+            connection.executescript('''
+                CREATE TABLE features (
+                    id INTEGER PRIMARY KEY, osm_id INTEGER, layer TEXT,
+                    geometry_wkb BLOB, properties TEXT, priority INTEGER,
+                    min_zoom INTEGER, min_lon REAL, max_lon REAL,
+                    min_lat REAL, max_lat REAL
+                );
+                CREATE VIRTUAL TABLE feature_bounds USING rtree(
+                    id, min_lon, max_lon, min_lat, max_lat
+                );
+            ''')
+            connection.execute(
+                'INSERT INTO features VALUES (1, 7, ?, ?, ?, 1, 2, 0, 0, 0, 0)',
+                ('places', to_wkb(Point(1, -1)), '{"name":"Centrum"}'),
+            )
+            connection.execute('INSERT INTO feature_bounds VALUES (1, 1, 1, -1, -1)')
             connection.commit()
 
     def test_returns_decoded_vector_tile_with_cache_headers(self):
@@ -96,6 +123,25 @@ class OfflineMapTileApiTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 204)
         self.assertEqual(response.data, b'')
+
+    def test_detailed_tile_is_generated_once_and_persisted_in_mbtiles(self):
+        first = self.client.get(
+            '/api/offline-maps/fixture-map/tiles/3/4/4.pbf'
+        )
+        second = self.client.get(
+            '/api/offline-maps/fixture-map/tiles/3/4/4.pbf'
+        )
+
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(second.data, first.data)
+        self.assertIn('places', mapbox_vector_tile.decode(first.data))
+        with closing(sqlite3.connect(
+            self.paths.map_path('fixture.mbtiles')
+        )) as connection:
+            count = connection.execute(
+                'SELECT COUNT(*) FROM tiles WHERE zoom_level = 3'
+            ).fetchone()[0]
+        self.assertEqual(count, 1)
 
     def test_corrupted_tile_is_not_sent_to_the_renderer(self):
         path = self.paths.map_path('fixture.mbtiles')

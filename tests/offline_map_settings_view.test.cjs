@@ -16,6 +16,13 @@ test('map settings expose all three offline source modes', () => {
     }
 });
 
+test('map settings own the maximum on-demand offline zoom', () => {
+    assert.match(settingsSource, /offline_map_max_dynamic_zoom/);
+    assert.match(settingsSource, /\[14, 15, 16, 17, 18, 19\]/);
+    assert.match(settingsSource, /SETTINGS_OFFLINE_MAPS\.MAX_DYNAMIC_ZOOM/);
+    assert.doesNotMatch(dialogSource, /data-offline-map-max-zoom|max_zoom/);
+});
+
 test('offline source changes are applied to the live map', () => {
     assert.match(settingsSource, /travel-manager:ui-settings-changed/);
     assert.match(mapSource, /event\.detail\?\.offline_map_mode/);
@@ -39,7 +46,7 @@ test('clicking download opens the region dialog even if settings initialization 
         classList: {add() {}, remove() {}, toggle() {}}
     });
     const controls = new Map([
-        ...['continent', 'country', 'region', 'max-zoom', 'summary'].map(
+        ...['continent', 'country', 'region', 'summary'].map(
             (name) => [`[data-offline-map-${name}]`, node()]
         ),
         ['[data-offline-map-region-status]', node()],
@@ -77,4 +84,11 @@ test('clicking download opens the region dialog even if settings initialization 
     assert.equal(attributes.get('aria-hidden'), 'false');
     assert.equal(attributes.get('layer:aria-hidden'), 'false');
     assert.ok(classes.has('dialog-layer--open'));
+});
+
+test('a newly installed parent map can replace covered child packages', () => {
+    assert.match(settingsSource, /covered_maps/);
+    assert.match(settingsSource, /DELETE_COVERED_MAPS_CONFIRM/);
+    assert.match(settingsSource, /job\?\.status !== 'completed' \|\| job\?\.is_update/);
+    assert.match(settingsSource, /Promise\.all\(covered\.map/);
 });

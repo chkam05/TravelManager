@@ -91,7 +91,7 @@ class OfflineMapJobManager:
                     self._enqueue_locked(job.id)
             self._condition.notify_all()
 
-    def create(self, selected_region_id: str, max_zoom: int = 14) -> OfflineMapJob:
+    def create(self, selected_region_id: str, max_zoom: int = 10) -> OfflineMapJob:
         self.start()
         selected_region_id = region_id(selected_region_id)
         if type(max_zoom) is not int or not 0 <= max_zoom <= 22:
@@ -195,7 +195,10 @@ class OfflineMapJobManager:
             return None
         if job.status not in {'cancelled', 'failed'}:
             raise ValueError('Można wznowić tylko przerwane zadanie mapy.')
-        if any(item.id == job.map_id for item in self._paths.maps.load()):
+        if (
+            not job.is_update
+            and any(item.id == job.map_id for item in self._paths.maps.load())
+        ):
             raise ValueError('Mapa tego zadania jest już zainstalowana.')
         job.stage = self._resume_stage(job)
         job.status = 'queued'
@@ -277,7 +280,7 @@ class OfflineMapJobManager:
                 job.status = 'running'
                 job.updated_at = self._now()
                 self._paths.jobs.upsert(job)
-            self._mark_cancelled(job)
+            self._cancel_and_cleanup(job)
         except OfflineMapProcessingCancelled:
             if self._is_stopping() and not cancellation.is_set():
                 # Application shutdown is a pause, not a user cancellation.
@@ -287,6 +290,8 @@ class OfflineMapJobManager:
                 job.cancel_requested = False
                 job.updated_at = self._now()
                 self._paths.jobs.upsert(job)
+            else:
+                self._cancel_and_cleanup(job)
         except Exception as error:
             job = self._paths.jobs.find(job.id) or job
             job.status = 'failed'
@@ -298,10 +303,22 @@ class OfflineMapJobManager:
             with self._condition:
                 self._cancellations.pop(job_id, None)
 
-    def _mark_cancelled(self, job: OfflineMapJob) -> None:
-        job.status = 'cancelled'
-        job.stage = 'cancelled'
+    def _cancel_and_cleanup(self, job: OfflineMapJob) -> None:
+        """Marks an explicit user cancellation and removes all job artifacts."""
+        cleanup_error = ''
+        try:
+            self._paths.clear_job_files(job.id)
+        except (OSError, ValueError) as error:
+            cleanup_error = f'Nie udało się usunąć plików anulowanej mapy: {error}'
+        job.status = 'failed' if cleanup_error else 'cancelled'
+        job.stage = 'failed' if cleanup_error else 'cancelled'
         job.cancel_requested = True
+        job.current = 0
+        job.total = 0
+        job.downloaded_bytes = 0
+        job.total_bytes = 0
+        job.phase = ''
+        job.error = cleanup_error
         job.updated_at = self._now()
         self._paths.jobs.upsert(job)
 

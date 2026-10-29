@@ -178,6 +178,25 @@ class OfflineMapJobManagerTests(unittest.TestCase):
         self.assertTrue(cancelled.cancel_requested)
         self.assertTrue(manager.find(current.id).cancel_requested)
 
+    def test_user_cancel_removes_download_and_all_work_files(self):
+        current = persisted_job('cancel-and-clean', status='queued')
+        self.paths.jobs.save([current])
+        partial = self.paths.source_path(current.id, partial=True)
+        partial.write_bytes(b'partial')
+        work = self.paths.job_work_path(current.id)
+        (work / 'features.sqlite3').write_bytes(b'features')
+        (work / 'tiles.sqlite3').write_bytes(b'tiles')
+        manager = self.manager(CompletingDownloader(self.paths))
+
+        manager.cancel(current.id)
+        manager._run_job(current.id)
+
+        saved = manager.find(current.id)
+        self.assertEqual((saved.status, saved.stage), ('cancelled', 'cancelled'))
+        self.assertFalse(partial.exists())
+        self.assertFalse(work.exists())
+        self.assertEqual((saved.current, saved.total), (0, 0))
+
     def test_map_identifier_is_stable_and_safe_for_long_region_ids(self):
         value = 'europe/' + ('very-long-region-' * 10)
         first = OfflineMapJobManager.map_id(value)

@@ -33,6 +33,7 @@ class OfflineMapCleanupService:
         jobs = {job.id: job for job in self._paths.jobs.load()}
         removed_sources = 0
         removed_work = 0
+        removed_feature_indexes = 0
 
         for path in self._paths.sources_directory.iterdir():
             job_id = self._source_job_id(path)
@@ -44,6 +45,16 @@ class OfflineMapCleanupService:
             if path.name not in jobs and self._safe_local_name(path.name):
                 self._remove_work_path(path)
                 removed_work += 1
+
+        installed_ids = {item.id for item in self._paths.maps.load()}
+        suffix = '.features.sqlite3'
+        for path in self._paths.maps_directory.iterdir():
+            if not path.name.endswith(suffix):
+                continue
+            map_id = path.name[:-len(suffix)]
+            if map_id not in installed_ids and self._safe_local_name(map_id):
+                path.unlink()
+                removed_feature_indexes += 1
 
         for job in jobs.values():
             if job.status != 'completed':
@@ -59,7 +70,11 @@ class OfflineMapCleanupService:
                 removed_sources += int(source_exists)
                 removed_work += int(work_exists)
 
-        return {'sources': removed_sources, 'work_directories': removed_work}
+        return {
+            'sources': removed_sources,
+            'work_directories': removed_work,
+            'feature_indexes': removed_feature_indexes,
+        }
 
     @staticmethod
     def _source_job_id(path: Path) -> str:

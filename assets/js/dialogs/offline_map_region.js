@@ -5,14 +5,12 @@ document.addEventListener('travel-manager:views-ready', () => {
     const continentSelect = dialog?.querySelector('[data-offline-map-continent]');
     const countrySelect = dialog?.querySelector('[data-offline-map-country]');
     const regionSelect = dialog?.querySelector('[data-offline-map-region]');
-    const zoomSelect = dialog?.querySelector('[data-offline-map-max-zoom]');
-    const zoomNote = dialog?.querySelector('[data-offline-map-zoom-note]');
     const summary = dialog?.querySelector('[data-offline-map-summary]');
     const status = dialog?.querySelector('[data-offline-map-region-status]');
     const submit = dialog?.querySelector('[data-offline-map-region-submit]');
     const closeButtons = dialog?.querySelectorAll('[data-offline-map-region-close]');
     if (!layer || !dialog || !continentSelect || !countrySelect || !regionSelect
-        || !zoomSelect || !summary || !status || !submit || !closeButtons?.length) return;
+        || !summary || !status || !submit || !closeButtons?.length) return;
 
     let regions = new Map();
     let preflight = null;
@@ -69,9 +67,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         addSummary(t('OFFLINE_MAP_REGION.SOURCE'), 'Geofabrik / OpenStreetMap');
         addSummary(t('OFFLINE_MAP_REGION.DATA_DATE'), formatDate(check?.source_modified_at || region.source_updated_at));
         addSummary(t('OFFLINE_MAP_REGION.DOWNLOAD_SIZE'), formatBytes(check?.source_size ?? region.pbf_size));
-        addSummary(t('OFFLINE_MAP_REGION.ESTIMATED_SIZE'),
-            Number(zoomSelect.value) > 14 ? t('OFFLINE_MAP_REGION.UNKNOWN')
-                : formatBytes(check?.estimated_map_size));
+        addSummary(t('OFFLINE_MAP_REGION.ESTIMATED_SIZE'), formatBytes(check?.estimated_map_size));
         addSummary(t('OFFLINE_MAP_REGION.AVAILABLE_SPACE'), formatBytes(check?.available_space));
     };
     const loadPreflight = async () => {
@@ -123,8 +119,6 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
     const open = async (mapToUpdate = null) => {
         updatingMap = mapToUpdate?.id ? mapToUpdate : null;
-        zoomSelect.value = String(updatingMap?.max_zoom || 14);
-        if (zoomNote) zoomNote.textContent = t('OFFLINE_MAP_REGION.ZOOM_NOTE');
         submit.textContent = t(updatingMap ? 'OFFLINE_MAP_REGION.UPDATE_MAP' : 'OFFLINE_MAP_REGION.DOWNLOAD');
         layer.classList.add('dialog-layer--open'); layer.setAttribute('aria-hidden', 'false');
         dialog.setAttribute('aria-hidden', 'false'); status.textContent = t('OFFLINE_MAP_REGION.LOADING'); submit.disabled = true;
@@ -176,7 +170,6 @@ document.addEventListener('travel-manager:views-ready', () => {
     continentSelect.addEventListener('change', () => updateCountries());
     countrySelect.addEventListener('change', updateRegions);
     regionSelect.addEventListener('change', loadPreflight);
-    zoomSelect.addEventListener('change', () => renderSummary(selectedRegion(), preflight));
     dialog.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (!preflight || submit.disabled) return;
@@ -187,9 +180,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 : '/api/offline-maps/jobs';
             const response = await fetch(url, {
                 method: 'POST', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-                body: JSON.stringify(updatingMap
-                    ? {max_zoom: Number(zoomSelect.value)}
-                    : {region_id: regionSelect.value, max_zoom: Number(zoomSelect.value)})
+                body: JSON.stringify(updatingMap ? {} : {region_id: regionSelect.value})
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || t('OFFLINE_MAP_REGION.START_FAILED'));

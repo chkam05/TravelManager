@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from contextlib import closing
+import gzip
 import json
 from pathlib import Path
 import sqlite3
@@ -80,6 +81,78 @@ class OfflineMapTileStorage:
                 zoom_level, tile_column, tile_row, tile_data
             ) VALUES (?, ?, ?, ?)
         ''', (zoom, column, row, data))
+
+    def import_complete_tiles(
+        self, packages, maximum_zoom: int, cancelled
+    ) -> tuple[int, set[str]]:
+        """Copies child tiles wholly inside their coverage and skips rebuilding them."""
+        import mercantile
+        from shapely.geometry import box, shape
+
+        connection = self._require()
+        copied = 0
+        layers: set[str] = set()
+        for package_path, coverage in packages:
+            coverage_geometry = shape(coverage)
+            if coverage_geometry.is_empty or not coverage_geometry.is_valid:
+                continue
+            with closing(sqlite3.connect(
+                f'file:{package_path}?mode=ro', uri=True, timeout=30
+            )) as source:
+                metadata = dict(source.execute(
+                    'SELECT name, value FROM metadata'
+                ))
+                try:
+                    description = json.loads(metadata.get('json', '{}'))
+                    layers.update(
+                        item['id'] for item in description.get('vector_layers', [])
+                        if isinstance(item, dict) and isinstance(item.get('id'), str)
+                    )
+                except (TypeError, ValueError):
+                    pass
+                cursor = source.execute('''
+                    SELECT zoom_level, tile_column, tile_row, tile_data
+                    FROM tiles WHERE zoom_level <= ?
+                    ORDER BY zoom_level, tile_column, tile_row
+                ''', (maximum_zoom,))
+                while True:
+                    rows = cursor.fetchmany(500)
+                    if not rows:
+                        break
+                    output = []
+                    coordinates = []
+                    for zoom, column, tms_row, payload in rows:
+                        if cancelled():
+                            raise InterruptedError('Tile reuse cancelled.')
+                        row = (1 << zoom) - 1 - tms_row
+                        bounds = mercantile.bounds(column, row, zoom)
+                        tile_geometry = box(
+                            bounds.west, bounds.south,
+                            bounds.east, bounds.north,
+                        )
+                        if not coverage_geometry.covers(tile_geometry):
+                            continue
+                        try:
+                            decoded = gzip.decompress(payload)
+                        except (OSError, EOFError):
+                            continue
+                        output.append((zoom, column, row, decoded))
+                        coordinates.append((zoom, column, row))
+                    if not output:
+                        continue
+                    before = connection.total_changes
+                    connection.executemany('''
+                        INSERT OR IGNORE INTO generated_tiles(
+                            zoom_level, tile_column, tile_row, tile_data
+                        ) VALUES (?, ?, ?, ?)
+                    ''', output)
+                    copied += connection.total_changes - before
+                    connection.executemany('''
+                        DELETE FROM tile_features
+                        WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?
+                    ''', coordinates)
+                    connection.commit()
+        return copied, layers
 
     def assignment_count(self) -> int:
         row = self._require().execute('''

@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import gzip
 import json
 from pathlib import Path
+import shutil
 import sqlite3
 from typing import Callable
 
@@ -42,13 +43,21 @@ class OfflineMapMbtilesBuilder:
         self._resources.ensure_stage(generated.stat().st_size, 'instalacja')
         region = self._region(job.region_id)
         final_path = self._paths.map_path(f'{job.map_id}.mbtiles')
+        source_features = work / 'features.sqlite3'
+        final_features = self._paths.map_features_path(job.map_id)
         partial_path = work / 'package.mbtiles.part'
+        partial_features = work / 'features.sqlite3.part'
+        if not source_features.is_file():
+            raise OfflineMapInstallationError(
+                'Brak indeksu obiektów do generowania kafelków na żądanie.'
+            )
         replacing = final_path.exists()
         if replacing and not job.is_update:
             raise OfflineMapInstallationError('Docelowa mapa już istnieje.')
         if job.is_update and not replacing:
             raise OfflineMapInstallationError('Brak mapy źródłowej do aktualizacji.')
         self._remove(partial_path)
+        self._remove(partial_features)
         installed_file_created = False
         try:
             self._build(generated, partial_path, region.name, job, cancelled)
@@ -56,9 +65,12 @@ class OfflineMapMbtilesBuilder:
             self._validate(partial_path)
             self._optimise(partial_path)
             self._check_cancel(cancelled)
+            self._ensure_feature_index(source_features, cancelled)
+            shutil.copy2(source_features, partial_features)
             self._set_progress(job, 'installing', 1, 1)
             installed = self._installed_model(partial_path, generated, region, job)
             partial_path.replace(final_path)
+            partial_features.replace(final_features)
             installed_file_created = not replacing
             try:
                 self._paths.maps.upsert(installed)
@@ -69,9 +81,11 @@ class OfflineMapMbtilesBuilder:
             return 'installing'
         except OfflineMapInstallationCancelled:
             self._remove(partial_path)
+            self._remove(partial_features)
             raise
         except Exception as error:
             self._remove(partial_path)
+            self._remove(partial_features)
             if installed_file_created:
                 self._remove(final_path)
             if isinstance(error, OfflineMapInstallationError):
@@ -219,6 +233,36 @@ class OfflineMapMbtilesBuilder:
         with closing(sqlite3.connect(path)) as connection:
             connection.execute('ANALYZE')
             connection.commit()
+
+    def _ensure_feature_index(self, path: Path, cancelled) -> None:
+        with closing(sqlite3.connect(path, timeout=30)) as connection:
+            exists = connection.execute('''
+                SELECT 1 FROM sqlite_master
+                WHERE type = 'table' AND name = 'feature_bounds'
+            ''').fetchone()
+            if exists:
+                return
+            connection.set_progress_handler(
+                lambda: 1 if cancelled() else 0, 1000
+            )
+            try:
+                connection.executescript('''
+                    CREATE VIRTUAL TABLE feature_bounds USING rtree(
+                        id, min_lon, max_lon, min_lat, max_lat
+                    );
+                    INSERT INTO feature_bounds
+                        SELECT id, min_lon, max_lon, min_lat, max_lat
+                        FROM features;
+                ''')
+                connection.commit()
+            except sqlite3.OperationalError as error:
+                if cancelled():
+                    raise OfflineMapInstallationCancelled(
+                        'Instalowanie mapy zostało anulowane.'
+                    ) from error
+                raise
+            finally:
+                connection.set_progress_handler(None, 0)
             connection.execute('VACUUM')
             connection.commit()
 

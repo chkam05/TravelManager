@@ -25,6 +25,7 @@ class OfflineMapRegion(BaseDataModel):
     FIELD_SOURCE_UPDATED_AT: ClassVar[str] = 'source_updated_at'
     FIELD_BOUNDS: ClassVar[str] = 'bounds'
     FIELD_CHILDREN: ClassVar[str] = 'children'
+    FIELD_COVERAGE: ClassVar[str] = 'coverage'
 
     id: str
     name: str
@@ -36,6 +37,7 @@ class OfflineMapRegion(BaseDataModel):
     source_updated_at: str
     bounds: list[float] | None
     children: list[str]
+    coverage: dict | None
 
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> OfflineMapRegion:
@@ -68,7 +70,8 @@ class OfflineMapRegion(BaseDataModel):
             children=[
                 region_id(item, 'child id')
                 for item in string_list(d.get(cls.FIELD_CHILDREN), 'children')
-            ]
+            ],
+            coverage=cls._coverage(d.get(cls.FIELD_COVERAGE)),
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,4 +86,46 @@ class OfflineMapRegion(BaseDataModel):
             self.FIELD_SOURCE_UPDATED_AT: self.source_updated_at,
             self.FIELD_BOUNDS: list(self.bounds) if self.bounds else None,
             self.FIELD_CHILDREN: list(self.children),
+            **({self.FIELD_COVERAGE: self.coverage} if self.coverage else {}),
+        }
+
+    @staticmethod
+    def _coverage(value: object) -> dict | None:
+        if value is None:
+            return None
+        if not isinstance(value, dict) or value.get('type') not in {
+            'Polygon', 'MultiPolygon'
+        }:
+            raise ValueError('Invalid region coverage geometry.')
+        coordinates = value.get('coordinates')
+        polygons = [coordinates] if value['type'] == 'Polygon' else coordinates
+        if not isinstance(polygons, list) or not polygons:
+            raise ValueError('Invalid region coverage geometry.')
+        clean_polygons = []
+        for polygon in polygons:
+            if not isinstance(polygon, list) or not polygon:
+                raise ValueError('Invalid region coverage geometry.')
+            clean_rings = []
+            for ring in polygon:
+                if not isinstance(ring, list) or len(ring) < 4:
+                    raise ValueError('Invalid region coverage geometry.')
+                clean_ring = []
+                for point in ring:
+                    if (
+                        not isinstance(point, (list, tuple)) or len(point) < 2
+                        or type(point[0]) not in (int, float)
+                        or type(point[1]) not in (int, float)
+                        or not -180 <= point[0] <= 180
+                        or not -90 <= point[1] <= 90
+                    ):
+                        raise ValueError('Invalid region coverage geometry.')
+                    clean_ring.append([float(point[0]), float(point[1])])
+                if clean_ring[0] != clean_ring[-1]:
+                    raise ValueError('Invalid region coverage geometry.')
+                clean_rings.append(clean_ring)
+            clean_polygons.append(clean_rings)
+        return {
+            'type': value['type'],
+            'coordinates': clean_polygons[0]
+            if value['type'] == 'Polygon' else clean_polygons,
         }

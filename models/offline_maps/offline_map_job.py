@@ -69,7 +69,7 @@ class OfflineMapJob(BaseDataModel):
         is_update = d.get(cls.FIELD_IS_UPDATE, False)
         if type(is_update) is not bool:
             raise ValueError('Invalid update state.')
-        max_zoom = non_negative_integer(d.get(cls.FIELD_MAX_ZOOM, 14), 'maximum zoom')
+        max_zoom = non_negative_integer(d.get(cls.FIELD_MAX_ZOOM, 10), 'maximum zoom')
         if max_zoom > 22:
             raise ValueError('Invalid maximum zoom.')
         return cls(

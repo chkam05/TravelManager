@@ -29,6 +29,7 @@ class UiSettings(BaseDataModel):
     _DEFAULT_LAYER_FAVOURITES_ENABLED: ClassVar[bool] = True
     _DEFAULT_MAP_BASE_LAYER: ClassVar[str] = 'standard'
     _DEFAULT_OFFLINE_MAP_MODE: ClassVar[str] = 'online_only'
+    _DEFAULT_OFFLINE_MAP_MAX_DYNAMIC_ZOOM: ClassVar[int] = 19
     OFFLINE_MAP_MODES: ClassVar[tuple[str, ...]] = (
         'prefer_offline', 'offline_when_disconnected', 'online_only'
     )
@@ -60,6 +61,7 @@ class UiSettings(BaseDataModel):
     FIELD_LAYER_DETAILS_PANEL_WIDTH: ClassVar[str] = 'layer_details_panel_width'
     FIELD_MAP_BASE_LAYER: ClassVar[str] = 'map_base_layer'
     FIELD_OFFLINE_MAP_MODE: ClassVar[str] = 'offline_map_mode'
+    FIELD_OFFLINE_MAP_MAX_DYNAMIC_ZOOM: ClassVar[str] = 'offline_map_max_dynamic_zoom'
     FIELD_MAP_LATITUDE: ClassVar[str] = 'map_latitude'
     FIELD_MAP_LONGITUDE: ClassVar[str] = 'map_longitude'
     FIELD_MAP_ZOOM: ClassVar[str] = 'map_zoom'
@@ -110,6 +112,7 @@ class UiSettings(BaseDataModel):
     layer_public_gps_traces_enabled: bool
     map_base_layer: str
     offline_map_mode: str
+    offline_map_max_dynamic_zoom: int
     travel_fuel_price: float
     travel_fuel_prices: Dict[str, float]
     travel_fuel_type: str
@@ -145,6 +148,13 @@ class UiSettings(BaseDataModel):
             return int(value)
         except (TypeError, ValueError):
             return default
+
+    @classmethod
+    def _to_bounded_int(
+        cls, value: Any, default: int, minimum: int, maximum: int
+    ) -> int:
+        number = cls._to_int(value, default)
+        return number if minimum <= number <= maximum else default
 
     @classmethod
     def _to_bool(cls, value: Any, default: bool) -> bool:
@@ -279,6 +289,15 @@ class UiSettings(BaseDataModel):
                 if str(d.get(cls.FIELD_OFFLINE_MAP_MODE, cls._DEFAULT_OFFLINE_MAP_MODE)) in cls.OFFLINE_MAP_MODES
                 else cls._DEFAULT_OFFLINE_MAP_MODE
             ),
+            offline_map_max_dynamic_zoom=cls._to_bounded_int(
+                d.get(
+                    cls.FIELD_OFFLINE_MAP_MAX_DYNAMIC_ZOOM,
+                    cls._DEFAULT_OFFLINE_MAP_MAX_DYNAMIC_ZOOM,
+                ),
+                cls._DEFAULT_OFFLINE_MAP_MAX_DYNAMIC_ZOOM,
+                14,
+                19,
+            ),
             travel_fuel_price=max(0.0, cls._to_float(
                 d.get(cls.FIELD_TRAVEL_FUEL_PRICE, cls._DEFAULT_TRAVEL_FUEL_PRICE),
                 cls._DEFAULT_TRAVEL_FUEL_PRICE
@@ -383,6 +402,7 @@ class UiSettings(BaseDataModel):
             self.FIELD_LAYER_FAVOURITE_VISIBLE_TAG_IDS: self.layer_favourite_visible_tag_ids,
             self.FIELD_MAP_BASE_LAYER: self.map_base_layer,
             self.FIELD_OFFLINE_MAP_MODE: self.offline_map_mode,
+            self.FIELD_OFFLINE_MAP_MAX_DYNAMIC_ZOOM: self.offline_map_max_dynamic_zoom,
             self.FIELD_TRAVEL_FUEL_PRICE: self.travel_fuel_price,
             self.FIELD_TRAVEL_FUEL_PRICES: self.travel_fuel_prices,
             self.FIELD_TRAVEL_FUEL_TYPE: self.travel_fuel_type,

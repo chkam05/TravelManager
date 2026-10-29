@@ -294,6 +294,7 @@ class OfflineMapCatalogApiTests(unittest.TestCase):
         })
         controller._paths.maps.save([installed])
         controller._paths.map_path(installed.file_name).write_bytes(b'mbtiles')
+        controller._paths.map_features_path(installed.id).write_bytes(b'index')
         client = self.app.test_client()
 
         listing = client.get('/api/offline-maps').get_json()
@@ -306,6 +307,7 @@ class OfflineMapCatalogApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(controller._paths.maps.load(), [])
         self.assertFalse(controller._paths.map_path('poland.mbtiles').exists())
+        self.assertFalse(controller._paths.map_features_path('poland').exists())
 
     def test_active_map_job_blocks_deletion(self):
         controller = self._controller()

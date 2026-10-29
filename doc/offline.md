@@ -19,9 +19,9 @@
 1. Otwórz **Ustawienia → Mapa → Mapy offline** i wybierz **Pobierz mapę**.
 2. Wskaż kontynent, kraj oraz dostępny region. Podział odzwierciedla katalog
    Geofabrik, dlatego liczba poziomów i rodzaj regionów różnią się między krajami.
-3. Wybierz maksymalny poziom przybliżenia od **x12** (widok ogólny) do **x19**
-   (najbliższy widok). Wyższy numer oznacza większe zbliżenie, ale zwiększa
-   czas generowania, zajęte miejsce i obciążenie komputera.
+3. Poziomy x3–x10 są przygotowywane podczas instalacji. Poziomu danych nie
+   wybiera się osobno dla każdego pobrania; maksymalne zbliżenie ustawia się
+   globalnie w sekcji **Mapa → Mapy offline**.
 4. Sprawdź rozmiar źródła, dostępny szacunek wyniku i ilość wolnego miejsca,
    a następnie rozpocznij pobieranie.
 
@@ -30,8 +30,8 @@ wektorowe, buduje MBTiles i sprawdza integralność pakietu. Te etapy mogą trwa
 znacznie dłużej niż samo pobieranie. Dialog można pozostawić otwarty albo użyć
 opcji **Pobieraj w tle**. Wskaźnik w rogu aplikacji pozwala ponownie otworzyć
 postęp. Zamknięcie i ponowne uruchomienie aplikacji wznawia bezpieczny etap
-niedokończonego zadania. Anulowane pobieranie może zachować poprawny plik
-`.part`, aby nie pobierać ponownie odebranych danych.
+niedokończonego zadania. Przycisk **Anuluj** zatrzymuje zadanie i usuwa pobrany
+plik, plik `.part` oraz wszystkie dane robocze tej mapy.
 
 ### Używanie mapy
 
@@ -49,6 +49,12 @@ ciemnego motywu interfejsu. Wyjście poza granice pakietu powoduje wyświetlenie
 ostrzeżenia. Brak pojedynczego kafelka jest traktowany jako pusty fragment mapy,
 a nie błąd całego widoku.
 
+Przy pierwszym otwarciu fragmentu na poziomie x11–x19 aplikacja wyszukuje
+potrzebne obiekty w zachowanym lokalnym indeksie, generuje kafelek MVT i zapisuje
+go w MBTiles. Następne otwarcie korzysta już z zapisanego kafelka, a sąsiednie
+kafelki są przygotowywane w tle. Wolniejsze generowanie jest sygnalizowane
+wskaźnikiem z postępem w lewym dolnym rogu mapy.
+
 Przycisk z ikoną przekreślonego Wi-Fi w narzędziach mapy pozwala tymczasowo
 testować lokalny podkład bez wyłączania internetu w systemie. W tym trybie
 internetowy podkład nie jest wybierany, ale nie jest to globalna blokada sieci:
@@ -58,8 +64,7 @@ pozostałe funkcje aplikacji mogą nadal wykonywać żądania internetowe.
 
 Zainstalowane pakiety znajdują się w **Ustawienia → Pamięć → Pobrane mapy
 offline**. Dla każdej mapy można użyć akcji **Pokaż na mapie**,
-**Aktualizuj** lub **Usuń**. Podczas aktualizacji można zmienić maksymalne
-przybliżenie, np. z x12 na x19. Aktualizacja powstaje obok działającego pakietu;
+**Aktualizuj** lub **Usuń**. Aktualizacja powstaje obok działającego pakietu;
 dotychczasowa mapa pozostaje dostępna i jest zastępowana dopiero po pełnej
 walidacji nowej bazy. Nieudana aktualizacja nie usuwa sprawnej wersji. Usunięcie
 wymaga potwierdzenia i kasuje lokalny MBTiles, lecz nie usuwa innych danych
@@ -67,11 +72,9 @@ aplikacji.
 
 ### Rozmiar, czas i wymagania
 
-Rozmiar gotowej mapy zależy od powierzchni i gęstości danych regionu oraz
-wybranego maksymalnego przybliżenia. Wartość w dialogu dla x12–x14 jest
-zgrubnym szacunkiem, a nie gwarancją. Dla x15–x19 szacunek nie jest wyświetlany,
-bo nie da się go wiarygodnie wyliczyć z samego rozmiaru źródłowego PBF. Na czas
-przetwarzania potrzebne jest miejsce na pobrany PBF, dane
+Rozmiar gotowej mapy zależy od powierzchni i gęstości danych regionu. Wartość
+w dialogu jest zgrubnym szacunkiem, a nie gwarancją. Na czas przetwarzania
+potrzebne jest miejsce na pobrany PBF, dane
 robocze, kafelki i końcowy MBTiles. Kontrola wstępna wymaga bezpiecznego zapasu
 wynoszącego co najmniej około czterokrotności rozmiaru PBF; rzeczywiste zużycie
 może być większe dla gęstych obszarów i wysokiego zoomu.
@@ -145,7 +148,7 @@ opis nie stanowi porady prawnej.
    Dodać usługę pobierania z obsługą `Range`, plików `.part`, anulowania, ponawiania prób i wznowienia po ponownym uruchomieniu aplikacji. Akceptować wyłącznie adres PBF pochodzący z zapisanego katalogu Geofabrik, aby uniknąć dowolnych żądań sieciowych. Zapisywać aktualny i całkowity rozmiar oraz prędkość pobierania. Używać identyfikowalnego `User-Agent` TravelManagera.
 
 9. [X] Trwały menedżer zadań map offline
-   Dodać zarządzanie zadaniami w tle dla etapów pobierania, analizy, generowania, optymalizacji i instalacji. Stan zapisywać po każdej istotnej zmianie. Po uruchomieniu aplikacji odnajdywać niedokończone zadania i bezpiecznie je wznawiać. Jednocześnie przetwarzać najwyżej jedną mapę, aby ograniczyć zużycie pamięci i procesora. Anulowanie powinno pozostawiać plik częściowy tylko wtedy, gdy może zostać później wznowiony.
+   Dodać zarządzanie zadaniami w tle dla etapów pobierania, analizy, generowania, optymalizacji i instalacji. Stan zapisywać po każdej istotnej zmianie. Po uruchomieniu aplikacji odnajdywać niedokończone zadania i bezpiecznie je wznawiać. Jednocześnie przetwarzać najwyżej jedną mapę, aby ograniczyć zużycie pamięci i procesora. Zamknięcie aplikacji zachowuje dane potrzebne do wznowienia, natomiast jawne anulowanie usuwa wszystkie pliki zadania.
 
 10. [X] Definicja warstw i filtrowanie danych OSM
     Określić minimalny zestaw warstw wektorowych: woda, użytkowanie terenu, budynki, drogi, koleje, granice, miejscowości oraz podstawowe punkty POI. Dla każdej warstwy zdefiniować obsługiwane tagi OSM, minimalny zoom, priorytet, właściwości trafiające do MVT oraz reguły generalizacji. Pominąć dane, których renderer nie wykorzystuje, aby ograniczyć rozmiar MBTiles.
@@ -181,13 +184,13 @@ opis nie stanowi porady prawnej.
     Dodać sekcję zgodną wizualnie z pozostałymi ustawieniami. Umieścić w niej ustawienia automatycznego wyboru źródła, informację o zakresie pierwszego etapu oraz przycisk „Pobierz mapę”. Wyjaśnić, że routing, wyszukiwanie i dane dodatkowe nadal mogą wymagać internetu.
 
 21. [X] Dialog wyboru regionu
-    Dodać dialog pozwalający wybrać kontynent, kraj i dostępny region. Pokazać źródło, datę danych, rozmiar pobierania, maksymalny zoom i szacowany rozmiar wynikowy. Uniemożliwić rozpoczęcie drugiego zadania dla tej samej mapy i ostrzec przed niewystarczającą ilością wolnego miejsca.
+    Dodać dialog pozwalający wybrać kontynent, kraj i dostępny region. Pokazać źródło, datę danych, rozmiar pobierania i szacowany rozmiar wynikowy. Poziom szczegółowości pakietu nie jest wybierany podczas pobierania. Uniemożliwić rozpoczęcie drugiego zadania dla tej samej mapy i ostrzec przed niewystarczającą ilością wolnego miejsca.
 
 22. [X] Dialog postępu pobierania i generowania mapy
     Dodać dialog pokazujący bieżący etap, opis operacji, postęp, rozmiar i ewentualną liczbę przetworzonych elementów lub kafelków. Zapewnić przyciski „Pobieraj w tle” i „Anuluj” z właściwymi odstępami. Ponowne otwarcie ustawień podczas aktywnego zadania powinno przywrócić dialog.
 
 23. [X] Wskaźnik zadania działającego w tle
-    Rozszerzyć istniejący mechanizm wskaźnika pobierania w tle tak, aby obsługiwał również mapy offline. Wskaźnik nie może kolidować z aktualizacją GTFS, ma obracać wyłącznie ikonę i po kliknięciu otwierać właściwy dialog. Powinien rozróżniać pobieranie danych od lokalnego generowania kafelków.
+    Rozszerzyć istniejący mechanizm wskaźnika pobierania w tle tak, aby obsługiwał również mapy offline. Wskaźnik nie może kolidować z aktualizacją GTFS, ma obracać wyłącznie ikonę i po kliknięciu otwierać właściwy dialog. Powinien rozróżniać pobieranie danych, lokalne przygotowanie pakietu, anulowanie ze sprzątaniem oraz generowanie szczegółowych kafelków na żądanie.
 
 24. [X] Lista map w „Pamięć”
     Dodać sekcję „Pobrane mapy” z tabelaryczną listą: nazwa, region, data aktualizacji, rozmiar i akcje. Dane mają być sortowane lokalnie według nazwy. Udostępnić „Pokaż na mapie”, „Aktualizuj” i „Usuń”. Usuwanie wymaga dialogu potwierdzenia, a po operacji lista i licznik zajętej pamięci muszą się odświeżyć.
@@ -210,5 +213,11 @@ opis nie stanowi porady prawnej.
 30. [X] Dokumentacja użytkownika i licencje
     Opisać sposób pobierania, aktualizowania i usuwania map, przewidywane rozmiary, wymagania sprzętowe i ograniczenia pierwszego etapu offline. Dołączyć informacje o OpenStreetMap, ODbL, Geofabrik oraz użytych bibliotekach JavaScript i Python. Atrybucja OpenStreetMap musi pozostawać widoczna także bez połączenia z internetem.
 
-31. [ ] Test akceptacyjny kompletnego przepływu
+31. [X] Hybrydowe generowanie szczegółowych kafelków na żądanie
+    Przy instalacji generować wyłącznie bazowe poziomy do x10 i zachować obok MBTiles przestrzenny indeks obiektów. Dla x11–x19 generować tylko kafelki żądane przez bieżący widok, zapisywać je trwale w MBTiles i współdzielić wynik kolejnych żądań. Po wyświetleniu kafelka przygotowywać w tle również jego sąsiadów. Maksymalny poziom ustawiać globalnie w sekcji „Mapa”, a wolniejsze generowanie pokazywać wraz z rzeczywistym postępem we wskaźniku działającym w tle. Usunięcie mapy musi usuwać również indeks, a lista pamięci ma uwzględniać jego rozmiar oraz rosnący cache kafelków.
+
+32. [X] Ponowne użycie zainstalowanych map podrzędnych
+    Podczas instalowania kraju wykrywać zainstalowane regiony podrzędne o zgodnej lub nowszej dacie danych. Zasilać nimi indeks obiektów, deduplikując rekordy według typu i identyfikatora OSM oraz warstwy. Kopiować wyłącznie kompletne kafelki mieszczące się w całości w zakresie mapy podrzędnej, natomiast kafelki brakujące i graniczne generować ponownie. Po udanej instalacji proponować usunięcie mniejszych pakietów objętych nową mapą.
+
+33. [ ] Test akceptacyjny kompletnego przepływu
     Przeprowadzić test na małym regionie: odświeżenie katalogu, wybór regionu, pobranie z możliwością przerwania i wznowienia, generowanie MBTiles, automatyczne przełączenie na lokalną mapę, restart aplikacji, aktualizacja oraz usunięcie. Potwierdzić działanie bez internetu po instalacji pakietu oraz brak prób pobierania kafelków z sieci w trybie offline.

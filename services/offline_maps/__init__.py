@@ -20,6 +20,8 @@ from services.offline_maps.tile_repository import (
     OfflineMapTileReadError,
     OfflineMapTileRepository,
 )
+from services.offline_maps.on_demand_tiles import OfflineMapOnDemandTiles
+from services.offline_maps.package_reuse import OfflineMapPackageReuse
 from services.offline_maps.resource_guard import (
     OfflineMapResourceError, OfflineMapResourceGuard,
 )
@@ -35,5 +37,7 @@ __all__ = [
     'OfflineMapMbtilesBuilder',
     'OfflineMapCleanupService',
     'OfflineMapTileReadError', 'OfflineMapTileRepository',
+    'OfflineMapOnDemandTiles',
+    'OfflineMapPackageReuse',
     'OfflineMapResourceError', 'OfflineMapResourceGuard',
 ]

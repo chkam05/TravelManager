@@ -14,14 +14,24 @@ function harness() {
             latLngBounds: (bounds) => ({bounds}),
             vectorGrid: {
                 protobuf: (url, options) => {
-                    const layer = {url, options};
+                    const listeners = new Map();
+                    const layer = {
+                        url, options, listeners,
+                        on: (names, handler) => {
+                            names.split(' ').forEach((name) => listeners.set(name, handler));
+                            return layer;
+                        }
+                    };
                     calls.push(layer);
                     return layer;
                 }
             }
         }
     };
-    const context = {window, URL, TypeError, Error};
+    window.setTimeout = setTimeout;
+    window.clearTimeout = clearTimeout;
+    const document = {dispatchEvent: () => {}};
+    const context = {window, document, CustomEvent, URL, TypeError, Error};
     vm.runInNewContext(stylesSource, context);
     vm.runInNewContext(source, context);
     return {api: window.travelManagerOfflineMapLayer, calls, window};
@@ -65,6 +75,35 @@ test('factory forwards explicit styles and keeps interaction opt-in', () => {
     assert.equal(layer.options.interactive, true);
     assert.equal(layer.options.pane, 'tilePane');
     assert.equal(layer.options.getFeatureId, undefined);
+});
+
+test('display zoom requests real detailed tiles above the installed base', () => {
+    const {api} = harness();
+    const layer = api.create({...metadata, display_max_zoom: 19});
+
+    assert.equal(layer.options.maxNativeZoom, 19);
+    assert.equal(layer.options.maxZoom, 19);
+    assert.equal(layer.travelManagerOfflineMap.nativeMaxZoom, 14);
+    assert.equal(layer.travelManagerOfflineMap.maxZoom, 19);
+});
+
+test('slow tile loading exposes lifecycle events for the background indicator', () => {
+    const {api} = harness();
+    const layer = api.create(metadata);
+
+    assert.ok(layer.listeners.has('loading'));
+    assert.ok(layer.listeners.has('load'));
+    assert.equal(layer.listeners.get('load'), layer.listeners.get('remove'));
+    assert.match(source, /travel-manager:offline-map-tiles-started/);
+    assert.match(source, /travel-manager:offline-map-tiles-progress/);
+    assert.match(source, /travel-manager:offline-map-tiles-finished/);
+    assert.match(source, /tileloadstart/);
+    assert.match(source, /tileload tileerror/);
+    assert.match(source, /prefetchNeighbours/);
+    assert.match(source, /neighbourWorkers < 3/);
+    assert.match(source, /kind: 'neighbours'/);
+    assert.match(source, /BACKGROUND_NEIGHBOUR_TILES_PERCENT|offline-neighbours/);
+    assert.match(source, /}, 350\)/);
 });
 
 test('invalid ids, zooms and bounds are rejected before constructing a URL', () => {

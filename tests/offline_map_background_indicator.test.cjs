@@ -18,6 +18,17 @@ test('background label distinguishes downloading from local generation', () => {
     assert.match(requests, /\['preparing', 'downloading'\]\.includes\(offlineJob\.stage\)/);
 });
 
+test('on-demand tile generation reuses the offline background indicator', () => {
+    assert.match(requests, /const offlineTileTasks = new Map\(\)/);
+    assert.match(requests, /travel-manager:offline-map-tiles-started/);
+    assert.match(requests, /travel-manager:offline-map-tiles-progress/);
+    assert.match(requests, /travel-manager:offline-map-tiles-finished/);
+    assert.match(requests, /BACKGROUND_TILE_GENERATION_PERCENT/);
+    assert.match(requests, /BACKGROUND_NEIGHBOUR_TILES_PERCENT/);
+    assert.match(requests, /item\?\.kind === 'neighbours'/);
+    assert.match(requests, /tileTotals\.current \/ tileTotals\.total/);
+});
+
 test('restored map jobs wait for translations and the progress dialog', () => {
     assert.match(requests, /addEventListener\('travel-manager:views-ready', async \(\) => \{/);
     assert.match(requests, /await window\.i18n\.ready;[\s\S]*fetch\('\/api\/offline-maps\/jobs'/);

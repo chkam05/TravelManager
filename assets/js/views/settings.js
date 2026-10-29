@@ -267,7 +267,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         offlineMapsList.replaceChildren();
         if (!maps.length) {
             const empty = document.createElement('p'); empty.className = 'settings-view__memory-empty';
-            empty.textContent = t('SETTINGS_MEMORY.NO_OFFLINE_MAPS'); offlineMapsList.append(empty); return;
+            empty.textContent = t('SETTINGS_MEMORY.NO_OFFLINE_MAPS'); offlineMapsList.append(empty); return maps;
         }
         const header = document.createElement('div'); header.className = 'settings-view__memory-header';
         [t('SETTINGS_MEMORY.COLUMN_NAME'), t('SETTINGS_MEMORY.COLUMN_REGION'), t('SETTINGS_MEMORY.COLUMN_DATE'), t('SETTINGS_MEMORY.COLUMN_SIZE'), '']
@@ -313,12 +313,39 @@ document.addEventListener('travel-manager:views-ready', () => {
             row.append(name, region, date, size, actions); offlineMapsList.append(row);
         });
         window.lucide?.createIcons({attrs: {'stroke-width': 1.7}});
+        return maps;
     };
 
-    document.addEventListener('travel-manager:offline-map-job-finished', () => {
-        loadOfflineMaps().catch(() => {});
+    document.addEventListener('travel-manager:offline-map-job-finished', async (event) => {
+        let maps = [];
+        try { maps = await loadOfflineMaps() || []; } catch (error) { /* Refreshed on next open. */ }
         loadStorageUsage().catch(() => {});
         window.travelManagerMap?.refreshOfflineMaps();
+        const job = event.detail;
+        if (job?.status !== 'completed' || job?.is_update) return;
+        const installed = maps.find((item) => item.id === job.map_id);
+        const covered = Array.isArray(installed?.covered_maps)
+            ? installed.covered_maps : [];
+        if (!covered.length) return;
+        const accepted = await window.travelManagerDialogs?.yesNo({
+            title: t('SETTINGS_MEMORY.DELETE_COVERED_MAPS_TITLE'),
+            description: t('SETTINGS_MEMORY.DELETE_COVERED_MAPS_CONFIRM', {
+                parent: installed.name,
+                maps: covered.map((item) => item.name).join(', ')
+            }),
+            icon: 'layers-2',
+            yesLabel: t('SETTINGS_MEMORY.DELETE_COVERED_MAPS')
+        });
+        if (!accepted) return;
+        const results = await Promise.all(covered.map((item) => fetch(
+            `/api/offline-maps/${encodeURIComponent(item.id)}`,
+            {method: 'DELETE', headers: {Accept: 'application/json'}}
+        )));
+        if (results.some((response) => !response.ok)) {
+            showPopup(t('SETTINGS_MEMORY.DELETE_FAILED'), 'error');
+        }
+        await Promise.all([loadOfflineMaps(), loadStorageUsage()]);
+        await window.travelManagerMap?.refreshOfflineMaps();
     });
     const downloadJson = (payload, filename) => {
         const blob = new Blob(
@@ -818,6 +845,16 @@ document.addEventListener('travel-manager:views-ready', () => {
                     { value: 'offline_when_disconnected', label: t('SETTINGS_OFFLINE_MAPS.WHEN_DISCONNECTED') },
                     { value: 'online_only', label: t('SETTINGS_OFFLINE_MAPS.ONLINE_ONLY') }
                 ]
+            );
+            addSelectSetting(
+                offlineMapsGroup,
+                t('SETTINGS_OFFLINE_MAPS.MAX_DYNAMIC_ZOOM'),
+                'offline_map_max_dynamic_zoom',
+                String(settings.offline_map_max_dynamic_zoom || 19),
+                [14, 15, 16, 17, 18, 19].map((zoom) => ({
+                    value: String(zoom),
+                    label: t(`SETTINGS_OFFLINE_MAPS.ZOOM_${zoom}`)
+                }))
             );
             addSelectSetting(
                 layerUnitsGroup,

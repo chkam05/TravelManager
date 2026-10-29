@@ -11,6 +11,12 @@
 .offline-map-progress__indeterminate[hidden]{display:none}
 .offline-map-progress__indeterminate::before{content:'';position:absolute;top:0;left:0;width:25%;height:100%;border-radius:inherit;background:var(--accent-color,#348bd2);animation:offline-map-progress-travel 1.8s linear infinite}
 .offline-map-progress__content span{font-size:.88rem}
+.offline-map-progress__steps{display:grid;width:100%;gap:7px;margin:4px 0 0;padding:14px 0 0;border-top:1px solid var(--border-color);list-style:none;text-align:left}
+.offline-map-progress__step{display:grid;grid-template-columns:20px minmax(0,1fr);align-items:start;color:var(--text-secondary);font-size:.86rem;line-height:1.35}
+.offline-map-progress__step-marker{font-weight:900;text-align:center}
+.offline-map-progress__step--complete{color:var(--success-color,#38a169)}
+.offline-map-progress__step--active{color:var(--text-primary);font-weight:800}
+.offline-map-progress__step--pending .offline-map-progress__step-marker{visibility:hidden}
 .offline-map-progress__footer{display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--border-color)}
 .offline-map-progress__footer button{min-height:38px;padding:0 14px;border:1px solid var(--border-color);border-radius:8px;font:inherit;font-weight:850;cursor:pointer}
 .offline-map-progress__footer button:disabled{cursor:not-allowed;opacity:.55}

@@ -18,8 +18,10 @@ from services.offline_maps import (
     OfflineMapTileReadError,
     OfflineMapTileRepository,
     OfflineMapResourceGuard,
+    OfflineMapPackageReuse,
 )
 from services.offline_maps.catalog_localization import localized_catalog
+from services.offline_maps.errors import OfflineMapTileGenerationError
 from services.offline_maps.pbf_metadata import pbf_metadata
 from models.offline_maps.validation import local_id
 from storage.offline_maps import OfflineMapPaths
@@ -32,6 +34,7 @@ class OfflineMapController(BaseController):
     def __init__(
         self, settings_storage: SettingsStorage, start_manager: bool = False
     ):
+        self._settings_storage = settings_storage
         self._paths = OfflineMapPaths(settings_storage.directory)
         self._catalog = OfflineMapCatalogService(self._paths.catalog)
         self._jobs = OfflineMapJobManager(self._paths)
@@ -41,6 +44,7 @@ class OfflineMapController(BaseController):
         self._cleanup = OfflineMapCleanupService(self._paths)
         self._tiles = OfflineMapTileRepository(self._paths)
         self._resources = OfflineMapResourceGuard(self._paths.root)
+        self._reuse = OfflineMapPackageReuse(self._paths)
         self._pbf_metadata = pbf_metadata
         self._cleanup.cleanup_orphans()
         self._jobs.register_processor('analysing', self._analyser.process)
@@ -131,7 +135,17 @@ class OfflineMapController(BaseController):
         return jsonify({
             'maps': [{
                 **item.to_dict(),
+                'size': self._installed_size(item),
+                'display_max_zoom': (
+                    self._dynamic_max_zoom()
+                    if self._paths.map_features_path(item.id).is_file()
+                    else item.max_zoom
+                ),
                 'region_name': localized.get(item.region_id, item.name),
+                'covered_maps': [
+                    {'id': child.id, 'name': child.name}
+                    for child in self._reuse.covered_maps(item.region_id, item.id)
+                ],
             } for item in self._paths.maps.load()]
         })
 
@@ -178,6 +192,7 @@ class OfflineMapController(BaseController):
             # Restore metadata if the package could not be removed.
             self._paths.maps.save([*retained, installed])
             return jsonify({'status': 'error', 'message': str(error)}), 500
+        self._paths.delete_map_features(identifier)
         return jsonify({'status': 'ok', 'deleted_map_id': identifier})
 
     def map_jobs(self):
@@ -193,7 +208,7 @@ class OfflineMapController(BaseController):
         try:
             job = self._jobs.create(
                 str(payload.get('region_id') or ''),
-                payload.get('max_zoom', 14),
+                10,
             )
         except (TypeError, ValueError) as error:
             return jsonify({'status': 'error', 'message': str(error)}), 400
@@ -204,9 +219,7 @@ class OfflineMapController(BaseController):
             payload = request.get_json(silent=True)
             if payload is not None and not isinstance(payload, dict):
                 raise ValueError('Nieprawidłowe dane zadania.')
-            job = self._jobs.create_update(
-                map_id, payload.get('max_zoom') if payload else None
-            )
+            job = self._jobs.create_update(map_id, 10)
         except (TypeError, ValueError) as error:
             return jsonify({'status': 'error', 'message': str(error)}), 400
         return jsonify({'status': 'queued', 'job': job.to_dict()}), 202
@@ -283,12 +296,14 @@ class OfflineMapController(BaseController):
         self, map_id: str, zoom: int, column: int, row: int
     ):
         try:
-            payload = self._tiles.get(map_id, zoom, column, row)
+            payload = self._tiles.get(
+                map_id, zoom, column, row, self._dynamic_max_zoom()
+            )
         except KeyError as error:
             return jsonify({'status': 'error', 'message': str(error.args[0])}), 404
         except ValueError as error:
             return jsonify({'status': 'error', 'message': str(error)}), 400
-        except OfflineMapTileReadError as error:
+        except (OfflineMapTileReadError, OfflineMapTileGenerationError) as error:
             return jsonify({'status': 'error', 'message': str(error)}), 500
         if payload is None:
             return Response(status=204)
@@ -315,6 +330,28 @@ class OfflineMapController(BaseController):
         return next(
             (item for item in self._paths.maps.load() if item.id == map_id), None
         )
+
+    def _dynamic_max_zoom(self) -> int:
+        loader = getattr(self._settings_storage, 'load', None)
+        if not callable(loader):
+            return 19
+        try:
+            ui = loader().ui
+            return int(ui.offline_map_max_dynamic_zoom) if ui else 19
+        except (AttributeError, TypeError, ValueError, OSError):
+            return 19
+
+    def _installed_size(self, installed) -> int:
+        total = 0
+        for path in (
+            self._paths.map_path(installed.file_name),
+            self._paths.map_features_path(installed.id),
+        ):
+            try:
+                total += path.stat().st_size
+            except OSError:
+                pass
+        return total or installed.size
 
     @staticmethod
     def _validated_map_id(map_id: str):

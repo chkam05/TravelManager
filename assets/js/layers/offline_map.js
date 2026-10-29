@@ -26,6 +26,7 @@
         const id = String(metadata?.id || '');
         const minZoom = finiteNumber(metadata?.min_zoom);
         const maxZoom = finiteNumber(metadata?.max_zoom);
+        const displayMaxZoom = finiteNumber(metadata?.display_max_zoom ?? maxZoom);
         const bounds = Array.isArray(metadata?.bounds)
             ? metadata.bounds.map(finiteNumber)
             : [];
@@ -39,6 +40,9 @@
             || minZoom < 0
             || maxZoom > 22
             || minZoom > maxZoom
+            || !Number.isInteger(displayMaxZoom)
+            || displayMaxZoom < maxZoom
+            || displayMaxZoom > 19
         ) {
             throw new TypeError('Invalid offline map zoom range.');
         }
@@ -54,7 +58,7 @@
         ) {
             throw new TypeError('Invalid offline map bounds.');
         }
-        return { id, minZoom, maxZoom, bounds };
+        return { id, minZoom, maxZoom, displayMaxZoom, bounds };
     };
 
     const create = (metadata, options = {}) => {
@@ -73,21 +77,170 @@
                 || window.travelManagerOfflineMapStyles?.standard?.()
                 || fallbackStyles,
             minNativeZoom: validated.minZoom,
-            maxNativeZoom: validated.maxZoom,
-            maxZoom: validated.maxZoom,
+            // Detailed levels are real API requests generated and cached on
+            // demand; do not let GridLayer stretch the z14 canvas.
+            maxNativeZoom: validated.displayMaxZoom,
+            maxZoom: validated.displayMaxZoom,
             bounds: L.latLngBounds([[south, west], [north, east]]),
             attribution: ATTRIBUTION,
             interactive: options.interactive === true
         };
         if (options.pane) layerOptions.pane = options.pane;
         const layer = L.vectorGrid.protobuf(url, layerOptions);
+        const activityId = `offline-tiles:${validated.id}`;
+        const neighbourActivityId = `offline-neighbours:${validated.id}`;
+        let activityTimer = null;
+        let activityVisible = false;
+        let requestedTiles = 0;
+        let finishedTiles = 0;
+        const knownTiles = new Set();
+        const neighbourQueue = [];
+        let neighbourWorkers = 0;
+        let neighbourCurrent = 0;
+        let neighbourTotal = 0;
+        let neighbourActive = false;
+        const coordinateKey = ({z, x, y}) => `${z}:${x}:${y}`;
+        const tileCentre = ({z, x, y}) => {
+            const scale = 2 ** z;
+            const longitude = (x + 0.5) / scale * 360 - 180;
+            const latitude = Math.atan(Math.sinh(
+                Math.PI * (1 - 2 * (y + 0.5) / scale)
+            )) * 180 / Math.PI;
+            return [longitude, latitude];
+        };
+        const insideCoverage = (coords) => {
+            const [longitude, latitude] = tileCentre(coords);
+            return longitude >= west && longitude <= east
+                && latitude >= south && latitude <= north;
+        };
+        const neighbourProgress = () => ({
+            id: neighbourActivityId,
+            mapId: validated.id,
+            kind: 'neighbours',
+            current: neighbourCurrent,
+            total: neighbourTotal,
+            percent: neighbourTotal > 0
+                ? Math.min(100, Math.floor(100 * neighbourCurrent / neighbourTotal))
+                : 0
+        });
+        const reportNeighbours = (eventName) => document.dispatchEvent(
+            new CustomEvent(eventName, {detail: neighbourProgress()})
+        );
+        const runNeighbourQueue = () => {
+            while (neighbourWorkers < 3 && neighbourQueue.length) {
+                const coords = neighbourQueue.shift();
+                neighbourWorkers += 1;
+                fetch(url
+                    .replace('{z}', String(coords.z))
+                    .replace('{x}', String(coords.x))
+                    .replace('{y}', String(coords.y)), {
+                    headers: {'Accept': 'application/vnd.mapbox-vector-tile'}
+                }).catch(() => null).finally(() => {
+                    neighbourWorkers -= 1;
+                    neighbourCurrent += 1;
+                    reportNeighbours('travel-manager:offline-map-tiles-progress');
+                    if (!neighbourQueue.length && neighbourWorkers === 0) {
+                        neighbourActive = false;
+                        reportNeighbours('travel-manager:offline-map-tiles-finished');
+                        neighbourCurrent = 0;
+                        neighbourTotal = 0;
+                    } else {
+                        runNeighbourQueue();
+                    }
+                });
+            }
+        };
+        const prefetchNeighbours = (origin) => {
+            if (!origin || origin.z <= validated.maxZoom) return;
+            const limit = 2 ** origin.z;
+            for (let offsetY = -1; offsetY <= 1; offsetY += 1) {
+                for (let offsetX = -1; offsetX <= 1; offsetX += 1) {
+                    if (offsetX === 0 && offsetY === 0) continue;
+                    const coords = {
+                        z: origin.z,
+                        x: origin.x + offsetX,
+                        y: origin.y + offsetY
+                    };
+                    const key = coordinateKey(coords);
+                    if (
+                        coords.x < 0 || coords.y < 0
+                        || coords.x >= limit || coords.y >= limit
+                        || knownTiles.has(key) || !insideCoverage(coords)
+                    ) continue;
+                    knownTiles.add(key);
+                    neighbourQueue.push(coords);
+                    neighbourTotal += 1;
+                }
+            }
+            if (!neighbourQueue.length) return;
+            if (!neighbourActive) {
+                neighbourActive = true;
+                reportNeighbours('travel-manager:offline-map-tiles-started');
+            } else {
+                reportNeighbours('travel-manager:offline-map-tiles-progress');
+            }
+            runNeighbourQueue();
+        };
+        const tileProgress = () => ({
+            id: activityId,
+            mapId: validated.id,
+            current: finishedTiles,
+            total: requestedTiles,
+            percent: requestedTiles > 0
+                ? Math.min(100, Math.floor(100 * finishedTiles / requestedTiles))
+                : 0
+        });
+        const reportTileActivity = () => {
+            if (!activityVisible) return;
+            document.dispatchEvent(new CustomEvent(
+                'travel-manager:offline-map-tiles-progress',
+                {detail: tileProgress()}
+            ));
+        };
+        const finishTileActivity = () => {
+            window.clearTimeout(activityTimer);
+            activityTimer = null;
+            if (!activityVisible) return;
+            finishedTiles = Math.max(finishedTiles, requestedTiles);
+            reportTileActivity();
+            activityVisible = false;
+            document.dispatchEvent(new CustomEvent(
+                'travel-manager:offline-map-tiles-finished',
+                {detail: tileProgress()}
+            ));
+        };
+        layer.on('loading', () => {
+            finishTileActivity();
+            requestedTiles = 0;
+            finishedTiles = 0;
+            activityTimer = window.setTimeout(() => {
+                activityTimer = null;
+                activityVisible = true;
+                document.dispatchEvent(new CustomEvent(
+                    'travel-manager:offline-map-tiles-started',
+                    {detail: tileProgress()}
+                ));
+            }, 350);
+        });
+        layer.on('tileloadstart', (event) => {
+            if (event.coords) knownTiles.add(coordinateKey(event.coords));
+            requestedTiles += 1;
+            reportTileActivity();
+        });
+        layer.on('tileload tileerror', (event) => {
+            finishedTiles = Math.min(requestedTiles, finishedTiles + 1);
+            reportTileActivity();
+            if (event.type === 'tileload') prefetchNeighbours(event.coords);
+        });
+        layer.on('load remove', finishTileActivity);
 
         layer.travelManagerOfflineMap = {
             id: validated.id,
             name: String(metadata?.name || validated.id),
             bounds: [...validated.bounds],
             minZoom: validated.minZoom,
-            maxZoom: validated.maxZoom
+            nativeMaxZoom: validated.maxZoom,
+            maxZoom: validated.displayMaxZoom
         };
         return layer;
     };

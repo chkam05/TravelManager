@@ -80,14 +80,20 @@ class OfflineMapCleanupServiceTests(unittest.TestCase):
         orphan_source = self.paths.source_path('orphan-job', partial=True)
         orphan_source.write_bytes(b'orphan')
         orphan_work = self.paths.job_work_path('orphan-job')
+        orphan_features = self.paths.map_features_path('orphan-map')
+        orphan_features.write_bytes(b'index')
         (orphan_work / 'data.tmp').write_bytes(b'orphan')
         unrelated = self.paths.sources_directory / 'readme.txt'
         unrelated.write_text('keep', encoding='utf-8')
 
         result = self.cleanup.cleanup_orphans()
-        self.assertEqual(result, {'sources': 1, 'work_directories': 1})
+        self.assertEqual(result, {
+            'sources': 1, 'work_directories': 1, 'feature_indexes': 1,
+        })
         self.assertFalse(orphan_source.exists())
         self.assertFalse(orphan_work.exists())
+        self.assertFalse(orphan_features.exists())
+        self.assertEqual(result['feature_indexes'], 1)
         self.assertTrue(failed_work.exists())
         self.assertTrue(cancelled_partial.exists())
         self.assertEqual(unrelated.read_text(encoding='utf-8'), 'keep')
@@ -99,7 +105,9 @@ class OfflineMapCleanupServiceTests(unittest.TestCase):
         result = self.cleanup.cleanup_orphans()
         self.assertFalse(work.exists())
         self.assertFalse(self.paths.source_path(completed.id).exists())
-        self.assertEqual(result, {'sources': 1, 'work_directories': 1})
+        self.assertEqual(result, {
+            'sources': 1, 'work_directories': 1, 'feature_indexes': 0,
+        })
 
 
 if __name__ == '__main__':
