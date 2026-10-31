@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from typing import ClassVar
+from contextlib import closing
+import json
+import sqlite3
 
 from flask import Response, jsonify, request
 from hashlib import sha256
@@ -77,6 +80,10 @@ class OfflineMapController(BaseController):
             methods=['GET'],
         )
         self.add_url_rule(
+            '/api/offline-maps/<map_id>/levels',
+            view_func=self.map_levels, methods=['GET', 'POST', 'DELETE'],
+        )
+        self.add_url_rule(
             '/api/offline-maps/<map_id>',
             view_func=self.delete_map,
             methods=['DELETE'],
@@ -84,6 +91,14 @@ class OfflineMapController(BaseController):
         self.add_url_rule(
             '/api/offline-maps/<map_id>/update',
             view_func=self.update_map, methods=['POST'],
+        )
+        self.add_url_rule(
+            '/api/offline-maps/<map_id>/continue-generation',
+            view_func=self.continue_generation, methods=['POST'],
+        )
+        self.add_url_rule(
+            '/api/offline-maps/<map_id>/generate-next-level',
+            view_func=self.generate_next_level, methods=['POST'],
         )
         self.add_url_rule(
             '/api/offline-maps/jobs', view_func=self.map_jobs,
@@ -100,6 +115,11 @@ class OfflineMapController(BaseController):
         self.add_url_rule(
             '/api/offline-maps/jobs/<job_id>/cancel',
             view_func=self.cancel_map_job,
+            methods=['POST'],
+        )
+        self.add_url_rule(
+            '/api/offline-maps/jobs/<job_id>/skip-building',
+            view_func=self.skip_map_job_building,
             methods=['POST'],
         )
         self.add_url_rule(
@@ -128,10 +148,12 @@ class OfflineMapController(BaseController):
         }), 202
 
     def installed_maps(self):
+        regions = self._paths.catalog.load()[1]
         localized = {
             item['id']: item['name']
-            for item in localized_catalog(self._paths.catalog.load()[1])
+            for item in localized_catalog(regions)
         }
+        coverage = {item.id: item.coverage for item in regions}
         return jsonify({
             'maps': [{
                 **item.to_dict(),
@@ -142,6 +164,7 @@ class OfflineMapController(BaseController):
                     else item.max_zoom
                 ),
                 'region_name': localized.get(item.region_id, item.name),
+                'coverage': coverage.get(item.region_id),
                 'covered_maps': [
                     {'id': child.id, 'name': child.name}
                     for child in self._reuse.covered_maps(item.region_id, item.id)
@@ -159,6 +182,109 @@ class OfflineMapController(BaseController):
                 'status': 'error', 'message': 'Nie znaleziono mapy offline.'
             }), 404
         return jsonify({'map': installed.to_dict()})
+
+    def map_levels(self, map_id: str):
+        identifier, error = self._validated_map_id(map_id)
+        if error:
+            return error
+        installed = self._find_map(identifier)
+        if installed is None:
+            return jsonify({'status': 'error', 'message': 'Nie znaleziono mapy offline.'}), 404
+        if request.method == 'GET':
+            return jsonify({'levels': self._map_level_rows(installed)})
+        payload = request.get_json(silent=True)
+        levels = payload.get('levels') if isinstance(payload, dict) else None
+        if (
+            not isinstance(levels, list) or not levels
+            or any(type(level) is not int or not 10 <= level <= 19 for level in levels)
+        ):
+            return jsonify({'status': 'error', 'message': 'Nieprawidłowa lista poziomów.'}), 400
+        levels = sorted(set(levels))
+        if request.method == 'POST':
+            complete = {
+                row['zoom'] for row in self._map_level_rows(installed)
+                if row['status'] == 'complete'
+            }
+            pending = [level for level in levels if level not in complete]
+            if not pending:
+                return jsonify({'status': 'unchanged', 'skipped_levels': levels})
+            try:
+                job = self._jobs.create_generation(
+                    installed.id, max(pending), zoom_levels=pending
+                )
+            except ValueError as generation_error:
+                return jsonify({'status': 'error', 'message': str(generation_error)}), 409
+            return jsonify({
+                'status': 'queued', 'job': job.to_dict(),
+                'skipped_levels': sorted(set(levels) - set(pending)),
+            }), 202
+        if 10 in levels:
+            return jsonify({
+                'status': 'error', 'message': 'Poziomu x10 nie można usunąć.'
+            }), 400
+        if any(
+            job.map_id == installed.id and job.status in {'queued', 'running'}
+            for job in self._jobs.list()
+        ):
+            return jsonify({
+                'status': 'error', 'message': 'Nie można usuwać poziomów podczas generowania.'
+            }), 409
+        self._delete_map_levels(installed, levels)
+        return jsonify({'status': 'deleted', 'levels': levels})
+
+    def _map_level_rows(self, installed):
+        path = self._paths.map_path(installed.file_name)
+        with closing(sqlite3.connect(path, timeout=30)) as connection:
+            metadata = dict(connection.execute('SELECT name, value FROM metadata'))
+            counts = dict(connection.execute('''
+                SELECT zoom_level, COUNT(*) FROM tiles
+                WHERE zoom_level BETWEEN 10 AND 19 GROUP BY zoom_level
+            '''))
+        try:
+            complete = set(json.loads(metadata.get('travelmanager_complete_zooms', '[]')))
+        except (TypeError, ValueError):
+            complete = set()
+        if not complete:
+            try:
+                complete = set(range(int(metadata['minzoom']), int(metadata['maxzoom']) + 1))
+            except (KeyError, TypeError, ValueError):
+                complete = set()
+        return [{
+            'zoom': zoom,
+            'status': 'complete' if zoom in complete else ('partial' if counts.get(zoom, 0) else 'missing'),
+            'tile_count': int(counts.get(zoom, 0)),
+            'percent': 100 if zoom in complete else None,
+            'removable': zoom != 10,
+        } for zoom in range(10, 20)]
+
+    def _delete_map_levels(self, installed, levels):
+        path = self._paths.map_path(installed.file_name)
+        with closing(sqlite3.connect(path, timeout=30)) as connection:
+            connection.execute('PRAGMA busy_timeout=30000')
+            placeholders = ','.join('?' for _ in levels)
+            connection.execute(
+                f'DELETE FROM tiles WHERE zoom_level IN ({placeholders})', levels
+            )
+            metadata = dict(connection.execute('SELECT name, value FROM metadata'))
+            try:
+                complete = set(json.loads(metadata.get('travelmanager_complete_zooms', '[]')))
+            except (TypeError, ValueError):
+                complete = set(range(installed.min_zoom, installed.max_zoom + 1))
+            complete.difference_update(levels)
+            maximum = connection.execute('SELECT MAX(zoom_level) FROM tiles').fetchone()[0]
+            maximum = int(maximum if maximum is not None else 10)
+            connection.execute(
+                "INSERT OR REPLACE INTO metadata(name,value) VALUES('travelmanager_complete_zooms',?)",
+                (json.dumps(sorted(complete)),),
+            )
+            connection.execute(
+                "INSERT OR REPLACE INTO metadata(name,value) VALUES('maxzoom',?)",
+                (str(maximum),),
+            )
+            connection.commit()
+        installed.max_zoom = maximum
+        installed.size = self._installed_size(installed)
+        self._paths.maps.upsert(installed)
 
     def delete_map(self, map_id: str):
         identifier, error = self._validated_map_id(map_id)
@@ -208,7 +334,7 @@ class OfflineMapController(BaseController):
         try:
             job = self._jobs.create(
                 str(payload.get('region_id') or ''),
-                10,
+                payload.get('max_zoom', 10),
             )
         except (TypeError, ValueError) as error:
             return jsonify({'status': 'error', 'message': str(error)}), 400
@@ -219,9 +345,46 @@ class OfflineMapController(BaseController):
             payload = request.get_json(silent=True)
             if payload is not None and not isinstance(payload, dict):
                 raise ValueError('Nieprawidłowe dane zadania.')
-            job = self._jobs.create_update(map_id, 10)
+            job = self._jobs.create_update(
+                map_id, (payload or {}).get('max_zoom', 10)
+            )
         except (TypeError, ValueError) as error:
             return jsonify({'status': 'error', 'message': str(error)}), 400
+        return jsonify({'status': 'queued', 'job': job.to_dict()}), 202
+
+    def continue_generation(self, map_id: str):
+        installed = self._find_map(map_id)
+        if installed is None:
+            return jsonify({'status': 'error', 'message': 'Nie znaleziono mapy offline.'}), 404
+        targets = [
+            job.max_zoom for job in self._jobs.list()
+            if job.map_id == installed.id and job.max_zoom > installed.max_zoom
+        ]
+        if not targets:
+            return jsonify({
+                'status': 'error',
+                'message': 'Ta mapa nie ma pominiętych poziomów do kontynuowania.',
+            }), 409
+        try:
+            job = self._jobs.create_generation(installed.id, min(19, max(targets)))
+        except ValueError as error:
+            return jsonify({'status': 'error', 'message': str(error)}), 409
+        return jsonify({'status': 'queued', 'job': job.to_dict()}), 202
+
+    def generate_next_level(self, map_id: str):
+        installed = self._find_map(map_id)
+        if installed is None:
+            return jsonify({'status': 'error', 'message': 'Nie znaleziono mapy offline.'}), 404
+        target = installed.max_zoom + 1
+        if target > self._dynamic_max_zoom():
+            return jsonify({
+                'status': 'error',
+                'message': 'Mapa ma już przygotowany maksymalny dozwolony poziom.',
+            }), 409
+        try:
+            job = self._jobs.create_generation(installed.id, target)
+        except ValueError as error:
+            return jsonify({'status': 'error', 'message': str(error)}), 409
         return jsonify({'status': 'queued', 'job': job.to_dict()}), 202
 
     def map_preflight(self, region_id: str):
@@ -280,6 +443,17 @@ class OfflineMapController(BaseController):
                 'status': 'error', 'message': 'Nie znaleziono zadania mapy.'
             }), 404
         return jsonify({'status': 'cancelling', 'job': job.to_dict()}), 202
+
+    def skip_map_job_building(self, job_id: str):
+        try:
+            job = self._jobs.skip_detailed_building(job_id)
+        except ValueError as error:
+            return jsonify({'status': 'error', 'message': str(error)}), 409
+        if job is None:
+            return jsonify({
+                'status': 'error', 'message': 'Nie znaleziono zadania mapy.'
+            }), 404
+        return jsonify({'status': 'skipping', 'job': job.to_dict()}), 202
 
     def resume_map_job(self, job_id: str):
         try:

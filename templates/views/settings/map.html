@@ -12,8 +12,15 @@
         </div>
         <div class="settings-view__section-content" data-settings-section-content>
             <dl class="settings-view__values" data-settings-group="offline-maps"></dl>
+            <div class="settings-view__map-separator"></div>
+            <div class="settings-view__memory-list settings-view__memory-list--offline-maps" data-settings-map-offline-maps></div>
+            <div class="settings-view__map-separator"></div>
+            <dl class="settings-view__values" data-settings-group="offline-map-zoom"></dl>
             <p class="settings-view__offline-note">{{ t('SETTINGS_OFFLINE_MAPS.LIMITATIONS') }}</p>
-            <div class="settings-view__transfer"><button class="settings-view__action-button" type="button" data-offline-map-download><i data-lucide="download" aria-hidden="true"></i><span>{{ t('SETTINGS_OFFLINE_MAPS.DOWNLOAD') }}</span></button></div>
+            <div class="settings-view__transfer">
+                <button class="settings-view__action-button" type="button" data-offline-map-download><i data-lucide="download" aria-hidden="true"></i><span>{{ t('SETTINGS_OFFLINE_MAPS.DOWNLOAD') }}</span></button>
+                <button class="settings-view__action-button" type="button" data-offline-map-import><i data-lucide="upload" aria-hidden="true"></i><span>{{ t('SETTINGS_OFFLINE_MAPS.IMPORT') }}</span></button>
+            </div>
         </div>
     </section>
     <section class="settings-view__section" aria-labelledby="settings-view-application-layers-title" data-settings-section>

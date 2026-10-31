@@ -60,6 +60,31 @@
     font-size: .88rem;
 }
 
+.download-status__steps {
+    display: grid;
+    width: 100%;
+    gap: 7px;
+    margin: 4px 0 0;
+    padding: 14px 0 0;
+    border-top: 1px solid var(--border-color);
+    list-style: none;
+    text-align: left;
+}
+
+.download-status__step {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: start;
+    color: var(--text-secondary);
+    font-size: .86rem;
+    line-height: 1.35;
+}
+
+.download-status__step-marker { font-weight: 900; text-align: center; }
+.download-status__step--complete { color: var(--success-color, #38a169); }
+.download-status__step--active { color: var(--text-primary); font-weight: 800; }
+.download-status__step--pending .download-status__step-marker { visibility: hidden; }
+
 .download-status__footer {
     display: flex;
     gap: 10px;

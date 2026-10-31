@@ -25,6 +25,7 @@ from services.offline_maps.package_reuse import OfflineMapPackageReuse
 from services.offline_maps.resource_guard import (
     OfflineMapResourceError, OfflineMapResourceGuard,
 )
+from services.offline_maps.transfer import OfflineMapTransfer
 
 __all__ = [
     'OfflineMapCatalogError', 'OfflineMapCatalogService',
@@ -40,4 +41,5 @@ __all__ = [
     'OfflineMapOnDemandTiles',
     'OfflineMapPackageReuse',
     'OfflineMapResourceError', 'OfflineMapResourceGuard',
+    'OfflineMapTransfer',
 ]

@@ -359,6 +359,9 @@
     min-width:820px;
 }
 .settings-view__memory-actions{display:flex;justify-content:flex-end;gap:7px}
+.settings-view__memory-list--delete-only .settings-view__memory-header,
+.settings-view__memory-list--delete-only .settings-view__memory-row{grid-template-columns:minmax(180px,1fr) minmax(190px,.9fr) minmax(130px,.55fr) minmax(90px,.35fr) 42px}
+.settings-view__map-separator{height:1px;margin:12px 0;background:var(--shadow-color)}
 
 .settings-view__value,
 .information-view__row {

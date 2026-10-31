@@ -16,6 +16,7 @@ from services.offline_maps.errors import (
 )
 from services.offline_maps.resource_guard import OfflineMapResourceGuard
 from services.offline_maps.package_reuse import OfflineMapPackageReuse
+from services.offline_maps.geometry import matching_geometry
 from storage.offline_maps import (
     OfflineMapFeatureStorage,
     OfflineMapPaths,
@@ -58,12 +59,30 @@ class OfflineMapTileGenerator:
                 features, tiles, job, cancelled, progress
             )
             reusable = self._reuse.reusable_maps(job)
+            complete_zooms: set[int] = set()
+            reused_layers: set[str] = set()
+            if job.is_update and not self._paths.source_path(job.id).is_file():
+                current = next(
+                    (item for item in self._paths.maps.load() if item.id == job.map_id),
+                    None,
+                )
+                if current is not None:
+                    try:
+                        _copied, own_layers, own_complete = tiles.import_all_tiles(
+                            self._paths.map_path(current.file_name), cancelled
+                        )
+                        reused_layers.update(own_layers)
+                        complete_zooms.update(own_complete)
+                    except InterruptedError as error:
+                        raise OfflineMapTileGenerationCancelled(
+                            'Ponowne użycie kafelków zostało anulowane.'
+                        ) from error
             coverages = {
                 region.id: region.coverage
                 for region in self._paths.catalog.load()[1]
             }
             try:
-                _copied, reused_layers = tiles.import_complete_tiles(
+                _copied, child_layers = tiles.import_complete_tiles(
                     [
                         (
                             self._paths.map_path(item.file_name),
@@ -75,6 +94,7 @@ class OfflineMapTileGenerator:
                     job.max_zoom,
                     cancelled,
                 )
+                reused_layers.update(child_layers)
             except InterruptedError as error:
                 raise OfflineMapTileGenerationCancelled(
                     'Ponowne użycie kafelków zostało anulowane.'
@@ -96,6 +116,11 @@ class OfflineMapTileGenerator:
             tiles.set_metadata('tile_count', generated_count)
             tiles.set_metadata('format', 'pbf')
             tiles.set_metadata('layers', sorted(layer_ids))
+            requested_zooms = set(job.zoom_levels or range(min_zoom, job.max_zoom + 1))
+            complete_zooms.update(
+                zoom for zoom in requested_zooms if min_zoom <= zoom <= max_zoom
+            )
+            tiles.set_metadata('complete_zooms', sorted(complete_zooms))
             tiles.finalize()
             tiles.commit()
             self._report(job, tile_count, tile_count, progress)
@@ -115,6 +140,7 @@ class OfflineMapTileGenerator:
 
     def _assign_tiles(self, features, tiles, job, cancelled, progress):
         import mercantile
+        requested_zooms = tuple(job.zoom_levels or range(0, job.max_zoom + 1))
 
         with closing(sqlite3.connect(features.path)) as connection:
             bounds_row = connection.execute('''
@@ -167,10 +193,11 @@ class OfflineMapTileGenerator:
                     )
                     if not large_water:
                         min_zoom = max(min_zoom, self.DETAIL_MIN_ZOOM.get(layer, 0))
+                    feature_zooms = tuple(
+                        zoom for zoom in requested_zooms if zoom >= min_zoom
+                    )
                     for tile in mercantile.tiles(
-                        west, south, east, north,
-                        range(min_zoom, job.max_zoom + 1),
-                        truncate=True,
+                        west, south, east, north, feature_zooms, truncate=True,
                     ):
                         self._check_cancel(cancelled)
                         assignments.append((tile.z, tile.x, tile.y, feature_id))
@@ -196,8 +223,20 @@ class OfflineMapTileGenerator:
 
         completed = 0
         generated_layers: set[str] = set()
+        reported_zoom = None
         for zoom, column, row in tiles.tile_coordinates():
             self._check_cancel(cancelled)
+            persisted = self._paths.jobs.find(job.id)
+            if (
+                zoom > 10
+                and persisted is not None
+                and persisted.skip_detailed_requested
+            ):
+                tiles.discard_above_zoom(10)
+                job.skip_detailed_requested = True
+                job.current_zoom = 10
+                job.current_layer = ''
+                return generated_layers
             if completed % 1000 == 0:
                 self._resources.ensure(
                     self._resources.MINIMUM_FREE_BYTES,
@@ -210,15 +249,21 @@ class OfflineMapTileGenerator:
                 tile_bounds.west, tile_bounds.south,
                 tile_bounds.east, tile_bounds.north,
             )
-            for osm_id, layer_id, geometry_wkb, properties, _priority in (
-                tiles.tile_features(zoom, column, row)
-            ):
+            feature_rows = tiles.tile_features(zoom, column, row)
+            if zoom != reported_zoom:
+                reported_zoom = zoom
+                self._report(job, completed, total, progress, zoom=zoom, layer='')
+            for osm_id, layer_id, geometry_type, geometry_wkb, properties, _priority in feature_rows:
                 self._check_cancel(cancelled)
                 definition = OfflineMapLayers.BY_ID.get(layer_id)
                 if definition is None:
                     continue
-                geometry = from_wkb(geometry_wkb)
-                geometry = geometry.intersection(clipping_box)
+                geometry = matching_geometry(
+                    from_wkb(geometry_wkb).intersection(clipping_box),
+                    geometry_type,
+                )
+                if geometry is None:
+                    continue
                 geometry = transform(geometry, self._web_mercator_transform)
                 tolerance = definition.simplification_for_zoom(zoom)
                 if tolerance:
@@ -226,7 +271,8 @@ class OfflineMapTileGenerator:
                         tolerance,
                         preserve_topology=True,
                     )
-                if geometry.is_empty:
+                geometry = matching_geometry(geometry, geometry_type)
+                if geometry is None:
                     continue
                 layers[layer_id].append({
                     'id': int(osm_id),
@@ -252,7 +298,8 @@ class OfflineMapTileGenerator:
             completed += 1
             if completed % self.COMMIT_INTERVAL == 0:
                 tiles.commit()
-            self._report(job, completed, total, progress)
+            if completed % self.COMMIT_INTERVAL == 0 or completed == total:
+                self._report(job, completed, total, progress, zoom=zoom, layer='')
         tiles.commit()
         return generated_layers
 
@@ -277,7 +324,12 @@ class OfflineMapTileGenerator:
                 'Generowanie kafelków zostało anulowane.'
             )
 
-    def _report(self, job, current, total, callback, phase=None):
+    def _report(
+        self, job, current, total, callback, phase=None, zoom=None, layer=None
+    ):
+        persisted = self._paths.jobs.find(job.id)
+        if persisted is not None and persisted.skip_detailed_requested:
+            job.skip_detailed_requested = True
         work = self._paths.job_work_path(job.id, create=False)
         artifacts_size = sum(
             path.stat().st_size for path in work.iterdir() if path.is_file()
@@ -287,6 +339,10 @@ class OfflineMapTileGenerator:
         job.stage = 'building_tiles'
         if phase is not None:
             job.phase = phase
+        if zoom is not None:
+            job.current_zoom = zoom
+        if layer is not None:
+            job.current_layer = layer
         job.current = current
         job.total = total
         job.updated_at = datetime.now(timezone.utc).isoformat()

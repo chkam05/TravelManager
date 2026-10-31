@@ -20,7 +20,8 @@ test('map settings own the maximum on-demand offline zoom', () => {
     assert.match(settingsSource, /offline_map_max_dynamic_zoom/);
     assert.match(settingsSource, /\[14, 15, 16, 17, 18, 19\]/);
     assert.match(settingsSource, /SETTINGS_OFFLINE_MAPS\.MAX_DYNAMIC_ZOOM/);
-    assert.doesNotMatch(dialogSource, /data-offline-map-max-zoom|max_zoom/);
+    assert.match(dialogSource, /data-offline-map-max-zoom/);
+    assert.match(dialogSource, /max_zoom: Number\(maxZoomSelect\.value\)/);
 });
 
 test('offline source changes are applied to the live map', () => {
@@ -50,7 +51,8 @@ test('clicking download opens the region dialog even if settings initialization 
             (name) => [`[data-offline-map-${name}]`, node()]
         ),
         ['[data-offline-map-region-status]', node()],
-        ['[data-offline-map-region-submit]', node()]
+        ['[data-offline-map-region-submit]', node()],
+        ['[data-offline-map-max-zoom]', node()]
     ]);
     const dialog = {
         querySelector: (selector) => controls.get(selector),

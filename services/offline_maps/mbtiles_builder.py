@@ -155,6 +155,9 @@ class OfflineMapMbtilesBuilder:
                 'compression': 'gzip',
                 'generator': f'{APP_NAME} {APP_VERSION}',
                 'json': json.dumps({'vector_layers': vector_layers}),
+                'travelmanager_complete_zooms': json.dumps(
+                    metadata.get('complete_zooms') or list(range(minimum, maximum + 1))
+                ),
             }
             target.executemany(
                 'INSERT INTO metadata(name, value) VALUES (?, ?)', values.items()

@@ -29,6 +29,15 @@ test('progress can continue in background and be cancelled', () => {
     assert.match(source, /OFFLINE_MAP_PROGRESS\.CANCELLING/);
 });
 
+test('optional x11-x14 building can be skipped and reports only its zoom level', () => {
+    assert.match(template, /data-offline-map-progress-skip/);
+    assert.match(template, /data-offline-map-progress-detail/);
+    assert.match(source, /currentZoom >= 11 && currentZoom <= 14/);
+    assert.match(source, /\/skip-building`/);
+    assert.match(source, /CURRENT_TILE/);
+    assert.doesNotMatch(source, /layerNames/);
+});
+
 test('a failed map job can be resumed from the progress dialog', () => {
     assert.match(template, /data-offline-map-progress-retry/);
     assert.match(source, /retryButton\.hidden = !\['failed', 'cancelled'\]/);
@@ -56,11 +65,17 @@ test('a completed map hides older failed attempts for the same map', () => {
 
 test('unknown totals use a continuous full-width indicator and known totals show percentage', () => {
     assert.match(template, /data-offline-map-progress-indeterminate/);
-    assert.match(source, /bar\.hidden = !hasTotal/);
-    assert.match(source, /indeterminate\.hidden = hasTotal/);
+    assert.match(source, /bar\.hidden = !completed && !hasTotal/);
+    assert.match(source, /indeterminate\.hidden = terminal \|\| hasTotal/);
     assert.match(source, /ASSIGNING_TILES/);
     assert.match(source, /ENCODING_TILES/);
     assert.match(css, /offline-map-progress-travel/);
     assert.match(css, /translateX\(400%\)/);
     assert.match(css, /rotate\(360deg\)/);
+});
+
+test('completed map shows a full static bar and completion message', () => {
+    assert.match(source, /const completed = job\.status === 'completed'/);
+    assert.match(source, /bar\.max = 1;[\s\S]*bar\.value = 1/);
+    assert.match(source, /OPERATION_COMPLETED/);
 });

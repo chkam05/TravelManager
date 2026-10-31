@@ -6,14 +6,16 @@ document.addEventListener('travel-manager:views-ready', () => {
     const bar = dialog?.querySelector('[data-offline-map-progress-bar]');
     const indeterminate = dialog?.querySelector('[data-offline-map-progress-indeterminate]');
     const text = dialog?.querySelector('[data-offline-map-progress-text]');
+    const detail = dialog?.querySelector('[data-offline-map-progress-detail]');
     const steps = dialog?.querySelector('[data-offline-map-progress-steps]');
     const spinner = dialog?.querySelector('.offline-map-progress__spinner');
     const backgroundButton = dialog?.querySelector('[data-offline-map-progress-background]');
+    const skipButton = dialog?.querySelector('[data-offline-map-progress-skip]');
     const cancelButton = dialog?.querySelector('[data-offline-map-progress-cancel]');
     const retryButton = dialog?.querySelector('[data-offline-map-progress-retry]');
     const closeButton = dialog?.querySelector('[data-offline-map-progress-close]');
-    if (!layer || !dialog || !heading || !bar || !indeterminate || !text || !steps || !spinner
-        || !backgroundButton || !cancelButton || !retryButton || !closeButton) return;
+    if (!layer || !dialog || !heading || !bar || !indeterminate || !text || !detail || !steps || !spinner
+        || !backgroundButton || !skipButton || !cancelButton || !retryButton || !closeButton) return;
 
     const activeStatuses = new Set(['queued', 'running']);
     const stages = {
@@ -50,6 +52,8 @@ document.addEventListener('travel-manager:views-ready', () => {
     const render = () => {
         if (!job) return;
         const cancelling = activeStatuses.has(job.status) && job.cancel_requested === true;
+        const completed = job.status === 'completed';
+        const terminal = !activeStatuses.has(job.status);
         const stageKey = stages[job.stage] || 'PREPARING';
         const phaseKey = job.stage === 'building_tiles' && job.phase === 'assignment'
             ? 'ASSIGNING_TILES' : job.stage === 'building_tiles' && job.phase === 'encoding'
@@ -61,15 +65,20 @@ document.addEventListener('travel-manager:views-ready', () => {
         const current = byteStage ? Number(job.downloaded_bytes) : Number(job.current);
         const total = byteStage ? Number(job.total_bytes) : Number(job.total);
         const hasTotal = Number.isFinite(total) && total > 0;
-        bar.hidden = !hasTotal;
-        indeterminate.hidden = hasTotal;
-        if (hasTotal) {
+        bar.hidden = !completed && !hasTotal;
+        indeterminate.hidden = terminal || hasTotal;
+        if (completed) {
+            bar.max = 1;
+            bar.value = 1;
+        } else if (hasTotal) {
             bar.max = total;
             bar.value = Math.min(total, Math.max(0, current || 0));
         }
         const count = new Intl.NumberFormat(window.i18n.locale?.replace('_', '-') || undefined);
         const percent = hasTotal ? Math.min(100, Math.floor(100 * Math.max(0, current || 0) / total)) : 0;
-        text.textContent = cancelling
+        text.textContent = completed
+            ? t('OFFLINE_MAP_PROGRESS.OPERATION_COMPLETED')
+            : cancelling
             ? t('OFFLINE_MAP_PROGRESS.CANCELLING')
             : hasTotal
             ? (byteStage
@@ -79,12 +88,21 @@ document.addEventListener('travel-manager:views-ready', () => {
                 ? t('OFFLINE_MAP_PROGRESS.ANALYSED', {current: count.format(current)})
                 : t('OFFLINE_MAP_PROGRESS.WORKING'));
         const active = activeStatuses.has(job.status);
+        const currentZoom = Number(job.current_zoom) || 0;
+        const canSkip = active && job.stage === 'building_tiles'
+            && job.phase === 'encoding' && currentZoom >= 11 && currentZoom <= 14
+            && job.skip_detailed_requested !== true && job.is_update !== true;
+        detail.hidden = job.stage !== 'building_tiles' || !currentZoom;
+        detail.textContent = detail.hidden ? '' : t('OFFLINE_MAP_PROGRESS.CURRENT_TILE', {
+            zoom: currentZoom
+        });
         spinner.hidden = !active; backgroundButton.hidden = !active; cancelButton.hidden = !active;
+        skipButton.hidden = !canSkip;
+        skipButton.disabled = job.skip_detailed_requested === true;
         retryButton.hidden = !['failed', 'cancelled'].includes(job.status);
         closeButton.hidden = active; cancelButton.disabled = job.cancel_requested === true;
         if (!cancelling && job.error) text.textContent = job.error;
         const activeStep = pipeline.findIndex((item) => item.stages.includes(job.stage));
-        const completed = job.status === 'completed';
         steps.replaceChildren(...pipeline.map((item, index) => {
             const state = completed || index < activeStep
                 ? 'complete'
@@ -158,6 +176,23 @@ document.addEventListener('travel-manager:views-ready', () => {
             const response = await fetch(`/api/offline-maps/jobs/${encodeURIComponent(job.id)}/cancel`, {method: 'POST'});
             const data = await response.json();
             if (response.ok && data.job) job = data.job;
+        } finally { render(); }
+    });
+    skipButton.addEventListener('click', async () => {
+        if (!job) return;
+        skipButton.disabled = true;
+        try {
+            const response = await fetch(
+                `/api/offline-maps/jobs/${encodeURIComponent(job.id)}/skip-building`,
+                {method: 'POST', headers: {'Accept': 'application/json'}}
+            );
+            const data = await response.json();
+            if (!response.ok || !data.job) {
+                throw new Error(data.message || t('OFFLINE_MAP_PROGRESS.SKIP_FAILED'));
+            }
+            job = data.job;
+        } catch (error) {
+            text.textContent = error.message || t('OFFLINE_MAP_PROGRESS.SKIP_FAILED');
         } finally { render(); }
     });
     retryButton.addEventListener('click', async () => {

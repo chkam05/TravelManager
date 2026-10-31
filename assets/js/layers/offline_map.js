@@ -30,6 +30,10 @@
         const bounds = Array.isArray(metadata?.bounds)
             ? metadata.bounds.map(finiteNumber)
             : [];
+        const coverage = metadata?.coverage;
+        const coveredMapIds = Array.isArray(metadata?.covered_maps)
+            ? metadata.covered_maps.map((item) => String(item?.id || '')).filter(Boolean)
+            : [];
 
         if (!MAP_ID_PATTERN.test(id)) {
             throw new TypeError('Invalid offline map id.');
@@ -58,7 +62,12 @@
         ) {
             throw new TypeError('Invalid offline map bounds.');
         }
-        return { id, minZoom, maxZoom, displayMaxZoom, bounds };
+        return {
+            id, minZoom, maxZoom, displayMaxZoom, bounds,
+            coverage: coverage && ['Polygon', 'MultiPolygon'].includes(coverage.type)
+                && Array.isArray(coverage.coordinates) ? coverage : null,
+            coveredMapIds
+        };
     };
 
     const create = (metadata, options = {}) => {
@@ -238,6 +247,8 @@
             id: validated.id,
             name: String(metadata?.name || validated.id),
             bounds: [...validated.bounds],
+            coverage: validated.coverage,
+            coveredMapIds: [...validated.coveredMapIds],
             minZoom: validated.minZoom,
             nativeMaxZoom: validated.maxZoom,
             maxZoom: validated.displayMaxZoom

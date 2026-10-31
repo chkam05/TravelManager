@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sqlite3
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
@@ -233,6 +234,7 @@ class OfflineMapCatalogApiTests(unittest.TestCase):
         payload = response.get_json()
         self.assertEqual(payload['source'], 'cache')
         indexed = {row['id']: row for row in payload['regions']}
+        self.assertEqual(indexed['europe']['name'], 'Europa')
         self.assertEqual(indexed['europe/poland']['name'], 'Polska')
         self.assertEqual(indexed['europe/poland']['source_name'], 'Poland')
         self.assertEqual(
@@ -331,6 +333,45 @@ class OfflineMapCatalogApiTests(unittest.TestCase):
         response = self.app.test_client().delete('/api/offline-maps/poland')
         self.assertEqual(response.status_code, 409)
         self.assertEqual(len(controller._paths.maps.load()), 1)
+
+    def test_level_status_and_deletion_preserve_required_x10(self):
+        controller = self._controller()
+        installed = OfflineMap.from_dict({
+            'id': 'poland', 'region_id': 'poland', 'name': 'Polska',
+            'file_name': 'poland.mbtiles', 'size': 7,
+            'bounds': [14.0, 49.0, 24.2, 54.9], 'min_zoom': 3,
+            'max_zoom': 12, 'installed_at': NOW, 'source_updated_at': NOW,
+            'schema_version': 1,
+        })
+        controller._paths.maps.save([installed])
+        with sqlite3.connect(controller._paths.map_path(installed.file_name)) as connection:
+            connection.executescript('''
+                CREATE TABLE metadata(name TEXT PRIMARY KEY, value TEXT);
+                CREATE TABLE tiles(zoom_level INTEGER, tile_column INTEGER,
+                                   tile_row INTEGER, tile_data BLOB);
+                INSERT INTO metadata VALUES('minzoom','3');
+                INSERT INTO metadata VALUES('maxzoom','12');
+                INSERT INTO metadata VALUES('travelmanager_complete_zooms','[3,4,5,6,7,8,9,10,11]');
+                INSERT INTO tiles VALUES(10,0,0,X'00');
+                INSERT INTO tiles VALUES(11,0,0,X'00');
+                INSERT INTO tiles VALUES(12,0,0,X'00');
+            ''')
+        client = self.app.test_client()
+
+        rows = client.get('/api/offline-maps/poland/levels').get_json()['levels']
+        self.assertEqual(rows[0]['status'], 'complete')
+        self.assertEqual(rows[2]['status'], 'partial')
+        self.assertFalse(rows[0]['removable'])
+        self.assertEqual(
+            client.delete('/api/offline-maps/poland/levels', json={'levels': [10]}).status_code,
+            400,
+        )
+        response = client.delete('/api/offline-maps/poland/levels', json={'levels': [11, 12]})
+        self.assertEqual(response.status_code, 200)
+        with sqlite3.connect(controller._paths.map_path(installed.file_name)) as connection:
+            self.assertEqual(connection.execute(
+                'SELECT COUNT(*) FROM tiles WHERE zoom_level > 10'
+            ).fetchone()[0], 0)
 
 
 if __name__ == '__main__':

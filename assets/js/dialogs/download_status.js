@@ -4,6 +4,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     const heading = dialog?.querySelector('[data-download-status-heading]');
     const progressBar = dialog?.querySelector('[data-download-status-progress]');
     const text = dialog?.querySelector('[data-download-status-text]');
+    const steps = dialog?.querySelector('[data-download-status-steps]');
     const spinner = dialog?.querySelector('.download-status__spinner');
     const footer = dialog?.querySelector('[data-download-status-footer]');
     const closeButton = dialog?.querySelector('[data-download-status-close]');
@@ -16,13 +17,35 @@ document.addEventListener('travel-manager:views-ready', () => {
     let origin = '';
     let batch = null;
 
-    if (!layer || !dialog || !heading || !progressBar || !text || !footer || !closeButton || !backgroundButton || !cancelButton) return;
+    if (!layer || !dialog || !heading || !progressBar || !text || !steps || !footer || !closeButton || !backgroundButton || !cancelButton) return;
+    const pipeline = [
+        'STEP_DOWNLOADING', 'STEP_PROCESSING', 'STEP_FINALISING'
+    ];
+    const renderSteps = (phase = 'preparing', complete = false) => {
+        const activeIndex = phase === 'processing' ? 1
+            : phase === 'finalising' ? 2 : 0;
+        steps.replaceChildren(...pipeline.map((labelKey, index) => {
+            const state = complete || index < activeIndex
+                ? 'complete' : index === activeIndex ? 'active' : 'pending';
+            const row = document.createElement('li');
+            row.className = `download-status__step download-status__step--${state}`;
+            const marker = document.createElement('span');
+            marker.className = 'download-status__step-marker';
+            marker.setAttribute('aria-hidden', 'true');
+            marker.textContent = state === 'complete' ? '✔' : state === 'active' ? '▶' : '';
+            const label = document.createElement('span');
+            label.textContent = window.i18n.t(`DIALOG_DOWNLOAD_STATUS.${labelKey}`);
+            row.append(marker, label);
+            return row;
+        }));
+    };
     const stopPolling = () => { window.clearTimeout(timer); timer = null; };
     const poll = async () => {
         try {
             const response = await fetch(`/api/public-transport/${encodeURIComponent(provider)}/progress?t=${Date.now()}`);
             const data = await response.json();
             const multiple = Number(data.total) > 1;
+            renderSteps(data.phase || 'downloading', data.status === 'complete');
             progressBar.hidden = batch ? false : !multiple;
             if (!batch && multiple) {
                 progressBar.max = data.total;
@@ -89,6 +112,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         heading.textContent = window.i18n.t('DIALOG_DOWNLOAD_STATUS.DOWNLOADING_DATA');
         text.textContent = window.i18n.t('DIALOG_DOWNLOAD_STATUS.PREPARING_DATA');
         progressBar.hidden = true; footer.hidden = false; spinner.hidden = false;
+        renderSteps('preparing');
         backgroundButton.hidden = false; cancelButton.hidden = false; closeButton.hidden = true;
         openDialog();
     };
@@ -105,6 +129,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         footer.hidden = false;
         backgroundButton.hidden = false; cancelButton.hidden = false; closeButton.hidden = true;
         spinner.hidden = false;
+        renderSteps('preparing');
         openDialog();
     };
     const updateAll = (providerId, providerName, current) => {
@@ -125,6 +150,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     const finish = (error = '') => {
         running = false; active = false; stopPolling(); spinner.hidden = true; footer.hidden = !error;
         if (batch) progressBar.value = batch.total;
+        if (!error) renderSteps('finalising', true);
         if (error) {
             heading.textContent = batch
                 ? window.i18n.t('DIALOG_DOWNLOAD_STATUS.FINISHED_WITH_ERRORS')

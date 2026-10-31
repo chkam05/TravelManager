@@ -14,10 +14,12 @@ test('region dialog exposes hierarchical selectors and map metadata', () => {
     assert.match(source, /estimated_map_size/);
 });
 
-test('download always requests the complete provider package without a detail selector', () => {
-    assert.doesNotMatch(template, /data-offline-map-max-zoom/);
-    assert.doesNotMatch(source, /max_zoom/);
-    assert.match(source, /JSON\.stringify\(updatingMap \? \{\} : \{region_id: regionSelect\.value\}\)/);
+test('download selects a prebuilt zoom from x10 through x14', () => {
+    assert.match(template, /data-offline-map-max-zoom/);
+    for (const zoom of [10, 11, 12, 13, 14]) {
+        assert.match(template, new RegExp(`value="${zoom}"`));
+    }
+    assert.match(source, /max_zoom: Number\(maxZoomSelect\.value\)/);
 });
 
 test('preflight prevents duplicate and oversized downloads', () => {

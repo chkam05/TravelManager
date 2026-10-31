@@ -4,6 +4,7 @@ from collections import deque
 from datetime import datetime, timezone
 from hashlib import sha256
 from threading import Condition, Event, Thread
+import shutil
 from typing import Callable
 from uuid import uuid4
 
@@ -94,7 +95,7 @@ class OfflineMapJobManager:
     def create(self, selected_region_id: str, max_zoom: int = 10) -> OfflineMapJob:
         self.start()
         selected_region_id = region_id(selected_region_id)
-        if type(max_zoom) is not int or not 0 <= max_zoom <= 22:
+        if type(max_zoom) is not int or not 10 <= max_zoom <= 14:
             raise ValueError('Nieprawidłowy maksymalny poziom przybliżenia.')
         _, regions = self._paths.catalog.load()
         region = next((row for row in regions if row.id == selected_region_id), None)
@@ -124,7 +125,7 @@ class OfflineMapJobManager:
             raise ValueError('Mapa do aktualizacji nie jest zainstalowana.')
         if max_zoom is None:
             max_zoom = installed.max_zoom
-        if type(max_zoom) is not int or not 0 <= max_zoom <= 22:
+        if type(max_zoom) is not int or not 10 <= max_zoom <= 14:
             raise ValueError('Nieprawidłowy maksymalny poziom przybliżenia.')
         if any(
             item.map_id == selected_map_id and item.status in self.ACTIVE_STATUSES
@@ -136,6 +137,47 @@ class OfflineMapJobManager:
         if region is None or not region.pbf_url:
             raise ValueError('Region nie jest dostępny do aktualizacji.')
         return self._create_job(installed.region_id, selected_map_id, max_zoom, True)
+
+    def create_generation(
+        self, selected_map_id: str, max_zoom: int,
+        zoom_levels: list[int] | None = None,
+    ) -> OfflineMapJob:
+        """Rebuilds an installed package from its local feature index only."""
+        self.start()
+        selected_map_id = local_id(selected_map_id, 'map id')
+        if type(max_zoom) is not int or not 10 <= max_zoom <= 19:
+            raise ValueError('Nieprawidłowy poziom generowania kafelków.')
+        installed = next(
+            (item for item in self._paths.maps.load() if item.id == selected_map_id),
+            None,
+        )
+        if installed is None:
+            raise ValueError('Mapa nie jest zainstalowana.')
+        if any(
+            item.map_id == selected_map_id and item.status in self.ACTIVE_STATUSES
+            for item in self._paths.jobs.load()
+        ):
+            raise ValueError('Zadanie dla tej mapy już istnieje.')
+        source_features = self._paths.map_features_path(selected_map_id)
+        if not source_features.is_file():
+            raise ValueError('Mapa nie zawiera indeksu obiektów do generowania.')
+        now = self._now()
+        job = OfflineMapJob.from_dict({
+            'id': f'job-{uuid4().hex}', 'region_id': installed.region_id,
+            'map_id': installed.id, 'status': 'queued', 'stage': 'building_tiles',
+            'downloaded_bytes': 0, 'total_bytes': 0, 'current': 0, 'total': 0,
+            'max_zoom': max_zoom, 'cancel_requested': False,
+            'created_at': now, 'updated_at': now, 'error': '', 'is_update': True,
+            'zoom_levels': zoom_levels,
+        })
+        work = self._paths.job_work_path(job.id)
+        shutil.copy2(source_features, OfflineMapFeatureStorage(work).path)
+        self._paths.jobs.upsert(job)
+        with self._condition:
+            self._cancellations[job.id] = Event()
+            self._enqueue_locked(job.id)
+            self._condition.notify_all()
+        return job
 
     def _create_job(
         self, selected_region_id: str, map_id: str, max_zoom: int,
@@ -185,6 +227,24 @@ class OfflineMapJobManager:
             cancellation = self._cancellations.setdefault(identifier, Event())
             cancellation.set()
             self._condition.notify_all()
+        return job
+
+    def skip_detailed_building(self, job_id: str) -> OfflineMapJob | None:
+        """Requests stopping optional x11-x14 prebuilding without cancelling."""
+        identifier = local_id(job_id, 'job id')
+        job = self._paths.jobs.find(identifier)
+        if job is None:
+            return None
+        if not (
+            job.status in self.ACTIVE_STATUSES
+            and job.stage == 'building_tiles'
+            and job.phase == 'encoding'
+            and 11 <= job.current_zoom <= 14
+        ):
+            raise ValueError('Szczegółowe kafelki nie są teraz budowane.')
+        job.skip_detailed_requested = True
+        job.updated_at = self._now()
+        self._paths.jobs.upsert(job)
         return job
 
     def resume(self, job_id: str) -> OfflineMapJob | None:
@@ -275,6 +335,8 @@ class OfflineMapJobManager:
                     raise ValueError('Procesor zwrócił nieprawidłowy etap zadania.')
                 job.stage = next_stage
                 job.phase = ''
+                job.current_zoom = 0
+                job.current_layer = ''
                 job.current = 0
                 job.total = 0
                 job.status = 'running'
@@ -318,6 +380,8 @@ class OfflineMapJobManager:
         job.downloaded_bytes = 0
         job.total_bytes = 0
         job.phase = ''
+        job.current_zoom = 0
+        job.current_layer = ''
         job.error = cleanup_error
         job.updated_at = self._now()
         self._paths.jobs.upsert(job)

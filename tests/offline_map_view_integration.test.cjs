@@ -22,9 +22,16 @@ test('the layer panel renders dynamic offline base-layer radios', () => {
 });
 
 test('offline coverage is checked after layer and viewport changes', () => {
-    assert.match(mapSource, /packageBounds\.contains\(map\.getBounds\(\)\)/);
+    assert.match(mapSource, /coversViewport\([\s\S]*activeMaps, map\.getBounds\(\)/);
     assert.match(mapSource, /MAP_VIEW\.OFFLINE_OUTSIDE_COVERAGE/);
     assert.match(mapSource, /map\.on\('moveend zoomend',[\s\S]*updateOfflineCoverageWarning\(\)/);
+});
+
+test('adjacent offline packages are composed for the current viewport', () => {
+    assert.match(mapSource, /viewportOfflineMaps/);
+    assert.match(mapSource, /travelManagerOfflineMapSelection\?\.forViewport/);
+    assert.match(mapSource, /activeOfflineLayerIds = desired/);
+    assert.match(mapSource, /desired\.has\(layerId\)/);
 });
 
 test('only the registered standard tile layer is added to the map', () => {

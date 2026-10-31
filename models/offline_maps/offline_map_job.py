@@ -37,6 +37,10 @@ class OfflineMapJob(BaseDataModel):
     FIELD_ERROR: ClassVar[str] = 'error'
     FIELD_IS_UPDATE: ClassVar[str] = 'is_update'
     FIELD_PHASE: ClassVar[str] = 'phase'
+    FIELD_CURRENT_ZOOM: ClassVar[str] = 'current_zoom'
+    FIELD_CURRENT_LAYER: ClassVar[str] = 'current_layer'
+    FIELD_SKIP_DETAILED_REQUESTED: ClassVar[str] = 'skip_detailed_requested'
+    FIELD_ZOOM_LEVELS: ClassVar[str] = 'zoom_levels'
 
     id: str
     region_id: str
@@ -54,6 +58,10 @@ class OfflineMapJob(BaseDataModel):
     error: str
     is_update: bool
     phase: str = ''
+    current_zoom: int = 0
+    current_layer: str = ''
+    skip_detailed_requested: bool = False
+    zoom_levels: list[int] | None = None
 
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> OfflineMapJob:
@@ -69,9 +77,21 @@ class OfflineMapJob(BaseDataModel):
         is_update = d.get(cls.FIELD_IS_UPDATE, False)
         if type(is_update) is not bool:
             raise ValueError('Invalid update state.')
+        skip_detailed_requested = d.get(cls.FIELD_SKIP_DETAILED_REQUESTED, False)
+        if type(skip_detailed_requested) is not bool:
+            raise ValueError('Invalid skip-building state.')
         max_zoom = non_negative_integer(d.get(cls.FIELD_MAX_ZOOM, 10), 'maximum zoom')
         if max_zoom > 22:
             raise ValueError('Invalid maximum zoom.')
+        zoom_levels = d.get(cls.FIELD_ZOOM_LEVELS)
+        if zoom_levels is not None:
+            if (
+                not isinstance(zoom_levels, list)
+                or not zoom_levels
+                or any(type(value) is not int or not 10 <= value <= 19 for value in zoom_levels)
+            ):
+                raise ValueError('Invalid selected zoom levels.')
+            zoom_levels = sorted(set(zoom_levels))
         return cls(
             id=local_id(d.get(cls.FIELD_ID), 'job id'),
             region_id=region_id(d.get(cls.FIELD_REGION_ID)),
@@ -89,6 +109,14 @@ class OfflineMapJob(BaseDataModel):
             error=optional_text(d.get(cls.FIELD_ERROR), 'job error', 2000),
             is_update=is_update,
             phase=optional_text(d.get(cls.FIELD_PHASE), 'job phase', 32),
+            current_zoom=non_negative_integer(
+                d.get(cls.FIELD_CURRENT_ZOOM, 0), 'current zoom'
+            ),
+            current_layer=optional_text(
+                d.get(cls.FIELD_CURRENT_LAYER), 'current map layer', 500
+            ),
+            skip_detailed_requested=skip_detailed_requested,
+            zoom_levels=zoom_levels,
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -109,4 +137,10 @@ class OfflineMapJob(BaseDataModel):
             self.FIELD_ERROR: self.error,
             **({self.FIELD_IS_UPDATE: True} if self.is_update else {}),
             **({self.FIELD_PHASE: self.phase} if self.phase else {}),
+            **({self.FIELD_CURRENT_ZOOM: self.current_zoom} if self.current_zoom else {}),
+            **({self.FIELD_CURRENT_LAYER: self.current_layer} if self.current_layer else {}),
+            **({self.FIELD_SKIP_DETAILED_REQUESTED: True}
+               if self.skip_detailed_requested else {}),
+            **({self.FIELD_ZOOM_LEVELS: self.zoom_levels}
+               if self.zoom_levels else {}),
         }

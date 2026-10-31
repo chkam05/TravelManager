@@ -9,6 +9,7 @@ from threading import Lock
 
 from resources.offline_maps import OfflineMapLayers
 from services.offline_maps.errors import OfflineMapTileGenerationError
+from services.offline_maps.geometry import matching_geometry
 from storage.offline_maps import OfflineMapPaths
 
 
@@ -65,7 +66,7 @@ class OfflineMapOnDemandTiles:
                 f'file:{feature_path}?mode=ro', uri=True, timeout=30
             )) as connection:
                 rows = connection.execute('''
-                    SELECT f.osm_id, f.layer, f.geometry_wkb,
+                    SELECT f.osm_id, f.layer, f.geometry_type, f.geometry_wkb,
                            f.properties, f.priority
                     FROM feature_bounds AS b
                     JOIN features AS f ON f.id = b.id
@@ -77,18 +78,22 @@ class OfflineMapOnDemandTiles:
                     zoom, tile_bounds.east, tile_bounds.west,
                     tile_bounds.north, tile_bounds.south,
                 )).fetchall()
-            for osm_id, layer_id, geometry_wkb, properties, _priority in rows:
+            for osm_id, layer_id, geometry_type, geometry_wkb, properties, _priority in rows:
                 definition = OfflineMapLayers.BY_ID.get(layer_id)
                 if definition is None:
                     continue
-                geometry = from_wkb(geometry_wkb).intersection(clipping_box)
-                if geometry.is_empty:
+                geometry = matching_geometry(
+                    from_wkb(geometry_wkb).intersection(clipping_box),
+                    geometry_type,
+                )
+                if geometry is None:
                     continue
                 geometry = transform(geometry, self._web_mercator_transform)
                 tolerance = definition.simplification_for_zoom(zoom)
                 if tolerance:
                     geometry = geometry.simplify(tolerance, preserve_topology=True)
-                if geometry.is_empty:
+                geometry = matching_geometry(geometry, geometry_type)
+                if geometry is None:
                     continue
                 layers[layer_id].append({
                     'id': int(osm_id),

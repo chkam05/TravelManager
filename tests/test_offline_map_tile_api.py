@@ -9,7 +9,7 @@ import unittest
 
 from flask import Flask
 import mapbox_vector_tile
-from shapely import Point, to_wkb
+from shapely import GeometryCollection, LineString, Point, to_wkb
 
 from controllers.offline_map_controller import OfflineMapController
 from models.offline_maps import OfflineMap
@@ -83,7 +83,8 @@ class OfflineMapTileApiTests(unittest.TestCase):
             connection.executescript('''
                 CREATE TABLE features (
                     id INTEGER PRIMARY KEY, osm_id INTEGER, layer TEXT,
-                    geometry_wkb BLOB, properties TEXT, priority INTEGER,
+                    geometry_type TEXT, geometry_wkb BLOB,
+                    properties TEXT, priority INTEGER,
                     min_zoom INTEGER, min_lon REAL, max_lon REAL,
                     min_lat REAL, max_lat REAL
                 );
@@ -92,8 +93,8 @@ class OfflineMapTileApiTests(unittest.TestCase):
                 );
             ''')
             connection.execute(
-                'INSERT INTO features VALUES (1, 7, ?, ?, ?, 1, 2, 0, 0, 0, 0)',
-                ('places', to_wkb(Point(1, -1)), '{"name":"Centrum"}'),
+                'INSERT INTO features VALUES (1, 7, ?, ?, ?, ?, 1, 2, 0, 0, 0, 0)',
+                ('places', 'point', to_wkb(Point(1, -1)), '{"name":"Centrum"}'),
             )
             connection.execute('INSERT INTO feature_bounds VALUES (1, 1, 1, -1, -1)')
             connection.commit()
@@ -142,6 +143,35 @@ class OfflineMapTileApiTests(unittest.TestCase):
                 'SELECT COUNT(*) FROM tiles WHERE zoom_level = 3'
             ).fetchone()[0]
         self.assertEqual(count, 1)
+
+    def test_on_demand_encoder_extracts_line_from_geometry_collection(self):
+        geometry = GeometryCollection([
+            LineString([(1, -1), (2, -2)]), Point(1.5, -1.5),
+        ])
+        with closing(sqlite3.connect(
+            self.paths.map_features_path('fixture-map')
+        )) as connection:
+            connection.execute('''
+                INSERT INTO features VALUES (
+                    2, 8, 'roads', 'line', ?, '{"name":"Testowa"}',
+                    1, 2, 1, 2, -2, -1
+                )
+            ''', (to_wkb(geometry),))
+            connection.execute(
+                'INSERT INTO feature_bounds VALUES (2, 1, 2, -2, -1)'
+            )
+            connection.commit()
+
+        response = self.client.get(
+            '/api/offline-maps/fixture-map/tiles/3/4/4.pbf'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        decoded = mapbox_vector_tile.decode(response.data)
+        self.assertIn('roads', decoded)
+        self.assertEqual(
+            decoded['roads']['features'][0]['properties']['name'], 'Testowa'
+        )
 
     def test_corrupted_tile_is_not_sent_to_the_renderer(self):
         path = self.paths.map_path('fixture.mbtiles')

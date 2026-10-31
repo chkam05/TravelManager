@@ -11,5 +11,5 @@
    - Długość trasy (km)
 6. [ ] Widok mobilny
    - Jeżeli się nie da dostosować CSS, to widok może być zduplikowany jako `{view_name}.mobile.html/.css/.js`
-7. [ ] OFFLINE
+7. [X] OFFLINE
 8. [X] Widok techniczny GTFS (ile jest pobranych, ile zajmują, możliwość ich usuwania)

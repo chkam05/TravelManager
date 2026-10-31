@@ -126,6 +126,51 @@ class OfflineMapTileGeneratorTests(unittest.TestCase):
             )
         self.assertFalse(OfflineMapTileStorage(self.work).path.exists())
 
+    def test_skipping_optional_levels_keeps_complete_tiles_through_x10(self):
+        requested = False
+
+        def progress(reported_job, _current, _total):
+            nonlocal requested
+            if reported_job.current_zoom >= 11 and not requested:
+                persisted = self.paths.jobs.find(reported_job.id)
+                persisted.skip_detailed_requested = True
+                self.paths.jobs.upsert(persisted)
+                requested = True
+
+        OfflineMapTileGenerator(self.paths).process(
+            self.current_job, lambda: False, progress
+        )
+
+        with closing(sqlite3.connect(OfflineMapTileStorage(self.work).path)) as connection:
+            zooms = [row[0] for row in connection.execute(
+                'SELECT DISTINCT zoom_level FROM generated_tiles ORDER BY zoom_level'
+            )]
+            metadata_max = json.loads(connection.execute(
+                "SELECT value FROM metadata WHERE key = 'max_zoom'"
+            ).fetchone()[0])
+        self.assertTrue(requested)
+        self.assertTrue(zooms)
+        self.assertLessEqual(max(zooms), 10)
+        self.assertEqual(metadata_max, 10)
+
+    def test_selected_generation_builds_only_requested_zoom_levels(self):
+        self.current_job.zoom_levels = [11, 13]
+        self.current_job.max_zoom = 13
+
+        OfflineMapTileGenerator(self.paths).process(
+            self.current_job, lambda: False
+        )
+
+        with closing(sqlite3.connect(OfflineMapTileStorage(self.work).path)) as connection:
+            zooms = {row[0] for row in connection.execute(
+                'SELECT DISTINCT zoom_level FROM generated_tiles'
+            )}
+            complete = json.loads(connection.execute(
+                "SELECT value FROM metadata WHERE key = 'complete_zooms'"
+            ).fetchone()[0])
+        self.assertEqual(zooms, {11, 13})
+        self.assertEqual(complete, [11, 13])
+
     def test_dense_detail_is_not_encoded_at_country_scale(self):
         self.current_job.max_zoom = 8
         with closing(sqlite3.connect(OfflineMapFeatureStorage(self.work).path)) as connection:

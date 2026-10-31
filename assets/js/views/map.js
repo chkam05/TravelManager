@@ -223,6 +223,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     let visibleCustomLayerIds = null;
     let editingCustomLayerId = null;
     let routeGeometryLayer = null;
+    let activeOfflineLayerIds = new Set();
 
     const renderCustomLayers = window.travelManagerLayerRenderer.createCollection(
         customLayersLayer,
@@ -265,6 +266,19 @@ document.addEventListener('travel-manager:views-ready', () => {
         };
     };
 
+    const offlineCandidates = () => Object.entries(baseLayers)
+        .filter(([, entry]) => entry.offline)
+        .map(([id, entry]) => ({
+            id,
+            metadata: entry.layer.travelManagerOfflineMap
+        }));
+
+    const viewportOfflineMaps = () => (
+        window.travelManagerOfflineMapSelection?.forViewport(
+            offlineCandidates(), map.getBounds()
+        ) || []
+    );
+
     const setBaseLayer = (id, options = {}) => {
         const nextLayer = baseLayers[id] ? id : 'standard';
 
@@ -273,19 +287,51 @@ document.addEventListener('travel-manager:views-ready', () => {
             return;
         }
 
-        if (activeBaseLayer && map.hasLayer(baseLayers[activeBaseLayer].layer)) {
-            map.removeLayer(baseLayers[activeBaseLayer].layer);
+        let activated = [];
+        if (baseLayers[nextLayer].offline) {
+            activated = options.automatic ? viewportOfflineMaps() : [{
+                id: nextLayer,
+                metadata: baseLayers[nextLayer].layer.travelManagerOfflineMap
+            }];
+            if (!activated.length) {
+                activated = [{
+                    id: nextLayer,
+                    metadata: baseLayers[nextLayer].layer.travelManagerOfflineMap
+                }];
+            }
+            const desired = new Set(activated.map((item) => item.id));
+            Object.entries(baseLayers).forEach(([layerId, entry]) => {
+                if (!entry.offline) return;
+                if (desired.has(layerId)) {
+                    if (!map.hasLayer(entry.layer)) entry.layer.addTo(map);
+                } else if (map.hasLayer(entry.layer)) {
+                    map.removeLayer(entry.layer);
+                }
+            });
+            if (activeBaseLayer && !baseLayers[activeBaseLayer]?.offline
+                && map.hasLayer(baseLayers[activeBaseLayer].layer)) {
+                map.removeLayer(baseLayers[activeBaseLayer].layer);
+            }
+            activeOfflineLayerIds = desired;
+            activeBaseLayer = desired.has(nextLayer) ? nextLayer : activated[0].id;
+            map.setMaxZoom(Math.min(...activated.map((item) => (
+                baseLayers[item.id].layer.options.maxZoom || 19
+            ))));
+        } else {
+            Object.entries(baseLayers).forEach(([, entry]) => {
+                if (entry.offline && map.hasLayer(entry.layer)) map.removeLayer(entry.layer);
+            });
+            activeOfflineLayerIds.clear();
+            if (activeBaseLayer && map.hasLayer(baseLayers[activeBaseLayer].layer)) {
+                map.removeLayer(baseLayers[activeBaseLayer].layer);
+            }
+            map.setMaxZoom(baseLayers[nextLayer].layer.options.maxZoom || 19);
+            activeBaseLayer = nextLayer;
+            baseLayers[activeBaseLayer].layer.addTo(map);
         }
-
-        // VectorGrid does not implement raster tile overzoom. Above the
-        // package's native zoom Leaflet scales its canvas, blurring roads and
-        // magnifying point symbols. Keep the viewport within actual coverage.
-        map.setMaxZoom(baseLayers[nextLayer].layer.options.maxZoom || 19);
-        activeBaseLayer = nextLayer;
         if (!baseLayers[nextLayer].offline && !options.automatic) {
             lastOnlineBaseLayer = nextLayer;
         }
-        baseLayers[activeBaseLayer].layer.addTo(map);
         updateOfflineCoverageWarning();
 
         document.dispatchEvent(new CustomEvent('travel-manager:base-layer-changed', {
@@ -300,10 +346,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         || (offlineMapMode === 'offline_when_disconnected' && navigator.onLine === false);
 
     const containingOfflineMap = () => {
-        const candidates = Object.entries(baseLayers)
-            .filter(([, entry]) => entry.offline)
-            .map(([id, entry]) => ({ id, metadata: entry.layer.travelManagerOfflineMap }));
-        return window.travelManagerOfflineMapSelection?.smallestContaining(candidates, map.getCenter());
+        return window.travelManagerOfflineMapSelection?.smallestContaining(
+            offlineCandidates(), map.getCenter()
+        );
     };
 
     const selectAutomaticBaseLayer = () => {
@@ -314,10 +359,7 @@ document.addEventListener('travel-manager:views-ready', () => {
             updateOfflineCoverageWarning();
             return;
         }
-        const center = map.getCenter();
-        const activeMetadata = baseLayers[activeBaseLayer]?.layer?.travelManagerOfflineMap;
-        if (window.travelManagerOfflineMapSelection?.contains(activeMetadata, center)) return;
-        const selected = containingOfflineMap();
+        const selected = viewportOfflineMaps()[0] || containingOfflineMap();
         if (selected) {
             setBaseLayer(selected.id, { automatic: true });
         } else if (!offlineTestMode && baseLayers[activeBaseLayer]?.offline) {
@@ -327,19 +369,24 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
 
     function updateOfflineCoverageWarning() {
-        const entry = baseLayers[activeBaseLayer];
-        const metadata = entry?.layer?.travelManagerOfflineMap;
-        if (!metadata || !Array.isArray(metadata.bounds)) {
+        const activeMaps = [...activeOfflineLayerIds]
+            .map((id) => ({
+                id,
+                metadata: baseLayers[id]?.layer?.travelManagerOfflineMap
+            }))
+            .filter((item) => Array.isArray(item.metadata?.bounds));
+        if (!activeMaps.length) {
             coverageWarning.textContent = shouldUseOfflineMap()
                 ? (offlineMapLoadError || t('MAP_VIEW.OFFLINE_NO_COVERAGE')) : '';
             coverageWarning.hidden = !coverageWarning.textContent;
             return;
         }
-        const [west, south, east, north] = metadata.bounds;
-        const packageBounds = L.latLngBounds([[south, west], [north, east]]);
-        const outside = !packageBounds.contains(map.getBounds());
+        const outside = !window.travelManagerOfflineMapSelection?.coversViewport(
+            activeMaps, map.getBounds()
+        );
+        const names = activeMaps.map((item) => item.metadata.name).join(', ');
         coverageWarning.textContent = outside
-            ? t('MAP_VIEW.OFFLINE_OUTSIDE_COVERAGE', { name: metadata.name })
+            ? t('MAP_VIEW.OFFLINE_OUTSIDE_COVERAGE', { name: names })
             : '';
         coverageWarning.hidden = !outside;
     }
@@ -361,6 +408,7 @@ document.addEventListener('travel-manager:views-ready', () => {
                 if (map.hasLayer(baseLayers[id].layer)) map.removeLayer(baseLayers[id].layer);
                 delete baseLayers[id];
             });
+            activeOfflineLayerIds.clear();
             const collator = new Intl.Collator(
                 window.TRAVEL_MANAGER_I18N?.locale?.replace('_', '-') || undefined, {
                 sensitivity: 'base', numeric: true
@@ -386,7 +434,10 @@ document.addEventListener('travel-manager:views-ready', () => {
                 detail: { layers }
             }));
             if (offlineTestButton) offlineTestButton.disabled = layers.length === 0;
-            if (baseLayers[previousActiveLayer]) setBaseLayer(previousActiveLayer);
+            if (baseLayers[previousActiveLayer]) setBaseLayer(
+                previousActiveLayer,
+                {automatic: Boolean(baseLayers[previousActiveLayer].offline)}
+            );
             return layers;
         } catch (error) {
             window.console?.error('Offline map list could not be loaded:', error);

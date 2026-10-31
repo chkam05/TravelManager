@@ -162,13 +162,50 @@ class OfflineMapJobManagerTests(unittest.TestCase):
         manager = self.manager(CompletingDownloader(self.paths, delay=1))
         manager.start = lambda: None
 
-        current = manager.create_update('poland-map', max_zoom=19)
+        current = manager.create_update('poland-map', max_zoom=14)
 
-        self.assertEqual(current.max_zoom, 19)
+        self.assertEqual(current.max_zoom, 14)
         self.assertTrue(current.is_update)
         self.assertEqual(self.paths.maps.load()[0].max_zoom, 12)
         with self.assertRaisesRegex(ValueError, 'przybliżenia'):
-            manager.create_update('poland-map', max_zoom=23)
+            manager.create_update('poland-map', max_zoom=15)
+
+    def test_detailed_tile_building_can_only_be_skipped_while_encoding(self):
+        manager = self.manager(CompletingDownloader(self.paths, delay=1))
+        manager.start = lambda: None
+        current = manager.create('poland', max_zoom=14)
+        with self.assertRaisesRegex(ValueError, 'nie są teraz budowane'):
+            manager.skip_detailed_building(current.id)
+
+        current.status = 'running'
+        current.stage = 'building_tiles'
+        current.phase = 'encoding'
+        current.current_zoom = 11
+        self.paths.jobs.upsert(current)
+
+        skipped = manager.skip_detailed_building(current.id)
+        self.assertTrue(skipped.skip_detailed_requested)
+        self.assertTrue(manager.find(current.id).skip_detailed_requested)
+
+    def test_local_generation_starts_from_installed_feature_index(self):
+        installed = OfflineMap.from_dict({
+            'id': 'poland-map', 'region_id': 'poland', 'name': 'Poland',
+            'file_name': 'poland-map.mbtiles', 'size': 10,
+            'bounds': [14.0, 49.0, 24.0, 55.0], 'min_zoom': 3,
+            'max_zoom': 10, 'installed_at': NOW, 'source_updated_at': NOW,
+            'schema_version': 1,
+        })
+        self.paths.maps.save([installed])
+        self.paths.map_features_path(installed.id).write_bytes(b'local-features')
+        manager = self.manager(CompletingDownloader(self.paths, delay=1))
+        manager.start = lambda: None
+
+        current = manager.create_generation(installed.id, 11)
+
+        self.assertEqual((current.stage, current.max_zoom), ('building_tiles', 11))
+        self.assertTrue(current.is_update)
+        copied = self.paths.job_work_path(current.id) / 'features.sqlite3'
+        self.assertEqual(copied.read_bytes(), b'local-features')
 
     def test_cancel_is_persisted_even_before_worker_observes_it(self):
         downloader = CompletingDownloader(self.paths, delay=0.1)

@@ -60,7 +60,14 @@ test('download UI exposes background and cancellation actions', () => {
     const view = source('assets/js/views/public_transport.js');
     assert.match(dialog, /data-download-status-background/);
     assert.match(dialog, /data-download-status-cancel/);
+    assert.match(dialog, /data-download-status-steps/);
     assert.match(dialogScript, /\/cancel/);
+    assert.match(dialogScript, /STEP_DOWNLOADING/);
+    assert.match(dialogScript, /STEP_PROCESSING/);
+    assert.match(dialogScript, /STEP_FINALISING/);
+    assert.match(dialogScript, /data\.phase \|\| 'downloading'/);
+    assert.match(dialogScript, /'✔'/);
+    assert.match(dialogScript, /'▶'/);
     assert.match(view, /data-public-transport-download-background/);
     assert.match(view, /data-public-transport-download-cancel/);
     assert.match(view, /data-public-transport-download-actions hidden/);

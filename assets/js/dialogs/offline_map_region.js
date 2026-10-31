@@ -5,11 +5,12 @@ document.addEventListener('travel-manager:views-ready', () => {
     const continentSelect = dialog?.querySelector('[data-offline-map-continent]');
     const countrySelect = dialog?.querySelector('[data-offline-map-country]');
     const regionSelect = dialog?.querySelector('[data-offline-map-region]');
+    const maxZoomSelect = dialog?.querySelector('[data-offline-map-max-zoom]');
     const summary = dialog?.querySelector('[data-offline-map-summary]');
     const status = dialog?.querySelector('[data-offline-map-region-status]');
     const submit = dialog?.querySelector('[data-offline-map-region-submit]');
     const closeButtons = dialog?.querySelectorAll('[data-offline-map-region-close]');
-    if (!layer || !dialog || !continentSelect || !countrySelect || !regionSelect
+    if (!layer || !dialog || !continentSelect || !countrySelect || !regionSelect || !maxZoomSelect
         || !summary || !status || !submit || !closeButtons?.length) return;
 
     let regions = new Map();
@@ -119,6 +120,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     };
     const open = async (mapToUpdate = null) => {
         updatingMap = mapToUpdate?.id ? mapToUpdate : null;
+        maxZoomSelect.value = String(Math.min(14, Math.max(10, Number(updatingMap?.max_zoom) || 10)));
         submit.textContent = t(updatingMap ? 'OFFLINE_MAP_REGION.UPDATE_MAP' : 'OFFLINE_MAP_REGION.DOWNLOAD');
         layer.classList.add('dialog-layer--open'); layer.setAttribute('aria-hidden', 'false');
         dialog.setAttribute('aria-hidden', 'false'); status.textContent = t('OFFLINE_MAP_REGION.LOADING'); submit.disabled = true;
@@ -180,7 +182,10 @@ document.addEventListener('travel-manager:views-ready', () => {
                 : '/api/offline-maps/jobs';
             const response = await fetch(url, {
                 method: 'POST', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-                body: JSON.stringify(updatingMap ? {} : {region_id: regionSelect.value})
+                body: JSON.stringify({
+                    ...(updatingMap ? {} : {region_id: regionSelect.value}),
+                    max_zoom: Number(maxZoomSelect.value)
+                })
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || t('OFFLINE_MAP_REGION.START_FAILED'));

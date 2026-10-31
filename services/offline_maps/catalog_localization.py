@@ -13,6 +13,18 @@ _POLISH_ORDER = str.maketrans({
     'ó': 'oz', 'ś': 'sz', 'ź': 'zx', 'ż': 'zy',
 })
 
+_CONTINENT_KEYS = {
+    'africa': 'OFFLINE_MAP_CONTINENTS.AFRICA',
+    'antarctica': 'OFFLINE_MAP_CONTINENTS.ANTARCTICA',
+    'asia': 'OFFLINE_MAP_CONTINENTS.ASIA',
+    'australia-oceania': 'OFFLINE_MAP_CONTINENTS.AUSTRALIA_OCEANIA',
+    'central-america': 'OFFLINE_MAP_CONTINENTS.CENTRAL_AMERICA',
+    'europe': 'OFFLINE_MAP_CONTINENTS.EUROPE',
+    'north-america': 'OFFLINE_MAP_CONTINENTS.NORTH_AMERICA',
+    'south-america': 'OFFLINE_MAP_CONTINENTS.SOUTH_AMERICA',
+    'russia': 'OFFLINE_MAP_CONTINENTS.RUSSIA',
+}
+
 
 def localized_catalog(regions: list[OfflineMapRegion]) -> list[dict[str, object]]:
     locale = LanguageService.current_locale()
@@ -31,6 +43,10 @@ def _localized_row(region: OfflineMapRegion) -> dict[str, object]:
     row = region.to_dict()
     row['source_name'] = region.name
     row['name'] = display_name(region.name)
+    if not region.parent_id and region.id in _CONTINENT_KEYS:
+        row['name'] = LanguageService.translate_current(
+            _CONTINENT_KEYS[region.id]
+        )
     # Geofabrik country nodes carry ISO-3166-1, while their subdivisions also
     # carry ISO-3166-2. Only the former should receive a country translation.
     if len(region.country_codes) == 1 and not region.region_codes:

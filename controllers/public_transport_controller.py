@@ -144,7 +144,8 @@ class PublicTransportController(BaseController):
                 'current': 0,
                 'total': 0,
                 'attempt': 1,
-                'max_attempts': PublicTransportDownloadProgress.MAX_ATTEMPTS
+                'max_attempts': PublicTransportDownloadProgress.MAX_ATTEMPTS,
+                'phase': 'idle',
             }))
         return jsonify(progress)
 
@@ -348,7 +349,8 @@ class PublicTransportController(BaseController):
             'downloading',
             '',
             0,
-            0
+            0,
+            phase='preparing'
         )
 
         def update(
@@ -376,7 +378,13 @@ class PublicTransportController(BaseController):
                 current,
                 total,
                 attempt,
-                max_attempts
+                max_attempts,
+                phase=(
+                    'processing'
+                    if isinstance(item, PublicTransportMessage)
+                    and item.key == 'DOWNLOAD_STATUS.PROCESSING_GTFS'
+                    else 'downloading'
+                )
             )
 
         try:
@@ -388,7 +396,8 @@ class PublicTransportController(BaseController):
                 'complete',
                 '',
                 1,
-                1
+                1,
+                phase='complete'
             )
             return result
         except CancelledError:
@@ -616,7 +625,8 @@ class PublicTransportController(BaseController):
         current: int,
         total: int,
         attempt: int = 1,
-        max_attempts: int = PublicTransportDownloadProgress.MAX_ATTEMPTS
+        max_attempts: int = PublicTransportDownloadProgress.MAX_ATTEMPTS,
+        phase: str = 'downloading'
     ) -> None:
         """Stores one immutable snapshot of provider download progress."""
         with self._cache_lock:
@@ -626,7 +636,8 @@ class PublicTransportController(BaseController):
                 'current': current,
                 'total': total,
                 'attempt': attempt,
-                'max_attempts': max_attempts
+                'max_attempts': max_attempts,
+                'phase': phase
             }
 
     @staticmethod

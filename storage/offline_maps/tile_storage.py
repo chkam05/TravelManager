@@ -67,8 +67,8 @@ class OfflineMapTileStorage:
 
     def tile_features(self, zoom: int, column: int, row: int):
         return self._require().execute('''
-            SELECT f.osm_id, f.layer, f.geometry_wkb, f.properties,
-                   f.priority
+            SELECT f.osm_id, f.layer, f.geometry_type, f.geometry_wkb,
+                   f.properties, f.priority
             FROM tile_features AS tf
             JOIN source.features AS f ON f.id = tf.feature_id
             WHERE tf.zoom_level = ? AND tf.tile_column = ? AND tf.tile_row = ?
@@ -154,6 +154,66 @@ class OfflineMapTileStorage:
                     connection.commit()
         return copied, layers
 
+    def import_all_tiles(self, package_path, cancelled) -> tuple[int, set[str], set[int]]:
+        """Copies every cached tile from the package being extended locally."""
+        connection = self._require()
+        copied = 0
+        layers: set[str] = set()
+        complete: set[int] = set()
+        with closing(sqlite3.connect(
+            f'file:{package_path}?mode=ro', uri=True, timeout=30
+        )) as source:
+            metadata = dict(source.execute('SELECT name, value FROM metadata'))
+            try:
+                description = json.loads(metadata.get('json', '{}'))
+                layers.update(
+                    item['id'] for item in description.get('vector_layers', [])
+                    if isinstance(item, dict) and isinstance(item.get('id'), str)
+                )
+            except (TypeError, ValueError):
+                pass
+            try:
+                complete.update(json.loads(metadata.get('travelmanager_complete_zooms', '[]')))
+            except (TypeError, ValueError):
+                pass
+            if not complete:
+                try:
+                    complete.update(range(int(metadata['minzoom']), int(metadata['maxzoom']) + 1))
+                except (KeyError, TypeError, ValueError):
+                    pass
+            cursor = source.execute('''
+                SELECT zoom_level, tile_column, tile_row, tile_data FROM tiles
+                ORDER BY zoom_level, tile_column, tile_row
+            ''')
+            while True:
+                rows = cursor.fetchmany(500)
+                if not rows:
+                    break
+                if cancelled():
+                    raise InterruptedError('Tile reuse cancelled.')
+                output = []
+                coordinates = []
+                for zoom, column, tms_row, payload in rows:
+                    try:
+                        decoded = gzip.decompress(payload)
+                    except (OSError, EOFError):
+                        continue
+                    row = (1 << zoom) - 1 - tms_row
+                    output.append((zoom, column, row, decoded))
+                    coordinates.append((zoom, column, row))
+                connection.executemany('''
+                    INSERT OR IGNORE INTO generated_tiles(
+                        zoom_level, tile_column, tile_row, tile_data
+                    ) VALUES (?, ?, ?, ?)
+                ''', output)
+                connection.executemany('''
+                    DELETE FROM tile_features
+                    WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?
+                ''', coordinates)
+                copied += len(output)
+                connection.commit()
+        return copied, layers, complete
+
     def assignment_count(self) -> int:
         row = self._require().execute('''
             SELECT COUNT(*) FROM (
@@ -169,6 +229,14 @@ class OfflineMapTileStorage:
             FROM generated_tiles
         ''').fetchone()
         return int(row[0]), row[1], row[2]
+
+    def discard_above_zoom(self, maximum_zoom: int) -> None:
+        """Drops only encoded optional output; assignments are finalized away."""
+        connection = self._require()
+        connection.execute(
+            'DELETE FROM generated_tiles WHERE zoom_level > ?', (maximum_zoom,)
+        )
+        connection.commit()
 
     def is_complete(self) -> bool:
         """Only a finalized tile store may be resumed at MBTiles packaging."""

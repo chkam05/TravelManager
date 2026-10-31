@@ -8,6 +8,14 @@
         <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.CONTINENT') }}</span><select data-offline-map-continent></select></label>
         <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.COUNTRY') }}</span><select data-offline-map-country></select></label>
         <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.REGION') }}</span><select data-offline-map-region></select></label>
+        <label class="offline-map-region__field"><span>{{ t('OFFLINE_MAP_REGION.PREBUILD_ZOOM') }}</span><select data-offline-map-max-zoom>
+            <option value="10">{{ t('OFFLINE_MAP_REGION.ZOOM_10') }}</option>
+            <option value="11">{{ t('OFFLINE_MAP_REGION.ZOOM_11') }}</option>
+            <option value="12">{{ t('OFFLINE_MAP_REGION.ZOOM_12') }}</option>
+            <option value="13">{{ t('OFFLINE_MAP_REGION.ZOOM_13') }}</option>
+            <option value="14">{{ t('OFFLINE_MAP_REGION.ZOOM_14') }}</option>
+        </select></label>
+        <p class="offline-map-region__hint">{{ t('OFFLINE_MAP_REGION.PREBUILD_WARNING') }}</p>
         <dl class="offline-map-region__summary" data-offline-map-summary></dl>
         <p class="offline-map-region__status" data-offline-map-region-status aria-live="polite"></p>
     </div>
