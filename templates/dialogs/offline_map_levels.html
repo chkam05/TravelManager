@@ -1,0 +1,14 @@
+<section class="offline-map-levels" id="offline-map-levels" role="dialog" aria-modal="true" aria-labelledby="offline-map-levels-title" aria-hidden="true">
+    <header class="offline-map-levels__header">
+        <h2 id="offline-map-levels-title" data-offline-map-levels-title>{{ t('OFFLINE_MAP_LEVELS.TITLE') }}</h2>
+        <button type="button" data-offline-map-levels-close aria-label="{{ t('COMMON.CLOSE') }}"><i data-lucide="x" aria-hidden="true"></i></button>
+    </header>
+    <div class="offline-map-levels__content">
+        <p class="offline-map-levels__status" data-offline-map-levels-status aria-live="polite"></p>
+        <div class="offline-map-levels__list" data-offline-map-levels-list></div>
+    </div>
+    <footer class="offline-map-levels__footer">
+        <button type="button" data-offline-map-levels-generate disabled>{{ t('OFFLINE_MAP_LEVELS.GENERATE') }}</button>
+        <button type="button" data-offline-map-levels-delete disabled>{{ t('COMMON.DELETE') }}</button>
+    </footer>
+</section>

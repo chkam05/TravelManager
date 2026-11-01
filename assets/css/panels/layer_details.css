@@ -209,6 +209,15 @@
     gap: 8px;
 }
 
+.layer-details-panel__offline-layers {
+    display: grid;
+    gap: 8px;
+}
+
+.layer-details-panel__offline-layers[hidden] {
+    display: none;
+}
+
 .layer-details-panel__tag-option strong {
     display: block;
 }

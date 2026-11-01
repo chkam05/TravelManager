@@ -1,0 +1,30 @@
+<form class="random-route-configuration" id="random-route-configuration" role="dialog" aria-modal="true" aria-labelledby="random-route-configuration-title" aria-hidden="true">
+    <header class="random-route-configuration__header">
+        <h2 id="random-route-configuration-title">{{ t('RANDOM_ROUTE.CONFIGURATION') }}</h2>
+        <button class="random-route-configuration__close" data-random-route-cancel type="button" aria-label="{{ t('COMMON.CLOSE') }}"></button>
+    </header>
+    <div class="random-route-configuration__content">
+        <label><span>{{ t('RANDOM_ROUTE.AREA') }}</span><input name="area_km" type="number" min="1" max="250" step="1" value="25" required></label>
+        <label><span>{{ t('RANDOM_ROUTE.LENGTH') }}</span><input name="length_km" type="number" min="2" max="1500" step="1" value="80" required></label>
+        <label><span>{{ t('RANDOM_ROUTE.TRANSPORT') }}</span>
+            <select name="transport" required>
+                <option value="car">{{ t('PANEL_ROUTE_DETAILS.CAR') }}</option>
+                <option value="bicycle">{{ t('PANEL_ROUTE_DETAILS.BICYCLE') }}</option>
+                <option value="foot">{{ t('PANEL_ROUTE_DETAILS.ON_FOOT') }}</option>
+            </select>
+        </label>
+        <label><span>{{ t('RANDOM_ROUTE.CHARACTER') }}</span>
+            <select name="preference" required>
+                <option value="standard">{{ t('RANDOM_ROUTE.CHARACTER_STANDARD') }}</option>
+                <option value="highways">{{ t('RANDOM_ROUTE.CHARACTER_HIGHWAYS') }}</option>
+                <option value="urban">{{ t('RANDOM_ROUTE.CHARACTER_URBAN') }}</option>
+                <option value="nature">{{ t('RANDOM_ROUTE.CHARACTER_NATURE') }}</option>
+            </select>
+        </label>
+        <p>{{ t('RANDOM_ROUTE.TOLERANCE_HINT') }}</p>
+    </div>
+    <footer class="random-route-configuration__footer">
+        <button type="button" data-random-route-cancel>{{ t('COMMON.CANCEL') }}</button>
+        <button class="random-route-configuration__generate" type="submit">{{ t('RANDOM_ROUTE.GENERATE') }}</button>
+    </footer>
+</form>

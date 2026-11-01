@@ -13,23 +13,28 @@ class Menu:
     GROUPS: ClassVar[list[MenuGroup]] = [
         MenuGroup(0, 'MAIN_MENU.GROUP_HOME', '', -1, 0),
         MenuGroup(1, 'HOME_VIEW.GROUP_MAP', 'HOME_VIEW.GROUP_MAP_DESCRIPTION', 0, -1),
-        MenuGroup(2, 'HOME_VIEW.GROUP_TRAVEL', 'HOME_VIEW.GROUP_TRAVEL_DESCRIPTION', 1, -1),
-        MenuGroup(3, 'HOME_VIEW.GROUP_PUBLIC_TRANSPORT', 'HOME_VIEW.GROUP_PUBLIC_TRANSPORT_DESCRIPTION', 2, -1),
-        MenuGroup(4, 'HOME_VIEW.GROUP_APPLICATION', 'HOME_VIEW.GROUP_APPLICATION_DESCRIPTION', 3, -1),
-        MenuGroup(10, 'MAIN_MENU.GROUP_MAIN_FEATURES', '', -1, 1),
-        MenuGroup(13, '', '', -1, 2),
-        MenuGroup(11, 'MAIN_MENU.GROUP_TRAVEL_DATA', '', -1, 3),
-        MenuGroup(12, 'MAIN_MENU.GROUP_APPLICATION', '', -1, 4)
+        MenuGroup(5, 'HOME_VIEW.GROUP_SEARCH', 'HOME_VIEW.GROUP_SEARCH_DESCRIPTION', 1, -1),
+        MenuGroup(2, 'HOME_VIEW.GROUP_TRAVEL', 'HOME_VIEW.GROUP_TRAVEL_DESCRIPTION', 2, -1),
+        MenuGroup(3, 'HOME_VIEW.GROUP_PUBLIC_TRANSPORT', 'HOME_VIEW.GROUP_PUBLIC_TRANSPORT_DESCRIPTION', 3, -1),
+        MenuGroup(4, 'HOME_VIEW.GROUP_APPLICATION', 'HOME_VIEW.GROUP_APPLICATION_DESCRIPTION', 4, -1),
+        MenuGroup(14, '', '', -1, 1),
+        MenuGroup(10, 'MAIN_MENU.GROUP_MAIN_FEATURES', '', -1, 2),
+        MenuGroup(13, '', '', -1, 3),
+        MenuGroup(11, 'MAIN_MENU.GROUP_TRAVEL_DATA', '', -1, 4),
+        MenuGroup(12, 'MAIN_MENU.GROUP_APPLICATION', '', -1, 5)
     ]
 
     ITEMS: ClassVar[list[MenuItem]] = [
         MenuItem('house', 'MAIN_MENU.HOME', 'MAIN_MENU.HOME_DESCRIPTION', 'view:home', -1, 0),
+        MenuItem('search', 'MAIN_MENU.SEARCH_PLACE', 'MAIN_MENU.SEARCH_PLACE_DESCRIPTION', 'action:search-place', 5, 14),
+        MenuItem('bus', 'MAIN_MENU.SEARCH_CONNECTIONS', 'MAIN_MENU.SEARCH_CONNECTIONS_DESCRIPTION', 'action:search-connections', 5, 14),
         MenuItem('map', 'MAIN_MENU.MAP', 'MAIN_MENU.MAP_DESCRIPTION', 'view:map', 1, 10),
         MenuItem('bus-front', 'MAIN_MENU.PUBLIC_TRANSPORT', 'MAIN_MENU.PUBLIC_TRANSPORT_DESCRIPTION', 'transport:city', 3, 13),
         MenuItem('train-front', 'MAIN_MENU.RAILWAYS', 'MAIN_MENU.RAILWAYS_DESCRIPTION', 'transport:rail', -1, 13),
         MenuItem('train-front', 'HOME_VIEW.TRAINS', 'HOME_VIEW.TRAINS_DESCRIPTION', 'transport:rail', 3, -1),
         MenuItem('route', 'MAIN_MENU.ROUTES', 'MAIN_MENU.ROUTES_DESCRIPTION', 'view:my-routes', 2, 10),
         MenuItem('navigation', 'MAIN_MENU.NEW_ROUTE', 'MAIN_MENU.NEW_ROUTE_DESCRIPTION', 'action:new-route', 2, 10),
+        MenuItem('shuffle', 'MAIN_MENU.RANDOM_ROUTE', 'MAIN_MENU.RANDOM_ROUTE_DESCRIPTION', 'action:random-route', 2, 10),
         MenuItem('layers-plus', 'MAIN_MENU.NEW_LAYER', 'MAIN_MENU.NEW_LAYER_DESCRIPTION', 'action:new-layer', 1, 10),
         MenuItem('layers', 'MAIN_MENU.LAYERS', 'MAIN_MENU.LAYERS_DESCRIPTION', 'view:layers', 1, 11),
         MenuItem('star', 'MAIN_MENU.FAVOURITES', 'MAIN_MENU.FAVOURITES_DESCRIPTION', 'view:favourites', 1, 10),
@@ -42,13 +47,14 @@ class Menu:
 
     HOME_ITEM_ORDER: ClassVar[tuple[str, ...]] = (
         'view:map', 'view:favourites', 'view:favourites-tags', 'action:new-layer', 'view:layers',
-        'action:new-route', 'view:my-routes', 'view:car-profiles', 'view:fuel-cost',
+        'action:search-place', 'action:search-connections',
+        'action:new-route', 'action:random-route', 'view:my-routes', 'view:car-profiles', 'view:fuel-cost',
         'transport:city', 'transport:rail', 'view:settings', 'view:information'
     )
 
     MENU_ITEM_ORDER: ClassVar[tuple[str, ...]] = (
-        'view:home', 'view:map', 'view:my-routes',
-        'action:new-route', 'action:new-layer', 'view:favourites', 'view:fuel-cost', 'view:car-profiles',
+        'view:home', 'action:search-place', 'action:search-connections', 'view:map', 'view:my-routes',
+        'action:new-route', 'action:random-route', 'action:new-layer', 'view:favourites', 'view:fuel-cost', 'view:car-profiles',
         'view:favourites-tags', 'view:layers', 'transport:city', 'transport:rail',
         'view:settings', 'view:information'
     )

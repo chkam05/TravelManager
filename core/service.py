@@ -32,6 +32,7 @@ class Service:
             else None
         )
         self._thread: Thread | None = None
+        self._offline_map_controller = None
         self._lock = Lock()
         self._configure_language_service()
         self._register_controllers()
@@ -71,6 +72,7 @@ class Service:
     def _register_controllers(self):
         from controllers.fuel_controller import FuelController
         from controllers.map_controller import MapController
+        from controllers.offline_map_controller import OfflineMapController
         from controllers.public_transport_controller import PublicTransportController
         from controllers.settings_controller import SettingsController
         from controllers.view_controller import ViewController
@@ -80,6 +82,10 @@ class Service:
         self._register_controller(WindowController(self._settings_storage))
         self._register_controller(ViewController(self._app_url))
         self._register_controller(MapController())
+        self._offline_map_controller = OfflineMapController(
+            self._settings_storage, start_manager=True
+        )
+        self._register_controller(self._offline_map_controller)
         self._register_controller(PublicTransportController(self._settings_storage))
         self._register_controller(SettingsController(self._settings_storage))
     
@@ -111,6 +117,8 @@ class Service:
             return self._thread
 
     def stop(self):
+        if self._offline_map_controller is not None:
+            self._offline_map_controller.stop()
         with self._lock:
             server = self._server
             thread = self._thread

@@ -21,6 +21,7 @@ class UiSettings(BaseDataModel):
     _DEFAULT_CAR_DETAILS_PANEL_WIDTH: ClassVar[int] = 360
     _DEFAULT_SEARCH_RESULTS_PANEL_WIDTH: ClassVar[int] = 360
     _DEFAULT_PUBLIC_TRANSPORT_PANEL_WIDTH: ClassVar[int] = 380
+    _DEFAULT_PUBLIC_TRANSPORT_ROUTE_RESULT_PANEL_WIDTH: ClassVar[int] = 440
     _DEFAULT_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES: ClassVar[bool] = False
     _DEFAULT_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL: ClassVar[int] = 15
     _DEFAULT_LAYER_MAP_NOTES_ENABLED: ClassVar[bool] = False
@@ -28,6 +29,11 @@ class UiSettings(BaseDataModel):
     _DEFAULT_LAYER_PUBLIC_GPS_TRACES_ENABLED: ClassVar[bool] = False
     _DEFAULT_LAYER_FAVOURITES_ENABLED: ClassVar[bool] = True
     _DEFAULT_MAP_BASE_LAYER: ClassVar[str] = 'standard'
+    _DEFAULT_OFFLINE_MAP_MODE: ClassVar[str] = 'online_only'
+    _DEFAULT_OFFLINE_MAP_MAX_DYNAMIC_ZOOM: ClassVar[int] = 19
+    OFFLINE_MAP_MODES: ClassVar[tuple[str, ...]] = (
+        'prefer_offline', 'offline_when_disconnected', 'online_only'
+    )
     _DEFAULT_TRAVEL_FUEL_PRICE: ClassVar[float] = 0.0
     _DEFAULT_TRAVEL_FUEL_PRICES: ClassVar[Dict[str, float]] = {}
     _DEFAULT_TRAVEL_FUEL_TYPE: ClassVar[str] = '95'
@@ -55,6 +61,8 @@ class UiSettings(BaseDataModel):
     FIELD_LAYER_EDITOR_PANEL_WIDTH: ClassVar[str] = 'layer_editor_panel_width'
     FIELD_LAYER_DETAILS_PANEL_WIDTH: ClassVar[str] = 'layer_details_panel_width'
     FIELD_MAP_BASE_LAYER: ClassVar[str] = 'map_base_layer'
+    FIELD_OFFLINE_MAP_MODE: ClassVar[str] = 'offline_map_mode'
+    FIELD_OFFLINE_MAP_MAX_DYNAMIC_ZOOM: ClassVar[str] = 'offline_map_max_dynamic_zoom'
     FIELD_MAP_LATITUDE: ClassVar[str] = 'map_latitude'
     FIELD_MAP_LONGITUDE: ClassVar[str] = 'map_longitude'
     FIELD_MAP_ZOOM: ClassVar[str] = 'map_zoom'
@@ -64,6 +72,7 @@ class UiSettings(BaseDataModel):
     FIELD_CAR_DETAILS_PANEL_WIDTH: ClassVar[str] = 'car_details_panel_width'
     FIELD_SEARCH_RESULTS_PANEL_WIDTH: ClassVar[str] = 'search_results_panel_width'
     FIELD_PUBLIC_TRANSPORT_PANEL_WIDTH: ClassVar[str] = 'public_transport_panel_width'
+    FIELD_PUBLIC_TRANSPORT_ROUTE_RESULT_PANEL_WIDTH: ClassVar[str] = 'public_transport_route_result_panel_width'
     FIELD_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES: ClassVar[str] = 'public_transport_vehicle_background_updates'
     FIELD_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL: ClassVar[str] = 'public_transport_vehicle_update_interval'
     FIELD_TRAVEL_FUEL_PRICE: ClassVar[str] = 'travel_fuel_price'
@@ -96,6 +105,7 @@ class UiSettings(BaseDataModel):
     car_details_panel_width: int
     search_results_panel_width: int
     public_transport_panel_width: int
+    public_transport_route_result_panel_width: int
     public_transport_vehicle_background_updates: bool
     public_transport_vehicle_update_interval: int
     layer_favourites_enabled: bool
@@ -104,6 +114,8 @@ class UiSettings(BaseDataModel):
     layer_map_notes_enabled: bool
     layer_public_gps_traces_enabled: bool
     map_base_layer: str
+    offline_map_mode: str
+    offline_map_max_dynamic_zoom: int
     travel_fuel_price: float
     travel_fuel_prices: Dict[str, float]
     travel_fuel_type: str
@@ -139,6 +151,13 @@ class UiSettings(BaseDataModel):
             return int(value)
         except (TypeError, ValueError):
             return default
+
+    @classmethod
+    def _to_bounded_int(
+        cls, value: Any, default: int, minimum: int, maximum: int
+    ) -> int:
+        number = cls._to_int(value, default)
+        return number if minimum <= number <= maximum else default
 
     @classmethod
     def _to_bool(cls, value: Any, default: bool) -> bool:
@@ -232,6 +251,13 @@ class UiSettings(BaseDataModel):
                 d.get(cls.FIELD_PUBLIC_TRANSPORT_PANEL_WIDTH, cls._DEFAULT_PUBLIC_TRANSPORT_PANEL_WIDTH),
                 cls._DEFAULT_PUBLIC_TRANSPORT_PANEL_WIDTH
             ),
+            public_transport_route_result_panel_width=cls._to_int(
+                d.get(
+                    cls.FIELD_PUBLIC_TRANSPORT_ROUTE_RESULT_PANEL_WIDTH,
+                    cls._DEFAULT_PUBLIC_TRANSPORT_ROUTE_RESULT_PANEL_WIDTH
+                ),
+                cls._DEFAULT_PUBLIC_TRANSPORT_ROUTE_RESULT_PANEL_WIDTH
+            ),
             public_transport_vehicle_background_updates=cls._to_bool(
                 d.get(
                     cls.FIELD_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES,
@@ -267,6 +293,20 @@ class UiSettings(BaseDataModel):
             ),
             map_base_layer=str(
                 d.get(cls.FIELD_MAP_BASE_LAYER, cls._DEFAULT_MAP_BASE_LAYER) or cls._DEFAULT_MAP_BASE_LAYER
+            ),
+            offline_map_mode=(
+                str(d.get(cls.FIELD_OFFLINE_MAP_MODE, cls._DEFAULT_OFFLINE_MAP_MODE))
+                if str(d.get(cls.FIELD_OFFLINE_MAP_MODE, cls._DEFAULT_OFFLINE_MAP_MODE)) in cls.OFFLINE_MAP_MODES
+                else cls._DEFAULT_OFFLINE_MAP_MODE
+            ),
+            offline_map_max_dynamic_zoom=cls._to_bounded_int(
+                d.get(
+                    cls.FIELD_OFFLINE_MAP_MAX_DYNAMIC_ZOOM,
+                    cls._DEFAULT_OFFLINE_MAP_MAX_DYNAMIC_ZOOM,
+                ),
+                cls._DEFAULT_OFFLINE_MAP_MAX_DYNAMIC_ZOOM,
+                14,
+                19,
             ),
             travel_fuel_price=max(0.0, cls._to_float(
                 d.get(cls.FIELD_TRAVEL_FUEL_PRICE, cls._DEFAULT_TRAVEL_FUEL_PRICE),
@@ -363,6 +403,7 @@ class UiSettings(BaseDataModel):
             self.FIELD_CAR_DETAILS_PANEL_WIDTH: self.car_details_panel_width,
             self.FIELD_SEARCH_RESULTS_PANEL_WIDTH: self.search_results_panel_width,
             self.FIELD_PUBLIC_TRANSPORT_PANEL_WIDTH: self.public_transport_panel_width,
+            self.FIELD_PUBLIC_TRANSPORT_ROUTE_RESULT_PANEL_WIDTH: self.public_transport_route_result_panel_width,
             self.FIELD_PUBLIC_TRANSPORT_VEHICLE_BACKGROUND_UPDATES: self.public_transport_vehicle_background_updates,
             self.FIELD_PUBLIC_TRANSPORT_VEHICLE_UPDATE_INTERVAL: self.public_transport_vehicle_update_interval,
             self.FIELD_LAYER_MAP_DATA_ENABLED: self.layer_map_data_enabled,
@@ -371,6 +412,8 @@ class UiSettings(BaseDataModel):
             self.FIELD_LAYER_FAVOURITES_ENABLED: self.layer_favourites_enabled,
             self.FIELD_LAYER_FAVOURITE_VISIBLE_TAG_IDS: self.layer_favourite_visible_tag_ids,
             self.FIELD_MAP_BASE_LAYER: self.map_base_layer,
+            self.FIELD_OFFLINE_MAP_MODE: self.offline_map_mode,
+            self.FIELD_OFFLINE_MAP_MAX_DYNAMIC_ZOOM: self.offline_map_max_dynamic_zoom,
             self.FIELD_TRAVEL_FUEL_PRICE: self.travel_fuel_price,
             self.FIELD_TRAVEL_FUEL_PRICES: self.travel_fuel_prices,
             self.FIELD_TRAVEL_FUEL_TYPE: self.travel_fuel_type,

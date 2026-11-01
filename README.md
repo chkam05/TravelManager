@@ -13,13 +13,16 @@ Travel Manager brings maps, place search, route planning, car profiles, travel c
 - Explore OpenStreetMap using standard, cycling, and humanitarian map styles.
 - Search for places by name or category and inspect detailed OpenStreetMap information.
 - Display favourite places, OpenStreetMap notes, map objects, and public GPS traces as optional layers.
+- Download, import, select, update, export, and manage regional offline map backgrounds.
 - Create routes for cars, bicycles, and pedestrians, reorder points, reverse routes, and save them for later.
+- Generate closed random routes from one start/end point using a target area, distance, transport mode, and preferred route character.
 - Estimate fuel usage and trip cost with a selected car profile and country-specific fuel prices.
 - Add refuelling markers for economical, average, and dynamic driving styles.
 - Request car routes that avoid toll roads when the routing service supports it.
 - Maintain detailed car profiles, including an image, technical data, fuel types, consumption, and odometer entries.
 - Browse fuel prices for Poland and other European countries, convert currencies, and enter custom values.
 - Browse public transport operators, lines, stops, timetables, journeys, announcements, and vehicle positions where supplied by the operator.
+- Search downloaded public transport timetables for connections by departure or arrival time, including walking legs and transfers.
 - Organise favourite places with custom tags, colours, and emoji.
 - Import and export routes, favourites and tags, cars, and fuel-price data as JSON.
 - Choose English or Polish and customise the theme, accent, routes, and public transport colours.
@@ -32,9 +35,36 @@ Use the search field to find an address or place. Advanced search can narrow res
 
 The layer panel controls the base map, favourite tags, OpenStreetMap notes, nearby map data, and public GPS traces. The legend explains supported symbols, lines, and areas.
 
+### Offline maps
+
+Regional OpenStreetMap backgrounds can be installed under **Settings → Map → Offline maps**. Select a continent, country or region from the Geofabrik catalogue and choose how many zoom levels should be prepared immediately. Preparing a package downloads OSM PBF data, analyses map features, builds vector MBTiles, and installs the result locally. This can require substantial disk space, CPU time, and processing time for large regions. The progress window can be moved to the background, cancelled, resumed after a recoverable failure, or completed without building every optional detail level.
+
+Levels above the initially prepared range, up to the configured maximum of x19, are generated on demand while the map is browsed. Individual levels can later be generated or removed. Installed maps can be updated, deleted, selected manually in the layer panel, or selected automatically according to one of three source modes:
+
+- prefer an installed offline map,
+- use an offline map only when the application detects no connection,
+- always use online map tiles.
+
+The desktop application can import and export offline map packages. The map manager performs a free-space preflight, prevents duplicate downloads, can reuse compatible data, and supports adjacent or overlapping regional packages. Installed maps and their levels are managed under **Settings → Map**, while deletion and storage overview are also available under **Settings → Memory**.
+
+Offline mode currently covers the vector map background. Place search, normal and random route calculation, Overpass objects, OSM notes, public GPS traces, fuel updates, and downloading new public transport data can still require an internet connection. Previously downloaded GTFS schedules can be searched locally; displaying a walking segment with exact online routing may still require connectivity.
+
 ## Routes and cars
 
 A route may contain from 2 to 25 ordered points. The route panel supports walking, cycling, and driving profiles, point reordering, route reversal, turn-by-turn steps, route saving, and an option to avoid toll roads. For car routes, the active car profile supplies fuel type, tank capacity, and consumption values used by cost and refuelling estimates.
+
+### Random round trips
+
+Choose **Create random route** from Home or the main menu, then select the point that should be both the start and end of the trip. The configuration dialog lets you specify:
+
+- the maximum area radius from the starting point in kilometres,
+- the target route length in kilometres,
+- car, bicycle, or walking transport,
+- a standard, highway, urban-road, or parks-and-forests route character.
+
+The generator checks several closed-route candidates and displays the one closest to the requested length. The length is a target rather than an exact value because the result depends on the available road and path network. Highway preference is available for cars; the parks-and-forests mode favours tracks and paths and uses a mountain-bike profile for cycling.
+
+Use **Configuration** to generate another route with different parameters or **Change point** to select a new start/end point while retaining the current settings. The transport selected in the dialog is also selected in the route panel. A generated route can be reversed and saved to **My routes**. Once saved, it becomes an ordinary route that can be opened and edited without retaining random-generation settings.
 
 ![Planned car route with refuelling estimates](doc/route.png)
 
@@ -60,6 +90,12 @@ Travel Manager has configured integrations for 35 Polish public transport areas.
 
 Some operators additionally provide announcements, platforms, live or recently reported vehicle positions, vehicle details, and route geometry. Capabilities vary by provider; the interface only exposes functions supported by the selected data source.
 
+### Connection search
+
+Open **Search connections** from Home, the main menu, the map header, or the public transport header. The search works with providers whose relational GTFS data has already been downloaded. Choose the provider, origin and destination city and stop, then search by either departure or required arrival date and time. The maximum permitted waiting time for a transfer can also be configured.
+
+The local journey planner returns alternative journeys and presents departure and arrival times, total duration, distance, number of transfers, vehicle lines, walking sections, and individual legs. A result can be expanded and displayed on the map. City journeys are searched within the selected provider; downloaded national railway data can be searched as a combined railway source. Timetable calculation itself uses the local GTFS database and does not query an external journey-planning service, although schedule data must first be downloaded and may become outdated.
+
 ![Public transport route and selected vehicle](doc/public_transport_map.png)
 
 ## First run and settings
@@ -68,16 +104,19 @@ English is used for a new configuration, and Home opens after startup by default
 
 Settings are divided into:
 
-- **Appearance** — light or dark theme, accent colour, route colours, and separate marker colours for buses, trams, trolleybuses, metro, and trains.
-- **Routes** — preferred cost currency, fuel-price and consumption defaults, refuelling markers, and toll-road routing.
-- **Public transport** — background vehicle updates and refresh interval.
-- **Backup** — JSON import and export for selected data categories.
 - **Application** — language, Home startup behaviour, and local-network mode.
+- **Map** — map layers, offline-map source selection, downloading, importing, updating, level generation, and maximum dynamic zoom.
+- **Routes and Travel** — route costs, refuelling, and toll-road options.
+- **Backup** — JSON import and export.
+- **Memory** — downloaded public transport data and offline maps, with deletion controls.
+- **Public transport** — background vehicle updates and refresh interval.
+- **Appearance** — light or dark theme, accent colour, route colours, and separate marker colours for buses, trams, trolleybuses, metro, and trains.
 
 ## Requirements
 
 - Python 3.10 or newer when running from source.
-- Internet access for map tiles, place search, route calculation, fuel and exchange-rate updates, and public transport downloads.
+- Internet access to download or update offline maps, load online map tiles, search for places, calculate routes, update fuel and exchange-rate data, and download public transport data.
+- Sufficient free disk space and processing time when preparing offline maps; required capacity depends strongly on the selected region and zoom levels.
 - A WebView backend supported by pywebview:
   - WebView2 or a supported Qt backend on Windows,
   - the native WebKit implementation on macOS,
@@ -163,7 +202,7 @@ The application persists its state in `settings.json` under the platform configu
 | macOS | `~/Library/Application Support/TravelManager/settings.json` |
 | Linux | `$XDG_CONFIG_HOME/TravelManager/settings.json` or `~/.config/TravelManager/settings.json` |
 
-The file contains user settings, window geometry, appearance, routes, favourites, tags, car profiles, fuel data, and public transport caches. Writes are protected by a lock and replace the file atomically.
+The file contains user settings, window geometry, appearance, routes, favourites, tags, car profiles, fuel data, and public transport caches. Offline map sources, work data, indexes, and MBTiles packages are stored in the `offline_maps` subdirectory beside the configuration file. Writes are protected by a lock and replace the settings file atomically.
 
 Search queries, coordinates, route points, and feature-specific requests are sent to the relevant external services. Public transport and fuel data are cached locally. Imported JSON should come from a trusted source, especially when the service is available over a network.
 
@@ -192,7 +231,9 @@ The browser interface requests view fragments and JSON data from the local Flask
 - Vanilla JavaScript and CSS for the client interface.
 - Leaflet and Lucide distributed with the application under `assets/vendor`.
 - OpenStreetMap, Nominatim, Overpass, OSRM-compatible services, and Valhalla for map and routing features.
+- Geofabrik PBF extracts, MBTiles, and Leaflet VectorGrid for downloadable offline map backgrounds and on-demand detail generation.
 - GTFS, GTFS Realtime, operator APIs, and provider-specific HTML/JSON sources for public transport.
+- A local RAPTOR-based journey planner for connection searches in downloaded GTFS schedules.
 - European Commission, AutoCentrum, and Frankfurter data for fuel prices and currencies.
 - PyInstaller for platform-specific release bundles.
 

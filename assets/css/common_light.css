@@ -949,7 +949,8 @@ body {
 }
 
 .header__search-button,
-.header__advanced-search-button {
+.header__advanced-search-button,
+.header__connection-search-button {
     background: transparent;
     color: var(--text-primary);
 }
@@ -959,8 +960,16 @@ body {
 }
 
 .header__search-button:hover,
-.header__advanced-search-button:hover {
+.header__advanced-search-button:hover,
+.header__connection-search-button:hover {
     background: var(--control-hover);
+}
+
+.header__connection-search-button {
+    border-color: var(--border-strong);
+    background: var(--surface-background);
+    color: var(--text-primary);
+    box-shadow: 0 10px 22px var(--shadow-color);
 }
 
 .header__search-button::after {
@@ -974,6 +983,17 @@ body {
     background: var(--surface-background);
     color: var(--text-primary);
     box-shadow: 0 10px 22px var(--border-color);
+}
+
+.header__menu-button,
+.header__language-select,
+.header__search-input,
+.header__search-actions,
+.header__connection-search-button,
+.header__map-button,
+.header__car-button,
+.header__save-button {
+    box-shadow: 0 10px 22px var(--shadow-color);
 }
 
 .app-view__back-button {

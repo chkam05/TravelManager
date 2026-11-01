@@ -3,6 +3,7 @@ import base64
 import json
 import mimetypes
 import webbrowser
+import zipfile
 from pathlib import Path
 from threading import Lock
 from typing import Any, Callable
@@ -16,6 +17,8 @@ from models.settings.window_settings import WindowSettings
 from resources.settings_transfer import SettingsTransferTypes
 from storage.settings_storage import SettingsStorage
 from utils.webview_runtime import WebviewRuntime
+from services.offline_maps import OfflineMapTransfer
+from storage.offline_maps import OfflineMapPaths
 
 
 class WebViewWindow(WebViewWindowInterface):
@@ -256,6 +259,50 @@ class WebViewWindow(WebViewWindowInterface):
             'type': data_type,
             'label': self._translate(SettingsTransferTypes.label_key(data_type))
         }
+
+    def export_offline_map(self, map_id: str) -> dict[str, str]:
+        """Exports an MBTiles map and its feature index as one .tmmap file."""
+        window = self._active_window()
+        if not window:
+            return {'status': 'error', 'message': self._translate('NATIVE_APP.NO_ACTIVE_WINDOW')}
+        paths = OfflineMapPaths(self._settings_storage.directory)
+        installed = next((item for item in paths.maps.load() if item.id == map_id), None)
+        if installed is None:
+            return {'status': 'error', 'message': self._translate('SETTINGS_OFFLINE_MAPS.ACTION_FAILED')}
+        selected = self._selected_path(window.create_file_dialog(
+            webview.FileDialog.SAVE,
+            save_filename=f'{installed.name}.tmmap',
+            file_types=('TravelManager Offline Map (*.tmmap)',),
+        ))
+        if not selected:
+            return {'status': 'cancelled'}
+        destination = Path(selected)
+        if destination.suffix.lower() != '.tmmap':
+            destination = destination.with_suffix('.tmmap')
+        try:
+            OfflineMapTransfer(paths).export(map_id, destination)
+        except (OSError, TypeError, ValueError, zipfile.BadZipFile) as error:
+            return {'status': 'error', 'message': str(error)}
+        return {'status': 'saved', 'path': str(destination)}
+
+    def import_offline_map(self) -> dict[str, str]:
+        """Imports a self-contained .tmmap selected through the native dialog."""
+        window = self._active_window()
+        if not window:
+            return {'status': 'error', 'message': self._translate('NATIVE_APP.NO_ACTIVE_WINDOW')}
+        selected = self._selected_path(window.create_file_dialog(
+            webview.FileDialog.OPEN, allow_multiple=False,
+            file_types=('TravelManager Offline Map (*.tmmap)',),
+        ))
+        if not selected:
+            return {'status': 'cancelled'}
+        try:
+            installed = OfflineMapTransfer(
+                OfflineMapPaths(self._settings_storage.directory)
+            ).import_file(Path(selected))
+        except (OSError, TypeError, ValueError, json.JSONDecodeError, zipfile.BadZipFile) as error:
+            return {'status': 'error', 'message': str(error)}
+        return {'status': 'imported', 'map_id': installed.id, 'name': installed.name}
 
     def select_car_image(self) -> dict[str, str]:
         """Opens a file dialog and returns a selected car image as text."""

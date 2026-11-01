@@ -12,11 +12,26 @@ class MenuTransportNavigationTests(unittest.TestCase):
             for section in Menu.menu_sections()
         ]
         self.assertEqual(
-            sections[2],
+            sections[3],
             ['transport:city', 'transport:rail']
         )
-        self.assertEqual(sections[1][-1], 'view:favourites')
-        self.assertEqual(sections[3][0], 'view:fuel-cost')
+        self.assertEqual(
+            sections[1],
+            ['action:search-place', 'action:search-connections']
+        )
+        self.assertEqual(sections[2][-1], 'view:favourites')
+        self.assertEqual(sections[4][0], 'view:fuel-cost')
+
+    def test_home_search_group_follows_map_group(self):
+        sections = [
+            [item.url for item in section['items']]
+            for section in Menu.home_sections()
+        ]
+        self.assertIn('view:map', sections[0])
+        self.assertEqual(
+            sections[1],
+            ['action:search-place', 'action:search-connections']
+        )
 
     def test_home_transport_group_contains_city_and_train_tiles(self):
         transport = [

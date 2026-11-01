@@ -219,9 +219,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (actionButton?.dataset.navigationAction === 'new-route') {
             showView('map');
             await window.travelManagerRouteDetailsPanel?.startNewRoute();
+        } else if (actionButton?.dataset.navigationAction === 'random-route') {
+            showView('map');
+            await window.travelManagerRouteDetailsPanel?.startNewRandomRoute();
         } else if (actionButton?.dataset.navigationAction === 'new-layer') {
             showView('map');
             window.travelManagerLayerEditor?.open();
+        } else if (actionButton?.dataset.navigationAction === 'search-place') {
+            showView('map');
+            window.travelManagerAdvancedSearch?.open(
+                window.travelManagerMap?.getSearchContext?.() || {}
+            );
+        } else if (actionButton?.dataset.navigationAction === 'search-connections') {
+            showView('map');
+            window.travelManagerPublicTransportRouteSearch?.open();
         }
     });
 
