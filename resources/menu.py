@@ -34,6 +34,7 @@ class Menu:
         MenuItem('train-front', 'HOME_VIEW.TRAINS', 'HOME_VIEW.TRAINS_DESCRIPTION', 'transport:rail', 3, -1),
         MenuItem('route', 'MAIN_MENU.ROUTES', 'MAIN_MENU.ROUTES_DESCRIPTION', 'view:my-routes', 2, 10),
         MenuItem('navigation', 'MAIN_MENU.NEW_ROUTE', 'MAIN_MENU.NEW_ROUTE_DESCRIPTION', 'action:new-route', 2, 10),
+        MenuItem('shuffle', 'MAIN_MENU.RANDOM_ROUTE', 'MAIN_MENU.RANDOM_ROUTE_DESCRIPTION', 'action:random-route', 2, 10),
         MenuItem('layers-plus', 'MAIN_MENU.NEW_LAYER', 'MAIN_MENU.NEW_LAYER_DESCRIPTION', 'action:new-layer', 1, 10),
         MenuItem('layers', 'MAIN_MENU.LAYERS', 'MAIN_MENU.LAYERS_DESCRIPTION', 'view:layers', 1, 11),
         MenuItem('star', 'MAIN_MENU.FAVOURITES', 'MAIN_MENU.FAVOURITES_DESCRIPTION', 'view:favourites', 1, 10),
@@ -47,13 +48,13 @@ class Menu:
     HOME_ITEM_ORDER: ClassVar[tuple[str, ...]] = (
         'view:map', 'view:favourites', 'view:favourites-tags', 'action:new-layer', 'view:layers',
         'action:search-place', 'action:search-connections',
-        'action:new-route', 'view:my-routes', 'view:car-profiles', 'view:fuel-cost',
+        'action:new-route', 'action:random-route', 'view:my-routes', 'view:car-profiles', 'view:fuel-cost',
         'transport:city', 'transport:rail', 'view:settings', 'view:information'
     )
 
     MENU_ITEM_ORDER: ClassVar[tuple[str, ...]] = (
         'view:home', 'action:search-place', 'action:search-connections', 'view:map', 'view:my-routes',
-        'action:new-route', 'action:new-layer', 'view:favourites', 'view:fuel-cost', 'view:car-profiles',
+        'action:new-route', 'action:random-route', 'action:new-layer', 'view:favourites', 'view:fuel-cost', 'view:car-profiles',
         'view:favourites-tags', 'view:layers', 'transport:city', 'transport:rail',
         'view:settings', 'view:information'
     )

@@ -9,6 +9,8 @@ document.addEventListener('travel-manager:views-ready', () => {
     const summary = document.querySelector('#route-details-panel-summary');
     const addButton = document.querySelector('#route-details-panel-add');
     const reverseButton = document.querySelector('#route-details-panel-reverse');
+    const randomConfigureButton = document.querySelector('#route-details-panel-random-configure');
+    const randomChangeButton = document.querySelector('#route-details-panel-random-change');
     const saveButton = document.querySelector('#route-details-panel-save');
     const editNameButton = document.querySelector('#route-details-panel-edit-name');
     const transportButtons = document.querySelectorAll('[data-route-transport]');
@@ -73,6 +75,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         menuPointId: null,
         routeRequestId: 0,
         currentRoute: null,
+        randomMode: false,
+        randomConfiguration: { area_km: 25, length_km: 80, transport: 'car', preference: 'standard' },
         savedRoute: null,
         transportMode: 'car',
         activeCarProfile: null,
@@ -275,6 +279,8 @@ document.addEventListener('travel-manager:views-ready', () => {
                 ? t('PANEL_ROUTE_DETAILS.MINIMUM_TWO_POINTS')
                 : t('PANEL_ROUTE_DETAILS.REORDER_POINTS_INSTRUCTION');
         addButton.disabled = selecting;
+        if (randomConfigureButton) randomConfigureButton.disabled = selecting || !state.points.length;
+        if (randomChangeButton) randomChangeButton.disabled = selecting;
         reverseButton.disabled = selecting || state.points.length < 2;
 
         document.dispatchEvent(new CustomEvent('travel-manager:route-selection-changed', {
@@ -1218,6 +1224,9 @@ document.addEventListener('travel-manager:views-ready', () => {
                 },
                 body: JSON.stringify({
                     transport: state.transportMode,
+                    preference: state.randomMode
+                        ? state.randomConfiguration.preference
+                        : 'standard',
                     include_toll_roads: state.tollRoads.roadsEnabled !== false,
                     points: state.points.map(({ latitude, longitude }) => ({ latitude, longitude }))
                 })
@@ -1273,6 +1282,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         if (saved) {
             state.savedRoute = saved;
+            state.randomMode = false;
+            updateRandomControls();
             updateSavedControls();
             summary.innerHTML = routeSummaryHtml(state.currentRoute || saved);
         }
@@ -1617,6 +1628,25 @@ document.addEventListener('travel-manager:views-ready', () => {
             return true;
         }
 
+        if (state.randomMode) {
+            const selectionMode = state.selectionMode;
+            state.points = [point];
+            state.currentRoute = null;
+            resetRouteFuelSettings();
+            updateInitialFuelControls();
+            setSelecting(false);
+            renderPoints();
+            renderInstructions(null);
+            dispatchRoute();
+            dispatchSession();
+            if (selectionMode === 'random-change') {
+                generateRandomRoute();
+            } else {
+                configureRandomRoute();
+            }
+            return true;
+        }
+
         const firstPoint = state.points.length === 0;
         state.points.push(point);
 
@@ -1640,6 +1670,9 @@ document.addEventListener('travel-manager:views-ready', () => {
         if (!point) {
             return false;
         }
+
+        state.randomMode = false;
+        updateRandomControls();
 
         const firstPoint = state.points.length === 0;
         state.points.push(point);
@@ -1673,6 +1706,8 @@ document.addEventListener('travel-manager:views-ready', () => {
             return;
         }
 
+        state.randomMode = false;
+        updateRandomControls();
         state.points = [startPoint];
         state.savedRoute = null;
         state.routeRequestId += 1;
@@ -1709,6 +1744,8 @@ document.addEventListener('travel-manager:views-ready', () => {
 
         hideMenu();
         setSelecting(false);
+        state.randomMode = false;
+        updateRandomControls();
         state.routeRequestId += 1;
         state.savedRoute = {
             ...route,
@@ -1742,10 +1779,100 @@ document.addEventListener('travel-manager:views-ready', () => {
         }
 
         hideMenu();
+        state.randomMode = false;
+        updateRandomControls();
         setSelecting(false);
         clearRoute();
         open();
         setSelecting(true, 'append');
+        return true;
+    };
+
+    const updateRandomControls = () => {
+        addButton.hidden = state.randomMode;
+        if (randomConfigureButton) randomConfigureButton.hidden = !state.randomMode;
+        if (randomChangeButton) randomChangeButton.hidden = !state.randomMode;
+        titleText.textContent = state.randomMode
+            ? t('RANDOM_ROUTE.TITLE')
+            : (state.savedRoute ? routeName(state.savedRoute) : t('PANEL_ROUTE_DETAILS.ROUTE'));
+    };
+
+    const generateRandomRoute = async () => {
+        const start = state.points[0];
+        if (!start) return false;
+        const requestId = ++state.routeRequestId;
+        summary.textContent = t('RANDOM_ROUTE.GENERATING');
+        status.textContent = t('RANDOM_ROUTE.GENERATING');
+        try {
+            const response = await fetch('/api/map/random-route', {
+                method: 'POST',
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    start: { latitude: start.latitude, longitude: start.longitude },
+                    ...state.randomConfiguration,
+                    transport: state.randomConfiguration.transport,
+                    include_toll_roads: state.tollRoads.roadsEnabled !== false
+                })
+            });
+            const data = await response.json();
+            if (requestId !== state.routeRequestId) return false;
+            if (!response.ok || data?.status !== 'ok') throw new Error(data?.message || t('RANDOM_ROUTE.GENERATION_FAILED'));
+            state.points = (data.points || []).map((point, index, points) => ({
+                id: `${Date.now()}-${index}-${Math.random().toString(16).slice(2)}`,
+                title: index === 0 || index === points.length - 1
+                    ? start.title
+                    : t('RANDOM_ROUTE.WAYPOINT', { number: index }),
+                latitude: Number(point.latitude),
+                longitude: Number(point.longitude),
+                country_code: index === 0 || index === points.length - 1 ? start.country_code : null
+            }));
+            state.currentRoute = data.route;
+            state.fuelSeparatorDetails.clear();
+            renderPoints();
+            renderInstructions(data.route);
+            summary.innerHTML = routeSummaryHtml(data.route);
+            status.textContent = t('RANDOM_ROUTE.GENERATED');
+            dispatchRoute(data.route);
+            refreshFuelSeparatorDetails(data.route);
+            return true;
+        } catch (error) {
+            if (requestId !== state.routeRequestId) return false;
+            status.textContent = error.message || t('RANDOM_ROUTE.GENERATION_FAILED');
+            summary.textContent = status.textContent;
+            return false;
+        }
+    };
+
+    async function configureRandomRoute() {
+        if (!state.points.length) return false;
+        const configuration = await window.travelManagerRandomRouteConfiguration?.show(state.randomConfiguration);
+        if (!configuration) return false;
+        state.randomConfiguration = configuration;
+        state.transportMode = configuration.transport || 'car';
+        updateTransportControls();
+        updateInitialFuelControls();
+        updateFuelSeparatorControls();
+        updateTollControls();
+        return generateRandomRoute();
+    }
+
+    const startNewRandomRoute = async () => {
+        if (panel.classList.contains('route-details-panel--open') && state.points.length) {
+            const accepted = await window.travelManagerDialogs?.yesNo({
+                title: t('PANEL_ROUTE_DETAILS.NEW_ROUTE_TITLE'),
+                description: t('PANEL_ROUTE_DETAILS.NEW_ROUTE_DESCRIPTION'),
+                icon: 'warning'
+            });
+            if (!accepted) return false;
+        }
+        hideMenu();
+        setSelecting(false);
+        clearRoute();
+        state.randomMode = true;
+        updateRandomControls();
+        open();
+        summary.textContent = t('RANDOM_ROUTE.SELECT_START');
+        setSelecting(true, 'random-initial');
         return true;
     };
 
@@ -1765,6 +1892,8 @@ document.addEventListener('travel-manager:views-ready', () => {
         hideMenu();
         setSelecting(false);
         clearRoute();
+        state.randomMode = false;
+        updateRandomControls();
         panel.classList.remove('route-details-panel--open');
         panel.setAttribute('aria-hidden', 'true');
         return true;
@@ -1796,6 +1925,16 @@ document.addEventListener('travel-manager:views-ready', () => {
         button.addEventListener('click', () => setActiveTab(button.dataset.routeTab || 'points'));
     });
     addButton.addEventListener('click', () => setSelecting(true, 'append'));
+    randomConfigureButton?.addEventListener('click', configureRandomRoute);
+    randomChangeButton?.addEventListener('click', () => {
+        state.points = [];
+        state.currentRoute = null;
+        renderPoints();
+        renderInstructions(null);
+        summary.textContent = t('RANDOM_ROUTE.SELECT_START');
+        dispatchRoute();
+        setSelecting(true, 'random-change');
+    });
     reverseButton.addEventListener('click', reverseRoute);
     saveButton.addEventListener('click', saveRoute);
     editNameButton.addEventListener('click', editSavedRoute);
@@ -1979,6 +2118,7 @@ document.addEventListener('travel-manager:views-ready', () => {
     setActiveTab('points');
     renderInstructions(null);
     updateSavedControls();
+    updateRandomControls();
     updateTransportControls();
     updateFuelSeparatorControls();
     updateInitialFuelControls();
@@ -1993,6 +2133,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         openWithStart: openWithDestination,
         openSavedRoute,
         openWithDestination,
-        startNewRoute
+        startNewRoute,
+        startNewRandomRoute
     };
 });

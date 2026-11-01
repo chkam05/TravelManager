@@ -17,10 +17,11 @@ class RouteDownloader:
         cls,
         points: list[dict[str, float]],
         transport: str,
-        include_toll_roads: bool
+        include_toll_roads: bool,
+        preference: str = 'standard'
     ) -> RouteDataModel:
-        if transport == 'car' and not include_toll_roads:
-            return cls._download_valhalla(points)
+        if (transport == 'car' and not include_toll_roads) or preference != 'standard':
+            return cls._download_valhalla(points, transport, include_toll_roads, preference)
         return cls._download_osrm(points, transport)
 
     @staticmethod
@@ -54,14 +55,45 @@ class RouteDownloader:
         })
 
     @staticmethod
-    def _download_valhalla(points: list[dict[str, float]]) -> RouteDataModel:
+    def _download_valhalla(
+        points: list[dict[str, float]],
+        transport: str = 'car',
+        include_toll_roads: bool = False,
+        preference: str = 'standard'
+    ) -> RouteDataModel:
+        costing = {'car': 'auto', 'bicycle': 'bicycle', 'foot': 'pedestrian'}.get(transport, 'auto')
+        options: dict[str, float | str] = {}
+        if costing == 'auto':
+            options['use_tolls'] = 1 if include_toll_roads else 0
+            if preference == 'highways':
+                options.update({'use_highways': 1, 'use_living_streets': 0.1, 'use_tracks': 0})
+            elif preference == 'urban':
+                options.update({'use_highways': 0.05, 'use_living_streets': 0.8, 'use_tracks': 0.1})
+            elif preference == 'nature':
+                options.update({'use_highways': 0, 'use_living_streets': 0.5, 'use_tracks': 0.9})
+        elif costing == 'bicycle':
+            if preference == 'urban':
+                options.update({'bicycle_type': 'road', 'use_roads': 0.7, 'use_tracks': 0.1})
+            elif preference == 'nature':
+                options.update({'bicycle_type': 'mountain', 'use_roads': 0.15, 'use_tracks': 1})
+        elif costing == 'pedestrian':
+            if preference == 'urban':
+                options.update({'use_living_streets': 1, 'use_tracks': 0.1})
+            elif preference == 'nature':
+                options.update({'walkway_factor': 0.6, 'use_living_streets': 0.4, 'use_tracks': 1})
+
         data = MapDataDownloader.post_json(f'{MapSources.VALHALLA_URL}/route', {
             'locations': [
                 {'lat': point['latitude'], 'lon': point['longitude']}
                 for point in points
             ],
-            'costing': 'auto',
-            'costing_options': {'auto': {'use_tolls': 0}},
+            'costing': costing,
+            'costing_options': {costing: options},
             'directions_options': {'units': 'kilometers'}
         })
-        return RouteDataModel.from_dict(ValhallaRouteConverter.convert(data, translate))
+        converted = ValhallaRouteConverter.convert(data, LanguageService.translate_current)
+        converted['toll_exclusion_requested'] = costing == 'auto' and not include_toll_roads
+        converted['toll_exclusion_applied'] = costing == 'auto' and not include_toll_roads
+        if costing != 'auto' or include_toll_roads:
+            converted['toll_exclusion_warning'] = None
+        return RouteDataModel.from_dict(converted)

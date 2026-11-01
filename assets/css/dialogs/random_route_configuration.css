@@ -1,0 +1,34 @@
+.random-route-configuration {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    width: min(440px, calc(100vw - 48px));
+    max-height: min(720px, calc(100vh - 48px));
+    overflow: hidden;
+    border: 1px solid;
+    border-radius: 12px;
+    border-color: var(--border-color);
+    background: var(--surface-background);
+    color: var(--text-primary);
+    box-shadow: 0 24px 70px var(--shadow-color);
+}
+.random-route-configuration[aria-hidden="true"] { display: none; }
+.random-route-configuration__header,
+.random-route-configuration__footer { display: flex; align-items: center; gap: 10px; padding: 14px 16px; }
+.random-route-configuration__header { border-bottom: 1px solid var(--border-subtle); background: var(--control-hover); }
+.random-route-configuration__footer { justify-content: flex-end; border-top: 1px solid var(--border-subtle); background: var(--control-hover); }
+.random-route-configuration__header h2 { flex: 1; margin: 0; font-size: 1.05rem; }
+.random-route-configuration__close { position: relative; width: 34px; height: 34px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface-background); cursor: pointer; }
+.random-route-configuration__close::before,
+.random-route-configuration__close::after { content: ""; position: absolute; top: 50%; left: 50%; width: 14px; height: 2px; }
+.random-route-configuration__close::before,
+.random-route-configuration__close::after { background: var(--text-secondary); }
+.random-route-configuration__close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.random-route-configuration__close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+.random-route-configuration__content { display: grid; gap: 16px; min-height: 0; padding: 18px 16px; overflow: auto; }
+.random-route-configuration__content label { display: grid; gap: 7px; font-size: .82rem; font-weight: 850; text-transform: uppercase; }
+.random-route-configuration__content input,
+.random-route-configuration__content select { height: 42px; padding: 0 12px; border: 1px solid var(--border-control); border-radius: 8px; background: var(--surface-background); color: var(--text-primary); font: inherit; }
+.random-route-configuration__content p { margin: 0; font-size: .85rem; opacity: .75; }
+.random-route-configuration__footer button { min-height: 38px; padding: 0 16px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--surface-background); color: var(--text-primary); font: inherit; font-weight: 800; cursor: pointer; }
+.random-route-configuration__generate { background: var(--accent-color); color: white; }

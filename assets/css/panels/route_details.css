@@ -576,6 +576,10 @@
     cursor: pointer;
 }
 
+.route-details-panel__actions > [hidden] {
+    display: none;
+}
+
 .route-details-panel__reverse svg {
     width: 17px;
     height: 17px;

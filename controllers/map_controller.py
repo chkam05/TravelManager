@@ -1,4 +1,6 @@
 from __future__ import annotations
+import math
+import random
 from typing import Any, ClassVar
 
 from flask import jsonify, request
@@ -26,6 +28,7 @@ class MapController(BaseController):
         self.add_url_rule('/api/map/legend', view_func=self.legend, methods=['GET'])
         self.add_url_rule('/api/map/reverse', view_func=self.reverse, methods=['GET'])
         self.add_url_rule('/api/map/route', view_func=self.route, methods=['POST'])
+        self.add_url_rule('/api/map/random-route', view_func=self.random_route, methods=['POST'])
         self.add_url_rule('/api/map/search', view_func=self.search, methods=['GET'])
         self.add_url_rule('/api/map/advanced-search', view_func=self.advanced_search, methods=['GET'])
 
@@ -116,10 +119,16 @@ class MapController(BaseController):
             return jsonify({'status': 'error', 'message': str(error)}), 400
 
         transport = str(data.get('transport', 'car'))
+        preference = str(data.get('preference', 'standard'))
         include_toll_roads = bool(data.get('include_toll_roads', True))
 
+        if preference not in {'standard', 'highways', 'urban', 'nature'}:
+            return jsonify({'status': 'error', 'message': LanguageService.translate_current(
+                'RANDOM_ROUTE.INVALID_CONFIGURATION'
+            )}), 400
+
         try:
-            route = RouteDownloader.download(points, transport, include_toll_roads)
+            route = RouteDownloader.download(points, transport, include_toll_roads, preference)
         except ValueError as error:
             return jsonify({'status': 'error', 'message': str(error)}), 422
         except Exception:
@@ -131,6 +140,90 @@ class MapController(BaseController):
             return jsonify({'status': 'error', 'message': message}), 502
 
         return jsonify({'status': 'ok', 'route': route.to_dict()})
+
+    def random_route(self):
+        """Builds a closed route through random points around one start point."""
+        data = request.get_json(silent=True) or {}
+        start = data.get('start') if isinstance(data, dict) else None
+
+        try:
+            points = self._route_points([start, start])
+            area_km = float(data.get('area_km'))
+            length_km = float(data.get('length_km'))
+        except (TypeError, ValueError):
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('RANDOM_ROUTE.INVALID_CONFIGURATION')
+            }), 400
+
+        if not 1 <= area_km <= 250 or not 2 <= length_km <= 1500:
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('RANDOM_ROUTE.INVALID_CONFIGURATION')
+            }), 400
+
+        origin = points[0]
+        transport = str(data.get('transport', 'car'))
+        preference = str(data.get('preference', 'standard'))
+        include_toll_roads = bool(data.get('include_toll_roads', True))
+        if transport not in {'car', 'bicycle', 'foot'} or preference not in {
+            'standard', 'highways', 'urban', 'nature'
+        }:
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('RANDOM_ROUTE.INVALID_CONFIGURATION')
+            }), 400
+        best = None
+        # Road distance is normally longer than the polygon joining the generated
+        # points. Several differently rotated candidates make the result useful
+        # despite water, borders and sparse road networks.
+        radius_factor = {'highways': 5.6, 'urban': 6.4, 'nature': 5.0}.get(preference, 5.2)
+        radius_km = min(area_km, max(0.5, length_km / radius_factor))
+        waypoint_count = {
+            'highways': 3,
+            'urban': 5,
+            'nature': 4
+        }.get(preference, 3 if length_km < 250 else 4)
+
+        for _ in range(4):
+            rotation = random.uniform(0, math.tau)
+            candidate = [origin]
+            for index in range(waypoint_count):
+                angle = rotation + math.tau * index / waypoint_count + random.uniform(-0.22, 0.22)
+                distance = radius_km * random.uniform(0.72, 1.0)
+                latitude = max(-89.9, min(89.9, origin['latitude'] + distance * math.cos(angle) / 111.32))
+                longitude_scale = max(0.15, math.cos(math.radians(origin['latitude'])))
+                longitude = origin['longitude'] + distance * math.sin(angle) / (111.32 * longitude_scale)
+                longitude = (longitude + 180) % 360 - 180
+                candidate.append({'latitude': latitude, 'longitude': longitude})
+            candidate.append(origin.copy())
+
+            try:
+                route = RouteDownloader.download(
+                    candidate,
+                    transport,
+                    include_toll_roads,
+                    preference
+                )
+            except Exception:
+                continue
+
+            difference = abs(float(route.distance or 0) / 1000 - length_km)
+            if best is None or difference < best[0]:
+                best = (difference, candidate, route)
+
+        if best is None:
+            return jsonify({
+                'status': 'error',
+                'message': LanguageService.translate_current('RANDOM_ROUTE.GENERATION_FAILED')
+            }), 422
+
+        _, generated_points, generated_route = best
+        return jsonify({
+            'status': 'ok',
+            'route': generated_route.to_dict(),
+            'points': generated_points
+        })
 
     def reverse(self):
         """Returns structured OpenStreetMap data for clicked coordinates."""

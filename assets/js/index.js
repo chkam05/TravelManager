@@ -219,6 +219,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (actionButton?.dataset.navigationAction === 'new-route') {
             showView('map');
             await window.travelManagerRouteDetailsPanel?.startNewRoute();
+        } else if (actionButton?.dataset.navigationAction === 'random-route') {
+            showView('map');
+            await window.travelManagerRouteDetailsPanel?.startNewRandomRoute();
         } else if (actionButton?.dataset.navigationAction === 'new-layer') {
             showView('map');
             window.travelManagerLayerEditor?.open();

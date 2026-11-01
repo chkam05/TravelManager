@@ -36,6 +36,7 @@ class ViewController(BaseController):
         self.add_url_rule('/api/panels/layer', view_func=self.layer_panel, methods=['GET'])
         self.add_url_rule('/api/panels/place-details', view_func=self.place_details_panel, methods=['GET'])
         self.add_url_rule('/api/panels/route-details', view_func=self.route_details_panel, methods=['GET'])
+        self.add_url_rule('/api/panels/random-route-details', view_func=self.random_route_details_panel, methods=['GET'])
         self.add_url_rule('/api/panels/car-details', view_func=self.car_details_panel, methods=['GET'])
         self.add_url_rule('/api/panels/search-results', view_func=self.search_results_panel, methods=['GET'])
         self.add_url_rule('/api/panels/public-transport', view_func=self.public_transport_panel, methods=['GET'])
@@ -114,6 +115,9 @@ class ViewController(BaseController):
 
     def route_details_panel(self):
         return render_template('panels/route_details.html')
+
+    def random_route_details_panel(self):
+        return render_template('panels/random_route_details.html')
 
     def car_details_panel(self):
         return render_template('panels/car_details.html')
