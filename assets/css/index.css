@@ -108,6 +108,10 @@ body {
     justify-content: center;
 }
 
+[data-header-view="map"] .header__view-center {
+    gap: 8px;
+}
+
 .header__view-right {
     justify-content: flex-end;
     gap: 10px;
@@ -140,6 +144,24 @@ body {
     justify-content: flex-end;
     min-width: 220px;
     gap: 8px;
+}
+
+.header__connection-search-button {
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.header__connection-search-button svg {
+    width: 21px;
+    height: 21px;
 }
 
 .header__search[hidden] {

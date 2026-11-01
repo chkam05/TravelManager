@@ -1,0 +1,72 @@
+.public-transport-route-search {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    width: min(860px, calc(100vw - 48px));
+    max-height: calc(100vh - 48px);
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    background: var(--surface-background);
+    color: var(--text-primary);
+    box-shadow: 0 28px 80px var(--shadow-color);
+}
+.public-transport-route-search,.public-transport-route-search * { box-sizing: border-box; }
+.public-transport-route-search[aria-hidden="true"] { display: none; }
+.public-transport-route-search__header,.public-transport-route-search__footer { display:flex;align-items:center;gap:10px;padding:14px 16px; }
+.public-transport-route-search__header { border-bottom:1px solid var(--border-subtle); }
+.public-transport-route-search__header h2 { flex:1 1 auto;min-width:0;margin:0;overflow:hidden;font-size:1.08rem;font-weight:900;text-overflow:ellipsis;white-space:nowrap; }
+.public-transport-route-search__close,.public-transport-route-result__close { position:relative;flex:0 0 auto;width:34px;height:34px;padding:0;border:1px solid var(--border-strong);border-radius:8px;background:var(--control-background);color:var(--text-primary);cursor:pointer; }
+.public-transport-route-search__close::before,.public-transport-route-search__close::after,.public-transport-route-result__close::before,.public-transport-route-result__close::after { content:"";position:absolute;top:50%;left:50%;width:14px;height:2px;background:currentColor; }
+.public-transport-route-search__close::before,.public-transport-route-result__close::before { transform:translate(-50%,-50%) rotate(45deg); }
+.public-transport-route-search__close::after,.public-transport-route-result__close::after { transform:translate(-50%,-50%) rotate(-45deg); }
+.public-transport-route-search__content { display:grid;align-content:start;gap:16px;min-width:0;min-height:0;padding:16px;overflow:auto; }
+.public-transport-route-search__schedule,.public-transport-route-search__options { display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,280px);align-items:center;gap:16px;min-width:0;padding:14px 16px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--surface-muted); }
+.public-transport-route-search__switch { position:relative;display:inline-grid;grid-template-columns:42px;align-items:center;justify-content:start;gap:8px;min-width:0;font-weight:850;cursor:pointer; }
+.public-transport-route-search__switch>span:first-child { grid-column:1/-1;white-space:nowrap; }
+.public-transport-route-search__switch input { position:absolute;width:1px;height:1px;opacity:0; }
+.public-transport-route-search__switch-track { position:relative;width:42px;height:24px;border:1px solid var(--border-strong);border-radius:999px;background:var(--control-background); }
+.public-transport-route-search__switch-track::after { content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--text-secondary);transition:transform 140ms ease,background 140ms ease; }
+.public-transport-route-search__switch input:checked + .public-transport-route-search__switch-track { border-color:var(--accent-color);background:color-mix(in srgb,var(--accent-color) 24%,var(--control-background)); }
+.public-transport-route-search__switch input:checked + .public-transport-route-search__switch-track::after { background:var(--accent-color);transform:translateX(18px); }
+.public-transport-route-search__switch input:focus-visible + .public-transport-route-search__switch-track { outline:2px solid var(--accent-color);outline-offset:2px; }
+.public-transport-route-search__datetime,.public-transport-route-search fieldset label { display:grid;gap:6px;min-width:0;font-weight:750; }
+.public-transport-route-search__datetime>span,.public-transport-route-search fieldset label>span { color:var(--text-secondary);font-size:.82rem;font-weight:800; }
+.public-transport-route-search__points { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;min-width:0; }
+.public-transport-route-search fieldset { display:grid;gap:13px;min-width:0;margin:0;padding:16px;border:1px solid var(--border-subtle);border-radius:10px; }
+.public-transport-route-search legend { padding:0 8px;font-size:.96rem;font-weight:900; }
+.public-transport-route-search select,.public-transport-route-search input[type="number"] { width:100%;min-width:0;height:48px;padding:0 12px;border:1px solid var(--border-strong);border-radius:8px;background:var(--control-background);color:var(--text-primary);font:inherit; }
+.public-transport-date-time { position:relative;display:block;min-width:0;font-weight:400; }
+.public-transport-date-time__trigger { display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;height:48px;padding:0 12px;border:1px solid var(--border-strong);border-radius:8px;background:var(--control-background);color:var(--text-primary);font:inherit;text-align:left; }
+.public-transport-date-time__trigger>span { overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.public-transport-date-time__trigger svg { width:18px;height:18px; }
+.public-transport-date-time__popover { position:fixed;z-index:2200;display:grid;width:min(340px,calc(100vw - 32px));padding:12px;border:1px solid var(--border-strong);border-radius:10px;background:var(--surface-background);color:var(--text-primary);box-shadow:0 20px 54px var(--shadow-color);font-weight:400; }
+.public-transport-date-time__popover[hidden] { display:none; }
+.public-transport-date-time__calendar-header { display:grid;grid-template-columns:34px minmax(0,1fr) 34px;align-items:center;gap:8px;margin-bottom:8px; }
+.public-transport-date-time__calendar-header strong { text-align:center;text-transform:capitalize; }
+.public-transport-date-time__calendar-header button { display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:7px;background:transparent;color:inherit; }
+.public-transport-date-time__weekdays,.public-transport-date-time__days { display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px; }
+.public-transport-date-time__weekdays { margin-bottom:4px;color:var(--text-secondary);font-size:.75rem;font-weight:850;text-align:center; }
+.public-transport-date-time__days button { display:grid;place-items:center;aspect-ratio:1;min-width:0;padding:0;border:0;border-radius:7px;background:transparent;color:inherit;font:inherit; }
+.public-transport-date-time__days button:hover { background:var(--control-hover); }
+.public-transport-date-time__days button[data-outside-month] { color:var(--disabled-color); }
+.public-transport-date-time__days button[aria-selected="true"] { background:var(--accent-color);color:var(--on-accent-color,#fff);font-weight:900; }
+.public-transport-date-time__days button[data-today]:not([aria-selected="true"]) { box-shadow:inset 0 0 0 1px var(--accent-color); }
+.public-transport-date-time__time { display:grid;grid-template-columns:auto minmax(0,1fr) auto minmax(0,1fr);align-items:end;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-subtle); }
+.public-transport-date-time__time>svg { align-self:center;width:18px;height:18px; }
+.public-transport-date-time__time label { display:grid;gap:3px;color:var(--text-secondary);font-size:.72rem;font-weight:800; }
+.public-transport-date-time__time select { height:40px;padding:0 8px; }
+.public-transport-date-time__time>span { align-self:center;font-weight:900; }
+.public-transport-date-time__actions { display:flex;justify-content:space-between;gap:8px;margin-top:10px; }
+.public-transport-date-time__actions button { min-height:36px;padding:0 12px;border:1px solid var(--border-strong);border-radius:7px;background:var(--control-background);color:var(--text-primary);font:inherit;font-weight:800; }
+.public-transport-date-time__actions button:last-child { border-color:var(--accent-color);background:var(--accent-color);color:var(--on-accent-color,#fff); }
+.public-transport-route-search select:disabled { background:var(--disabled-background);color:var(--disabled-color);opacity:var(--disabled-opacity); }
+.public-transport-route-search__options>div { display:grid;gap:3px;min-width:0; }
+.public-transport-route-search__options small { color:var(--text-secondary); }
+.public-transport-route-search__transfer { display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;min-width:0; }
+.public-transport-route-search__status { margin:0;color:var(--danger-color); }
+.public-transport-route-search__status:empty { display:none; }
+.public-transport-route-search__footer { justify-content:flex-end;border-top:1px solid var(--border-subtle); }
+.public-transport-route-search__button { display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:92px;min-height:40px;padding:0 14px;border:1px solid var(--border-strong);border-radius:8px;background:var(--control-background);color:var(--text-primary);font:inherit;font-weight:850;cursor:pointer; }
+.public-transport-route-search__button--primary { border-color:var(--accent-color);background:var(--accent-color);color:var(--on-accent-color,#fff); }
+.public-transport-route-search button:hover { filter:brightness(1.06); }
+@media(max-width:720px) { .public-transport-route-search__points,.public-transport-route-search__schedule,.public-transport-route-search__options { grid-template-columns:minmax(0,1fr); } }

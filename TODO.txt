@@ -1,8 +1,5 @@
 1. [X] Dodać GTFS dla PKP
-2. [ ] Dodać wyszukiwarkę połączeń
-   - [ ] Nowy widok wyszukiwarki z opcjami: "Z: Miasto (combobox z opcją pisania), Przystanek (combobox z opcją pisania)", "DO: Miasto (combobox z opcją pisania), Przystanek (combobox z opcją pisania), "Data i Godzina: Wybór daty i godziny, przełącznik: Wyjazd/Przyjazd"
-   - [ ] Widok wyników, poszczególne linie, godziny, czas na przesiadkę, przycisk "Pokaż na mapie"
-   - [ ] Panel boczny na mapie z tymi samymi danymi wyników, pokazujący też linie na mapie, każda w innym kolorze.
+2. [X] Dodać wyszukiwarkę połączeń
 3. [ ] Dodać planowanie trasy przy użyciu komunikacji miejskiej i PKP
 4. [X] Podczas rysowania warstwy (ale tylko podczas aktynego rysowania), dodaj obok kursora taki tooltip z pozycjami X i Y jeden pod drugim.
 5. [ ] Randomowa generowanie trasy

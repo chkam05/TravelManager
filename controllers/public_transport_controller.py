@@ -2,7 +2,7 @@ from __future__ import annotations
 from collections import defaultdict
 import re
 from concurrent.futures import CancelledError
-from datetime import date
+from datetime import date, datetime
 from threading import Event, Lock
 from time import monotonic
 from typing import Any, Callable, ClassVar
@@ -24,6 +24,7 @@ from storage.settings_storage import SettingsStorage
 from utils.public_transport.download_progress import PublicTransportDownloadProgress
 from utils.public_transport.rail_gtfs_cache import RailGtfsCache
 from resources.public_transport.rail_gtfs_sources import RailGtfsSources
+from services.public_transport_journey_planner import PublicTransportJourneyPlanner
 
 
 class PublicTransportController(BaseController):
@@ -31,6 +32,7 @@ class PublicTransportController(BaseController):
 
     CONTROLLER_NAME: ClassVar[str] = 'PublicTransportController'
     _CACHE_TTL_SECONDS: ClassVar[int] = 300
+    _ROUTE_SEARCH_ALL_RAIL: ClassVar[str] = 'rail_all'
 
     def __init__(self, settings_storage: SettingsStorage):
         self._settings_storage = settings_storage
@@ -44,6 +46,11 @@ class PublicTransportController(BaseController):
         super().__init__()
 
     def register_routes(self):
+        self.add_url_rule(
+            '/api/public-transport/route-search/providers',
+            view_func=self.route_search_providers,
+            methods=['GET']
+        )
         self.add_url_rule(
             '/api/public-transport/<provider_id>/lines',
             view_func=self.lines,
@@ -109,8 +116,94 @@ class PublicTransportController(BaseController):
             view_func=self.vehicle_positions,
             methods=['GET']
         )
+        self.add_url_rule(
+            '/api/public-transport/<provider_id>/route-search/catalog',
+            view_func=self.route_search_catalog,
+            methods=['GET']
+        )
+        self.add_url_rule(
+            '/api/public-transport/<provider_id>/route-search',
+            view_func=self.route_search,
+            methods=['POST']
+        )
 
     #region Endpoints
+
+    def route_search_providers(self):
+        """Lists locally downloaded relational GTFS providers."""
+        providers = []
+        names = {item['id']: item['name'] for item in PublicTransportProviders.options()}
+        if RailGtfsCache.has_local_data(RailGtfsSources.POLISH_TRAINS):
+            providers.append({
+                'id': self._ROUTE_SEARCH_ALL_RAIL,
+                'name': LanguageService.translate_current('MAIN_MENU.RAILWAYS')
+            })
+        for provider_id in PublicTransportProviders.VALUES:
+            if provider_id.startswith('rail_'):
+                continue
+            try:
+                downloader = PublicTransportProviders.downloader(provider_id)
+                available = bool(getattr(downloader, 'has_local_data', lambda: False)())
+                route_source = (
+                    callable(getattr(downloader, '_ensure_database', None))
+                    or provider_id.startswith('rail_')
+                )
+                if available and route_source:
+                    providers.append({
+                        'id': provider_id,
+                        'name': names.get(provider_id, provider_id)
+                    })
+            except (KeyError, ValueError, OSError):
+                continue
+        return jsonify({'providers': providers})
+
+    def route_search_catalog(self, provider_id: str):
+        try:
+            selected_date = date.fromisoformat(str(request.args.get('date') or date.today()))
+            planner = self._journey_planner(provider_id)
+            return jsonify(planner.catalog(selected_date))
+        except (ValueError, OSError) as error:
+            return jsonify({'error': str(error)}), 400
+        except Exception:
+            return jsonify({'error': 'Nie udało się wczytać katalogu przystanków.'}), 502
+
+    def route_search(self, provider_id: str):
+        """Finds one-provider journeys between two GTFS stop groups."""
+        try:
+            payload = request.get_json(silent=True) or {}
+            selected = datetime.fromisoformat(str(payload.get('date_time') or ''))
+            planner = self._journey_planner(provider_id)
+            return jsonify(planner.search(
+                selected.date(), str(payload.get('origin') or ''),
+                str(payload.get('destination') or ''),
+                selected.hour * 3600 + selected.minute * 60 + selected.second,
+                str(payload.get('time_mode') or 'depart_at') == 'arrive_by',
+                max(1, min(240, int(payload.get('max_transfer_minutes') or 30))),
+                max(0, min(5, int(payload.get('max_transfers') or 3))),
+                max(1, min(10, int(payload.get('limit') or 5)))
+            ))
+        except (TypeError, ValueError, OSError) as error:
+            return jsonify({'error': str(error)}), 400
+        except Exception:
+            return jsonify({'error': 'Nie udało się przeszukać rozkładu jazdy.'}), 502
+
+    @staticmethod
+    def _journey_planner(provider_id: str) -> PublicTransportJourneyPlanner:
+        if provider_id == PublicTransportController._ROUTE_SEARCH_ALL_RAIL:
+            return PublicTransportJourneyPlanner(
+                RailGtfsCache.ensure_database(RailGtfsSources.POLISH_TRAINS)
+            )
+        if provider_id.startswith('rail_'):
+            mapping = RailGtfsSources.provider(provider_id)
+            return PublicTransportJourneyPlanner(
+                RailGtfsCache.ensure_database(mapping.source_id),
+                mapping.agency_ids
+            )
+        downloader = PublicTransportProviders.downloader(provider_id)
+        ensure = getattr(downloader, '_ensure_database', None)
+        if not callable(ensure):
+            raise ValueError('Ten przewoźnik nie udostępnia lokalnej bazy GTFS.')
+        return PublicTransportJourneyPlanner(ensure(False))
 
     def lines(self, provider_id: str):
         """Renders the line tile view."""

@@ -222,6 +222,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (actionButton?.dataset.navigationAction === 'new-layer') {
             showView('map');
             window.travelManagerLayerEditor?.open();
+        } else if (actionButton?.dataset.navigationAction === 'search-place') {
+            showView('map');
+            window.travelManagerAdvancedSearch?.open(
+                window.travelManagerMap?.getSearchContext?.() || {}
+            );
+        } else if (actionButton?.dataset.navigationAction === 'search-connections') {
+            showView('map');
+            window.travelManagerPublicTransportRouteSearch?.open();
         }
     });
 

@@ -40,6 +40,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/car_profile_editor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/route_editor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/advanced_search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/public_transport_route_search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panels/public_transport_route_result.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/fuel_cost_editor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/fuel_update.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dialogs/public_transport_announcement.css') }}">
@@ -104,6 +106,7 @@
         <div id="search-results-panel-container" data-panel-url="{{ url_for('ViewController.search_results_panel') }}"></div>
         <div id="public-transport-panel-container" data-panel-url="{{ url_for('ViewController.public_transport_panel') }}"></div>
         <div id="public-transport-vehicle-panel-container" data-panel-url="{{ url_for('ViewController.public_transport_vehicle_panel') }}"></div>
+        <div id="public-transport-route-result-panel-container" data-panel-url="{{ url_for('ViewController.public_transport_route_result_panel') }}"></div>
         <div class="dialog-layer" id="dialog-layer" data-dialog-url="{{ url_for('ViewController.dialogs') }}" aria-hidden="true"></div>
 
         <main class="content" id="content">
@@ -134,6 +137,8 @@
     <script src="{{ url_for('static', filename='js/dialogs/car_profile_editor.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/route_editor.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/advanced_search.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dialogs/public_transport_route_search.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/panels/public_transport_route_result.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/fuel_cost_editor.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/fuel_update.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialogs/public_transport_announcement.js') }}"></script>

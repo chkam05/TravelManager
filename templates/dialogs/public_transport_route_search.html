@@ -1,0 +1,70 @@
+<form class="public-transport-route-search" id="public-transport-route-search" role="dialog" aria-modal="true" aria-labelledby="public-transport-route-search-title" aria-hidden="true">
+    <header class="public-transport-route-search__header">
+        <h2 id="public-transport-route-search-title">Wyszukiwarka połączeń</h2>
+        <button class="public-transport-route-search__close" data-route-search-close type="button" aria-label="{{ t('COMMON.CLOSE') }}"></button>
+    </header>
+    <div class="public-transport-route-search__content">
+        <section class="public-transport-route-search__schedule" aria-label="Termin podróży">
+            <label class="public-transport-route-search__switch">
+                <span data-route-search-time-label>Godzina odjazdu</span>
+                <input type="checkbox" data-route-search-arrive-by>
+                <span class="public-transport-route-search__switch-track" aria-hidden="true"></span>
+            </label>
+            <div class="public-transport-route-search__datetime">
+                <span>Data i godzina</span>
+                <div class="public-transport-date-time" data-route-search-date-time-picker>
+                    <input type="hidden" data-route-search-date-time required>
+                    <button class="public-transport-date-time__trigger" data-route-search-date-time-trigger type="button" aria-haspopup="dialog" aria-expanded="false">
+                        <i data-lucide="calendar-clock" aria-hidden="true"></i>
+                        <span data-route-search-date-time-value></span>
+                        <i data-lucide="chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <div class="public-transport-date-time__popover" data-route-search-date-time-popover role="dialog" aria-label="Wybór daty i godziny" hidden>
+                        <div class="public-transport-date-time__calendar-header">
+                            <button type="button" data-route-search-month-previous aria-label="Poprzedni miesiąc"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+                            <strong data-route-search-month-label></strong>
+                            <button type="button" data-route-search-month-next aria-label="Następny miesiąc"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="public-transport-date-time__weekdays" aria-hidden="true"><span>Pn</span><span>Wt</span><span>Śr</span><span>Cz</span><span>Pt</span><span>So</span><span>Nd</span></div>
+                        <div class="public-transport-date-time__days" data-route-search-calendar-days></div>
+                        <div class="public-transport-date-time__time">
+                            <i data-lucide="clock-3" aria-hidden="true"></i>
+                            <label><span>Godzina</span><select data-route-search-hour></select></label>
+                            <span>:</span>
+                            <label><span>Minuta</span><select data-route-search-minute></select></label>
+                        </div>
+                        <div class="public-transport-date-time__actions">
+                            <button type="button" data-route-search-date-today>Dzisiaj</button>
+                            <button type="button" data-route-search-date-apply>Zastosuj</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="public-transport-route-search__points">
+            {% for side, title in [('origin', 'Punkt początkowy'), ('destination', 'Punkt docelowy')] %}
+            <fieldset>
+                <legend>{{ title }}</legend>
+                <label><span>Przewoźnik</span><select data-route-search-provider="{{ side }}" required></select></label>
+                <label><span>Miasto</span><select data-route-search-city="{{ side }}" required></select></label>
+                <label><span>Przystanek</span><select data-route-search-stop="{{ side }}" required></select></label>
+            </fieldset>
+            {% endfor %}
+        </div>
+        <section class="public-transport-route-search__options" aria-label="Opcje połączenia">
+            <div>
+                <strong>Czas na przesiadkę</strong>
+                <small>Maksymalny czas oczekiwania na kolejny pojazd</small>
+            </div>
+            <label class="public-transport-route-search__transfer">
+                <input type="number" data-route-search-transfer min="1" max="240" value="30" required aria-label="Maksymalny czas oczekiwania na przesiadkę">
+                <span>min</span>
+            </label>
+        </section>
+        <p class="public-transport-route-search__status" data-route-search-status aria-live="polite"></p>
+    </div>
+    <footer class="public-transport-route-search__footer">
+        <button class="public-transport-route-search__button" data-route-search-close type="button">{{ t('COMMON.CANCEL') }}</button>
+        <button class="public-transport-route-search__button public-transport-route-search__button--primary" type="submit"><i data-lucide="search" aria-hidden="true"></i><span>{{ t('COMMON.SEARCH') }}</span></button>
+    </footer>
+</form>

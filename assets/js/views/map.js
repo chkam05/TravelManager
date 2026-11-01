@@ -1557,6 +1557,51 @@ document.addEventListener('travel-manager:views-ready', () => {
         });
     };
 
+    const showPublicTransportJourney = (
+        segments,
+        title = t('PUBLIC_TRANSPORT_RIDE.RIDE_ROUTE')
+    ) => {
+        if (publicTransportRouteLayer) {
+            map.removeLayer(publicTransportRouteLayer);
+        }
+
+        const palette = ['#1687d9', '#e5534b', '#8b5cf6', '#e69f00', '#00a884', '#d946ef'];
+        let vehicleIndex = 0;
+        const layers = [];
+        (Array.isArray(segments) ? segments : []).forEach((segment) => {
+            if (segment?.type === 'transfer') return;
+            const coordinates = (Array.isArray(segment?.geometry) ? segment.geometry : [])
+                .map((point) => [Number(point[0]), Number(point[1])])
+                .filter(([latitude, longitude]) => (
+                    Number.isFinite(latitude) && Number.isFinite(longitude)
+                ));
+            if (coordinates.length < 2) return;
+            const walking = segment.type === 'walk';
+            const color = walking ? '#6f7d8c' : palette[vehicleIndex++ % palette.length];
+            const layer = L.polyline(coordinates, {
+                color,
+                weight: walking ? 5 : 6,
+                opacity: 0.94,
+                dashArray: walking ? '2 10' : null,
+                lineCap: 'round',
+                lineJoin: 'round'
+            });
+            const label = walking
+                ? `${t('PANEL_ROUTE_DETAILS.ON_FOOT')}: ${segment.from} → ${segment.to}`
+                : `${segment.line || ''}: ${segment.from} → ${segment.to}`;
+            layer.bindPopup(label);
+            layers.push(layer);
+        });
+        if (!layers.length) return;
+
+        publicTransportRouteLayer = L.featureGroup(layers).addTo(map);
+        publicTransportRouteLayer.bindTooltip(title, { sticky: true });
+        const bounds = publicTransportRouteLayer.getBounds();
+        if (bounds.isValid()) {
+            map.fitBounds(bounds, { padding: [42, 42] });
+        }
+    };
+
     const showPublicTransportVehicles = (
         positions,
         title = t('PANEL_PUBLIC_TRANSPORT.VEHICLES'),
@@ -1652,6 +1697,7 @@ document.addEventListener('travel-manager:views-ready', () => {
         clearPublicTransportStop,
         clearPublicTransportVehicles,
         showPublicTransportRoute,
+        showPublicTransportJourney,
         showPublicTransportStop,
         showPublicTransportVehicles,
         refreshOfflineMaps: loadOfflineBaseLayers,

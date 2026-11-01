@@ -40,6 +40,7 @@ class ViewController(BaseController):
         self.add_url_rule('/api/panels/search-results', view_func=self.search_results_panel, methods=['GET'])
         self.add_url_rule('/api/panels/public-transport', view_func=self.public_transport_panel, methods=['GET'])
         self.add_url_rule('/api/panels/public-transport-vehicle', view_func=self.public_transport_vehicle_panel, methods=['GET'])
+        self.add_url_rule('/api/panels/public-transport-route-result', view_func=self.public_transport_route_result_panel, methods=['GET'])
         self.add_url_rule('/api/dialogs/yesno', view_func=self.yesno_dialog, methods=['GET'])
         self.add_url_rule('/api/dialogs', view_func=self.dialogs, methods=['GET'])
         self.add_url_rule('/api/emojis/groups', view_func=Emojis.emoji_groups, methods=['GET'])
@@ -129,6 +130,9 @@ class ViewController(BaseController):
 
     def public_transport_vehicle_panel(self):
         return render_template('panels/public_transport_vehicle.html')
+
+    def public_transport_route_result_panel(self):
+        return render_template('panels/public_transport_route_result.html')
 
     def yesno_dialog(self):
         return render_template('dialogs/yesno_dialog.html')
