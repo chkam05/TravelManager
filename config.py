@@ -20,7 +20,7 @@ APP_DESCRIPTION = (
     'routes, follow public transport, and estimate fuel and toll costs using your '
     'own car profiles.'
 )
-APP_VERSION = '2.0.0.0'
+APP_VERSION = '2.1.0.0'
 
 # Application settings storage.
 SETTINGS_DIR = PathUtils.get_settings_dir(APP_NAME)
